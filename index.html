@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>棋盘游戏</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 初始界面 -->
+    <div id="startScreen" class="screen">
+        <h1>棋盘游戏</h1>
+        <div class="board-preview">
+            <div class="preview-board"></div>
+        </div>
+        <div class="buttons">
+            <button id="startBtn">开始游戏</button>
+            <button id="cardPackBtn">卡包</button>
+        </div>
+    </div>
+
+    <!-- 模式选择 -->
+    <div id="modeSelectScreen" class="screen hidden">
+        <h1>选择模式</h1>
+        <div class="buttons">
+            <button id="trainingBtn">训练营</button>
+            <button id="aiBattleBtn">人机对战</button>
+        </div>
+        <button id="modeBackBtn" class="back-btn-mode">返回</button>
+    </div>
+
+    <!-- 卡包界面 -->
+    <div id="cardPackScreen" class="screen hidden">
+        <h1>卡包</h1>
+        
+        <!-- 卡包标签页 -->
+        <div class="tab-bar">
+            <button id="cardCollectionTab" class="tab active">卡牌收藏</button>
+            <button id="battleDeckTab" class="tab">出战卡组</button>
+        </div>
+
+        <!-- 卡牌收藏 -->
+        <div id="cardCollection" class="tab-content">
+            <div class="card-grid" id="cardGrid">
+                <!-- 卡牌将动态生成 -->
+            </div>
+        </div>
+
+        <!-- 出战卡组 -->
+        <div id="battleDeck" class="tab-content hidden">
+            <div class="deck-info">
+                <h3>出战卡组</h3>
+                <p>当前卡组: <span id="deckCount">0</span> 张卡</p>
+            </div>
+            <div class="deck-list" id="deckList">
+                <p>点击左侧卡牌添加到出战卡组</p>
+            </div>
+        </div>
+
+        <!-- 卡牌信息面板 -->
+        <div id="cardInfoPanel" class="card-info-panel hidden">
+            <h3 id="cardName"></h3>
+            <div class="card-stats">
+                <div class="stat"><span class="label">攻击力:</span> <span id="cardAttack"></span></div>
+                <div class="stat"><span class="label">生命值:</span> <span id="cardHp"></span></div>
+                <div class="stat"><span class="label">移动距离:</span> <span id="cardMove"></span></div>
+                <div class="stat"><span class="label">攻击范围:</span> <span id="cardRange"></span></div>
+                <div class="stat"><span class="label">能量花费:</span> <span id="cardCost"></span></div>
+            </div>
+        </div>
+
+        <button id="backBtn">返回</button>
+    </div>
+
+    <!-- 游戏界面 -->
+    <div id="gameScreen" class="screen hidden">
+        <!-- 右上角控制区 -->
+        <div class="top-right-controls">
+            <div id="timer" class="timer">45秒</div>
+            <button id="exitBtn" class="exit-btn">退出游戏</button>
+        </div>
+        
+        <!-- 蓝方信息栏 -->
+        <div class="player-info blue-player">
+            <div class="energy-bar-container">
+                <div class="energy-bar">
+                    <div id="blueEnergy" class="energy-fill"></div>
+                </div>
+                <span id="blueEnergyText">能量: 1/20</span>
+            </div>
+            <div class="base-hp">
+                <div class="hp-bar">
+                    <div id="blueBaseHp" class="hp-fill"></div>
+                </div>
+                <span>大本营血量: <span id="blueHpText">50</span>/50</span>
+            </div>
+            <div class="turn-indicator" id="blueTurnIndicator">蓝方回合</div>
+        </div>
+
+        <!-- 棋盘 -->
+        <div class="game-board-container">
+            <div id="gameBoard" class="game-board"></div>
+        </div>
+
+        <!-- 红方信息栏 -->
+        <div class="player-info red-player">
+            <div class="energy-bar-container">
+                <div class="energy-bar">
+                    <div id="redEnergy" class="energy-fill"></div>
+                </div>
+                <span id="redEnergyText">能量: 1/20</span>
+            </div>
+            <div class="base-hp">
+                <div class="hp-bar">
+                    <div id="redBaseHp" class="hp-fill"></div>
+                </div>
+                <span>大本营血量: <span id="redHpText">50</span>/50</span>
+            </div>
+            <div class="turn-indicator" id="redTurnIndicator">红方回合</div>
+        </div>
+
+        <!-- 底部控制栏 -->
+        <div class="bottom-controls">
+            <button id="skipBtn" class="skip-btn">跳过回合</button>
+        </div>
+    </div>
+
+    <!-- 出战卡组弹窗 -->
+    <div id="deployModal" class="modal hidden">
+        <div class="modal-content">
+            <h2>选择卡牌部署</h2>
+            <div class="battle-deck-grid" id="battleDeckGrid">
+                <!-- 出战卡组卡牌 -->
+            </div>
+            <button id="closeDeployModal" class="close-btn">关闭</button>
+        </div>
+    </div>
+
+    <!-- 游戏结束弹窗 -->
+    <div id="gameOverModal" class="modal hidden">
+        <div class="modal-content">
+            <h2 id="winnerText"></h2>
+            <button id="restartBtn">重新开始</button>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
