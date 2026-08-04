@@ -8,7 +8,8 @@ const cardLibrary = [
         moveRange: 3,
         attackRange: 1,
         cost: 1,
-        artwork: 'black-dot'
+        artwork: 'black-dot',
+        description: "他真的非常普通。"
     },
     {
         id: 'cavalry',
@@ -19,6 +20,7 @@ const cardLibrary = [
         attackRange: 2,
         cost: 3,
         artwork: 'cavalry',
+        description: "冲锋起来伤害高。",
         chargeMove: 5,
         chargeDamage: 3
     },
@@ -30,7 +32,8 @@ const cardLibrary = [
         moveRange: 3,
         attackRange: 5,
         cost: 2,
-        artwork: 'musketeer'
+        artwork: 'musketeer',
+        description: "一个白板射手。"
     },
     {
         id: 'heavy_knight',
@@ -41,7 +44,8 @@ const cardLibrary = [
         moveRange: 1,
         attackRange: 1,
         cost: 4,
-        artwork: 'heavy-knight'
+        artwork: 'heavy-knight',
+        description: "他很笨重，但是装甲很厚。"
     },
     {
         id: 'asala_soldier',
@@ -52,6 +56,7 @@ const cardLibrary = [
         attackRange: 4,
         cost: 2,
         artwork: 'asala',
+        description: "你丫完了，我说的！一个大飞踹给你李宁踹开线了，再一枪爆头。",
         meleeAttack: 2,
         meleeRange: 1,
         rangedCrit: true
@@ -66,6 +71,7 @@ const cardLibrary = [
         attackRange: 5,
         cost: 8,
         artwork: 'saeed',
+        description: "你掉进陷阱了！拥有百分之50的暴击率，每回合受到第一次攻击时闪避该攻击，闪避每回合只有一次，当其受到伤害后，发射火焰弩反击敌人并留下燃烧弹。",
         hero: true,
         meleeAttack: 2,
         meleeRange: 1,
@@ -84,6 +90,7 @@ const cardLibrary = [
         attackRange: 5,
         cost: 13,
         artwork: 'warden',
+        description: "自带亲卫队，自身降到半血以下暴击率由百分之50提升至百分之100。",
         hero: true,
         heroDeployText: '立即肃清，一个都不能放过！',
         halfHpText: '典狱长实力受损！',
@@ -101,6 +108,7 @@ const cardLibrary = [
         attackRange: 4,
         cost: 15,
         artwork: 'raven',
+        description: "近距离可处决敌人，同时拥有强力的亲卫队，半血以下释放烟雾弹，略微阻挡对方视野。",
         hero: true,
         heroDeployText: '欢迎来到阿萨拉，欢迎来到游乐园！',
         halfHpText: '狩猎开始了！',
@@ -120,6 +128,7 @@ const cardLibrary = [
         attackRange: 5,
         cost: 6,
         artwork: 'light-tank',
+        description: "很普通的坦克，有溅射伤害。",
         splashRadius: 1
     },
     {
@@ -131,6 +140,7 @@ const cardLibrary = [
         attackRange: 2,
         cost: 1,
         artwork: 'ice-sprite',
+        description: "可爱的精灵，一般搭配着速猪食用。",
         oneShot: true,
         freeze: true
     },
@@ -144,6 +154,7 @@ const cardLibrary = [
         attackRange: 3,
         cost: 18,
         artwork: 'madara',
+        description: "普通攻击前方竖向三格，敌人近距离攻击时他自动反击3×3范围内敌军并跃起跳向敌军造成大范围伤害，每次攻击到敌人会积攒能量，能量≥4的时候双击释放技能进入无双状态，额外增加攻击次数和移动距离，5，6能量时无双状态结束后自动释放奥义，召唤陨石砸下伤害大范围敌军。",
         hero: true,
         heroDeployText: '吾不可阻挡！',
         heroDeployColor: '#e74c3c',
@@ -167,6 +178,7 @@ const cardLibrary = [
         attackRange: 1,
         cost: 11,
         artwork: 'kai',
+        description: "一万暴击！每回合攻击两次，第二次是用来回血的飞镖，可弹射。双击使用大招，获得护甲，生命值，攻击力的加成。",
         critChance: 0.5,
         kaiAttacks: 0,
         kaiShurikenRange: 4,
@@ -189,6 +201,7 @@ const cardLibrary = [
         attackRange: 99,
         cost: 4,
         artwork: 'cattail',
+        description: "普通的猫，但是全屏攻击，真实伤害！",
         armorPen: 99
     },
     {
@@ -200,6 +213,7 @@ const cardLibrary = [
         attackRange: 99,
         cost: 12,
         artwork: 'electric-pea',
+        description: "至尊平a，闪电连锁！",
         lineAttack: true,
         chainRange: 5,
         chainDamage: 2,
@@ -214,6 +228,7 @@ const cardLibrary = [
         attackRange: 0,
         cost: 3,
         artwork: 'energy-collector',
+        description: "作用一目了然。",
         building: true,
         energyBoost: 1
     },
@@ -226,6 +241,7 @@ const cardLibrary = [
         attackRange: 1,
         cost: 3,
         artwork: 'miner',
+        description: "削弱矿工。",
         miner: true
     },
     {
@@ -238,6 +254,7 @@ const cardLibrary = [
         attackRange: 4,
         cost: 17,
         artwork: 'reynolds',
+        description: "登场让所有敌人都消失哦。",
         deployEffect: true,
         hero: true,
         heroDeployText: '你想跟我拼枪？那你可要小心了！',
@@ -253,6 +270,7 @@ const cardLibrary = [
         attackRange: 4,
         cost: 8,
         artwork: 'lightning-dragon',
+        description: "千万不要无脑一字划。",
         flying: true,
         chainAttack: true,
         chainMax: 5,
@@ -267,6 +285,7 @@ const cardLibrary = [
         attackRange: 0,
         cost: 10,
         artwork: 'pain',
+        description: "一回合大范围神罗天征，一回合万象天引超强吸力。",
         abilityPhase: 0,
         abilityTimer: 0,
         shinraRange: 4,
@@ -282,7 +301,8 @@ const cardLibrary = [
         moveRange: 2,
         attackRange: 2,
         cost: 7,
-        artwork: 'pekka'
+        artwork: 'pekka',
+        description: "白板但是力气大。"
     }
 ];
 
@@ -2443,6 +2463,15 @@ function showCardInfo(card) {
     }
     
     cardInfoPanel.classList.remove('hidden');
+    
+    // 卡牌介绍
+    const descEl = document.getElementById('cardDesc');
+    if (card.description && descEl) {
+        descEl.textContent = card.description;
+        descEl.style.display = '';
+    } else if (descEl) {
+        descEl.style.display = 'none';
+    }
 }
 
 // 显示单位信息（双击棋盘上的单位）
