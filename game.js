@@ -293,8 +293,10 @@ const cardLibrary = [
         abilityTimer: 0,
         shinraRange: 4,
         shinraDamage: 2,
-        banshoRange: 1,
-        banshoDamage: 1
+        banshoRange: 2,
+        banshoDamage: 1,
+        painEnergy: 0,
+        painMaxEnergy: 4
     },
     {
         id: 'big_pekka',
@@ -787,6 +789,8 @@ function deployUnit(row, col) {
         shinraDamage: card.shinraDamage || 0,
         banshoRange: card.banshoRange || 0,
         banshoDamage: card.banshoDamage || 0,
+        painEnergy: card.painEnergy || 0,
+        painMaxEnergy: card.painMaxEnergy || 0,
         aoeAttack: card.aoeAttack || false,
         madaraBurn: card.madaraBurn || 0,
         madaraEnergy: card.madaraEnergy || 0,
@@ -1390,8 +1394,8 @@ function renderUnit(unit) {
     
     cell.appendChild(unitElement);
     
-    // 马斑能量条（嵌在单位内部，跟随移动）
-    if (unit.madaraMaxEnergy) renderEnergyBar(unit, unitElement);
+    // 马斑/佩恩能量条（嵌在单位内部，跟随移动）
+    if (unit.madaraMaxEnergy || unit.painMaxEnergy) renderEnergyBar(unit, unitElement);
     
     // 铠大招紫色特效
     if (unit.kaiUltActive) unitElement.classList.add('kai-ult');
@@ -1486,25 +1490,37 @@ function updateBurnVisual(unit) {
 
 // Pain 技能激活
 function activatePainAbility(pain) {
-    if (gameState.attackedUnits.has(pain.id) || pain.abilityTimer > 0) return;
-    // 清除上一次的神罗天征特效
-    if (pain.shinraCovers) {
-        pain.shinraCovers.forEach(c => { if (c.parentNode) c.remove(); });
-        pain.shinraCovers = [];
+    // 4格能量释放地爆天星
+    if ((pain.painEnergy || 0) >= (pain.painMaxEnergy || 4) && !gameState.attackedUnits.has(pain.id)) {
+        chibakuTensei(pain);
+        gameState.attackedUnits.add(pain.id);
+        clearHighlights();
+        gameState.selectedUnit = null;
+        return;
     }
-    if (pain.abilityPhase === 0) {
-        // 神罗天征
-        shinraTensei(pain);
-    } else {
-        // 万象天引
+    if (gameState.attackedUnits.has(pain.id)) return;
+    
+    // 一回合两次技能：先万象天引，后神罗天征
+    if (!pain._banshoUsed) {
         banshoTenin(pain);
+        pain._banshoUsed = true;
+    } else if (!pain._shinraUsed && pain.abilityTimer <= 0) {
+        shinraTensei(pain);
+        pain._shinraUsed = true;
+        gameState.attackedUnits.add(pain.id);
+    } else {
+        return;
     }
-    gameState.attackedUnits.add(pain.id);
     clearHighlights();
     gameState.selectedUnit = null;
 }
 
 function shinraTensei(pain) {
+    // 清除旧特效
+    if (pain.shinraCovers) {
+        pain.shinraCovers.forEach(c => { if (c.parentNode) c.remove(); });
+        pain.shinraCovers = [];
+    }
     const radius = pain.shinraRange;
     pain.shinraCovers = [];
     // 范围特效（持续至技能结束）
@@ -1521,6 +1537,7 @@ function shinraTensei(pain) {
         }
     }
     // AoE 伤害
+    pain._shinraHits = 0;
     gameState.units.forEach(u => {
         if (u.team === pain.team) return;
         const dist = Math.max(Math.abs(u.row - pain.row), Math.abs(u.col - pain.col));
@@ -1529,6 +1546,7 @@ function shinraTensei(pain) {
             updateUnitHp(u);
             showCritText(u.row, u.col, '神罗');
             if (u.currentHp <= 0) removeUnit(u);
+            pain._shinraHits++;
         }
     });
     // 攻击大本营
@@ -1545,13 +1563,36 @@ function shinraTensei(pain) {
     }
     pain.abilityTimer = 2;
     pain.shinraSkipNext = true;
+    // 神罗天征文字特效
+    if (pain._shinraText) { pain._shinraText.remove(); }
+    if (pain._banshoText) { pain._banshoText.remove(); pain._banshoText = null; }
+    const shinraText = document.createElement('div');
+    shinraText.className = 'hero-deploy-text';
+    shinraText.textContent = '神罗天征';
+    shinraText.style.color = '#7ec8f8';
+    shinraText.style.animation = 'heroFloat 30s ease-out forwards';
+    gameState.board[pain.row][pain.col].appendChild(shinraText);
+    pain._shinraText = shinraText;
+    // 伤害时已计numShinraHits，这里结算能量
+    if (pain._shinraHits > 0) { pain.painEnergy = Math.min(pain.painMaxEnergy, (pain.painEnergy || 0) + 1); renderEnergyBar(pain, gameState.board[pain.row][pain.col].querySelector('.unit')); }
     checkGameOver();
 }
 
 function banshoTenin(pain) {
     const team = pain.team;
     const forward = team === 'red' ? -1 : 1;
-    // 拉扯前方 3×3
+    // 拉扯前方 5x5
+    pain._banshoHits = 0;
+    // 万象天引文字
+    if (pain._banshoText) pain._banshoText.remove();
+    const banshoText = document.createElement('div');
+    banshoText.className = 'hero-deploy-text';
+    banshoText.textContent = '万象天引';
+    banshoText.style.color = '#8b0000';
+    banshoText.style.animation = 'heroFloat 1.5s ease-out forwards';
+    gameState.board[pain.row][pain.col].appendChild(banshoText);
+    pain._banshoText = banshoText;
+    setTimeout(() => { if (pain._banshoText === banshoText) { banshoText.remove(); pain._banshoText = null; } }, 1500);
     for (let dr = 0; dr <= pain.banshoRange * 2; dr++) {
         for (let dc = -pain.banshoRange; dc <= pain.banshoRange; dc++) {
             const tr = pain.row + forward * (dr + 1);
@@ -1559,14 +1600,19 @@ function banshoTenin(pain) {
             if (!isValidPosition(tr, tc)) continue;
             const u = gameState.units.find(uu => uu.row === tr && uu.col === tc && uu.team !== team);
             if (!u) continue;
-            // 拉到最近空位
+            // 伤害+能量（无论拉没拉到）
+            u.currentHp -= pain.banshoDamage;
+            updateUnitHp(u);
+            showCritText(u.row, u.col, '万象');
+            if (u.currentHp <= 0) removeUnit(u);
+            pain._banshoHits++;
+            // 尝试拉到最近空位
             let placed = false;
             for (let pr = 1; pr <= dr + 1; pr++) {
                 const nr = pain.row + forward * pr;
                 if (!isValidPosition(nr, u.col)) break;
                 if (gameState.units.some(uu => uu.row === nr && uu.col === u.col)) continue;
                 if (isBlueBase(nr, u.col) || isRedBase(nr, u.col)) continue;
-                // 移动
                 const oldCell = gameState.board[u.row][u.col];
                 const newCell = gameState.board[nr][u.col];
                 const unitEl = oldCell.querySelector('.unit');
@@ -1575,15 +1621,11 @@ function banshoTenin(pain) {
                 placed = true;
                 break;
             }
-            if (placed) {
-                u.currentHp -= pain.banshoDamage;
-                updateUnitHp(u);
-                showCritText(u.row, u.col, '万象');
-                if (u.currentHp <= 0) removeUnit(u);
-            }
         }
     }
     pain.abilityPhase = 0;
+    if (pain._banshoHits > 0) { pain.painEnergy = Math.min(pain.painMaxEnergy, (pain.painEnergy || 0) + 1); renderEnergyBar(pain, gameState.board[pain.row][pain.col].querySelector(".unit")); }
+    pain._banshoHits = 0;
 }
 
 // 马斑天下无双
@@ -1850,6 +1892,110 @@ function showElectricBullet(unit, lineTargets, allChainTargets) {
     setTimeout(() => { bullet.remove(); }, 1000);
 }
 
+// 地爆天星
+function chibakuTensei(pain) {
+    pain.painEnergy = 0;
+    renderEnergyBar(pain, gameState.board[pain.row][pain.col].querySelector('.unit'));
+    const board = document.getElementById('gameBoard');
+    const ball = document.createElement('div');
+    ball.className = 'chibaku-ball';
+    ball.style.left = (pain.col * cellW) + 'px';
+    ball.style.top = (pain.row * cellH) + 'px';
+    board.appendChild(ball);
+    const bx = 11 * cellW, by = 13 * cellH;
+    setTimeout(() => { ball.style.left = bx + 'px'; ball.style.top = by + 'px'; }, 100);
+    
+    // 收集敌方，移入board层飞行
+    const enemies = gameState.units.filter(e => e.team !== pain.team);
+    if (enemies.length === 0) { setTimeout(() => ball.remove(), 4000); return; }
+    const enemyElements = [];
+    
+    enemies.forEach((e, i) => {
+        const oldCell = gameState.board[e.row][e.col];
+        const el = oldCell.querySelector('.unit');
+        if (!el) return;
+        enemyElements.push({ unit: e, el: el });
+        // 脱离cell，挂到board上
+        oldCell.removeChild(el);
+        el.style.position = 'absolute';
+        el.style.left = (e.col * cellW + cellW/2 - 10) + 'px';
+        el.style.top = (e.row * cellH + cellH/2 - 10) + 'px';
+        el.style.transition = 'all 3s ease-in';
+        el.style.zIndex = '30';
+        board.appendChild(el);
+        
+        // 环绕黑球分布（紧贴）
+        const angle = (i / enemies.length) * Math.PI * 2;
+        const rad = 0.7; // 紧贴球边
+        const tx = bx + Math.cos(angle) * rad * cellW;
+        const ty = by + Math.sin(angle) * rad * cellH;
+        const startDelay = 300 + i * 80;
+        setTimeout(() => {
+            el.style.left = tx + 'px';
+            el.style.top = ty + 'px';
+        }, startDelay);
+    });
+    
+    // 等所有敌人到位后再伤害+下落
+    const lastStart = 300 + (enemyElements.length - 1) * 80;
+    const flyTime = 3200; // 飞行时间
+    const landTime = lastStart + flyTime + 300;
+    
+    // 落地位置生成
+    function genLandingSpots(count) {
+        const spots = []; const taken = new Set();
+        taken.add(pain.row + ',' + pain.col);
+        for (let ring = 0; ring < 20 && spots.length < count; ring++) {
+            for (let dr = -ring; dr <= ring; dr++) {
+                for (let dc = -ring; dc <= ring; dc++) {
+                    if (spots.length >= count) break;
+                    if (Math.max(Math.abs(dr), Math.abs(dc)) !== ring) continue;
+                    const nr = 13 + dr, nc = 11 + dc;
+                    if (!isValidPosition(nr, nc)) continue;
+                    if (isBlueBase(nr, nc) || isRedBase(nr, nc)) continue;
+                    if (taken.has(nr + ',' + nc)) continue;
+                    taken.add(nr + ',' + nc);
+                    spots.push({ r: nr, c: nc });
+                }
+            }
+        }
+        return spots;
+    }
+    
+    // 统一伤害+落地（先伤害，再为幸存者分配落点）
+    setTimeout(() => {
+        // 先统一扣血
+        enemyElements.forEach(ee => {
+            ee.unit.currentHp -= 4; updateUnitHp(ee.unit);
+        });
+        // 筛选幸存者
+        const survivors = enemyElements.filter(ee => ee.unit.currentHp > 0);
+        // 为幸存者生成不重叠落点
+        const spots = genLandingSpots(survivors.length);
+        // 移除死亡单位
+        enemyElements.forEach(ee => {
+            if (ee.unit.currentHp <= 0) { removeUnit(ee.unit); ee.el.remove(); }
+        });
+        // 幸存者下落
+        survivors.forEach((ee, i) => {
+            const s = spots[i];
+            if (!s) return;
+            ee.unit.row = s.r; ee.unit.col = s.c;
+            const nc2 = gameState.board[s.r][s.c];
+            ee.el.style.cssText = '';
+            ee.el.parentNode?.removeChild(ee.el);
+            nc2.appendChild(ee.el);
+        });
+    }, landTime);
+    
+    const text = document.createElement('div');
+    text.className = 'hero-deploy-text';
+    text.textContent = '地爆天星';
+    text.style.color = '#1a1a2e';
+    gameState.board[pain.row][pain.col].appendChild(text);
+    setTimeout(() => { if (text.parentNode) text.remove(); }, landTime - 500);
+    setTimeout(() => ball.remove(), landTime + 200);
+}
 // 马斑攻击特效：红色＞箭头
 function showMadaraAttackFX(attacker, target) {
     const board = document.getElementById('gameBoard');
@@ -2146,7 +2292,7 @@ function clearExpiredSmoke() {
     updateSmokeVisibility();
 }
 
-// 马斑能量条
+// 马斑/佩恩能量条
 function renderEnergyBar(unit, container) {
     let bar = container.querySelector('.madara-energy-bar');
     if (!bar) {
@@ -2155,9 +2301,11 @@ function renderEnergyBar(unit, container) {
         container.appendChild(bar);
     }
     bar.innerHTML = '';
-    for (let i = 0; i < unit.madaraMaxEnergy; i++) {
+    const maxE = unit.madaraMaxEnergy || unit.painMaxEnergy || 0;
+    const curE = unit.madaraEnergy || unit.painEnergy || 0;
+    for (let i = 0; i < maxE; i++) {
         const dot = document.createElement('div');
-        dot.className = i < (unit.madaraEnergy || 0) ? 'energy-dot filled' : 'energy-dot';
+        dot.className = i < curE ? 'energy-dot filled' : 'energy-dot';
         bar.appendChild(dot);
     }
 }
@@ -2315,7 +2463,7 @@ function endTurn() {
         }
         return true;
     });
-    gameState.units.forEach(u => { u.kaiAttacks = 0; u.kaiShurikenDone = false; u.electricHit = []; });
+    gameState.units.forEach(u => { u.kaiAttacks = 0; u.kaiShurikenDone = false; u.electricHit = []; u._banshoUsed = false; u._shinraUsed = false; });
     
     // 铠大招冷却递减
     gameState.units.forEach(u => { if (u.kaiUltCooldown > 0) u.kaiUltCooldown--; });
@@ -2372,6 +2520,7 @@ function endTurn() {
                     u.shinraCovers.forEach(c => { if (c.parentNode) c.remove(); });
                     u.shinraCovers = [];
                 }
+                if (u._shinraText) { u._shinraText.remove(); u._shinraText = null; }
             }
         }
     });
