@@ -288,7 +288,11 @@ const cardLibrary = [
         attackRange: 0,
         cost: 10,
         artwork: 'pain',
-        description: "一回合大范围神罗天征，一回合万象天引超强吸力。",
+        description: "一回合内可同时释放万象天引和神罗天征 拿到四颗豆的时候双击释放地爆天星",
+        hero: true,
+        heroDeployText: '让世界感受痛苦！',
+        heroDeployColor: '#e74c3c',
+        heroDeployDuration: 2000,
         abilityPhase: 0,
         abilityTimer: 0,
         shinraRange: 4,
@@ -322,6 +326,18 @@ const cardLibrary = [
         description: '我要把你烧焦！',
         fireAttack: true,
         burnDamage: 2
+    },
+    {
+        id: 'snow_monster',
+        name: '大雪怪',
+        attack: 2,
+        hp: 8,
+        moveRange: 3,
+        attackRange: 2,
+        cost: 9,
+        artwork: 'snow-monster',
+        description: '每受1伤召唤1个冰雪精灵',
+        snowMonster: true
     },
     {
         id: 'factory_manager',
@@ -819,6 +835,7 @@ function deployUnit(row, col) {
         deployEffect: card.deployEffect || false,
         flying: card.flying || false,
         fireAttack: card.fireAttack || false,
+        snowMonster: card.snowMonster || false,
         burnDamage: card.burnDamage || 1,
         percentAttack: card.percentAttack || 0,
         charcoalCount: card.charcoalCount || 0,
@@ -939,6 +956,7 @@ function attackUnit(target) {
     if (!gameState.selectedUnit) return;
     
     const attacker = gameState.selectedUnit;
+    let lastDamage = 0;
     
     // === 处决：切比雪夫距离 ≤ executionRange 秒杀 ===
     if (attacker.executionRange) {
@@ -1034,6 +1052,7 @@ function attackUnit(target) {
     const effectiveArmor = Math.max(0, (target.armor || 0) - (attacker.armorPen || 0));
     const actualDamage = Math.max(0, damage - effectiveArmor);
     target.currentHp -= actualDamage;
+    lastDamage = actualDamage;
     
     // 赛伊德反击：首次受真实伤害触发，3×3燃烧
     if (target.counterAttack && !target.counterUsed && actualDamage > 0) {
@@ -1167,6 +1186,30 @@ function attackUnit(target) {
     // 检查目标是否死亡
     if (target.currentHp <= 0) {
         removeUnit(target);
+    }
+    
+    // 大雪怪：每受1伤召唤冰雪精灵
+    if (target.snowMonster && lastDamage > 0) {
+        for (let dmg = 0; dmg < lastDamage; dmg++) {
+                const dirs = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
+                const shuffled = dirs.sort(() => Math.random() - 0.5);
+                for (const [dr, dc] of shuffled) {
+                    const nr = target.row + dr, nc = target.col + dc;
+                    if (!isValidPosition(nr, nc)) continue;
+                    if (gameState.units.some(u => u.row === nr && u.col === nc)) continue;
+                    if (isBlueBase(nr, nc) || isRedBase(nr, nc)) continue;
+                    const sprite = {
+                        id: 'sprite_' + Date.now() + '_' + Math.random(),
+                        name: '冰雪精灵', attack: 1, maxHp: 1, currentHp: 1,
+                        moveRange: 11, attackRange: 2, team: target.team,
+                        row: nr, col: nc, artwork: 'ice-sprite', freeze: true, oneShot: true,
+                        armor: 0
+                    };
+                    gameState.units.push(sprite);
+                    renderUnit(sprite);
+                    break;
+                }
+            }
     }
     
     // 冰冻效果
@@ -1924,11 +1967,12 @@ function chibakuTensei(pain) {
         el.style.zIndex = '30';
         board.appendChild(el);
         
-        // 环绕黑球分布（紧贴）
+        // 环绕黑球分布（以球中心为圆心）
         const angle = (i / enemies.length) * Math.PI * 2;
-        const rad = 0.7; // 紧贴球边
-        const tx = bx + Math.cos(angle) * rad * cellW;
-        const ty = by + Math.sin(angle) * rad * cellH;
+        const rad = 0.9;
+        const bcx = bx + 25, bcy = by + 25;
+        const tx = bcx + Math.cos(angle) * rad * cellW - 10;
+        const ty = bcy + Math.sin(angle) * rad * cellH - 10;
         const startDelay = 300 + i * 80;
         setTimeout(() => {
             el.style.left = tx + 'px';
@@ -2420,14 +2464,14 @@ function endTurn() {
     // 切换回合
     if (gameState.currentTurn === 'red') {
         gameState.currentTurn = 'blue';
-        gameState.blueEnergy = Math.min(gameState.turnNumber + 1, gameState.maxEnergy);
+        gameState.blueEnergy = Math.min(gameState.maxEnergy >= 500 ? gameState.maxEnergy : gameState.turnNumber + 1, gameState.maxEnergy);
         // 能量收集器加成
         const blueBoost = gameState.units.filter(u => u.team === 'blue' && u.building).length;
         gameState.blueEnergy = Math.min(gameState.blueEnergy + blueBoost, gameState.maxEnergy);
     } else {
         gameState.currentTurn = 'red';
         gameState.turnNumber++;
-        gameState.redEnergy = Math.min(gameState.turnNumber, gameState.maxEnergy);
+        gameState.redEnergy = Math.min(gameState.maxEnergy >= 500 ? gameState.maxEnergy : gameState.turnNumber, gameState.maxEnergy);
         const redBoost = gameState.units.filter(u => u.team === 'red' && u.building).length;
         gameState.redEnergy = Math.min(gameState.redEnergy + redBoost, gameState.maxEnergy);
     }
@@ -2861,8 +2905,8 @@ function startGame() {
     gameState.units = [];
     gameState.currentTurn = 'red';
     gameState.turnNumber = 1;
-    gameState.redEnergy = 1;
-    gameState.blueEnergy = 1;
+    gameState.redEnergy = gameState.redEnergy || 1;
+    gameState.blueEnergy = gameState.blueEnergy || 1;
     gameState.redBaseHp = 50;
     gameState.blueBaseHp = 50;
     gameState.timer = 45;
@@ -2937,11 +2981,15 @@ closeDeployModal.addEventListener('click', closeDeployModalFunc);
 const modeSelectScreen = document.getElementById('modeSelectScreen');
 document.getElementById('trainingBtn').addEventListener('click', () => {
     gameState.aiMode = false;
+    gameState.maxEnergy = 500;
+    gameState.redEnergy = 500;
+    gameState.blueEnergy = 500;
     modeSelectScreen.classList.add('hidden');
     startGame();
 });
 document.getElementById('aiBattleBtn').addEventListener('click', () => {
     gameState.aiMode = true;
+    gameState.maxEnergy = 20;
     modeSelectScreen.classList.add('hidden');
     gameState.aiDeck = pickAIDeck();
     startGame();
