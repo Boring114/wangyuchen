@@ -508,6 +508,21 @@ const cardLibrary = [
         artwork: 'skull-army',
         description: '15个骷髅的军团！大哥护盾挡一次攻击，骷髅死亡变阴兵，大哥亡则阴兵尽灭。',
         skullArmy: true
+    },
+    {
+        id: 'wither',
+        name: '凋零',
+        attack: 3,
+        hp: 8,
+        armor: 0,
+        moveRange: 5,
+        attackRange: 4,
+        cost: 14,
+        artwork: 'wither',
+        flying: true,
+        splashRadius: 1,
+        wither: true,
+        description: '空中单位，攻击溅射3×3。命中附加凋零毒（黑色，每回合1伤，不可叠加）。半血后双击进入冲撞模式：12格内选中敌人冲撞造成6伤（冲撞后仍可普攻）。'
     }
 ];
 
@@ -681,6 +696,21 @@ function handleCellClick(e) {
     const row = parseInt(cell.dataset.row);
     const col = parseInt(cell.dataset.col);
     
+    // 凋零冲撞模式：选择12格内敌人，点其他处取消
+    if (gameState.selectedUnit && gameState.selectedUnit.wither && gameState.selectedUnit._witherTargeting) {
+        const tCellUnit = gameState.units.find(u => u.row === row && u.col === col);
+        if (tCellUnit && tCellUnit.team !== gameState.selectedUnit.team && !tCellUnit.ghost) {
+            const dist = Math.max(Math.abs(tCellUnit.row - gameState.selectedUnit.row), Math.abs(tCellUnit.col - gameState.selectedUnit.col));
+            if (dist <= 12) {
+                witherCharge(gameState.selectedUnit, tCellUnit);
+                return;
+            }
+        }
+        gameState.selectedUnit._witherTargeting = false;
+        clearHighlights();
+        gameState.selectedUnit = null;
+        return;
+    }
     // 战车攻击模式：选择导弹目标（标红敌人），点其他处取消
     if (gameState.selectedUnit && gameState.selectedUnit.tank && gameState.selectedUnit._targeting) {
         const tCellUnit = gameState.units.find(u => u.row === row && u.col === col);
@@ -807,6 +837,12 @@ function handleCellClick(e) {
         // 查克拉：马斑/植物人能量<4时双击获得2格能量（佩恩在activatePainAbility内处理）
         if ((clickedUnit.madaraMaxEnergy || clickedUnit.hashiMaxEnergy) && clickedUnit === gameState.selectedUnit && ((clickedUnit.madaraEnergy || clickedUnit.hashiEnergy || 0)) < 4 && !clickedUnit.chakraCd) {
             activateChakra(clickedUnit);
+            return;
+        }
+        // 凋零：半血以下双击进入冲撞模式（12格）
+        if (clickedUnit.wither && clickedUnit === gameState.selectedUnit && (clickedUnit.currentHp || 0) <= (clickedUnit.maxHp || 8) / 2 && !clickedUnit._witherCharged && !clickedUnit._witherTargeting) {
+            clickedUnit._witherTargeting = true;
+            enterWitherChargeMode(clickedUnit);
             return;
         }
         // 战车双击：进入攻击模式（全图标红选导弹目标，不显示字）
@@ -1322,6 +1358,8 @@ function spawnSkullArmy(boss) {
             if (dr === 0 && dc === 0) continue;
             const nr = boss.row + dr, nc = boss.col + dc;
             if (!isValidPosition(nr, nc)) continue;
+            // 不能溢出到对方半场（红方行≥14，蓝方行≤13），多余的直接消失
+            if ((boss.row >= 14) ? nr < 14 : nr >= 14) continue;
             if (gameState.units.some(u => u.row === nr && u.col === nc)) continue;
             const sk = {id:'sk_'+Date.now()+'_'+Math.random(),cardId:'skull_army',name:'骷髅',attack:1,maxHp:1,currentHp:1,moveRange:9,attackRange:1,armor:0,armorPen:0,team:boss.team,row:nr,col:nc,artwork:'skull-soldier',skullSoldier:true,skullBossId:boss.id,ghost:false};
             gameState.units.push(sk);renderUnit(sk);
@@ -1354,6 +1392,85 @@ function enterTankTargetMode(tank) {
         if (u.team === tank.team || u.ghost) return;
         gameState.board[u.row][u.col].classList.add('tank-target');
     });
+}
+
+// 凋零冲撞模式：12格内敌人标红
+function enterWitherChargeMode(unit) {
+    clearHighlights();
+    gameState.units.forEach(u => {
+        if (u.team === unit.team || u.ghost) return;
+        const d = Math.max(Math.abs(u.row - unit.row), Math.abs(u.col - unit.col));
+        if (d <= 12) gameState.board[u.row][u.col].classList.add('tank-target');
+    });
+}
+
+// 凋零冲撞：图标飞过去（动画非瞬移），造成6伤+凋零，保留普攻
+function witherCharge(unit, target) {
+    unit._witherTargeting = false;
+    unit._witherCharged = true;
+    clearHighlights();
+    gameState.selectedUnit = null;
+    const board = document.getElementById('gameBoard');
+    const cell = gameState.board[unit.row][unit.col];
+    const el = cell.querySelector('.unit');
+    const fromR = unit.row, fromC = unit.col;
+    if (!el) {
+        unit.row = target.row; unit.col = target.col;
+        renderUnit(unit);
+        dealWitherChargeDamage(unit, target);
+        return;
+    }
+    cell.removeChild(el);
+    el.style.position = 'absolute';
+    el.style.left = (fromC * cellW) + 'px';
+    el.style.top = (fromR * cellH) + 'px';
+    el.style.transition = 'left 0.45s ease-in, top 0.45s ease-in';
+    el.style.zIndex = '40';
+    el.style.pointerEvents = 'none';
+    board.appendChild(el);
+    const tx = (target.col * cellW) + 'px';
+    const ty = (target.row * cellH) + 'px';
+    requestAnimationFrame(() => {
+        el.style.left = tx;
+        el.style.top = ty;
+    });
+    setTimeout(() => {
+        dealWitherChargeDamage(unit, target);
+        // 落点：目标死亡则占目标格，否则找目标旁最近空位（防重叠）
+        let landR = target.row, landC = target.col;
+        if (target.currentHp > 0) {
+            let found = false;
+            for (let rr = 1; rr <= 3 && !found; rr++) {
+                for (let dr2 = -rr; dr2 <= rr && !found; dr2++) {
+                    for (let dc2 = -rr; dc2 <= rr && !found; dc2++) {
+                        if (Math.max(Math.abs(dr2), Math.abs(dc2)) !== rr) continue;
+                        const lr = target.row + dr2, lc = target.col + dc2;
+                        if (!isValidPosition(lr, lc)) continue;
+                        if (gameState.units.some(u => u.id !== unit.id && u.row === lr && u.col === lc)) continue;
+                        if (isBlueBase(lr, lc) || isRedBase(lr, lc)) continue;
+                        landR = lr; landC = lc; found = true;
+                    }
+                }
+            }
+        }
+        unit.row = landR;
+        unit.col = landC;
+        el.style.cssText = '';
+        if (el.parentNode) el.parentNode.removeChild(el);
+        const ncell = gameState.board[unit.row][unit.col];
+        ncell.appendChild(el);
+        renderUnit(unit);
+    }, 470);
+}
+
+// 冲撞结算：6伤+凋零
+function dealWitherChargeDamage(unit, target) {
+    if (!target || target._removing || target.ghost) return;
+    target.currentHp -= 6;
+    updateUnitHp(target);
+    showCritText(target.row, target.col, '冲撞');
+    applyWitherEffect(target, unit);
+    if (target.currentHp <= 0) removeUnit(target);
 }
 
 // 标记导弹目标（标记格子，非敌人）
@@ -1524,6 +1641,7 @@ function deployUnit(row, col) {
         hashirama: card.hashirama || false,
         hashiMaxEnergy: card.hashiMaxEnergy || 0,
         skullArmy: card.skullArmy || false,
+        wither: card.wither || false,
         firstStrike: card.firstStrike || false,
         tankSpawn: card.tankSpawn || false,
         splashRadius: card.splashRadius || 0,
@@ -2218,19 +2336,19 @@ function attackUnit(target) {
         const chainR = attacker.chainRange || 4;
         const lockCount = {};
         const queue = [];
-        lineTargets.forEach(lt => { lockCount[lt.id] = 2; queue.push(lt); });
+        lineTargets.forEach(lt => { lockCount[lt.id] = 2; queue.push({ u: lt, d: 0 }); });
         while (queue.length > 0) {
             const src = queue.shift();
             gameState.units.forEach(e => {
                 if (e.team === attacker.team || e.ghost) return;
-                const d = Math.max(Math.abs(e.row - src.row), Math.abs(e.col - src.col));
+                const d = Math.max(Math.abs(e.row - src.u.row), Math.abs(e.col - src.u.col));
                 if (d <= chainR && d > 0) {
                     const locked = lockCount[e.id] || 0;
                     if (locked >= 2) return;
                     lockCount[e.id] = locked + 1;
                     attacker.electricHit.push(e.id);
-                    allChainTargets.push({ from: src, to: e });
-                    queue.push(e);
+                    allChainTargets.push({ from: src.u, to: e, depth: src.d + 1 });
+                    queue.push({ u: e, d: src.d + 1 });
                 }
             });
         }
@@ -2271,6 +2389,11 @@ function attackUnit(target) {
     // 溅射伤害
     if (attacker.splashRadius) {
         applySplashDamage(target, attacker);
+    }
+    
+    // 凋零：命中附加黑色毒（每回合1伤，不可叠加）
+    if (attacker.wither) {
+        applyWitherEffect(target, attacker);
     }
     
     // 雷电飞龙连锁攻击
@@ -2408,10 +2531,16 @@ function removeUnit(unit) {
     }
     // 骷髅士兵（非大哥）死亡→阴兵状态（数值不变、无敌、不消失）——任何死亡途径统一处理
     if (unit.skullSoldier && !unit.ghost && !unit.skullBoss) {
-        unit.ghost = true;
-        unit.currentHp = unit.maxHp;
-        makeGhostVisual(unit);
-        return;
+        // 大哥已死：骷髅直接死亡（不再变阴兵，防止延迟伤害中大哥先死后续骷髅逃过级联）
+        const bossAlive = gameState.units.some(u => u.id === unit.skullBossId);
+        if (!bossAlive) {
+            // 走正常移除流程
+        } else {
+            unit.ghost = true;
+            unit.currentHp = unit.maxHp;
+            makeGhostVisual(unit);
+            return;
+        }
     }
     // 骷髅大哥死亡：所有阴兵状态的骷髅也死亡（活着的保留）
     if (unit.skullBoss) {
@@ -2455,6 +2584,10 @@ function updateUnitHp(unit) {
     if (hpFill) {
         const percentage = Math.max(0, (unit.currentHp / unit.maxHp) * 100);
         hpFill.style.width = `${percentage}%`;
+    }
+    // 凋零半血变身：降为正常单位（不再是飞行单位）
+    if (unit.wither && unit.currentHp <= (unit.maxHp || 8) / 2 && unit.flying) {
+        unit.flying = false;
     }
 }
 
@@ -2517,6 +2650,7 @@ function renderUnit(unit) {
     // 冰冻/烟雾可见性
     if (unit.frozen) updateFrozenVisual(unit);
     if (unit.burnTurns > 0) updateBurnVisual(unit);
+    if (unit.witherTurns > 0) updateWitherVisual(unit);
     updateSmokeVisibility();
 }
 
@@ -2651,6 +2785,35 @@ function updateBurnVisual(unit) {
         unitEl.classList.add('burning');
     } else {
         unitEl.classList.remove('burning');
+    }
+}
+
+// 凋零毒：黑色毒雾（每回合1伤，不可叠加）
+function applyWitherEffect(unit, attacker) {
+    if (unit.ghost) return;
+    if (!unit.witherTurns) {
+        unit.witherTurns = 3;
+        updateWitherVisual(unit);
+    }
+}
+function updateWitherVisual(unit) {
+    const cell = gameState.board[unit.row] ? gameState.board[unit.row][unit.col] : null;
+    if (!cell) return;
+    // 黑色毒雾覆盖层（明显特效）
+    let fx = cell.querySelector('.wither-fx');
+    if (unit.witherTurns > 0) {
+        if (!fx) {
+            fx = document.createElement('div');
+            fx.className = 'wither-fx';
+            cell.appendChild(fx);
+        }
+    } else if (fx) {
+        fx.remove();
+    }
+    const unitEl = cell.querySelector('.unit');
+    if (unitEl) {
+        if (unit.witherTurns > 0) unitEl.classList.add('withering');
+        else unitEl.classList.remove('withering');
     }
 }
 
@@ -3064,10 +3227,10 @@ function showElectricBullet(unit, lineTargets, allChainTargets) {
         }, delay);
     });
     
-    // 闪电链特效：from→to 画线 + 延迟伤害
+    // 闪电链特效：按传播深度分层并行播放（同层同时、层间120ms，敌人多也快速完成）
     allChainTargets.forEach((ct, i) => {
         const pFrom = ct.from, pTo = ct.to;
-        const delay = 1000 + i * 250;
+        const delay = 1000 + (ct.depth || 0) * 120;
         setTimeout(() => {
             const x1 = pFrom.col * cs + cs / 2, y1 = pFrom.row * cs + cs / 2;
             const x2 = pTo.col * cs + cs / 2, y2 = pTo.row * cs + cs / 2;
@@ -3346,6 +3509,7 @@ function applySplashDamage(target, attacker) {
         if (u.team === attacker.team || u.ghost) return;
         const dist = Math.max(Math.abs(u.row - target.row), Math.abs(u.col - target.col));
         if (dist <= radius) {
+            if (attacker.wither) applyWitherEffect(u, attacker);
             const penArmor = Math.max(0, (u.armor || 0) - (attacker.armorPen || 0));
             u.currentHp -= Math.max(0, attacker.attack - penArmor);
             updateUnitHp(u);
@@ -3678,7 +3842,7 @@ function endTurn() {
     gameState.selectedUnit = null;
     gameState.deployMode = false;
     // 战车：结束回合重置锁定模式
-    gameState.units.forEach(u => { u._targeting = false; });
+    gameState.units.forEach(u => { u._targeting = false; u._witherTargeting = false; u._witherCharged = false; });
     
     const prevTurn = gameState.currentTurn;
     
@@ -3696,6 +3860,15 @@ function endTurn() {
         const redBoost = gameState.units.filter(u => u.team === 'red' && u.building).length;
         gameState.redEnergy = Math.min(gameState.redEnergy + redBoost, gameState.maxEnergy);
     }
+    
+    // 凋零：己方回合开始回1血（敌方回合不回）
+    gameState.units.forEach(u => {
+        if (u.wither && u.team === gameState.currentTurn && u.currentHp < (u.maxHp || 8)) {
+            u.currentHp = Math.min(u.maxHp || 8, u.currentHp + 1);
+            updateUnitHp(u);
+            showCritText(u.row, u.col, '回血');
+        }
+    });
     
     // 重置移动和攻击状态
     gameState.moveUsed = {};
@@ -3768,6 +3941,17 @@ function endTurn() {
     
     gameState.units.forEach(u => { u.rangedCritUsed = false; u.dodgeUsed = false; });
     gameState.units.forEach(u => { if (u.team === prevTurn) { u.frozen = false; updateFrozenVisual(u); } });
+    
+    // 凋零毒：每回合1点伤害（不可叠加）
+    gameState.units.forEach(u => {
+        if (u.witherTurns > 0 && !u.ghost) {
+            u.currentHp -= 1;
+            updateUnitHp(u);
+            u.witherTurns--;
+            if (u.witherTurns <= 0) updateWitherVisual(u);
+            if (u.currentHp <= 0) removeUnit(u);
+        }
+    });
     
     // 燃烧伤害：每回合灼烧1点
     gameState.units.forEach(u => {
@@ -4359,7 +4543,7 @@ function aiTurn() {
             for (let col = 10; col <= 19; col++) {
                 if (gameState.units.some(u => u.row === row && u.col === col)) continue;
                 if (isBlueBase(row, col) || isRedBase(row, col)) continue;
-                const unit = { id: card.id+'_'+Date.now(), cardId: card.id, name: card.name, attack: card.attack, maxHp: card.hp, currentHp: card.hp, moveRange: card.moveRange, attackRange: card.attackRange, artwork: card.artwork, armor: card.armor||0, team: 'blue', row, col, flying: card.flying||false, meleeAttack: card.meleeAttack||0, meleeRange: card.meleeRange||0, armorPen: card.armorPen||0, critChance: card.critChance||0, dodge: card.dodge||false, counterAttack: card.counterAttack||0, summon: card.summon||false, summonGuardType: card.summonGuardType||'', tankSpawn: card.tankSpawn||false, leisiSpawn: card.leisiSpawn||false, copSpawn: card.copSpawn||false, windForm: card.windForm||false, splashRadius: card.splashRadius||0, deployEffect: card.deployEffect||false, hero: card.hero||false, heroDeployText: card.heroDeployText||'', heroDeployColor: card.heroDeployColor||'', heroDeployDuration: card.heroDeployDuration||3500, chargeMove: card.chargeMove||0, chargeDamage: card.chargeDamage||0, erin: card.erin||false, pekkaHeal: card.pekkaHeal||false, blowdart: card.blowdart||false, hashirama: card.hashirama||false, hashiMaxEnergy: card.hashiMaxEnergy||0, skullArmy: card.skullArmy||false };
+                const unit = { id: card.id+'_'+Date.now(), cardId: card.id, name: card.name, attack: card.attack, maxHp: card.hp, currentHp: card.hp, moveRange: card.moveRange, attackRange: card.attackRange, artwork: card.artwork, armor: card.armor||0, team: 'blue', row, col, flying: card.flying||false, meleeAttack: card.meleeAttack||0, meleeRange: card.meleeRange||0, armorPen: card.armorPen||0, critChance: card.critChance||0, dodge: card.dodge||false, counterAttack: card.counterAttack||0, summon: card.summon||false, summonGuardType: card.summonGuardType||'', tankSpawn: card.tankSpawn||false, leisiSpawn: card.leisiSpawn||false, copSpawn: card.copSpawn||false, windForm: card.windForm||false, splashRadius: card.splashRadius||0, deployEffect: card.deployEffect||false, hero: card.hero||false, heroDeployText: card.heroDeployText||'', heroDeployColor: card.heroDeployColor||'', heroDeployDuration: card.heroDeployDuration||3500, chargeMove: card.chargeMove||0, chargeDamage: card.chargeDamage||0, erin: card.erin||false, pekkaHeal: card.pekkaHeal||false, blowdart: card.blowdart||false, hashirama: card.hashirama||false, hashiMaxEnergy: card.hashiMaxEnergy||0, skullArmy: card.skullArmy||false,wither: card.wither||false };
                 gameState.units.push(unit); renderUnit(unit);
                 runDeployEffects(unit);
                 gameState.blueEnergy -= card.cost; updateEnergyDisplay();
