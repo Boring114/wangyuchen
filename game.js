@@ -288,7 +288,8 @@ const cardLibrary = [
         moveRange: 5,
         attackRange: 0,
         cost: 10,
-        artwork: 'pain',
+        critChance: 0.3,
+    artwork: 'pain',
         description: "一回合内可同时释放万象天引和神罗天征 拿到四颗豆的时候双击释放地爆天星",
         hero: true,
         heroDeployText: '让世界感受痛苦！',
@@ -555,6 +556,50 @@ const cardLibrary = [
         heroDeployDuration: 2000,
         blackZetsu: true,
         description: '可附身队友（点击友方单位部署附身）：队友获得暴击+20%、攻击+1（每段伤害+1）、生命+2、移动+3。队友一回合移动超5格黑绝显现并承受伤害；队友死亡黑绝回归本体。双击本体：跳向6格内敌人爆炸3伤（无溅射），爆炸后留在敌人旁边。'
+    },
+    {
+        id: 'golem',
+        name: '戈仑石人',
+        attack: 2,
+        hp: 12,
+        armor: 0,
+        moveRange: 3,
+        attackRange: 2,
+        cost: 7,
+        artwork: 'golem',
+        golem: true,
+        description: '死亡后分裂成两个小石头人（一左一右）。'
+    },
+    {
+        id: 'elite_ice',
+        name: '精英冰人',
+        attack: 1,
+        hp: 6,
+        armor: 0,
+        moveRange: 3,
+        attackRange: 2,
+        cost: 4,
+        artwork: 'elite_ice',
+        hero: true,
+        heroDeployText: '',
+        heroDeployColor: '#000000',
+        heroDeployDuration: 1500,
+        eliteIce: true,
+        description: '金卡。双击制造5×5冰场（随自身移动，持续到敌方回合结束）：接触冰场的敌人被冰冻，下一个敌方回合不能行动。被施加灼烧立即解冻。'
+    },
+    {
+        id: 'mirror',
+        name: '镜',
+        attack: 3,
+        hp: 4,
+        armor: 1,
+        moveRange: 7,
+        attackRange: 2,
+        cost: 12,
+        artwork: 'mirror',
+        critChance: 0.6,
+        mirror: true,
+        description: '60%暴击。攻击后以敌人为对称点召唤半透明分身（本体与分身可再同时攻击一次）。双击分身互换位置。双击本体选中4格内敌人开启镜面法阵：冲撞2伤+定身，创造圆形法阵（菱形镜片），点击敌人换位（经过敌人2伤穿甲1+镜片1真伤），每次换位回1血（上限+1）。冷却2回合。'
     }
 ];
 
@@ -589,6 +634,7 @@ const gameState = {
     fireZones: [],
     smokeZones: [],
     windZones: [],
+    iceFields: [],
     erinRings: [],
     missileMarks: [],
     winner: null
@@ -721,6 +767,11 @@ function initBoard() {
 function handleCellClick(e) {
     if (gameState.gameOver) return;
     
+    // 部署弹框开着时点击棋盘：先关闭（不清选中，让本次点击继续处理——双击可正常触发技能）
+    if (!deployModal.classList.contains('hidden')) {
+        closeDeployModalFunc();
+    }
+    
     // 点击可能落在 .unit 等子元素上，用 closest 向上找到 .cell
     const cell = e.target.closest('.cell');
     if (!cell) return;
@@ -754,6 +805,36 @@ function handleCellClick(e) {
             }
         }
         gameState.selectedUnit._witherTargeting = false;
+        clearHighlights();
+        gameState.selectedUnit = null;
+        return;
+    }
+    // 点击镜的分身：互换位置
+    const cloneOwner = gameState.units.find(u => u.mirror && u._mirrorClone && u._mirrorClone.row === row && u._mirrorClone.col === col);
+    if (cloneOwner) {
+        mirrorSwapWithClone(cloneOwner);
+        return;
+    }
+    // 镜技能：换位阶段——直接点击定身敌人即可换位（无需先选中镜本体）
+    const activeMirror = gameState.units.find(u => u.mirror && u._mirrorSkillTargetId);
+    if (activeMirror) {
+        const tgt = gameState.units.find(u => u.id === activeMirror._mirrorSkillTargetId);
+        if (tgt && tgt.row === row && tgt.col === col && !tgt._removing && !tgt.ghost) {
+            mirrorSwapOnce(activeMirror);
+            return;
+        }
+    }
+    // 镜技能：选敌阶段点击敌人（4格内）
+    if (gameState.selectedUnit && gameState.selectedUnit.mirror && gameState.selectedUnit._mirrorSkillMode) {
+        const tCellUnit2 = gameState.units.find(u => u.row === row && u.col === col);
+        if (tCellUnit2 && tCellUnit2.team !== gameState.selectedUnit.team && !tCellUnit2.ghost) {
+            const dd = Math.max(Math.abs(tCellUnit2.row - gameState.selectedUnit.row), Math.abs(tCellUnit2.col - gameState.selectedUnit.col));
+            if (dd <= 4) {
+                mirrorSkillStart(gameState.selectedUnit, tCellUnit2);
+                return;
+            }
+        }
+        gameState.selectedUnit._mirrorSkillMode = false;
         clearHighlights();
         gameState.selectedUnit = null;
         return;
@@ -838,6 +919,8 @@ function handleCellClick(e) {
         if ((gameState.currentTurn === 'red' || gameState.maxEnergy >= 500) && gameState.battleDeck.some(c => c.blackZetsu) && !clickedUnit._possessed && clickedUnit !== gameState.selectedUnit && (gameState.currentTurn === 'red' ? gameState.redEnergy : gameState.blueEnergy) >= 14) {
             openDeployModal(row, col);
             gameState.selectedUnit = clickedUnit;
+            // 同时显示移动/攻击范围（弹框关闭后即可正常行动）
+            showActionMode(clickedUnit);
             return;
         }
         // 冰冻/定身单位双击不能使用技能和查克拉
@@ -890,6 +973,22 @@ function handleCellClick(e) {
         // 查克拉：马斑/植物人能量<4时双击获得2格能量（佩恩在activatePainAbility内处理）
         if ((clickedUnit.madaraMaxEnergy || clickedUnit.hashiMaxEnergy) && clickedUnit === gameState.selectedUnit && ((clickedUnit.madaraEnergy || clickedUnit.hashiEnergy || 0)) < 4 && !clickedUnit.chakraCd) {
             activateChakra(clickedUnit);
+            return;
+        }
+        // 镜：双击开启镜像法阵（4格内有敌人）
+        if (clickedUnit.mirror && clickedUnit === gameState.selectedUnit && !clickedUnit._mirrorSkillCd && !clickedUnit._mirrorSkillMode && !clickedUnit._mirrorSkillTargetId) {
+            const hasEnemy4 = gameState.units.some(e => e.team !== clickedUnit.team && !e.ghost && Math.max(Math.abs(e.row - clickedUnit.row), Math.abs(e.col - clickedUnit.col)) <= 4);
+            if (hasEnemy4) {
+                clickedUnit._mirrorSkillMode = true;
+                enterMirrorSkillMode(clickedUnit);
+                return;
+            } else if (!clickedUnit._mirrorSkillCd) {
+                showHeroDeployText(clickedUnit, '4格内无敌人', '#888888', 1000);
+            }
+        }
+        // 精英冰人：双击制造冰场（5×5，随自身移动）
+        if (clickedUnit.eliteIce && clickedUnit === gameState.selectedUnit && !clickedUnit._iceSkillActive) {
+            activateEliteIceSkill(clickedUnit);
             return;
         }
         // 黑绝技能：双击进入跳跃爆炸模式（6格，一回合一次）
@@ -1481,14 +1580,15 @@ function witherCharge(unit, target) {
     }
     cell.removeChild(el);
     el.style.position = 'absolute';
-    el.style.left = (fromC * cellW) + 'px';
-    el.style.top = (fromR * cellH) + 'px';
+    el.style.transform = 'none';
+    el.style.left = (fromC * cellW + cellW / 2 - 10) + 'px';
+    el.style.top = (fromR * cellH + cellH / 2 - 10) + 'px';
     el.style.transition = 'left 0.45s ease-in, top 0.45s ease-in';
     el.style.zIndex = '40';
     el.style.pointerEvents = 'none';
     board.appendChild(el);
-    const tx = (target.col * cellW) + 'px';
-    const ty = (target.row * cellH) + 'px';
+    const tx = (target.col * cellW + cellW / 2 - 10) + 'px';
+    const ty = (target.row * cellH + cellH / 2 - 10) + 'px';
     requestAnimationFrame(() => {
         el.style.left = tx;
         el.style.top = ty;
@@ -1752,6 +1852,9 @@ function deployUnit(row, col) {
         building: card.building || false,
         tesla: card.tesla || false,
         blackZetsu: card.blackZetsu || false,
+        golem: card.golem || false,
+        eliteIce: card.eliteIce || false,
+        mirror: card.mirror || false,
         miner: card.miner || false,
         deployEffect: card.deployEffect || false,
         flying: card.flying || false,
@@ -1857,6 +1960,25 @@ function moveUnit(row, col) {
         newCell.appendChild(unitElement);
     }
     
+    // 镜分身镜像跟随：镜移动 d，分身反向移动 d（保持关于对称中心镜像）
+    if (unit.mirror && unit._mirrorClone && unit._mirrorCenter) {
+        const c = unit._mirrorCenter;
+        const nr = 2 * c.row - unit.row;
+        const nc = 2 * c.col - unit.col;
+        if (isValidPosition(nr, nc)) {
+            unit._mirrorClone.row = nr;
+            unit._mirrorClone.col = nc;
+            renderMirrorClone(unit);
+        }
+    }
+    // 精英冰人冰场随自己移动
+    if (unit.eliteIce && unit._iceSkillActive) {
+        gameState.iceFields.forEach(f => {
+            if (f.owner === unit.id) { f.row = unit.row; f.col = unit.col; }
+        });
+        renderIceFields();
+        freezeEnemiesInIce(gameState.iceFields.find(f => f.owner === unit.id));
+    }
     // 黑绝显现：附身队友一回合移动超5格（光晕加重，承受伤害）
     if (unit._possessed && unit.zetsu && !unit.zetsu.revealed && (gameState.moveUsed[unit.id] || 0) > 5) {
         unit.zetsu.revealed = true;
@@ -2024,6 +2146,8 @@ function attackUnit(target) {
     } else {
         // 远程攻击
         damage = attacker.attack;
+        // 镜：第二次攻击本体+分身同时攻击（伤害翻倍）
+        if (attacker.mirror && attacker._mirrorSecond) damage *= 2;
         // 首次远程暴击
         if (attacker.rangedCrit && !attacker.rangedCritUsed) {
             damage *= 2;
@@ -2239,6 +2363,15 @@ function attackUnit(target) {
             renderEnergyBar(attacker, gameState.board[attacker.row][attacker.col].querySelector('.unit'));
             gameState.attackedUnits.add(attacker.id);
         }
+    } else if (attacker.mirror && !attacker._mirrorSecond) {
+        // 镜：第一次攻击召唤分身，允许第二次（不标记）
+        attacker._mirrorSecond = true;
+        attacker._mirrorAttacked = true;
+        mirrorSummonClone(attacker, target);
+    } else if (attacker.mirror) {
+        // 镜：第二次攻击后标记
+        gameState.attackedUnits.add(attacker.id);
+        attacker._mirrorSecond = false;
     } else if (attacker.kaiShurikenRange && attacker.kaiAttacks < 2) {
         // 铠第一击后不标记，允许第二击
     } else if (attacker.tankSpawn) {
@@ -2279,6 +2412,7 @@ function attackUnit(target) {
                 const cell = gameState.board[target.row][target.col];
                 cell.removeChild(unitEl);
                 unitEl.style.position = 'absolute';
+                unitEl.style.transform = 'none';
                 unitEl.style.left = (target.col * cellW + cellW/2 - 10) + 'px';
                 unitEl.style.top = (target.row * cellH + cellH/2 - 10) + 'px';
                 unitEl.style.transition = 'all ' + duration + 'ms ease-in';
@@ -2388,9 +2522,11 @@ function attackUnit(target) {
     
     // 冰冻效果
     if (attacker.freeze && target.currentHp > 0) {
-        target.frozen = true;
-        showCritText(target.row, target.col, '冰冻');
-        updateFrozenVisual(target);
+        if (!isImmuneToFreeze(target)) {
+            target.frozen = true;
+            updateFrozenVisual(target);
+            showCritText(target.row, target.col, '冰冻');
+        }
         // 厂长被冻召唤木炭
         if (target.percentAttack && (target.charcoalCount||0) < (target.charcoalMax||2)) {
             summonCharcoal(target);
@@ -2608,6 +2744,18 @@ function removeUnit(unit) {
         unit.currentHp = unit.maxHp;
         return;
     }
+    // 戈仑石人：死亡分裂成两个小石头人（一左一右，不递归分裂）
+    if (unit.golem) {
+        [[0,-1],[0,1]].forEach(p => {
+            const nr = unit.row + p[0], nc = unit.col + p[1];
+            if (!isValidPosition(nr, nc)) return;
+            if (gameState.units.some(u => u.row === nr && u.col === nc)) return;
+            if (isBlueBase(nr, nc) || isRedBase(nr, nc)) return;
+            const mini = { id: 'golem_mini_' + Date.now() + '_' + Math.random(), cardId: 'golem_mini', name: '小石头人', attack: 1, maxHp: 6, currentHp: 6, armor: 0, moveRange: 3, attackRange: 2, artwork: 'golem-mini', team: unit.team, row: nr, col: nc, golemMini: true };
+            gameState.units.push(mini);
+            renderUnit(mini);
+        });
+    }
     // 黑绝：队友死亡，黑绝回归本体（保留附身时血量）
     if (unit._possessed && unit.zetsu) {
         const z = unit.zetsu;
@@ -2684,6 +2832,9 @@ function updateUnitHp(unit) {
     if (hpFill) {
         const percentage = Math.max(0, (unit.currentHp / unit.maxHp) * 100);
         hpFill.style.width = `${percentage}%`;
+        if (percentage < 25) hpFill.style.background = '#e74c3c';
+        else if (percentage < 50) hpFill.style.background = '#f39c12';
+        else hpFill.style.background = '#27ae60';
     }
     // 凋零半血变身：降为正常单位（不再是飞行单位）
     if (unit.wither && unit.currentHp <= (unit.maxHp || 8) / 2 && unit.flying) {
@@ -2694,6 +2845,11 @@ function updateUnitHp(unit) {
 // 渲染单位
 function renderUnit(unit) {
     const cell = gameState.board[unit.row][unit.col];
+    
+    // 清理旧位置残留的单位 DOM（直接改坐标后渲染会留旧图标）
+    document.querySelectorAll('.unit[data-unit-id="' + unit.id + '"]').forEach(el => {
+        if (el.parentNode !== cell) el.parentNode.removeChild(el);
+    });
     
     // 移除已存在的单位
     const existingUnit = cell.querySelector('.unit');
@@ -2728,6 +2884,10 @@ function renderUnit(unit) {
     const hpFill = document.createElement('div');
     hpFill.className = 'unit-hp-fill';
     hpFill.style.width = `${Math.max(0, (unit.currentHp / unit.maxHp) * 100)}%`;
+    const hpPct = (unit.currentHp / unit.maxHp) * 100;
+    if (hpPct < 25) hpFill.style.background = '#e74c3c';
+    else if (hpPct < 50) hpFill.style.background = '#f39c12';
+    else hpFill.style.background = '#27ae60';
     hpBar.appendChild(hpFill);
     unitElement.appendChild(hpBar);
     
@@ -2761,6 +2921,7 @@ function renderUnit(unit) {
 
 // 金卡登场漂浮文字
 function showHeroDeployText(unit, message, color, duration) {
+    if (!message) return;
     const cell = gameState.board[unit.row][unit.col];
     const text = document.createElement('div');
     text.className = 'hero-deploy-text';
@@ -2882,7 +3043,17 @@ function updateFrozenVisual(unit) {
 }
 
 // 更新燃烧视觉效果
+// 霸体：免疫冰冻（马斑无双状态等）
+function isImmuneToFreeze(unit) {
+    return !!unit.inMusou;
+}
+
 function updateBurnVisual(unit) {
+    // 灼烧立即解除冰冻
+    if (unit.frozen) {
+        unit.frozen = false;
+        updateFrozenVisual(unit);
+    }
     const cell = gameState.board[unit.row][unit.col];
     const unitEl = cell.querySelector('.unit');
     if (!unitEl) return;
@@ -2890,6 +3061,398 @@ function updateBurnVisual(unit) {
         unitEl.classList.add('burning');
     } else {
         unitEl.classList.remove('burning');
+    }
+}
+
+// ===== 镜机制 =====
+// 攻击后以敌人为对称点召唤分身（动画：冲过去重叠→召唤分身→镜倒退、分身走向对称位）
+function mirrorSummonClone(mirror, target) {
+    const er = target.row, ec = target.col;
+    const fromR = mirror.row, fromC = mirror.col;
+    // 对称中心 = 被攻击的敌人
+    mirror._mirrorCenter = { row: er, col: ec };
+    // 对称位置（关于敌人镜像）
+    const cr = er + (er - fromR), cc = ec + (ec - fromC);
+    if (!isValidPosition(cr, cc)) return;
+    const hadClone = !!mirror._mirrorClone;
+    mirror._mirrorClone = { row: cr, col: cc };
+    const board = document.getElementById('gameBoard');
+    const cell = gameState.board[fromR][fromC];
+    const el = cell.querySelector('.unit');
+    if (!el) { renderMirrorClone(mirror); return; }
+    cell.removeChild(el);
+    el.style.position = 'absolute';
+    el.style.transform = 'none';
+    el.style.left = (fromC * cellW + cellW / 2 - 10) + 'px';
+    el.style.top = (fromR * cellH + cellH / 2 - 10) + 'px';
+    el.style.transition = 'left 0.45s ease-in, top 0.45s ease-in';
+    el.style.zIndex = '40';
+    el.style.pointerEvents = 'none';
+    board.appendChild(el);
+    // 分身元素：已有分身则同步镜像移动；否则冲刺重叠后创建
+    let cloneDiv = document.querySelector('.mirror-clone[data-owner="' + mirror.id + '"]');
+    // 1. 镜冲向敌人（0.45s）；分身（若已有）从对称位镜像移动到敌人处（与镜同步反向同距）
+    requestAnimationFrame(() => {
+        el.style.left = (ec * cellW + cellW / 2 - 10) + 'px';
+        el.style.top = (er * cellH + cellH / 2 - 10) + 'px';
+        if (cloneDiv) {
+            cloneDiv.style.left = (ec * cellW + cellW / 2 - 14) + 'px';
+            cloneDiv.style.top = (er * cellH + cellH / 2 - 14) + 'px';
+        }
+    });
+    // 2. 到达敌人（重叠）：第一次攻击在此处创建分身（重叠处）
+    setTimeout(() => {
+        if (!cloneDiv) {
+            cloneDiv = document.createElement('div');
+            cloneDiv.className = 'mirror-clone';
+            cloneDiv.dataset.owner = mirror.id;
+            cloneDiv.textContent = '镜';
+            cloneDiv.style.position = 'absolute';
+            cloneDiv.style.transform = 'none';
+            cloneDiv.style.left = (ec * cellW + cellW / 2 - 14) + 'px';
+            cloneDiv.style.top = (er * cellH + cellH / 2 - 14) + 'px';
+            cloneDiv.style.transition = 'left 0.45s ease-in, top 0.45s ease-in';
+            cloneDiv.style.zIndex = '40';
+            cloneDiv.style.pointerEvents = 'none';
+            board.appendChild(cloneDiv);
+        }
+        // 3. 镜倒退回原位；分身镜像移动：从敌人处（或重叠处）走到对称位置（反向同距）
+        requestAnimationFrame(() => {
+            el.style.left = (fromC * cellW + cellW / 2 - 10) + 'px';
+            el.style.top = (fromR * cellH + cellH / 2 - 10) + 'px';
+            cloneDiv.style.left = (cc * cellW + cellW / 2 - 14) + 'px';
+            cloneDiv.style.top = (cr * cellH + cellH / 2 - 14) + 'px';
+        });
+        // 4. 动画结束：镜挂回原位、分身挂到对称位置
+        setTimeout(() => {
+            el.style.cssText = '';
+            if (el.parentNode) el.parentNode.removeChild(el);
+            const ncell = gameState.board[fromR][fromC];
+            ncell.appendChild(el);
+            if (cloneDiv.parentNode) cloneDiv.parentNode.removeChild(cloneDiv);
+            renderUnit(mirror);
+            renderMirrorClone(mirror);
+        }, 470);
+    }, 450);
+}
+// 渲染分身（半透明镜图标）
+function renderMirrorClone(mirror) {
+    document.querySelectorAll('.mirror-clone').forEach(el => { if (el.dataset.owner === mirror.id) el.remove(); });
+    const cl = mirror._mirrorClone;
+    if (!cl || !gameState.board[cl.row] || !gameState.board[cl.row][cl.col]) return;
+    const div = document.createElement('div');
+    div.className = 'mirror-clone';
+    div.dataset.owner = mirror.id;
+    div.textContent = '镜';
+    gameState.board[cl.row][cl.col].appendChild(div);
+}
+function removeMirrorClone(mirror) {
+    document.querySelectorAll('.mirror-clone').forEach(el => { if (el.dataset.owner === mirror.id) el.remove(); });
+    if (mirror) mirror._mirrorClone = null;
+}
+// 双击分身：互换位置
+function mirrorSwapWithClone(mirror) {
+    const cl = mirror._mirrorClone;
+    if (!cl) return;
+    const mr = mirror.row, mc = mirror.col;
+    mirror.row = cl.row; mirror.col = cl.col;
+    cl.row = mr; cl.col = mc;
+    renderUnit(mirror);
+    renderMirrorClone(mirror);
+    clearHighlights();
+    gameState.selectedUnit = null;
+}
+// 技能选敌模式：4格内敌人标红
+function enterMirrorSkillMode(mirror) {
+    clearHighlights();
+    gameState.units.forEach(u => {
+        if (u.team === mirror.team || u.ghost) return;
+        if (Math.max(Math.abs(u.row - mirror.row), Math.abs(u.col - mirror.col)) <= 4) {
+            gameState.board[u.row][u.col].classList.add('tank-target');
+        }
+    });
+}
+// 技能开始：冲撞2伤+定身，创造圆形法阵
+function mirrorSkillStart(mirror, target) {
+    // 开启法阵台词（黄色，2秒渐隐）
+    showHeroDeployText(mirror, '怀八荒，入九重', '#f1c40f', 2000);
+    mirror._mirrorSkillMode = false;
+    mirror._mirrorSkillCd = 2;
+    mirror._mirrorSkillTargetId = target.id;
+    removeMirrorClone(mirror);
+    const er = target.row, ec = target.col;
+    let mr = er, mc = ec - 3, cr = er, cc = ec + 3;
+    if (!isValidPosition(mr, mc)) { mr = er; mc = ec + 3; cr = er; cc = ec - 3; }
+    const fromR = mirror.row, fromC = mirror.col;
+    // 动画：镜冲向敌人（重叠）→ 冲撞2伤+定身 → 镜向左走3格、分身从敌人处向右走3格 → 法阵
+    const board = document.getElementById('gameBoard');
+    const cell = gameState.board[fromR][fromC];
+    const el = cell.querySelector('.unit');
+    const buildShards = () => {
+        const radius = Math.max(1, Math.abs(mirror.row - target.row) + Math.abs(mirror.col - target.col));
+        const shards = [];
+        for (let dr = -radius; dr <= radius; dr++) {
+            for (let dc = -radius; dc <= radius; dc++) {
+                const dist = Math.sqrt(dr * dr + dc * dc);
+                if (Math.abs(dist - radius) > 0.5) continue;
+                const nr = er + dr, nc = ec + dc;
+                if (!isValidPosition(nr, nc)) continue;
+                if (isBlueBase(nr, nc) || isRedBase(nr, nc)) continue;
+                shards.push({ row: nr, col: nc });
+            }
+        }
+        mirror._mirrorShards = shards;
+        renderMirrorShards(mirror);
+        clearHighlights();
+        gameState.selectedUnit = null;
+    };
+    if (!el) {
+        // 兜底：瞬移放置
+        mirror.row = mr; mirror.col = mc;
+        renderUnit(mirror);
+        mirror._mirrorClone = { row: cr, col: cc };
+        renderMirrorClone(mirror);
+        if (target && !target._removing && !target.ghost) {
+            target.currentHp -= 2;
+            updateUnitHp(target);
+            showCritText(target.row, target.col, '镜冲撞');
+            target.stunned = true;
+            target.stunnedTurns = 1;
+            if (target.currentHp <= 0) removeUnit(target);
+        }
+        buildShards();
+        return;
+    }
+    cell.removeChild(el);
+    el.style.position = 'absolute';
+    el.style.transform = 'none';
+    el.style.left = (fromC * cellW + cellW / 2 - 10) + 'px';
+    el.style.top = (fromR * cellH + cellH / 2 - 10) + 'px';
+    el.style.transition = 'left 0.45s ease-in, top 0.45s ease-in';
+    el.style.zIndex = '40';
+    el.style.pointerEvents = 'none';
+    board.appendChild(el);
+    // 1. 镜冲向敌人（重叠）
+    requestAnimationFrame(() => {
+        el.style.left = (ec * cellW + cellW / 2 - 10) + 'px';
+        el.style.top = (er * cellH + cellH / 2 - 10) + 'px';
+    });
+    // 2. 到达敌人：冲撞 2 伤 + 定身；分身从敌人处出现
+    setTimeout(() => {
+        if (target && !target._removing && !target.ghost) {
+            target.currentHp -= 2;
+            updateUnitHp(target);
+            showCritText(target.row, target.col, '镜冲撞');
+            target.stunned = true;
+            target.stunnedTurns = 1;
+            if (target.currentHp <= 0) removeUnit(target);
+        }
+        const cloneDiv = document.createElement('div');
+        cloneDiv.className = 'mirror-clone';
+        cloneDiv.dataset.owner = mirror.id;
+        cloneDiv.textContent = '镜';
+        cloneDiv.style.position = 'absolute';
+        cloneDiv.style.transform = 'none';
+        cloneDiv.style.left = (ec * cellW + cellW / 2 - 14) + 'px';
+        cloneDiv.style.top = (er * cellH + cellH / 2 - 14) + 'px';
+        cloneDiv.style.transition = 'left 0.45s ease-in, top 0.45s ease-in';
+        cloneDiv.style.zIndex = '40';
+        cloneDiv.style.pointerEvents = 'none';
+        board.appendChild(cloneDiv);
+        // 3. 镜向左走3格 + 分身向右走3格
+        requestAnimationFrame(() => {
+            el.style.left = (mc * cellW + cellW / 2 - 10) + 'px';
+            el.style.top = (mr * cellH + cellH / 2 - 10) + 'px';
+            cloneDiv.style.left = (cc * cellW + cellW / 2 - 14) + 'px';
+            cloneDiv.style.top = (cr * cellH + cellH / 2 - 14) + 'px';
+        });
+        // 4. 到达：归位 + 法阵生成
+        setTimeout(() => {
+            mirror.row = mr; mirror.col = mc;
+            el.style.cssText = '';
+            if (el.parentNode) el.parentNode.removeChild(el);
+            gameState.board[mr][mc].appendChild(el);
+            mirror._mirrorClone = { row: cr, col: cc };
+            if (cloneDiv.parentNode) cloneDiv.parentNode.removeChild(cloneDiv);
+            renderUnit(mirror);
+            renderMirrorClone(mirror);
+            buildShards();
+        }, 470);
+    }, 450);
+}
+// 渲染镜片
+function renderMirrorShards(mirror) {
+    document.querySelectorAll('.mirror-shard').forEach(el => { if (el.dataset.owner === mirror.id) el.remove(); });
+    (mirror._mirrorShards || []).forEach(s => {
+        const div = document.createElement('div');
+        div.className = 'mirror-shard';
+        div.dataset.owner = mirror.id;
+        div.textContent = '◇';
+        gameState.board[s.row][s.col].appendChild(div);
+    });
+}
+// 换位：镜与分身互换（经过敌人），敌人2伤穿甲1 + 镜片1真伤，回1血
+function mirrorSwapOnce(mirror) {
+    // 换位进行中锁：位置到了才能进行下一次换位
+    if (mirror._mirrorSwapping) return;
+    mirror._mirrorSwapping = true;
+    const cl = mirror._mirrorClone;
+    const target = gameState.units.find(u => u.id === mirror._mirrorSkillTargetId);
+    if (!cl || !mirror._mirrorShards || mirror._mirrorShards.length === 0 || !target || target._removing || target.ghost) {
+        mirror._mirrorSwapping = false;
+        mirrorSkillEnd(mirror);
+        return;
+    }
+    // 镜与分身互相飞向对方位置（必然经过中间的敌人）
+    const board = document.getElementById('gameBoard');
+    const unitEl = gameState.board[mirror.row][mirror.col].querySelector('.unit');
+    const cloneEl = document.querySelector('.mirror-clone[data-owner="' + mirror.id + '"]');
+    let remaining = 0;
+    const finish = () => {
+        if (--remaining > 0) return;
+        mirror._mirrorSwapping = false;
+        const mr2 = mirror.row, mc2 = mirror.col;
+        mirror.row = cl.row; mirror.col = cl.col;
+        cl.row = mr2; cl.col = mc2;
+        renderUnit(mirror);
+        renderMirrorClone(mirror);
+        // 敌人 2 伤（穿甲1）+ 镜片 1 真伤 + 回血
+        if (target.currentHp > 0) {
+            const dmg = Math.max(0, 2 - Math.max(0, (target.armor || 0) - 1));
+            target.currentHp -= dmg;
+            updateUnitHp(target);
+            showCritText(target.row, target.col, '换位');
+            const shard = mirror._mirrorShards.shift();
+            if (shard) {
+                const fly = document.createElement('div');
+                fly.className = 'mirror-shard-fly';
+                fly.textContent = '◇';
+                fly.style.left = (shard.col * cellW) + 'px';
+                fly.style.top = (shard.row * cellH) + 'px';
+                document.getElementById('gameBoard').appendChild(fly);
+                setTimeout(() => {
+                    fly.style.left = (target.col * cellW) + 'px';
+                    fly.style.top = (target.row * cellH) + 'px';
+                }, 30);
+                setTimeout(() => fly.remove(), 400);
+                target.currentHp -= 1;
+                updateUnitHp(target);
+            }
+            mirror.currentHp = Math.min((mirror.maxHp || 4) + 1, (mirror.currentHp || 0) + 1);
+            updateUnitHp(mirror);
+            if (target.currentHp <= 0) {
+                removeUnit(target);
+                mirrorSkillEnd(mirror);
+                return;
+            }
+        }
+        renderMirrorShards(mirror);
+        if (mirror._mirrorShards.length === 0) mirrorSkillEnd(mirror);
+    };
+    if (unitEl) {
+        remaining++;
+        const cell = gameState.board[mirror.row][mirror.col];
+        cell.removeChild(unitEl);
+        unitEl.style.position = 'absolute';
+        unitEl.style.transform = 'none';
+        unitEl.style.left = (mirror.col * cellW + cellW / 2 - 10) + 'px';
+        unitEl.style.top = (mirror.row * cellH + cellH / 2 - 10) + 'px';
+        unitEl.style.transition = 'left 0.25s ease-in, top 0.25s ease-in';
+        unitEl.style.zIndex = '40';
+        unitEl.style.pointerEvents = 'none';
+        board.appendChild(unitEl);
+        requestAnimationFrame(() => {
+            unitEl.style.left = (cl.col * cellW + cellW / 2 - 10) + 'px';
+            unitEl.style.top = (cl.row * cellH + cellH / 2 - 10) + 'px';
+        });
+        setTimeout(finish, 280);
+    }
+    if (cloneEl) {
+        remaining++;
+        cloneEl.style.position = 'absolute';
+        cloneEl.style.transform = 'none';
+        cloneEl.style.left = (cl.col * cellW + cellW / 2 - 14) + 'px';
+        cloneEl.style.top = (cl.row * cellH + cellH / 2 - 14) + 'px';
+        cloneEl.style.transition = 'left 0.25s ease-in, top 0.25s ease-in';
+        cloneEl.style.zIndex = '40';
+        cloneEl.parentNode.removeChild(cloneEl);
+        board.appendChild(cloneEl);
+        requestAnimationFrame(() => {
+            cloneEl.style.left = (mirror.col * cellW + cellW / 2 - 14) + 'px';
+            cloneEl.style.top = (mirror.row * cellH + cellH / 2 - 14) + 'px';
+        });
+        setTimeout(finish, 280);
+    }
+    if (remaining === 0) finish();
+}
+// 技能结束：剩余镜片自动攻击最近敌人
+function mirrorSkillEnd(mirror) {
+    if (mirror._mirrorShards && mirror._mirrorShards.length > 0) {
+        mirror._mirrorShards.forEach(s => {
+            const ne = gameState.units.filter(u => u.team !== mirror.team && !u.ghost && !u._removing)
+                .sort((a, b) => (Math.abs(a.row - s.row) + Math.abs(a.col - s.col)) - (Math.abs(b.row - s.row) + Math.abs(b.col - s.col)))[0];
+            if (ne) {
+                ne.currentHp -= 1;
+                updateUnitHp(ne);
+                showCritText(ne.row, ne.col, '镜片');
+                if (ne.currentHp <= 0) removeUnit(ne);
+            }
+        });
+    }
+    mirror._mirrorShards = [];
+    mirror._mirrorSkillTargetId = null;
+    mirror._mirrorSkillMode = false;
+    removeMirrorClone(mirror);
+    // 确保技能结束后场上留下的是本体（不透明图标）
+    renderUnit(mirror);
+    document.querySelectorAll('.mirror-shard').forEach(el => { if (el.dataset.owner === mirror.id) el.remove(); });
+    clearHighlights();
+    gameState.selectedUnit = null;
+}
+
+// ===== 精英冰人机制 =====
+// 制造冰场（5×5，随自身移动，持续到敌方回合结束）
+function activateEliteIceSkill(unit) {
+    if (unit._iceSkillActive) return;
+    unit._iceSkillActive = true;
+    gameState.iceFields = gameState.iceFields.filter(f => f.owner !== unit.id);
+    gameState.iceFields.push({ row: unit.row, col: unit.col, team: unit.team, owner: unit.id });
+    renderIceFields();
+    freezeEnemiesInIce(gameState.iceFields[gameState.iceFields.length - 1]);
+    clearHighlights();
+    gameState.selectedUnit = null;
+}
+// 渲染冰场（5×5 蓝色冰面）
+function renderIceFields() {
+    document.querySelectorAll('.ice-field').forEach(el => el.remove());
+    gameState.iceFields.forEach(f => {
+        for (let dr = -2; dr <= 2; dr++) {
+            for (let dc = -2; dc <= 2; dc++) {
+                const nr = f.row + dr, nc = f.col + dc;
+                if (!isValidPosition(nr, nc)) continue;
+                const ic = document.createElement('div');
+                ic.className = 'ice-field';
+                gameState.board[nr][nc].appendChild(ic);
+            }
+        }
+    });
+}
+// 冰冻冰场内所有敌人
+function freezeEnemiesInIce(ice) {
+    gameState.units.forEach(u => {
+        if (u.team === ice.team || u.ghost || u.frozen || isImmuneToFreeze(u)) return;
+        const d = Math.max(Math.abs(u.row - ice.row), Math.abs(u.col - ice.col));
+        if (d <= 2) {
+            u.frozen = true;
+            updateFrozenVisual(u);
+        }
+    });
+}
+// 灼烧：立即解除冰冻
+function thawIfBurned(unit) {
+    if (unit.frozen) {
+        unit.frozen = false;
+        updateFrozenVisual(unit);
     }
 }
 
@@ -2949,8 +3512,9 @@ function zetsuJumpAttack(unit, target) {
     }
     cell.removeChild(el);
     el.style.position = 'absolute';
-    el.style.left = (fromC * cellW) + 'px';
-    el.style.top = (fromR * cellH) + 'px';
+    el.style.transform = 'none';
+    el.style.left = (fromC * cellW + cellW / 2 - 10) + 'px';
+    el.style.top = (fromR * cellH + cellH / 2 - 10) + 'px';
     el.style.transition = 'left 0.4s ease-in, top 0.4s ease-in';
     el.style.zIndex = '40';
     el.style.pointerEvents = 'none';
@@ -3052,8 +3616,8 @@ function activateChakra(unit) {
 
 // Pain 技能激活
 function activatePainAbility(pain) {
-    // 4格能量释放地爆天星（释放后还能再用万象天引和神罗天征）
-    if ((pain.painEnergy || 0) >= (pain.painMaxEnergy || 4) && !gameState.attackedUnits.has(pain.id) && !pain._banshoUsed && !pain._shinraUsed) {
+    // 4格能量释放地爆天星（万象/神罗释放过程中也可触发；释放后还能再用万象天引和神罗天征）
+    if ((pain.painEnergy || 0) >= (pain.painMaxEnergy || 4) && !gameState.attackedUnits.has(pain.id)) {
         chibakuTensei(pain);
         pain._chibakuBonus = 2;
         clearHighlights();
@@ -3091,7 +3655,8 @@ function activatePainAbility(pain) {
         gameState.selectedUnit = null;
         return;
     }
-    if (pain._banshoUsed && pain._shinraUsed && !pain._chibakuBonus) {
+    // 万象+神罗都用了且能量不足4（无地爆机会）才标记已攻击
+    if (pain._banshoUsed && pain._shinraUsed && !pain._chibakuBonus && (pain.painEnergy || 0) < 4) {
         gameState.attackedUnits.add(pain.id);
     }
     clearHighlights();
@@ -3501,7 +4066,8 @@ function chibakuTensei(pain) {
         // 脱离cell，挂到board上
         oldCell.removeChild(el);
         el.style.position = 'absolute';
-        el.style.left = (e.col * cellW + cellW/2 - 10) + 'px';
+        el.style.transform = 'none';
+        el.style.left = (e.col * cellW + cellW / 2 - 10) + 'px';
         el.style.top = (e.row * cellH + cellH/2 - 10) + 'px';
         el.style.transition = 'all 3s ease-in';
         el.style.zIndex = '30';
@@ -4089,6 +4655,30 @@ function endTurn() {
         }
     });
     
+    // 精英冰人冰场：冰冻冰场内敌人（敌方回合开始）+ 每回合对场内敌人造成1伤；敌方回合结束冰场消失
+    gameState.iceFields.forEach(f => freezeEnemiesInIce(f));
+    gameState.iceFields.forEach(f => {
+        gameState.units.forEach(u => {
+            if (u.team === f.team || u.ghost) return;
+            const d = Math.max(Math.abs(u.row - f.row), Math.abs(u.col - f.col));
+            if (d <= 2) {
+                u.currentHp -= 1;
+                updateUnitHp(u);
+                if (u.currentHp <= 0) removeUnit(u);
+            }
+        });
+    });
+    if (gameState.iceFields.length > 0) {
+        const gone = gameState.iceFields.filter(f => f.team === gameState.currentTurn);
+        if (gone.length > 0) {
+            gameState.iceFields = gameState.iceFields.filter(f => f.team !== gameState.currentTurn);
+            gameState.units.forEach(u => {
+                if (u.eliteIce && u._iceSkillActive && gone.some(f => f.owner === u.id)) u._iceSkillActive = false;
+            });
+            renderIceFields();
+        }
+    }
+    
     // 凋零：己方回合开始回1血（敌方回合不回）
     gameState.units.forEach(u => {
         if (u.wither && u.team === gameState.currentTurn && u.currentHp < (u.maxHp || 8)) {
@@ -4105,6 +4695,19 @@ function endTurn() {
             u.teslaHidden = !hasEnemy;
             const telEl = gameState.board[u.row] ? gameState.board[u.row][u.col].querySelector('.unit') : null;
             if (telEl) telEl.classList.toggle('tesla-hidden', u.teslaHidden);
+        }
+    });
+    
+    // 镜：分身消失（本回合未攻击则回合结束消失）、技能冷却递减
+    gameState.units.forEach(u => {
+        if (u.mirror) {
+            if (u._mirrorClone && !u._mirrorAttacked) removeMirrorClone(u);
+            u._mirrorAttacked = false;
+            if (u._mirrorSkillCd > 0) u._mirrorSkillCd--;
+            // 镜技能：回合结束时自动结束（剩余镜片自动攻击最近敌人）
+            if (u._mirrorSkillTargetId) {
+                mirrorSkillEnd(u);
+            }
         }
     });
     
@@ -4394,10 +4997,13 @@ function updateDeployModalCards() {
     const isEnemyHalf = (gameState.currentTurn === 'red' && targetRow <= 13) || (gameState.currentTurn === 'blue' && targetRow >= 14);
     
     gameState.battleDeck.forEach((card, index) => {
-        if (isEnemyHalf && !card.miner) return;
-        // 目标格有友方单位：只显示黑绝（附身用）
+        // 目标格有友方单位：只显示黑绝（附身用，无视半场——镜技能后可能停在敌方半场）
         const targetHasUnit = gameState.units.some(u => u.row === targetRow && u.col === targetCol);
-        if (targetHasUnit && !card.blackZetsu) return;
+        if (targetHasUnit) {
+            if (!card.blackZetsu) return;
+        } else if (isEnemyHalf && !card.miner) {
+            return;
+        }
         const cardElement = document.createElement('div');
         cardElement.className = `battle-deck-card ${currentEnergy < card.cost ? 'disabled' : ''}`;
         cardElement.dataset.index = index;
@@ -4801,7 +5407,7 @@ function aiTurn() {
             for (let col = 10; col <= 19; col++) {
                 if (gameState.units.some(u => u.row === row && u.col === col)) continue;
                 if (isBlueBase(row, col) || isRedBase(row, col)) continue;
-                const unit = { id: card.id+'_'+Date.now(), cardId: card.id, name: card.name, attack: card.attack, maxHp: card.hp, currentHp: card.hp, moveRange: card.moveRange, attackRange: card.attackRange, artwork: card.artwork, armor: card.armor||0, team: 'blue', row, col, flying: card.flying||false, meleeAttack: card.meleeAttack||0, meleeRange: card.meleeRange||0, armorPen: card.armorPen||0, critChance: card.critChance||0, dodge: card.dodge||false, counterAttack: card.counterAttack||0, summon: card.summon||false, summonGuardType: card.summonGuardType||'', tankSpawn: card.tankSpawn||false, leisiSpawn: card.leisiSpawn||false, copSpawn: card.copSpawn||false, windForm: card.windForm||false, splashRadius: card.splashRadius||0, deployEffect: card.deployEffect||false, hero: card.hero||false, heroDeployText: card.heroDeployText||'', heroDeployColor: card.heroDeployColor||'', heroDeployDuration: card.heroDeployDuration||3500, chargeMove: card.chargeMove||0, chargeDamage: card.chargeDamage||0, erin: card.erin||false, pekkaHeal: card.pekkaHeal||false, blowdart: card.blowdart||false, hashirama: card.hashirama||false, hashiMaxEnergy: card.hashiMaxEnergy||0, skullArmy: card.skullArmy||false,wither: card.wither||false,tesla: card.tesla||false,blackZetsu: card.blackZetsu||false };
+                const unit = { id: card.id+'_'+Date.now(), cardId: card.id, name: card.name, attack: card.attack, maxHp: card.hp, currentHp: card.hp, moveRange: card.moveRange, attackRange: card.attackRange, artwork: card.artwork, armor: card.armor||0, team: 'blue', row, col, flying: card.flying||false, meleeAttack: card.meleeAttack||0, meleeRange: card.meleeRange||0, armorPen: card.armorPen||0, critChance: card.critChance||0, dodge: card.dodge||false, counterAttack: card.counterAttack||0, summon: card.summon||false, summonGuardType: card.summonGuardType||'', tankSpawn: card.tankSpawn||false, leisiSpawn: card.leisiSpawn||false, copSpawn: card.copSpawn||false, windForm: card.windForm||false, splashRadius: card.splashRadius||0, deployEffect: card.deployEffect||false, hero: card.hero||false, heroDeployText: card.heroDeployText||'', heroDeployColor: card.heroDeployColor||'', heroDeployDuration: card.heroDeployDuration||3500, chargeMove: card.chargeMove||0, chargeDamage: card.chargeDamage||0, erin: card.erin||false, pekkaHeal: card.pekkaHeal||false, blowdart: card.blowdart||false, hashirama: card.hashirama||false, hashiMaxEnergy: card.hashiMaxEnergy||0, skullArmy: card.skullArmy||false,wither: card.wither||false,tesla: card.tesla||false,blackZetsu: card.blackZetsu||false,golem: card.golem||false,eliteIce: card.eliteIce||false,mirror: card.mirror||false };
                 gameState.units.push(unit); renderUnit(unit);
                 runDeployEffects(unit);
                 gameState.blueEnergy -= card.cost; updateEnergyDisplay();
