@@ -46,7 +46,7 @@ const cardLibrary = [
         armor: 1,
         moveRange: 1,
         attackRange: 1,
-        cost: 4,
+        cost: 3,
         artwork: 'heavy-knight',
         description: "他很笨重，但是装甲很厚。"
     },
@@ -54,7 +54,7 @@ const cardLibrary = [
         id: 'asala_soldier',
         name: '阿萨拉士兵',
         attack: 1,
-        hp: 1,
+        hp: 2,
         moveRange: 3,
         attackRange: 4,
         cost: 2,
@@ -304,14 +304,15 @@ const cardLibrary = [
     },
     {
         id: 'big_pekka',
-        name: '大皮卡',
+        name: '觉醒大皮卡',
         attack: 5,
-        hp: 6,
-        moveRange: 2,
+        hp: 7,
+        moveRange: 3,
         attackRange: 2,
-        cost: 6,
+        cost: 7,
         artwork: 'pekka',
-        description: "白板但是力气大。"
+        description: '觉醒的大皮卡！击杀敌人时回复3点生命，可超出上限，最高12点。',
+        pekkaHeal: true
     },
     {
         id: 'asala_flamer',
@@ -437,6 +438,45 @@ const cardLibrary = [
         flying: true,
         splashRadius: 1,
         windForm: true
+    },
+    {
+        id: 'erin',
+        name: '艾琳',
+        attack: 2,
+        hp: 3,
+        armorPen: 1,
+        moveRange: 6,
+        attackRange: 5,
+        cost: 10,
+        artwork: 'erin',
+        description: '双发连击：黄弹4伤+黄圈，普攻后撤；命中计数6开技能（3伤×6）；保命装免疫致命伤+3血护盾',
+        erin: true
+    },
+    {
+        id: 'blowdart_goblin',
+        name: '觉醒吹箭哥布林',
+        attack: 1,
+        hp: 2,
+        armorPen: 2,
+        moveRange: 8,
+        attackRange: 7,
+        cost: 4,
+        artwork: 'blowdart',
+        description: '吹箭带毒！连续命中3次毒伤提升为2，5次提升为5！',
+        blowdart: true
+    },
+    {
+        id: 'training_dummy',
+        name: '训练木偶',
+        attack: 0,
+        hp: 100,
+        moveRange: 0,
+        attackRange: 0,
+        cost: 0,
+        artwork: 'dummy',
+        description: '训练木偶，不会移动不会攻击，只能挨打。',
+        dummy: true,
+        trainingOnly: true
     }
 ];
 
@@ -471,6 +511,7 @@ const gameState = {
     fireZones: [],
     smokeZones: [],
     windZones: [],
+    erinRings: [],
     winner: null
 };
 
@@ -701,6 +742,11 @@ function handleCellClick(e) {
             spawnCops(clickedUnit);
             return;
         }
+        // 艾琳技能：计数≥6双击激活
+        if (clickedUnit.erin && clickedUnit === gameState.selectedUnit && !clickedUnit.erinSkillActive && (clickedUnit.erinCount||0) >= 6) {
+            activateErinSkill(clickedUnit);
+            return;
+        }
         clearHighlights();
         gameState.selectedUnit = clickedUnit;
         showActionMode(clickedUnit);
@@ -743,7 +789,7 @@ function showActionMode(unit) {
     }
     
     // 显示可攻击目标
-    if (!gameState.attackedUnits.has(unit.id) || (unit.tankSpawn && (unit.demuAttacksUsed||0) < (unit.demuBonusAttacks||0))) {
+    if (!gameState.attackedUnits.has(unit.id) || (unit.tankSpawn && (unit.demuAttacksUsed||0) < (unit.demuBonusAttacks||0)) || (unit.erin && (unit.erinSkillActive ? (unit.erinSkillAttacks||0) > 0 : (unit.erinAttacksUsed||0) < 2)) || (unit.blowdart && (unit.blowdartAttacksUsed||0) < 2)) {
         // 铠飞镖攻击时使用飞镖射程
         if (unit.kaiShurikenRange && unit.kaiAttacks >= 1) {
             const orig = unit.attackRange;
@@ -774,7 +820,7 @@ function showMovableRange(unit) {
     if (unit.copSpawn && unit.copsSpawned) return;
     const { row, col, moveRange } = unit;
     const used = gameState.moveUsed[unit.id] || 0;
-    let remaining = moveRange - used + getWindMoveMod(unit);
+    let remaining = moveRange - used + getWindMoveMod(unit) + (unit.erinMoveBonus||0);
     if (remaining <= 0) return;
     // 循环边界用最大可达距离（防止加成后的移动范围被基础值截断）
     const maxReach = Math.max(moveRange, remaining);
@@ -849,6 +895,140 @@ function showAttackableTargets(unit) {
 }
 
 // 部署单位
+// 中毒特效显示（绿/紫/红）
+function updatePoisonVisual(unit) {
+    const cell = gameState.board[unit.row][unit.col];
+    const existing = cell.querySelector('.poison-badge');
+    if (existing) existing.remove();
+    if (unit.poisonTurns > 0 && unit.poisonLevel) {
+        const badge = document.createElement('div');
+        badge.className = 'poison-badge poison-lv' + unit.poisonLevel;
+        badge.textContent = unit.poisonLevel === 1 ? '💚' : (unit.poisonLevel === 2 ? '💜' : '❤️');
+        cell.appendChild(badge);
+    }
+}
+
+// 艾琳：黄子弹特效
+function showErinBullet(attacker, target) {
+    const board = document.getElementById('gameBoard');
+    const bullet = document.createElement('div');
+    bullet.className = 'erin-bullet';
+    bullet.style.left = (attacker.col * cellW + cellW/2) + 'px';
+    bullet.style.top = (attacker.row * cellH + cellH/2) + 'px';
+    board.appendChild(bullet);
+    requestAnimationFrame(() => {
+        bullet.style.left = (target.col * cellW + cellW/2) + 'px';
+        bullet.style.top = (target.row * cellH + cellH/2) + 'px';
+    });
+    setTimeout(() => { if (bullet.parentNode) bullet.parentNode.removeChild(bullet); }, 400);
+}
+
+// 艾琳：黄圈（3×3边框8格）
+function createErinRing(attacker, target) {
+    gameState.erinRings.push({ row: target.row, col: target.col, team: attacker.team, turns: 2 });
+    renderErinRings();
+}
+function renderErinRings() {
+    document.querySelectorAll('.erin-ring').forEach(c => c.remove());
+    gameState.erinRings.forEach(r => {
+        for (let dr = -1; dr <= 1; dr++) {
+            for (let dc = -1; dc <= 1; dc++) {
+                if (dr === 0 && dc === 0) continue;
+                const nr = r.row + dr, nc = r.col + dc;
+                if (!isValidPosition(nr, nc)) continue;
+                const cover = document.createElement('div');
+                cover.className = 'erin-ring';
+                gameState.board[nr][nc].appendChild(cover);
+            }
+        }
+    });
+}
+
+// 艾琳：普通攻击后撤2格
+function erinRetreat(unit) {
+    const dir = unit.team === 'red' ? 1 : -1;
+    let targetRow = unit.row + dir * 2;
+    const canStand = (r) => isValidPosition(r, unit.col) && !gameState.units.some(u => u.row === r && u.col === unit.col) && !isBlueBase(r, unit.col) && !isRedBase(r, unit.col);
+    if (!canStand(targetRow)) targetRow = unit.row + dir;
+    if (canStand(targetRow) && targetRow !== unit.row) {
+        const oldCell = gameState.board[unit.row][unit.col];
+        const newCell = gameState.board[targetRow][unit.col];
+        const el = oldCell.querySelector('.unit');
+        if (el) { oldCell.removeChild(el); newCell.appendChild(el); }
+        unit.row = targetRow;
+    }
+}
+
+// 艾琳：计数显示
+function updateErinCounter(unit) {
+    const el = gameState.board[unit.row][unit.col].querySelector('.erin-counter');
+    if (el) el.textContent = (unit.erinCount||0) + (unit.erinShield > 0 ? ' 🛡' + unit.erinShield : '');
+}
+
+// 艾琳：技能激活
+function activateErinSkill(unit) {
+    unit.erinSkillActive = true;
+    unit.erinSkillAttacks = 6;
+    unit.attackRange = 8;
+    unit.moveRange = 10;
+    showHeroDeployText(unit, '锁定目标！', '#f1c40f', 1500);
+}
+// 艾琳：技能结束（次数用完，数字清零）
+function endErinSkill(unit) {
+    unit.erinSkillActive = false;
+    unit.attackRange = 5;
+    unit.moveRange = 6;
+    unit.erinSkillAttacks = 0;
+    unit.erinCount = 0;
+    unit.erinAttacksUsed = 2;
+    updateErinCounter(unit);
+}
+
+// 部署生效效果：英雄台词/沙尘暴/召唤类（玩家与AI共用）
+function runDeployEffects(unit) {
+    // 英雄登场特效
+    if (unit.hero) {
+        showHeroDeployText(unit, unit.heroDeployText, unit.heroDeployColor, unit.heroDeployDuration);
+    }
+    // 雷诺沙尘暴+回血
+    if (unit.deployEffect) {
+        if (unit.team === 'red') {
+            gameState.redBaseHp = Math.min(50, gameState.redBaseHp + 5);
+        } else {
+            gameState.blueBaseHp = Math.min(50, gameState.blueBaseHp + 5);
+        }
+        updateBaseHpDisplay();
+        const enemyUnits = gameState.units.filter(u => u.id !== unit.id && u.team !== unit.team);
+        const fromTop = unit.team === 'red';
+        const maxRow = 29;
+        enemyUnits.forEach(eu => {
+            const progress = fromTop ? (maxRow - eu.row) / maxRow : eu.row / maxRow;
+            const delay = 300 + progress * 1800;
+            setTimeout(() => {
+                const u = gameState.units.find(gu => gu.id === eu.id);
+                if (u) removeUnit(u);
+            }, delay);
+        });
+        showSandstorm(unit);
+    }
+    // 德穆兰战车
+    if (unit.tankSpawn) {
+        [[0,-1],[0,1]].forEach(function(p) {
+            var nr=unit.row+p[0],nc=unit.col+p[1];
+            if(!isValidPosition(nr,nc))return;
+            var tank={id:"tank_"+Date.now()+"_"+Math.random(),name:"战车",attack:3,maxHp:4,currentHp:4,armor:2,armorPen:1,moveRange:99,attackRange:3,team:unit.team,row:nr,col:nc,artwork:'tank',tank:true,tankMaster:unit.id};
+            gameState.units.push(tank);renderUnit(tank);
+        });
+    }
+    if (unit.summon) {
+        summonWardenGuards(unit);
+    }
+    // 雷斯亲卫队
+    if (unit.leisiSpawn) {
+        summonLeisiGuards(unit);
+    }
+}
+
 function deployUnit(row, col) {
     if (gameState.deployPosition === null) return;
     
@@ -856,6 +1036,13 @@ function deployUnit(row, col) {
     const card = gameState.battleDeck[cardIndex];
     
     if (!card) return;
+    
+    // 训练木偶仅可在训练营模式使用（maxEnergy=500 是训练营专属，AI/联机/其他模式全部拦截）
+    if (card.trainingOnly && gameState.maxEnergy < 500) {
+        alert('训练木偶仅可在训练营模式中使用');
+        closeDeployModalFunc();
+        return;
+    }
     
     // 非矿工卡不能部署在敌方半场/大本营
     if (!card.miner) {
@@ -914,6 +1101,10 @@ function deployUnit(row, col) {
         leisiSpawn: card.leisiSpawn || false,
         copSpawn: card.copSpawn || false,
         windForm: card.windForm || false,
+        erin: card.erin || false,
+        pekkaHeal: card.pekkaHeal || false,
+        blowdart: card.blowdart || false,
+        dummy: card.dummy || false,
         firstStrike: card.firstStrike || false,
         tankSpawn: card.tankSpawn || false,
         splashRadius: card.splashRadius || 0,
@@ -1006,52 +1197,8 @@ function deployUnit(row, col) {
     // 渲染单位
     renderUnit(unit);
     
-    // 英雄登场特效
-    if (unit.hero) {
-        showHeroDeployText(unit, unit.heroDeployText, unit.heroDeployColor, unit.heroDeployDuration);
-    }
-    
-    // 雷诺沙尘暴+回血
-    if (unit.deployEffect) {
-        // 回血
-        if (unit.team === 'red') {
-            gameState.redBaseHp = Math.min(50, gameState.redBaseHp + 5);
-        } else {
-            gameState.blueBaseHp = Math.min(50, gameState.blueBaseHp + 5);
-        }
-        updateBaseHpDisplay();
-        // 吹走所有敌方单位（含建筑）——延迟消除，随沙尘暴
-        const enemyUnits = gameState.units.filter(u => u.id !== unit.id && u.team !== unit.team);
-        const fromTop = unit.team === 'red'; // 红方沙暴从下往上
-        const maxRow = 29;
-        enemyUnits.forEach(eu => {
-            const progress = fromTop ? (maxRow - eu.row) / maxRow : eu.row / maxRow;
-            const delay = 300 + progress * 1800; // 配合2秒动画
-            setTimeout(() => {
-                const u = gameState.units.find(gu => gu.id === eu.id);
-                if (u) removeUnit(u);
-            }, delay);
-        });
-        // 沙尘暴特效
-        showSandstorm(unit);
-    }
-    
-    // 德穆兰战车
-    if (unit.tankSpawn) {
-        [[0,-1],[0,1]].forEach(function(p) {
-            var nr=unit.row+p[0],nc=unit.col+p[1];
-            if(!isValidPosition(nr,nc))return;
-            var tank={id:"tank_"+Date.now()+"_"+Math.random(),name:"战车",attack:3,maxHp:4,currentHp:4,armor:2,armorPen:1,moveRange:99,attackRange:3,team:unit.team,row:nr,col:nc,artwork:'tank',tank:true,tankMaster:unit.id};
-            gameState.units.push(tank);renderUnit(tank);
-        });
-    }
-    if (unit.summon) {
-        summonWardenGuards(unit);
-    }
-    // 雷斯亲卫队
-    if (unit.leisiSpawn) {
-        summonLeisiGuards(unit);
-    }
+    // 部署生效效果（英雄台词/沙尘暴/召唤类——玩家与AI共用）
+    runDeployEffects(unit);
 }
 
 // 移动单位
@@ -1077,6 +1224,19 @@ function moveUnit(row, col) {
     const distance = Math.abs(row - oldRow) + Math.abs(col - oldCol);
     gameState.moveUsed[unit.id] = (gameState.moveUsed[unit.id] || 0) + distance;
     unit.lastMoveDist = distance;
+    
+    // 艾琳黄圈：出圈/进圈受伤（穿甲1）
+    gameState.erinRings.forEach(r => {
+        if (r.team === unit.team) return;
+        const inOld = Math.max(Math.abs(oldRow - r.row), Math.abs(oldCol - r.col)) <= 1;
+        const inNew = Math.max(Math.abs(row - r.row), Math.abs(col - r.col)) <= 1;
+        if (inOld !== inNew) {
+            unit.currentHp -= 1;
+            updateUnitHp(unit);
+            showCritText(row, col, '圈');
+            if (unit.currentHp <= 0) removeUnit(unit);
+        }
+    });
     
     // 更新UI
     const oldCell = gameState.board[oldRow][oldCol];
@@ -1177,6 +1337,31 @@ function attackUnit(target) {
         if (target.currentHp <= 0) removeUnit(target);
         // 不进入正常伤害流程
     } else {
+    // 艾琳特殊攻击（子弹4伤/普攻2伤+后撤/技能3伤）
+    if (attacker.erin) {
+        if (attacker.erinSkillActive) {
+            damage = 3;
+            attacker.erinCount = Math.min(12, (attacker.erinCount||0) + 1);
+            attacker.erinSkillAttacks = (attacker.erinSkillAttacks||0) - 1;
+            updateErinCounter(attacker);
+            if (attacker.erinSkillAttacks <= 0) endErinSkill(attacker);
+        } else if (!(attacker.erinAttacksUsed||0)) {
+            damage = 4;
+            showErinBullet(attacker, target);
+            createErinRing(attacker, target);
+            attacker.erinAttacksUsed = 1;
+            attacker.erinCount = Math.min(12, (attacker.erinCount||0) + 1);
+            updateErinCounter(attacker);
+        } else {
+            damage = attacker.attack;
+            erinRetreat(attacker);
+            attacker.erinAttacksUsed = 2;
+            attacker.erinCount = Math.min(12, (attacker.erinCount||0) + 1);
+            updateErinCounter(attacker);
+            attacker.erinMoveBonus = 2;
+            attacker.erinBonusPending = true;
+        }
+    } else
     // 百分比攻击
     if (attacker.percentAttack) {
         // 第一击扣一半（向上取整），确保两击必杀
@@ -1211,8 +1396,33 @@ function attackUnit(target) {
     
     // 护甲减伤（考虑穿甲）——百分比攻击为真实伤害，无视护甲（保证两击必杀）
     const effectiveArmor = attacker.percentAttack ? 0 : Math.max(0, (target.armor || 0) - (attacker.armorPen || 0));
-    const actualDamage = Math.max(0, damage - effectiveArmor);
+    let actualDamage = Math.max(0, damage - effectiveArmor);
+    // 艾琳保命装：护盾先吸收；致命伤害免疫并获得3血护盾（一次性）
+    if (target.erin) {
+        if (target.erinShield > 0) {
+            var absorbed = Math.min(target.erinShield, actualDamage);
+            target.erinShield -= absorbed;
+            actualDamage -= absorbed;
+            showCritText(target.row, target.col, '护盾');
+            updateErinCounter(target);
+        }
+        if (actualDamage > 0 && target.currentHp - actualDamage <= 0 && !target.erinShieldUsed) {
+            target.erinShieldUsed = true;
+            target.erinShield = 3;
+            actualDamage = 0;
+            showHeroDeployText(target, '保命装！', '#f1c40f', 1500);
+            updateErinCounter(target);
+        }
+    }
     target.currentHp -= actualDamage;
+    // 觉醒吹箭哥布林：命中附加中毒（连续命中升级）
+    if (attacker.blowdart) {
+        target.goblinHitThisTurn = true;
+        target.poisonHits = (target.poisonHits || 0) + 1;
+        target.poisonLevel = Math.max(target.poisonLevel || 0, target.poisonHits >= 5 ? 3 : (target.poisonHits >= 3 ? 2 : 1));
+        target.poisonTurns = 3;
+        updatePoisonVisual(target);
+    }
     lastDamage = actualDamage;
     // 德穆兰受伤：本回合首次受伤+1次攻击
     if (target.tankSpawn && actualDamage > 0 && !target._demuDamaged) {
@@ -1356,6 +1566,14 @@ function attackUnit(target) {
         if (attacker.demuAttacksUsed > (attacker.demuBonusAttacks || 0)) {
             gameState.attackedUnits.add(attacker.id);
         }
+    } else if (attacker.erin) {
+        // 艾琳：技能有剩余次数或普攻未满2次则不标记
+        var erinCanContinue = attacker.erinSkillActive ? (attacker.erinSkillAttacks||0) > 0 : (attacker.erinAttacksUsed||0) < 2;
+        if (!erinCanContinue) gameState.attackedUnits.add(attacker.id);
+    } else if (attacker.blowdart) {
+        // 吹箭：每回合可攻击两次
+        attacker.blowdartAttacksUsed = (attacker.blowdartAttacksUsed || 0) + 1;
+        if (attacker.blowdartAttacksUsed >= 2) gameState.attackedUnits.add(attacker.id);
     } else {
         gameState.attackedUnits.add(attacker.id);
     }
@@ -1434,6 +1652,13 @@ function attackUnit(target) {
         } else {
             removeUnit(target);
         }
+    }
+    
+    // 觉醒大皮卡：击杀敌人回复3生命（可超上限，最高12）
+    if (target.currentHp <= 0 && attacker.pekkaHeal && !target.galeSkillActive && !target.galeAnchor) {
+        attacker.currentHp = Math.min(12, (attacker.currentHp || 0) + 3);
+        updateUnitHp(attacker);
+        showCritText(attacker.row, attacker.col, '回复');
     }
     
     // 大雪怪：每受1伤召唤冰雪精灵
@@ -1665,6 +1890,10 @@ function removeUnit(unit) {
 }
 // 更新单位血量显示
 function updateUnitHp(unit) {
+    if (unit.dummy) {
+        const hpText = gameState.board[unit.row][unit.col].querySelector('.dummy-hp');
+        if (hpText) hpText.textContent = unit.currentHp + '/' + unit.maxHp;
+    }
     const cell = gameState.board[unit.row][unit.col];
     const hpFill = cell.querySelector('.unit-hp-fill');
     if (hpFill) {
@@ -1687,6 +1916,22 @@ function renderUnit(unit) {
     const artworkClass = unit.artwork ? `art-${unit.artwork}` : '';
     unitElement.className = `unit ${unit.team} ${artworkClass}`;
     unitElement.dataset.unitId = unit.id;
+    
+    // 训练木偶头顶血量
+    if (unit.dummy) {
+        const hpEl = document.createElement('div');
+        hpEl.className = 'dummy-hp';
+        hpEl.textContent = unit.currentHp + '/' + unit.maxHp;
+        unitElement.appendChild(hpEl);
+    }
+    
+    // 艾琳头顶计数
+    if (unit.erin) {
+        const cntEl = document.createElement('div');
+        cntEl.className = 'erin-counter';
+        cntEl.textContent = (unit.erinCount||0) + (unit.erinShield > 0 ? ' 🛡' + unit.erinShield : '');
+        unitElement.appendChild(cntEl);
+    }
     
     // 添加血量条（使用独立类名，避免被通用 .hp-bar 的 150px 宽样式影响）
     const hpBar = document.createElement('div');
@@ -2935,6 +3180,21 @@ function endTurn() {
         }
     });
     
+    // 中毒结算：每回合扣血（无视护甲），连续计数未命中则重置
+    gameState.units.slice().forEach(u => {
+        if (u.poisonTurns > 0 && u.poisonLevel) {
+            u.currentHp -= (u.poisonLevel === 3 ? 5 : (u.poisonLevel === 2 ? 2 : 1));
+            updateUnitHp(u);
+            if (u.currentHp <= 0) removeUnit(u);
+        }
+        if (u.poisonTurns > 0) {
+            u.poisonTurns--;
+            if (u.poisonTurns <= 0) { u.poisonLevel = 0; u.poisonHits = 0; }
+            updatePoisonVisual(u);
+        }
+        u.goblinHitThisTurn = false;
+    });
+    
     // 警察回警车（动画+回1血），全部阵亡则警车消失
     gameState.units.filter(u => u.copSpawn && !u._removing).forEach(car => {
         var cops = gameState.units.filter(u => u.cop && u.copCar === car.id);
@@ -2996,6 +3256,25 @@ function endTurn() {
     gameState.windZones.forEach(z => z.turns--);
     gameState.windZones = gameState.windZones.filter(z => z.turns > 0);
     renderWindZones();
+    
+    // 艾琳回合重置（技能未用完结束回合则保留数字）
+    gameState.units.forEach(u => {
+        if (u.blowdart) u.blowdartAttacksUsed = 0;
+        if (u.erin) {
+            u.erinAttacksUsed = 0;
+            if (u.erinSkillActive) {
+                u.erinSkillActive = false;
+                u.attackRange = 5;
+                u.moveRange = 6;
+                u.erinSkillAttacks = 0;
+            }
+            if (u.erinBonusPending) { u.erinBonusPending = false; } else { u.erinMoveBonus = 0; }
+        }
+    });
+    // 艾琳黄圈递减+重绘
+    gameState.erinRings.forEach(r => r.turns--);
+    gameState.erinRings = gameState.erinRings.filter(r => r.turns > 0);
+    renderErinRings();
     
     // 烟雾区域递减+清除
     gameState.smokeZones = gameState.smokeZones.filter(sz => {
@@ -3177,6 +3456,7 @@ function showCardInfo(card) {
     if (card.hero) features.push('英雄');
     if (card.firstStrike) features.push('首击强制剩1血');
     if (card.tankSpawn) features.push('召唤战车×2（攻3/护甲2/血4，限老太周围4格）');
+    if (card.erin) features.push('双发连击/黄圈/计数技能/保命装');
     
     const costLabel = document.querySelector('#cardCost').parentElement.querySelector('.label');
     if (features.length > 0) {
@@ -3202,7 +3482,7 @@ function showCardInfo(card) {
 // 显示单位信息（双击棋盘上的单位）
 function showUnitInfo(unit) {
     const used = gameState.moveUsed[unit.id] || 0;
-    const windMod = getWindMoveMod(unit);
+    const windMod = getWindMoveMod(unit) + (unit.erinMoveBonus||0);
     const remaining = Math.max(0, unit.moveRange - used + windMod);
     
     cardName.textContent = unit.name;
@@ -3351,6 +3631,7 @@ function startGame() {
     startScreen.classList.add('hidden');
     cardPackScreen.classList.add('hidden');
     gameScreen.classList.remove('hidden');
+    positionChatMessages();
     
     // 开始计时
     startTimer();
@@ -3409,6 +3690,10 @@ document.getElementById('trainingBtn').addEventListener('click', () => {
     startGame();
 });
 document.getElementById('aiBattleBtn').addEventListener('click', () => {
+    if (gameState.battleDeck.some(c => c.trainingOnly)) {
+        alert('出战卡组包含训练木偶，仅可在训练营模式使用，请先在卡组中移除！');
+        return;
+    }
     gameState.aiMode = true;
     gameState.maxEnergy = 20;
     modeSelectScreen.classList.add('hidden');
@@ -3421,7 +3706,7 @@ document.getElementById('modeBackBtn').addEventListener('click', () => {
     startScreen.classList.remove('hidden');
 });
 
-function pickAIDeck() { const s = [...cardLibrary].sort(() => Math.random()-0.5); return s.slice(0,10).map(c=>({...c})); }
+function pickAIDeck() { const s = [...cardLibrary].sort(() => Math.random()-0.5); return s.filter(c => !c.trainingOnly).slice(0,10).map(c=>({...c})); }
 function aiTurn() {
     if (gameState.gameOver || gameState.currentTurn !== 'blue') return;
     const aiDeck = gameState.aiDeck || [];
@@ -3434,8 +3719,9 @@ function aiTurn() {
             for (let col = 10; col <= 19; col++) {
                 if (gameState.units.some(u => u.row === row && u.col === col)) continue;
                 if (isBlueBase(row, col) || isRedBase(row, col)) continue;
-                const unit = { id: card.id+'_'+Date.now(), cardId: card.id, name: card.name, attack: card.attack, maxHp: card.hp, currentHp: card.hp, moveRange: card.moveRange, attackRange: card.attackRange, artwork: card.artwork, armor: card.armor||0, team: 'blue', row, col, flying: card.flying||false };
+                const unit = { id: card.id+'_'+Date.now(), cardId: card.id, name: card.name, attack: card.attack, maxHp: card.hp, currentHp: card.hp, moveRange: card.moveRange, attackRange: card.attackRange, artwork: card.artwork, armor: card.armor||0, team: 'blue', row, col, flying: card.flying||false, meleeAttack: card.meleeAttack||0, meleeRange: card.meleeRange||0, armorPen: card.armorPen||0, critChance: card.critChance||0, dodge: card.dodge||false, counterAttack: card.counterAttack||0, summon: card.summon||false, summonGuardType: card.summonGuardType||'', tankSpawn: card.tankSpawn||false, leisiSpawn: card.leisiSpawn||false, copSpawn: card.copSpawn||false, windForm: card.windForm||false, splashRadius: card.splashRadius||0, deployEffect: card.deployEffect||false, hero: card.hero||false, heroDeployText: card.heroDeployText||'', heroDeployColor: card.heroDeployColor||'', heroDeployDuration: card.heroDeployDuration||3500, chargeMove: card.chargeMove||0, chargeDamage: card.chargeDamage||0, erin: card.erin||false, pekkaHeal: card.pekkaHeal||false, blowdart: card.blowdart||false };
                 gameState.units.push(unit); renderUnit(unit);
+                runDeployEffects(unit);
                 gameState.blueEnergy -= card.cost; updateEnergyDisplay();
                 setTimeout(aiMoveAndAttack, 500); return;
             }
@@ -3601,6 +3887,47 @@ battleDeckGrid.addEventListener('click', (e) => {
 // 卡包标签切换
 cardCollectionTab.addEventListener('click', () => switchTab('collection'));
 battleDeckTab.addEventListener('click', () => switchTab('deck'));
+
+window.addEventListener('resize', () => { if (typeof positionChatMessages === 'function') positionChatMessages(); });
+
+// 聊天消息定位到棋盘右侧
+function positionChatMessages() {
+    const cont = gameBoard.parentElement;
+    const boardRect = gameBoard.getBoundingClientRect();
+    const contRect = cont.getBoundingClientRect();
+    chatMessages.style.left = Math.max(4, (boardRect.right - contRect.left) + 8) + 'px';
+    chatMessages.style.right = 'auto';
+}
+
+// 聊天系统
+const chatBtn = document.getElementById('chatBtn');
+const chatOptions = document.getElementById('chatOptions');
+const chatMessages = document.getElementById('chatMessages');
+let chatLastSend = 0;
+chatBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    chatOptions.classList.toggle('hidden');
+});
+document.querySelectorAll('.chat-option').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        sendChatMessage(btn.dataset.text);
+        chatOptions.classList.add('hidden');
+    });
+});
+function sendChatMessage(text) {
+    const now = Date.now();
+    if (now - chatLastSend < 500) return; // 0.5秒冷却
+    chatLastSend = now;
+    const msg = document.createElement('div');
+    msg.className = 'chat-msg';
+    msg.textContent = text;
+    chatMessages.appendChild(msg);
+    setTimeout(() => {
+        msg.classList.add('chat-msg-out');
+        setTimeout(() => { if (msg.parentNode) msg.parentNode.removeChild(msg); }, 500);
+    }, 1500); // 1.5秒后渐变消失
+}
 
 // 点击页面其他地方关闭卡牌信息面板 + 点击棋盘外空白取消选中
 var outsideClickCancel = () => {

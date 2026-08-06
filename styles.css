@@ -629,14 +629,17 @@ h1 {
 
 /* 大皮卡——🤖 机器人图标 */
 .art-pekka::after {
-    content: '🤖';
+    content: '皮卡';
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(1.5);
+    transform: translate(-50%, -50%) scale(1.3);
     font-size: 12px;
+    font-weight: 900;
     line-height: 1;
-    filter: drop-shadow(1px 0 0 #000) drop-shadow(-1px 0 0 #000) drop-shadow(0 1px 0 #000) drop-shadow(0 -1px 0 #000);
+    white-space: nowrap;
+    text-shadow: 0 0 6px #9b59b6, 0 0 12px rgba(155,89,182,0.9);
+    animation: dragonGlow 1.5s ease-in-out infinite;
 }
 
 /* 典狱长——☠ 骷髅头图标，无圆圈边框，放大 */
@@ -927,14 +930,15 @@ h1 {
 }
 
 .card-artwork.art-pekka::after {
-    content: '🤖';
+    content: '皮卡';
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 24px;
+    font-size: 20px;
+    font-weight: 900;
     line-height: 1;
-    filter: drop-shadow(0 0 1px rgba(0,0,0,0.5));
+    text-shadow: 0 0 6px #9b59b6, 0 0 12px rgba(155,89,182,0.8);
 }
 
 .card-artwork.art-warden::after {
@@ -1654,3 +1658,31 @@ h1 {
 .card-artwork.art-dragon-baby::after { content: '龙宝'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #e74c3c; font-size: 20px; font-weight: 900; line-height: 1; text-shadow: 0 0 6px #9b59b6, 0 0 12px rgba(155,89,182,0.8); }
 @keyframes dragonGlow { 0%, 100% { text-shadow: 0 0 6px #9b59b6, 0 0 12px rgba(155,89,182,0.9); } 50% { text-shadow: 0 0 10px #9b59b6, 0 0 20px rgba(155,89,182,1), 0 0 30px rgba(155,89,182,0.8); } }
 .wind-cover { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, rgba(235,225,255,0.4) 20%, rgba(205,185,255,0.7) 55%, rgba(155,89,182,0.9) 100%); z-index: 1; pointer-events: none; box-shadow: inset 0 0 16px rgba(155,89,182,0.8); animation: shinraPulse 1.5s ease-in-out infinite; }
+.art-erin::after { content: '艾琳'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.3); color: #f1c40f; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 4px rgba(0,0,0,0.6); }
+.card-artwork.art-erin::after { content: '艾琳'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #f1c40f; font-size: 20px; font-weight: 900; line-height: 1; }
+.erin-counter { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); color: #f1c40f; font-size: 10px; font-weight: 900; background: rgba(0,0,0,0.55); border-radius: 6px; padding: 0 3px; z-index: 20; pointer-events: none; white-space: nowrap; }
+.erin-bullet { position: absolute; width: 8px; height: 8px; border-radius: 50%; background: #f1c40f; box-shadow: 0 0 8px #f1c40f, 0 0 16px rgba(241,196,15,0.8); transition: all 0.35s ease-in; z-index: 25; pointer-events: none; }
+.erin-ring { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+.erin-ring::after { content: ''; position: absolute; top: 50%; left: 50%; width: 62%; height: 62%; transform: translate(-50%, -50%); border-radius: 50%; border: 2px solid rgba(241,196,15,0.9); box-shadow: 0 0 6px rgba(241,196,15,0.6); animation: erinRingPulse 1.2s ease-in-out infinite; }
+@keyframes erinRingPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+.game-board-container { position: relative; }
+.chat-wrap { position: relative; }
+.chat-btn { background: #2d3436; border: 1px solid #636e72; color: #fff; border-radius: 8px; padding: 4px 9px; cursor: pointer; font-size: 16px; line-height: 1; }
+.chat-btn:hover { background: #4a5568; }
+.chat-options { position: absolute; right: 0; top: auto; bottom: 36px; background: rgba(28, 32, 38, 0.96); border: 1px solid #636e72; border-radius: 8px; padding: 6px; display: flex; flex-wrap: wrap; gap: 4px; width: 226px; z-index: 60; }
+.chat-options.hidden { display: none; }
+.chat-option { background: #3a4149; color: #eee; border: none; border-radius: 6px; padding: 4px 8px; cursor: pointer; font-size: 12px; }
+.chat-option:hover { background: #57606f; }
+.chat-messages { position: absolute; right: auto; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: flex-start; gap: 6px; z-index: 40; pointer-events: none; max-width: 72px; }
+.chat-msg { background: rgba(28, 32, 38, 0.88); color: #ffd700; border: 1px solid rgba(255, 215, 0, 0.45); border-radius: 8px; padding: 4px 8px; font-size: 12px; white-space: nowrap; animation: chatIn 0.25s ease-out; opacity: 1; transition: opacity 0.5s; }
+.chat-msg-out { opacity: 0; }
+@keyframes chatIn { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
+.art-blowdart::after { content: '吹箭'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.3); color: #2ecc71; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 6px #9b59b6, 0 0 12px rgba(155,89,182,0.9); animation: dragonGlow 1.5s ease-in-out infinite; }
+.card-artwork.art-blowdart::after { content: '吹箭'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #2ecc71; font-size: 20px; font-weight: 900; line-height: 1; text-shadow: 0 0 6px #9b59b6, 0 0 12px rgba(155,89,182,0.8); }
+.poison-badge { position: absolute; bottom: -4px; right: -2px; font-size: 11px; z-index: 15; pointer-events: none; }
+.poison-badge.poison-lv1 { filter: drop-shadow(0 0 4px #2ecc71); }
+.poison-badge.poison-lv2 { filter: drop-shadow(0 0 4px #9b59b6); }
+.poison-badge.poison-lv3 { filter: drop-shadow(0 0 4px #e74c3c); }
+.art-dummy::after { content: '木偶'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.3); color: #1a1a1a; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; }
+.card-artwork.art-dummy::after { content: '木偶'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #1a1a1a; font-size: 20px; font-weight: 900; line-height: 1; }
+.dummy-hp { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.6); color: #fff; font-size: 10px; font-weight: 900; border-radius: 6px; padding: 0 3px; z-index: 20; pointer-events: none; white-space: nowrap; }

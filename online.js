@@ -10,7 +10,13 @@ function connectOnline() {
     document.getElementById('modeSelectScreen').classList.add('hidden');
 }
 
-document.getElementById('onlineBtn').addEventListener('click', connectOnline);
+document.getElementById('onlineBtn').addEventListener('click', () => {
+    if (gameState.battleDeck.some(c => c.trainingOnly)) {
+        alert('出战卡组包含训练木偶，仅可在训练营模式使用，请先在卡组中移除！');
+        return;
+    }
+    connectOnline();
+});
 document.getElementById('lobbyBackBtn').addEventListener('click', () => {
     document.getElementById('lobbyScreen').classList.add('hidden');
     document.getElementById('modeSelectScreen').classList.remove('hidden');

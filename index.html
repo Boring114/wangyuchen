@@ -123,6 +123,7 @@
         <!-- 棋盘 -->
         <div class="game-board-container">
             <div id="gameBoard" class="game-board"></div>
+            <div id="chatMessages" class="chat-messages"></div>
         </div>
 
         <!-- 红方信息栏 -->
@@ -144,6 +145,20 @@
 
         <!-- 底部控制栏 -->
         <div class="bottom-controls">
+            <div class="chat-wrap">
+                <button id="chatBtn" class="chat-btn" title="聊天">💬</button>
+                <div id="chatOptions" class="chat-options hidden">
+                    <button class="chat-option" data-text="打的真好">打的真好</button>
+                    <button class="chat-option" data-text="这不阴啊">这不阴啊</button>
+                    <button class="chat-option" data-text="扫码了">扫码了</button>
+                    <button class="chat-option" data-text="你们爸爸">你们爸爸</button>
+                    <button class="chat-option" data-text="难绷">难绷</button>
+                    <button class="chat-option" data-text="你好">你好</button>
+                    <button class="chat-option" data-text="再见">再见</button>
+                    <button class="chat-option" data-text="咪咪咪">咪咪咪</button>
+                    <button class="chat-option" data-text="嘿嘿嘿哈">嘿嘿嘿哈</button>
+                </div>
+            </div>
             <button id="skipBtn" class="skip-btn">跳过回合</button>
         </div>
     </div>
