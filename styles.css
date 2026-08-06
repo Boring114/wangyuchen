@@ -555,7 +555,9 @@ h1 {
 }
 
 /* ===== 卡牌图画 ===== */
-.art-wither::after { content: '凋零'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #000; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; letter-spacing: -1px; }
+.art-black_zetsu::after { content: '黑绝'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #000; font-size: 14px; font-weight: 900; line-height: 1; white-space: nowrap; }
+.art-tesla::after { content: '电塔'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #2980b9; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; }
+.art-wither::after { content: '凋零'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #000; font-size: 14px; font-weight: 900; line-height: 1; white-space: nowrap; letter-spacing: -1px; }
 .art-black-dot {
     background: #1a1a1a !important;
 }
@@ -1049,7 +1051,7 @@ h1 {
 .art-energy-collector::after { content: '💧'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.4); font-size: 14px; line-height: 1; }
 .card-artwork.art-energy-collector::after { content: '💧'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 28px; line-height: 1; }
 
-/* ===== 英雄卡牌金色背景 ===== */
+/* ===== 金卡金色背景 ===== */
 .card-item.hero {
     background: linear-gradient(145deg, #f9e076, #f1c40f);
     border: 2px solid #d4a017;
@@ -1061,7 +1063,7 @@ h1 {
 .card-item.hero h4 {
     color: #6b4c00;
 }
-/* 英雄卡牌预览圆圈也是金色 */
+/* 金卡预览圆圈也是金色 */
 .card-item.hero .card-artwork {
     border-color: #d4a017;
 }
@@ -1118,7 +1120,7 @@ h1 {
     50% { box-shadow: 0 0 10px 5px rgba(255, 60, 20, 0.9), inset 0 0 6px rgba(255, 60, 20, 0.5); }
 }
 
-/* 英雄登场漂浮文字 */
+/* 金卡登场漂浮文字 */
 .hero-deploy-text {
     position: absolute;
     top: -24px;
@@ -1702,6 +1704,11 @@ h1 {
 @keyframes goldGlow { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
 .block-flash { animation: blockFlash 0.4s linear 2; }
 @keyframes blockFlash { 0%,100% { opacity: 1; } 50% { opacity: 0.15; } }
+.zetsu-possessed { box-shadow: 0 0 10px 3px rgba(0,0,0,0.85), inset 0 0 6px rgba(0,0,0,0.7); }
+.zetsu-revealed { box-shadow: 0 0 18px 6px rgba(0,0,0,1), inset 0 0 10px rgba(0,0,0,0.9); }
+.zetsu-explosion { position: absolute; border-radius: 50%; background: radial-gradient(circle, rgba(0,0,0,0.95) 0%, rgba(30,30,30,0.8) 45%, transparent 72%); box-shadow: 0 0 14px 4px rgba(0,0,0,0.9); z-index: 38; pointer-events: none; animation: zetsuBoomAnim 0.45s ease-out forwards; }
+@keyframes zetsuBoomAnim { 0% { transform: scale(0.3); opacity: 1; } 100% { transform: scale(1.6); opacity: 0; } }
+.tesla-hidden { opacity: 0.35; }
 .withering { box-shadow: inset 0 0 8px rgba(10,10,10,0.95), 0 0 8px rgba(0,0,0,0.85); filter: drop-shadow(0 0 4px #000); }\n.wither-fx { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, rgba(0,0,0,0.75) 0%, rgba(20,10,30,0.55) 55%, transparent 75%); box-shadow: inset 0 0 6px rgba(0,0,0,0.9); z-index: 11; pointer-events: none; animation: witherPulse 0.7s ease-in-out infinite; }\n@keyframes witherPulse { 0%,100% { opacity: 0.85; } 50% { opacity: 0.5; } }
 .god-palm { position: absolute; display: flex; align-items: center; justify-content: center; font-size: 72px; z-index: 35; pointer-events: none; animation: palmPress 3s ease-out; }
 .god-palm-gold { filter: drop-shadow(0 0 14px rgba(241,196,15,0.9)) hue-rotate(-10deg) saturate(1.6); font-size: 80px; }

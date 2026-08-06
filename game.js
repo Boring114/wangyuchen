@@ -156,7 +156,8 @@ const cardLibrary = [
         moveRange: 6,
         attackRange: 3,
         cost: 16,
-        artwork: 'madara',
+        critChance: 0.25,
+    artwork: 'madara',
         description: "普通攻击前方竖向三格，敌人近距离攻击时他自动反击3×3范围内敌军并跃起跳向敌军造成大范围伤害，每次攻击到敌人会积攒能量，能量≥4的时候双击释放技能进入无双状态，额外增加攻击次数和移动距离，5，6能量时无双状态结束后自动释放奥义，召唤陨石砸下伤害大范围敌军。",
         hero: true,
         heroDeployText: '吾不可阻挡！',
@@ -523,6 +524,37 @@ const cardLibrary = [
         splashRadius: 1,
         wither: true,
         description: '空中单位，攻击溅射3×3。命中附加凋零毒（黑色，每回合1伤，不可叠加）。半血后双击进入冲撞模式：12格内选中敌人冲撞造成6伤（冲撞后仍可普攻）。'
+    },
+    {
+        id: 'tesla',
+        name: '特斯拉电磁塔',
+        attack: 3,
+        hp: 5,
+        armor: 0,
+        moveRange: 0,
+        attackRange: 5,
+        cost: 4,
+        artwork: 'tesla',
+        building: true,
+        tesla: true,
+        description: '建筑。攻击范围内没有敌人时缩进地底（图标半透明，敌人无法以它为攻击目标）。'
+    },
+    {
+        id: 'black_zetsu',
+        name: '黑绝',
+        attack: 2,
+        hp: 6,
+        armor: 0,
+        moveRange: 10,
+        attackRange: 2,
+        cost: 14,
+        artwork: 'black_zetsu',
+        hero: true,
+        heroDeployText: '嘿嘿嘿嘿',
+        heroDeployColor: '#000000',
+        heroDeployDuration: 2000,
+        blackZetsu: true,
+        description: '可附身队友（点击友方单位部署附身）：队友获得暴击+20%、攻击+1（每段伤害+1）、生命+2、移动+3。队友一回合移动超5格黑绝显现并承受伤害；队友死亡黑绝回归本体。双击本体：跳向6格内敌人爆炸3伤（无溅射），爆炸后留在敌人旁边。'
     }
 ];
 
@@ -696,6 +728,21 @@ function handleCellClick(e) {
     const row = parseInt(cell.dataset.row);
     const col = parseInt(cell.dataset.col);
     
+    // 黑绝技能模式：选择6格内敌人，点其他处取消
+    if (gameState.selectedUnit && gameState.selectedUnit.blackZetsu && gameState.selectedUnit._zetsuTargeting) {
+        const tCellUnit = gameState.units.find(u => u.row === row && u.col === col);
+        if (tCellUnit && tCellUnit.team !== gameState.selectedUnit.team && !tCellUnit.ghost) {
+            const d = Math.abs(tCellUnit.row - gameState.selectedUnit.row) + Math.abs(tCellUnit.col - gameState.selectedUnit.col);
+            if (d <= 6) {
+                zetsuJumpAttack(gameState.selectedUnit, tCellUnit);
+                return;
+            }
+        }
+        gameState.selectedUnit._zetsuTargeting = false;
+        clearHighlights();
+        gameState.selectedUnit = null;
+        return;
+    }
     // 凋零冲撞模式：选择12格内敌人，点其他处取消
     if (gameState.selectedUnit && gameState.selectedUnit.wither && gameState.selectedUnit._witherTargeting) {
         const tCellUnit = gameState.units.find(u => u.row === row && u.col === col);
@@ -787,6 +834,12 @@ function handleCellClick(e) {
             gameState.selectedUnit = null;
             return;
         }
+        // 黑绝附身：点击友方单位弹出部署框（黑绝在手牌且能量够），关闭后正常选中
+        if ((gameState.currentTurn === 'red' || gameState.maxEnergy >= 500) && gameState.battleDeck.some(c => c.blackZetsu) && !clickedUnit._possessed && clickedUnit !== gameState.selectedUnit && (gameState.currentTurn === 'red' ? gameState.redEnergy : gameState.blueEnergy) >= 14) {
+            openDeployModal(row, col);
+            gameState.selectedUnit = clickedUnit;
+            return;
+        }
         // 冰冻/定身单位双击不能使用技能和查克拉
         if (clickedUnit.frozen || clickedUnit.stunned) {
             clearHighlights();
@@ -837,6 +890,12 @@ function handleCellClick(e) {
         // 查克拉：马斑/植物人能量<4时双击获得2格能量（佩恩在activatePainAbility内处理）
         if ((clickedUnit.madaraMaxEnergy || clickedUnit.hashiMaxEnergy) && clickedUnit === gameState.selectedUnit && ((clickedUnit.madaraEnergy || clickedUnit.hashiEnergy || 0)) < 4 && !clickedUnit.chakraCd) {
             activateChakra(clickedUnit);
+            return;
+        }
+        // 黑绝技能：双击进入跳跃爆炸模式（6格，一回合一次）
+        if (clickedUnit.blackZetsu && clickedUnit === gameState.selectedUnit && !clickedUnit._zetsuSkillUsed && !clickedUnit._zetsuTargeting) {
+            clickedUnit._zetsuTargeting = true;
+            enterZetsuSkillMode(clickedUnit);
             return;
         }
         // 凋零：半血以下双击进入冲撞模式（12格）
@@ -972,7 +1031,7 @@ function showAttackableTargets(unit) {
                 const distance = Math.abs(dr) + Math.abs(dc);
                 if (distance > 0 && distance <= attackRange) {
                     const targetUnit = gameState.units.find(u => u.row === newRow && u.col === newCol);
-                    if (targetUnit && targetUnit.team !== unit.team && !targetUnit.ghost) {
+                    if (targetUnit && targetUnit.team !== unit.team && !targetUnit.ghost && !targetUnit.teslaHidden) {
                         // 空军只能被特定兵种攻击
                         if (targetUnit.flying) {
                             if (!canHitAirUnit(unit)) continue;
@@ -1231,7 +1290,7 @@ function activateHashiramaSkill(unit) {
                     if (u.currentHp <= 0) removeUnit(u);
                 }
             });
-        }, 3000 + hit * 400);
+        }, 1500 + hit * 400);
     }
     unit.hashiEnergy = 0;
     renderEnergyBar(unit, gameState.board[unit.row][unit.col].querySelector('.unit'));
@@ -1512,9 +1571,9 @@ function showMissile(m) {
     }
 }
 
-// 部署生效效果：英雄台词/沙尘暴/召唤类（玩家与AI共用）
+// 部署生效效果：金卡台词/沙尘暴/召唤类（玩家与AI共用）
 function runDeployEffects(unit) {
-    // 英雄登场特效
+    // 金卡登场特效
     if (unit.hero) {
         showHeroDeployText(unit, unit.heroDeployText, unit.heroDeployColor, unit.heroDeployDuration);
     }
@@ -1588,6 +1647,17 @@ function deployUnit(row, col) {
     }
     const unitAtPos = gameState.units.find(u => u.row === row && u.col === col);
     if (unitAtPos) {
+        // 黑绝附身：目标格有己方单位 → 附身（不部署本体）
+        if (card.blackZetsu && unitAtPos.team === gameState.currentTurn && !unitAtPos._possessed && !unitAtPos.blackZetsu) {
+            const curE = gameState.currentTurn === 'red' ? gameState.redEnergy : gameState.blueEnergy;
+            if (curE < card.cost) { alert('能量不足！'); return; }
+            if (gameState.currentTurn === 'red') gameState.redEnergy -= card.cost; else gameState.blueEnergy -= card.cost;
+            updateEnergyDisplay();
+            possessUnit(card, unitAtPos);
+            // 附身后清除选中，避免下次点击被判定为双击触发技能
+            gameState.selectedUnit = null;
+            return;
+        }
         alert('该位置已有单位！');
         return;
     }
@@ -1680,6 +1750,8 @@ function deployUnit(row, col) {
         chainDamage: card.chainDamage || 0,
         electricHit: [],
         building: card.building || false,
+        tesla: card.tesla || false,
+        blackZetsu: card.blackZetsu || false,
         miner: card.miner || false,
         deployEffect: card.deployEffect || false,
         flying: card.flying || false,
@@ -1785,6 +1857,13 @@ function moveUnit(row, col) {
         newCell.appendChild(unitElement);
     }
     
+    // 黑绝显现：附身队友一回合移动超5格（光晕加重，承受伤害）
+    if (unit._possessed && unit.zetsu && !unit.zetsu.revealed && (gameState.moveUsed[unit.id] || 0) > 5) {
+        unit.zetsu.revealed = true;
+        const uel2 = newCell.querySelector('.unit');
+        if (uel2) uel2.classList.add('zetsu-revealed');
+    }
+    
     // 更新烟雾可见性
     updateSmokeVisibility();
     
@@ -1798,6 +1877,8 @@ function moveUnit(row, col) {
 // 攻击单位
 function attackUnit(target) {
     if (!gameState.selectedUnit) return;
+    // 缩进地底的特斯拉电磁塔不可被攻击
+    if (target.teslaHidden) return;
     
     const attacker = gameState.selectedUnit;
     let lastDamage = 0;
@@ -2003,6 +2084,16 @@ function attackUnit(target) {
     }
     // 阴兵无敌：免疫所有伤害
     if (target.ghost) actualDamage = 0;
+    // 黑绝显现：敌方对该队友的攻击由黑绝承受
+    if (target._possessed && target.zetsu && target.zetsu.revealed && actualDamage > 0) {
+        target.zetsu.currentHp -= actualDamage;
+        showCritText(target.row, target.col, '黑绝承受');
+        if (target.zetsu.currentHp <= 0) {
+            releaseZetsu(target);
+            showHeroDeployText(target, '黑绝消亡！', '#000', 1500);
+        }
+        actualDamage = 0;
+    }
     target.currentHp -= actualDamage;
     // 觉醒吹箭哥布林：命中附加中毒（连续命中升级）
     if (attacker.blowdart) {
@@ -2517,6 +2608,15 @@ function removeUnit(unit) {
         unit.currentHp = unit.maxHp;
         return;
     }
+    // 黑绝：队友死亡，黑绝回归本体（保留附身时血量）
+    if (unit._possessed && unit.zetsu) {
+        const z = unit.zetsu;
+        const zUnit = { id: 'black_zetsu_' + Date.now() + '_' + Math.random(), cardId: 'black_zetsu', name: '黑绝', attack: 2, maxHp: 6, currentHp: Math.max(1, z.currentHp), armor: 0, moveRange: 10, attackRange: 2, artwork: 'black_zetsu', team: unit.team, row: unit.row, col: unit.col, blackZetsu: true };
+        gameState.units.push(zUnit);
+        renderUnit(zUnit);
+
+        releaseZetsu(unit);
+    }
     // 条子：警车被摧毁时，车内警察全部出来（不再回警车，独立行动）
     if (unit.copSpawn && unit.copHps) {
         var dirs = [[-1,-1],[-1,1],[1,-1],[1,1]];
@@ -2651,10 +2751,15 @@ function renderUnit(unit) {
     if (unit.frozen) updateFrozenVisual(unit);
     if (unit.burnTurns > 0) updateBurnVisual(unit);
     if (unit.witherTurns > 0) updateWitherVisual(unit);
+    if (unit.teslaHidden) unitElement.classList.add('tesla-hidden');
+    if (unit._possessed) {
+        unitElement.classList.add('zetsu-possessed');
+        if (unit.zetsu && unit.zetsu.revealed) unitElement.classList.add('zetsu-revealed');
+    }
     updateSmokeVisibility();
 }
 
-// 英雄登场漂浮文字
+// 金卡登场漂浮文字
 function showHeroDeployText(unit, message, color, duration) {
     const cell = gameState.board[unit.row][unit.col];
     const text = document.createElement('div');
@@ -2786,6 +2891,120 @@ function updateBurnVisual(unit) {
     } else {
         unitEl.classList.remove('burning');
     }
+}
+
+// ===== 黑绝机制 =====
+// 附身：加成队友
+function possessUnit(card, host) {
+    host._possessed = true;
+    host.zetsu = { currentHp: 6, maxHp: 6, revealed: false };
+    host.attack = (host.attack || 0) + 1;
+    host.critChance = (host.critChance || 0) + 0.2;
+    host.maxHp = (host.maxHp || 1) + 2;
+    host.currentHp = (host.currentHp || 0) + 2;
+    host.moveRange = (host.moveRange || 0) + 3;
+    updateUnitHp(host);
+    const el = gameState.board[host.row][host.col].querySelector('.unit');
+    if (el) el.classList.add('zetsu-possessed');
+    showHeroDeployText(host, '黑绝附身', '#000', 1200);
+}
+// 收回附身加成
+function releaseZetsu(unit) {
+    if (!unit._possessed || !unit.zetsu) return;
+    unit.attack = Math.max(0, (unit.attack || 0) - 1);
+    unit.critChance = Math.max(0, (unit.critChance || 0) - 0.2);
+    unit.maxHp = Math.max(1, (unit.maxHp || 1) - 2);
+    unit.currentHp = Math.min(unit.currentHp, unit.maxHp);
+    unit.moveRange = Math.max(0, (unit.moveRange || 0) - 3);
+    unit._possessed = false;
+    unit.zetsu = null;
+    updateUnitHp(unit);
+    const el = gameState.board[unit.row][unit.col].querySelector('.unit');
+    if (el) { el.classList.remove('zetsu-possessed', 'zetsu-revealed'); }
+}
+// 黑绝技能：6格内敌人标红
+function enterZetsuSkillMode(unit) {
+    clearHighlights();
+    gameState.units.forEach(u => {
+        if (u.team === unit.team || u.ghost) return;
+        const d = Math.abs(u.row - unit.row) + Math.abs(u.col - unit.col);
+        if (d <= 6) gameState.board[u.row][u.col].classList.add('tank-target');
+    });
+}
+// 黑绝跳跃爆炸：跳过去→爆炸3伤（无溅射）→留在敌人旁边
+function zetsuJumpAttack(unit, target) {
+    unit._zetsuTargeting = false;
+    unit._zetsuSkillUsed = true;
+    clearHighlights();
+    gameState.selectedUnit = null;
+    const board = document.getElementById('gameBoard');
+    const cell = gameState.board[unit.row][unit.col];
+    const el = cell.querySelector('.unit');
+    const fromR = unit.row, fromC = unit.col;
+    if (!el) {
+        unit.row = target.row; unit.col = target.col;
+        renderUnit(unit);
+        zetsuBoom(unit, target);
+        return;
+    }
+    cell.removeChild(el);
+    el.style.position = 'absolute';
+    el.style.left = (fromC * cellW) + 'px';
+    el.style.top = (fromR * cellH) + 'px';
+    el.style.transition = 'left 0.4s ease-in, top 0.4s ease-in';
+    el.style.zIndex = '40';
+    el.style.pointerEvents = 'none';
+    board.appendChild(el);
+    requestAnimationFrame(() => {
+        el.style.left = (target.col * cellW) + 'px';
+        el.style.top = (target.row * cellH) + 'px';
+    });
+    // 跳到敌人身上（0.4s动画）→ 停留1.5秒 → 爆炸 → 从敌人身上落下到旁边
+    setTimeout(() => {
+        // 停留 1.5 秒（黑绝踩在敌人身上）
+        setTimeout(() => {
+            zetsuBoom(unit, target);
+            // 落点：目标死亡占目标格，否则敌人旁最近空位
+            let landR = target.row, landC = target.col;
+            if (target.currentHp > 0) {
+                let found = false;
+                for (let rr = 1; rr <= 3 && !found; rr++) {
+                    for (let dr2 = -rr; dr2 <= rr && !found; dr2++) {
+                        for (let dc2 = -rr; dc2 <= rr && !found; dc2++) {
+                            if (Math.max(Math.abs(dr2), Math.abs(dc2)) !== rr) continue;
+                            const lr = target.row + dr2, lc = target.col + dc2;
+                            if (!isValidPosition(lr, lc)) continue;
+                            if (gameState.units.some(u => u.id !== unit.id && u.row === lr && u.col === lc)) continue;
+                            if (isBlueBase(lr, lc) || isRedBase(lr, lc)) continue;
+                            landR = lr; landC = lc; found = true;
+                        }
+                    }
+                }
+            }
+            unit.row = landR; unit.col = landC;
+            el.style.cssText = '';
+            if (el.parentNode) el.parentNode.removeChild(el);
+            const ncell = gameState.board[unit.row][unit.col];
+            ncell.appendChild(el);
+            renderUnit(unit);
+        }, 1500);
+    }, 400);
+}
+// 黑绝爆炸：黑色特效 + 3伤（无溅射）
+function zetsuBoom(unit, target) {
+    if (!target || target._removing || target.ghost) return;
+    const board = document.getElementById('gameBoard');
+    const boom = document.createElement('div');
+    boom.className = 'zetsu-explosion';
+    boom.style.left = (target.col * cellW) + 'px';
+    boom.style.top = (target.row * cellH) + 'px';
+    boom.style.width = cellW + 'px';
+    boom.style.height = cellH + 'px';
+    board.appendChild(boom);
+    setTimeout(() => boom.remove(), 500);
+    target.currentHp -= 3;
+    updateUnitHp(target);
+    if (target.currentHp <= 0) removeUnit(target);
 }
 
 // 凋零毒：黑色毒雾（每回合1伤，不可叠加）
@@ -3842,7 +4061,7 @@ function endTurn() {
     gameState.selectedUnit = null;
     gameState.deployMode = false;
     // 战车：结束回合重置锁定模式
-    gameState.units.forEach(u => { u._targeting = false; u._witherTargeting = false; u._witherCharged = false; });
+    gameState.units.forEach(u => { u._targeting = false; u._witherTargeting = false; u._witherCharged = false; u._zetsuSkillUsed = false; u._zetsuTargeting = false; });
     
     const prevTurn = gameState.currentTurn;
     
@@ -3861,12 +4080,31 @@ function endTurn() {
         gameState.redEnergy = Math.min(gameState.redEnergy + redBoost, gameState.maxEnergy);
     }
     
+    // 黑绝显现持续到敌方回合结束：敌方回合结束（轮到己方回合）时解除显现
+    gameState.units.forEach(u => {
+        if (u._possessed && u.zetsu && u.zetsu.revealed && u.team === gameState.currentTurn) {
+            u.zetsu.revealed = false;
+            const uel3 = gameState.board[u.row][u.col].querySelector('.unit');
+            if (uel3) uel3.classList.remove('zetsu-revealed');
+        }
+    });
+    
     // 凋零：己方回合开始回1血（敌方回合不回）
     gameState.units.forEach(u => {
         if (u.wither && u.team === gameState.currentTurn && u.currentHp < (u.maxHp || 8)) {
             u.currentHp = Math.min(u.maxHp || 8, u.currentHp + 1);
             updateUnitHp(u);
             showCritText(u.row, u.col, '回血');
+        }
+    });
+    
+    // 特斯拉电磁塔：攻击范围内无敌人则缩进地底（半透明，不可被攻击）
+    gameState.units.forEach(u => {
+        if (u.tesla) {
+            const hasEnemy = gameState.units.some(e => e.team !== u.team && !e.ghost && (Math.abs(e.row - u.row) + Math.abs(e.col - u.col)) <= (u.attackRange || 5));
+            u.teslaHidden = !hasEnemy;
+            const telEl = gameState.board[u.row] ? gameState.board[u.row][u.col].querySelector('.unit') : null;
+            if (telEl) telEl.classList.toggle('tesla-hidden', u.teslaHidden);
         }
     });
     
@@ -4152,10 +4390,14 @@ function updateDeployModalCards() {
     
     // 敌方半场只显示矿工
     const targetRow = gameState.deployTargetRow;
+    const targetCol = gameState.deployTargetCol;
     const isEnemyHalf = (gameState.currentTurn === 'red' && targetRow <= 13) || (gameState.currentTurn === 'blue' && targetRow >= 14);
     
     gameState.battleDeck.forEach((card, index) => {
         if (isEnemyHalf && !card.miner) return;
+        // 目标格有友方单位：只显示黑绝（附身用）
+        const targetHasUnit = gameState.units.some(u => u.row === targetRow && u.col === targetCol);
+        if (targetHasUnit && !card.blackZetsu) return;
         const cardElement = document.createElement('div');
         cardElement.className = `battle-deck-card ${currentEnergy < card.cost ? 'disabled' : ''}`;
         cardElement.dataset.index = index;
@@ -4273,7 +4515,7 @@ function showCardInfo(card) {
     if (card.madaraMaxEnergy) features.push(`能量${card.madaraMaxEnergy}格→天下无双/陨石`);
     if (card.kaiShurikenRange) features.push(`双攻/飞镖弹射${card.kaiShurikenMax}人+回血`);
     if (card.lineAttack) features.push(`直线3列射击/闪电链${card.chainDamage}伤`);
-    if (card.hero) features.push('英雄');
+    if (card.hero) features.push('金卡');
     if (card.firstStrike) features.push('首击强制剩1血');
     if (card.tankSpawn) features.push('召唤战车×2（攻3/护甲2/血4，限老太周围4格）');
     if (card.erin) features.push('双发连击/黄圈/计数技能/保命装');
@@ -4301,6 +4543,11 @@ function showCardInfo(card) {
 
 // 显示单位信息（双击棋盘上的单位）
 function showUnitInfo(unit) {
+    // 查看信息不残留选中（防止关闭信息框后再点击被误判为双击触发技能）
+    if (gameState.selectedUnit) {
+        clearHighlights();
+        gameState.selectedUnit = null;
+    }
     const used = gameState.moveUsed[unit.id] || 0;
     const windMod = getWindMoveMod(unit) + (unit.erinMoveBonus||0);
     const remaining = Math.max(0, unit.moveRange - used + windMod);
@@ -4539,11 +4786,22 @@ function aiTurn() {
     const deployable = aiDeck.filter(c => c.cost <= energy && aiUnits.filter(u => u.cardId === c.id).length < 2);
     if (deployable.length > 0) {
         const card = deployable[Math.floor(Math.random() * deployable.length)];
+        // 蓝方黑绝：优先附身己方未附身单位（无目标则正常部署本体）
+        if (card.blackZetsu) {
+            const hosts = gameState.units.filter(u => u.team === 'blue' && !u._possessed && !u.blackZetsu);
+            if (hosts.length > 0) {
+                const host = hosts[Math.floor(Math.random() * hosts.length)];
+                gameState.blueEnergy -= card.cost; updateEnergyDisplay();
+                possessUnit(card, host);
+                setTimeout(aiMoveAndAttack, 500);
+                return;
+            }
+        }
         for (let row = 14; row >= 3; row--) {
             for (let col = 10; col <= 19; col++) {
                 if (gameState.units.some(u => u.row === row && u.col === col)) continue;
                 if (isBlueBase(row, col) || isRedBase(row, col)) continue;
-                const unit = { id: card.id+'_'+Date.now(), cardId: card.id, name: card.name, attack: card.attack, maxHp: card.hp, currentHp: card.hp, moveRange: card.moveRange, attackRange: card.attackRange, artwork: card.artwork, armor: card.armor||0, team: 'blue', row, col, flying: card.flying||false, meleeAttack: card.meleeAttack||0, meleeRange: card.meleeRange||0, armorPen: card.armorPen||0, critChance: card.critChance||0, dodge: card.dodge||false, counterAttack: card.counterAttack||0, summon: card.summon||false, summonGuardType: card.summonGuardType||'', tankSpawn: card.tankSpawn||false, leisiSpawn: card.leisiSpawn||false, copSpawn: card.copSpawn||false, windForm: card.windForm||false, splashRadius: card.splashRadius||0, deployEffect: card.deployEffect||false, hero: card.hero||false, heroDeployText: card.heroDeployText||'', heroDeployColor: card.heroDeployColor||'', heroDeployDuration: card.heroDeployDuration||3500, chargeMove: card.chargeMove||0, chargeDamage: card.chargeDamage||0, erin: card.erin||false, pekkaHeal: card.pekkaHeal||false, blowdart: card.blowdart||false, hashirama: card.hashirama||false, hashiMaxEnergy: card.hashiMaxEnergy||0, skullArmy: card.skullArmy||false,wither: card.wither||false };
+                const unit = { id: card.id+'_'+Date.now(), cardId: card.id, name: card.name, attack: card.attack, maxHp: card.hp, currentHp: card.hp, moveRange: card.moveRange, attackRange: card.attackRange, artwork: card.artwork, armor: card.armor||0, team: 'blue', row, col, flying: card.flying||false, meleeAttack: card.meleeAttack||0, meleeRange: card.meleeRange||0, armorPen: card.armorPen||0, critChance: card.critChance||0, dodge: card.dodge||false, counterAttack: card.counterAttack||0, summon: card.summon||false, summonGuardType: card.summonGuardType||'', tankSpawn: card.tankSpawn||false, leisiSpawn: card.leisiSpawn||false, copSpawn: card.copSpawn||false, windForm: card.windForm||false, splashRadius: card.splashRadius||0, deployEffect: card.deployEffect||false, hero: card.hero||false, heroDeployText: card.heroDeployText||'', heroDeployColor: card.heroDeployColor||'', heroDeployDuration: card.heroDeployDuration||3500, chargeMove: card.chargeMove||0, chargeDamage: card.chargeDamage||0, erin: card.erin||false, pekkaHeal: card.pekkaHeal||false, blowdart: card.blowdart||false, hashirama: card.hashirama||false, hashiMaxEnergy: card.hashiMaxEnergy||0, skullArmy: card.skullArmy||false,wither: card.wither||false,tesla: card.tesla||false,blackZetsu: card.blackZetsu||false };
                 gameState.units.push(unit); renderUnit(unit);
                 runDeployEffects(unit);
                 gameState.blueEnergy -= card.cost; updateEnergyDisplay();
@@ -4564,6 +4822,7 @@ function aiMoveAndAttack() {
         let nearest = null, minD = Infinity;
         gameState.units.filter(e => e.team === 'red').forEach(e => {
             if (e.flying && !canHitAirUnit(u)) return;
+            if (e.teslaHidden) return;
             const d = Math.max(Math.abs(e.row-u.row), Math.abs(e.col-u.col));
             if (d <= atkRng && d < minD) { nearest = e; minD = d; }
         });
@@ -4594,6 +4853,7 @@ function aiMoveAndAttack() {
         let closestEnemy = null, cDist = Infinity;
         gameState.units.filter(e => e.team === 'red').forEach(e => {
             if (e.flying && !canHitAirUnit(u)) return;
+            if (e.teslaHidden) return;
             const d = Math.max(Math.abs(e.row-u.row), Math.abs(e.col-u.col));
             if (d < cDist) { closestEnemy = e; cDist = d; }
         });
@@ -4621,6 +4881,7 @@ function aiMoveAndAttack() {
             let pn = null, pm = Infinity;
             gameState.units.filter(e => e.team === 'red').forEach(e => {
                 if (e.flying && !canHitAirUnit(u)) return;
+                if (e.teslaHidden) return;
                 const d = Math.max(Math.abs(e.row-u.row), Math.abs(e.col-u.col));
                 if (d <= atkRng && d < pm) { pn = e; pm = d; }
             });
