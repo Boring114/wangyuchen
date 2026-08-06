@@ -916,6 +916,12 @@ function showMovableRange(unit) {
     }
 }
 
+// 对空判定：飞行单位恒可对空；白名单含植物人（骷髅军团不在白名单，不能对空）
+function canHitAirUnit(unit) {
+    if (unit.flying) return true;
+    return ['musketeer','saeed','warden_gherros','cattail','electric_pea','reynolds','pain_tendo','lightning_dragon','asala_flamer','gale','demulan','hashirama'].includes(unit.cardId);
+}
+
 // 显示可攻击目标
 function showAttackableTargets(unit) {
     const { row, col } = unit;
@@ -933,8 +939,7 @@ function showAttackableTargets(unit) {
                     if (targetUnit && targetUnit.team !== unit.team && !targetUnit.ghost) {
                         // 空军只能被特定兵种攻击
                         if (targetUnit.flying) {
-                            const canHitAir = ['musketeer','saeed','warden_gherros','cattail','electric_pea','reynolds','pain_tendo','lightning_dragon','asala_flamer','gale','demulan'];
-                            if (!canHitAir.includes(unit.cardId) && !unit.flying) continue;
+                            if (!canHitAirUnit(unit)) continue;
                         }
                         // 电大只能攻击前方3列
                         if (unit.lineAttack) {
@@ -4374,6 +4379,7 @@ function aiMoveAndAttack() {
         // 1. 攻击范围内敌方单位
         let nearest = null, minD = Infinity;
         gameState.units.filter(e => e.team === 'red').forEach(e => {
+            if (e.flying && !canHitAirUnit(u)) return;
             const d = Math.max(Math.abs(e.row-u.row), Math.abs(e.col-u.col));
             if (d <= atkRng && d < minD) { nearest = e; minD = d; }
         });
@@ -4403,6 +4409,7 @@ function aiMoveAndAttack() {
         let targetR = 26, targetC = 11;
         let closestEnemy = null, cDist = Infinity;
         gameState.units.filter(e => e.team === 'red').forEach(e => {
+            if (e.flying && !canHitAirUnit(u)) return;
             const d = Math.max(Math.abs(e.row-u.row), Math.abs(e.col-u.col));
             if (d < cDist) { closestEnemy = e; cDist = d; }
         });
@@ -4429,6 +4436,7 @@ function aiMoveAndAttack() {
             // 移动后检测能否攻击
             let pn = null, pm = Infinity;
             gameState.units.filter(e => e.team === 'red').forEach(e => {
+                if (e.flying && !canHitAirUnit(u)) return;
                 const d = Math.max(Math.abs(e.row-u.row), Math.abs(e.col-u.col));
                 if (d <= atkRng && d < pm) { pn = e; pm = d; }
             });
