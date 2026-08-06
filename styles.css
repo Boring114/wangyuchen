@@ -1134,7 +1134,7 @@ h1 {
 }
 
 @keyframes heroFloat {
-    0%, 71% { opacity: 1; transform: translateX(-50%) translateY(0); }
+    0%, 88% { opacity: 1; transform: translateX(-50%) translateY(0); }
     100% { opacity: 0; transform: translateX(-50%) translateY(-15px); }
 }
 
@@ -1686,3 +1686,38 @@ h1 {
 .art-dummy::after { content: '木偶'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.3); color: #1a1a1a; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; }
 .card-artwork.art-dummy::after { content: '木偶'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #1a1a1a; font-size: 20px; font-weight: 900; line-height: 1; }
 .dummy-hp { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.6); color: #fff; font-size: 10px; font-weight: 900; border-radius: 6px; padding: 0 3px; z-index: 20; pointer-events: none; white-space: nowrap; }
+.art-hashirama::after { content: '植物人'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #145a32; font-size: 11px; font-weight: 900; line-height: 1; white-space: nowrap; }
+.card-artwork.art-hashirama::after { content: '植物人'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #145a32; font-size: 16px; font-weight: 900; line-height: 1; }
+.wood-golem { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #8b5a2b; font-size: 14px; font-weight: 900; background: rgba(139,90,43,0.35); border-radius: 50%; z-index: 12; pointer-events: none; }
+.golden-dragon { position: absolute; width: 100px; height: 100px; border-radius: 50%; background: conic-gradient(from 0deg, rgba(255,215,0,0.95) 0deg, rgba(255,215,0,0.65) 100deg, rgba(255,215,0,0.38) 200deg, rgba(255,215,0,0.15) 300deg, rgba(255,215,0,0.05) 348deg, rgba(255,215,0,0.95) 360deg); -webkit-mask: radial-gradient(circle, transparent 44%, #000 45%); mask: radial-gradient(circle, transparent 44%, #000 45%); filter: drop-shadow(0 0 6px rgba(255,215,0,0.8)); z-index: 30; pointer-events: none; animation: dragonSpin 1.8s linear 1; }
+.golden-dragon::before { content: ''; position: absolute; top: -7px; left: 50%; width: 22px; height: 22px; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(circle, #fff8c4 0%, #ffd700 45%, #f1c40f 80%, rgba(241,196,15,0.95) 100%); box-shadow: 0 0 16px #ffd700, 0 0 32px rgba(255,215,0,0.9); z-index: 31; }
+@keyframes dragonSpin { from { transform: rotate(0deg); } to { transform: rotate(720deg); } }
+.blue-pillar { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(52,152,219,0.5); box-shadow: inset 0 0 12px rgba(41,128,185,0.9); z-index: 11; pointer-events: none; animation: pillarPulse 0.5s ease-in-out infinite; }
+@keyframes pillarPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+.tree-effect { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 26px; z-index: 14; pointer-events: none; filter: drop-shadow(0 0 8px rgba(139,90,43,0.9)); animation: treeGrow 0.4s ease-out; }
+@keyframes treeGrow { from { transform: translate(-50%, -50%) scale(0.3); } to { transform: translate(-50%, -50%) scale(1.3); } }
+.buddha-brown { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #5d3a1a; font-size: 16px; font-weight: 900; background: rgba(139,90,43,0.45); z-index: 13; pointer-events: none; }
+.buddha-gold { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #b7950b; font-size: 16px; font-weight: 900; background: rgba(241,196,15,0.45); box-shadow: inset 0 0 14px rgba(241,196,15,0.9); z-index: 13; pointer-events: none; animation: goldGlow 0.5s ease-in-out infinite; }
+@keyframes goldGlow { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+.block-flash { animation: blockFlash 0.4s linear 2; }
+@keyframes blockFlash { 0%,100% { opacity: 1; } 50% { opacity: 0.15; } }
+.god-palm { position: absolute; display: flex; align-items: center; justify-content: center; font-size: 72px; z-index: 35; pointer-events: none; animation: palmPress 3s ease-out; }
+.god-palm-gold { filter: drop-shadow(0 0 14px rgba(241,196,15,0.9)) hue-rotate(-10deg) saturate(1.6); font-size: 80px; }
+@keyframes palmPress { from { transform: translateY(-70px); opacity: 0.3; } to { transform: translateY(0); opacity: 1; } }
+@keyframes palmHold { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(2px); } }
+.bound-glow { box-shadow: 0 0 16px rgba(139,90,43,1), 0 0 30px rgba(139,90,43,0.8), inset 0 0 14px rgba(139,90,43,0.75); }
+@keyframes treeBoundSway { 0%, 100% { transform: translate(-50%, -50%) rotate(-4deg); } 50% { transform: translate(-50%, -50%) rotate(4deg); } }
+.gold-pollen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, rgba(255,215,0,0.5) 0%, rgba(255,215,0,0.15) 60%, transparent 75%); box-shadow: inset 0 0 10px rgba(255,215,0,0.6); z-index: 11; pointer-events: none; animation: pollenFloat 0.8s ease-in-out infinite; }
+@keyframes pollenFloat { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+.dragon-flight { position: absolute; border-radius: 10px; box-shadow: 0 0 14px rgba(255,215,0,0.7); z-index: 30; pointer-events: none; opacity: 1; transition: top 0.9s ease-out, opacity 0.35s ease-out; }
+.art-skull-army::after { content: '骷髅海'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #1a1a1a; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 6px #9b59b6, 0 0 12px rgba(155,89,182,0.9); animation: dragonGlow 1.5s ease-in-out infinite; }
+.card-artwork.art-skull-army::after { content: '骷髅海'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #1a1a1a; font-size: 16px; font-weight: 900; line-height: 1; text-shadow: 0 0 6px #9b59b6, 0 0 12px rgba(155,89,182,0.8); }
+.art-skull-soldier::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 6px; height: 6px; border-radius: 50%; background: #1a1a1a; box-shadow: 0 0 2px rgba(0,0,0,0.8); }
+.skull-ghost { opacity: 0.45; filter: drop-shadow(0 0 5px #b39ddb); }
+.skull-shield { box-shadow: 0 0 10px rgba(179,157,219,0.9), inset 0 0 6px rgba(179,157,219,0.6); }
+.skull-shield::before { content: '🛡'; position: absolute; top: -8px; right: -4px; font-size: 10px; z-index: 16; }
+.tank-target { box-shadow: 0 0 8px #e74c3c, inset 0 0 8px rgba(231,76,60,0.6); }
+.missile-smoke { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,215,0,0.35); box-shadow: inset 0 0 8px rgba(255,215,0,0.55); z-index: 11; pointer-events: none; animation: smokePuff 1s ease-in-out infinite; }
+@keyframes smokePuff { 0%, 100% { opacity: 1; } 50% { opacity: 0.65; } }
+.missile-hit { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, #c0392b, #e74c3c); border-radius: 4px; box-shadow: 0 0 14px rgba(231,76,60,0.9); z-index: 25; pointer-events: none; animation: missileFall 0.5s ease-in; }
+@keyframes missileFall { from { transform: translateY(-120%) scaleY(0.4); opacity: 0.5; } to { transform: translateY(0) scaleY(1); opacity: 1; } }

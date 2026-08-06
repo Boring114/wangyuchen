@@ -11,6 +11,10 @@ function connectOnline() {
 }
 
 document.getElementById('onlineBtn').addEventListener('click', () => {
+    if (gameState.battleDeck.length < 10) {
+        alert('联机对战需要携带至少10张卡牌才能开局，请先在卡包中添加卡牌！');
+        return;
+    }
     if (gameState.battleDeck.some(c => c.trainingOnly)) {
         alert('出战卡组包含训练木偶，仅可在训练营模式使用，请先在卡组中移除！');
         return;
