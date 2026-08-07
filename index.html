@@ -16,6 +16,7 @@
         <div class="buttons">
             <button id="startBtn">开始游戏</button>
             <button id="cardPackBtn">卡包</button>
+            <button id="howToBtn">玩法介绍</button>
         </div>
     </div>
 
@@ -26,8 +27,28 @@
             <button id="trainingBtn">训练营</button>
             <button id="aiBattleBtn">人机对战</button>
             <button id="onlineBtn">联机对战</button>
-        </div>
+                    </div>
         <button id="modeBackBtn" class="back-btn-mode">返回</button>
+    </div>
+
+    <!-- 玩法介绍 -->
+    <div id="howToScreen" class="screen hidden">
+        <h1>游戏玩法介绍</h1>
+        <div class="howto-content">
+            <h3>🏰 基本规则</h3>
+            <p>红方在下方、蓝方在上方，摧毁对方大本营即可获胜。每回合自动获得能量，消耗能量部署卡牌作战。</p>
+            <h3>🃏 卡牌与部署</h3>
+            <p>点击己方半场的空白格，选择卡牌部署。普通单位攻击距离内可攻击；选中单位后可移动+攻击。</p>
+            <h3>⚡ 技能（双击）</h3>
+            <p>很多卡牌双击可释放技能：佩恩/马斑/植物人的大招、疾风的风场、条子的包围、艾琳的黄圈、镜的镜像法阵、解斑的木龙/火遁/须佐等。部分单位有能量条（命中敌人攒能量，满能量开大招）。</p>
+            <h3>🔥 状态机制</h3>
+            <p>冰冻：下个回合无法行动（被灼烧立即解冻）。灼烧：每回合掉血。树缠：无法行动。定身：回合内无法行动。击退/击飞：强行位移（建筑免疫，霸体免疫）。</p>
+            <h3>✨ 卡牌类型</h3>
+            <p>金卡（英雄卡）：部署带台词与金色背景。觉醒卡：紫色光晕，能力更强。建筑：不可移动，免疫击退击飞。飞行单位：只有特定单位能攻击。一次性卡牌：使用后消失。</p>
+            <h3>💡 小技巧</h3>
+            <p>训练营（500能量）适合测试卡牌。卡牌库可自由搭配出战卡组（最多10张）。点右上角图标可查看卡牌详情。</p>
+        </div>
+        <button id="howToBackBtn">返回</button>
     </div>
 
     <!-- 联机房 -->

@@ -48,7 +48,7 @@ const cardLibrary = [
         attackRange: 1,
         cost: 3,
         artwork: 'heavy-knight',
-        description: "他很笨重，但是装甲很厚。"
+        description: "他很笨重,但是装甲很厚。"
     },
     {
         id: 'asala_soldier',
@@ -59,7 +59,7 @@ const cardLibrary = [
         attackRange: 4,
         cost: 2,
         artwork: 'asala',
-        description: "你丫完了，我说的！一个大飞踹给你李宁踹开线了，再一枪爆头。",
+        description: "你丫完了,我说的!一个大飞踹给你李宁踹开线了,再一枪爆头。",
         meleeAttack: 2,
         meleeRange: 1,
         rangedCrit: true
@@ -74,7 +74,7 @@ const cardLibrary = [
         attackRange: 5,
         cost: 8,
         artwork: 'saeed',
-        description: "你掉进陷阱了！拥有百分之50的暴击率，每回合受到第一次攻击时闪避该攻击，闪避每回合只有一次，当其受到伤害后，发射火焰弩反击敌人并留下燃烧弹。",
+        description: "你掉进陷阱了!拥有百分之50的暴击率,每回合受到第一次攻击时闪避该攻击,闪避每回合只有一次,当其受到伤害后,发射火焰弩反击敌人并留下燃烧弹。",
         hero: true,
         meleeAttack: 2,
         meleeRange: 1,
@@ -93,10 +93,10 @@ const cardLibrary = [
         attackRange: 5,
         cost: 13,
         artwork: 'warden',
-        description: "自带亲卫队(攻2 血3 护甲1 移3 攻距4)，自身降到半血以下暴击率由百分之50提升至百分之100。",
+        description: "自带亲卫队(攻2 血3 护甲1 移3 攻距4),自身降到半血以下暴击率由百分之50提升至百分之100。",
         hero: true,
-        heroDeployText: '立即肃清，一个都不能放过！',
-        halfHpText: '典狱长实力受损！',
+        heroDeployText: '立即肃清,一个都不能放过!',
+        halfHpText: '典狱长实力受损!',
         heroDeployColor: '#e74c3c',
         critChance: 0.5,
         summon: true
@@ -111,10 +111,10 @@ const cardLibrary = [
         attackRange: 4,
         cost: 15,
         artwork: 'raven',
-        description: "近距离可处决敌人，亲卫队(攻5 血4 穿甲1 移4 攻距2 护甲1)，半血以下释放烟雾弹，略微阻挡对方视野。",
+        description: "近距离可处决敌人,亲卫队(攻5 血4 穿甲1 移4 攻距2 护甲1),半血以下释放烟雾弹,略微阻挡对方视野。",
         hero: true,
-        heroDeployText: '欢迎来到阿萨拉，欢迎来到游乐园！',
-        halfHpText: '狩猎开始了！',
+        heroDeployText: '欢迎来到阿萨拉,欢迎来到游乐园!',
+        halfHpText: '狩猎开始了!',
         critChance: 0.5,
         executionRange: 2,
         halfHpSmoke: 5,
@@ -131,7 +131,7 @@ const cardLibrary = [
         attackRange: 5,
         cost: 6,
         artwork: 'light-tank',
-        description: "很普通的坦克，有溅射伤害。",
+        description: "很普通的坦克,有溅射伤害。",
         splashRadius: 1
     },
     {
@@ -143,7 +143,7 @@ const cardLibrary = [
         attackRange: 2,
         cost: 1,
         artwork: 'ice-sprite',
-        description: "可爱的精灵，一般搭配着速猪食用。",
+        description: "可爱的精灵,一般搭配着速猪食用。",
         oneShot: true,
         freeze: true
     },
@@ -155,12 +155,12 @@ const cardLibrary = [
         armor: 1,
         moveRange: 6,
         attackRange: 3,
-        cost: 16,
+        cost: 17,
         critChance: 0.25,
     artwork: 'madara',
-        description: "普通攻击前方竖向三格，敌人近距离攻击时他自动反击3×3范围内敌军并跃起跳向敌军造成大范围伤害，每次攻击到敌人会积攒能量，能量≥4的时候双击释放技能进入无双状态，额外增加攻击次数和移动距离，5，6能量时无双状态结束后自动释放奥义，召唤陨石砸下伤害大范围敌军。",
+        description: "普通攻击前方竖向三格,敌人近距离攻击时他自动反击3×3范围内敌军并跃起跳向敌军造成大范围伤害,每次攻击到敌人会积攒能量,能量≥4的时候双击释放技能进入无双状态,额外增加攻击次数和移动距离,5,6能量时无双状态结束后自动释放奥义,召唤陨石砸下伤害大范围敌军。",
         hero: true,
-        heroDeployText: '吾不可阻挡！',
+        heroDeployText: '吾不可阻挡!',
         heroDeployColor: '#e74c3c',
         heroDeployDuration: 2000,
         aoeAttack: true,
@@ -182,7 +182,7 @@ const cardLibrary = [
         attackRange: 1,
         cost: 11,
         artwork: 'kai',
-        description: "一万暴击！每回合攻击两次，第二次是用来回血的飞镖，可弹射。双击使用大招，获得护甲，生命值，攻击力的加成。",
+        description: "一万暴击!每回合攻击两次,第二次是用来回血的飞镖,可弹射。双击使用大招,获得护甲,生命值,攻击力的加成。",
         critChance: 0.5,
         kaiAttacks: 0,
         kaiShurikenRange: 4,
@@ -205,7 +205,7 @@ const cardLibrary = [
         attackRange: 99,
         cost: 4,
         artwork: 'cattail',
-        description: "普通的猫，但是全屏攻击，真实伤害！",
+        description: "普通的猫,但是全屏攻击,真实伤害!",
         armorPen: 99
     },
     {
@@ -217,7 +217,7 @@ const cardLibrary = [
         attackRange: 99,
         cost: 13,
         artwork: 'electric-pea',
-        description: "至尊平a，闪电连锁！",
+        description: "至尊平a,闪电连锁!",
         lineAttack: true,
         chainRange: 5,
         chainDamage: 2,
@@ -239,7 +239,7 @@ const cardLibrary = [
     {
         id: 'miner',
         name: '掘地矿工',
-        attack: 1,
+        attack: 2,
         hp: 3,
         moveRange: 4,
         attackRange: 1,
@@ -261,7 +261,7 @@ const cardLibrary = [
         description: "登场让所有敌人都消失哦。",
         deployEffect: true,
         hero: true,
-        heroDeployText: '你想跟我拼枪？那你可要小心了！',
+        heroDeployText: '你想跟我拼枪?那你可要小心了!',
         heroDeployColor: '#f1c40f',
         heroDeployDuration: 2500
     },
@@ -292,7 +292,7 @@ const cardLibrary = [
     artwork: 'pain',
         description: "一回合内可同时释放万象天引和神罗天征 拿到四颗豆的时候双击释放地爆天星",
         hero: true,
-        heroDeployText: '让世界感受痛苦！',
+        heroDeployText: '让世界感受痛苦!',
         heroDeployColor: '#e74c3c',
         heroDeployDuration: 2000,
         abilityPhase: 0,
@@ -313,7 +313,7 @@ const cardLibrary = [
         attackRange: 2,
         cost: 7,
         artwork: 'pekka',
-        description: '觉醒的大皮卡！击杀敌人时回复3点生命，可超出上限，最高12点。',
+        description: '觉醒的大皮卡!击杀敌人时回复3点生命,可超出上限,最高12点。',
         pekkaHeal: true
     },
     {
@@ -326,7 +326,7 @@ const cardLibrary = [
         attackRange: 4,
         cost: 4,
         artwork: 'asala-flamer',
-        description: '我要把你烧焦！',
+        description: '我要把你烧焦!',
         fireAttack: true,
         burnDamage: 2
     },
@@ -353,7 +353,7 @@ const cardLibrary = [
         attackRange: 6,
         cost: 9,
         artwork: 'gale',
-        description: '疯狗来了！',
+        description: '疯狗来了!',
         critChance: 0.3,
         dodge: true,
         counterAttack: 3,
@@ -370,7 +370,7 @@ const cardLibrary = [
         attackRange: 2,
         cost: 11,
         artwork: 'factory-manager',
-        description: '就像第五人格里一样，厂长来到了这个地方依旧可以两下平a将对方打倒',
+        description: '就像第五人格里一样,厂长来到了这个地方依旧可以两下平a将对方打倒',
         percentAttack: 0.5,
         charcoalCount: 0,
         charcoalMax: 2
@@ -386,11 +386,11 @@ const cardLibrary = [
         attackRange: 99,
         cost: 13,
         artwork: 'demulan',
-        description: '老太来了！全图狙神',
+        description: '老太来了!全图狙神',
         firstStrike: true,
         tankSpawn: true,
         hero: true,
-        heroDeployText: '天空属于哈夫克！',
+        heroDeployText: '天空属于哈夫克!',
         heroDeployColor: '#1a1a1a',
         heroDeployDuration: 2000
     },
@@ -407,9 +407,9 @@ const cardLibrary = [
         attackRange: 3,
         cost: 10,
         artwork: 'leisi',
-        description: '小心他的雷霆肘击！',
+        description: '小心他的雷霆肘击!',
         hero: true,
-        heroDeployText: '我要把你崩飞！',
+        heroDeployText: '我要把你崩飞!',
         heroDeployColor: '#e74c3c',
         heroDeployDuration: 2000,
         leisiSpawn: true
@@ -424,7 +424,7 @@ const cardLibrary = [
         attackRange: 0,
         cost: 13,
         artwork: 'cop-car',
-        description: '白捷达 黑普桑 条子来了！',
+        description: '白捷达 黑普桑 条子来了!',
         copSpawn: true
     },
     {
@@ -436,7 +436,7 @@ const cardLibrary = [
         attackRange: 3,
         cost: 8,
         artwork: 'dragon-baby',
-        description: '飞龙宝宝来这里吃它的烤肉大餐了！它可以产生给友军加移动距离，给敌军减移动距离的风阵',
+        description: '飞龙宝宝来这里吃它的烤肉大餐了!它可以产生给友军加移动距离,给敌军减移动距离的风阵',
         flying: true,
         splashRadius: 1,
         windForm: true
@@ -451,7 +451,7 @@ const cardLibrary = [
         attackRange: 5,
         cost: 10,
         artwork: 'erin',
-        description: '双发连击：黄弹4伤+黄圈，普攻后撤；命中计数6开技能（3伤×6）；保命装免疫致命伤+3血护盾',
+        description: '双发连击:黄弹4伤+黄圈,普攻后撤;命中计数6开技能(3伤×6);保命装免疫致命伤+3血护盾',
         erin: true
     },
     {
@@ -464,7 +464,7 @@ const cardLibrary = [
         attackRange: 7,
         cost: 4,
         artwork: 'blowdart',
-        description: '吹箭带毒！连续命中3次毒伤提升为2，5次提升为5！',
+        description: '吹箭带毒!连续命中3次毒伤提升为2,5次提升为5!',
         blowdart: true
     },
     {
@@ -476,7 +476,7 @@ const cardLibrary = [
         attackRange: 0,
         cost: 0,
         artwork: 'dummy',
-        description: '训练木偶，不会移动不会攻击，只能挨打。',
+        description: '训练木偶,不会移动不会攻击,只能挨打。',
         dummy: true,
         trainingOnly: true
     },
@@ -488,14 +488,14 @@ const cardLibrary = [
         armor: 1,
         moveRange: 4,
         attackRange: 3,
-        cost: 16,
+        cost: 17,
         artwork: 'hashirama',
-        description: '木遁·木人之术+树界降临！格挡反击！火之意志！',
+        description: '木遁·木人之术+树界降临!格挡反击!火之意志!',
         hashirama: true,
         hashiMaxEnergy: 6,
         critChance: 0.5,
         hero: true,
-        heroDeployText: '没受伤吧？',
+        heroDeployText: '没受伤吧?',
         heroDeployColor: '#000000',
         heroDeployDuration: 2000
     },
@@ -508,7 +508,7 @@ const cardLibrary = [
         attackRange: 1,
         cost: 13,
         artwork: 'skull-army',
-        description: '15个骷髅的军团！大哥护盾挡一次攻击，骷髅死亡变阴兵，大哥亡则阴兵尽灭。',
+        description: '15个骷髅的军团!大哥护盾挡一次攻击,骷髅死亡变阴兵,大哥亡则阴兵尽灭。',
         skullArmy: true
     },
     {
@@ -524,7 +524,7 @@ const cardLibrary = [
         flying: true,
         splashRadius: 1,
         wither: true,
-        description: '空中单位，攻击溅射3×3。命中附加凋零毒（黑色，每回合1伤，不可叠加）。半血后双击进入冲撞模式：12格内选中敌人冲撞造成6伤（冲撞后仍可普攻）。'
+        description: '空中单位,攻击溅射3×3。命中附加凋零毒(黑色,每回合1伤,不可叠加)。半血后双击进入冲撞模式:12格内选中敌人冲撞造成6伤(冲撞后仍可普攻)。'
     },
     {
         id: 'tesla',
@@ -538,7 +538,7 @@ const cardLibrary = [
         artwork: 'tesla',
         building: true,
         tesla: true,
-        description: '建筑。攻击范围内没有敌人时缩进地底（图标半透明，敌人无法以它为攻击目标）。'
+        description: '建筑。攻击范围内没有敌人时缩进地底(图标半透明,敌人无法以它为攻击目标)。'
     },
     {
         id: 'black_zetsu',
@@ -555,7 +555,7 @@ const cardLibrary = [
         heroDeployColor: '#000000',
         heroDeployDuration: 2000,
         blackZetsu: true,
-        description: '可附身队友（点击友方单位部署附身）：队友获得暴击+20%、攻击+1（每段伤害+1）、生命+2、移动+3。队友一回合移动超5格黑绝显现并承受伤害；队友死亡黑绝回归本体。双击本体：跳向6格内敌人爆炸3伤（无溅射），爆炸后留在敌人旁边。'
+        description: '可附身队友(点击友方单位部署附身):队友获得暴击+20%、攻击+1(每段伤害+1)、生命+2、移动+3。队友一回合移动超5格黑绝显现并承受伤害;队友死亡黑绝回归本体。双击本体:跳向6格内敌人爆炸3伤(无溅射),爆炸后留在敌人旁边。'
     },
     {
         id: 'golem',
@@ -568,7 +568,7 @@ const cardLibrary = [
         cost: 7,
         artwork: 'golem',
         golem: true,
-        description: '死亡后分裂成两个小石头人（一左一右）。'
+        description: '死亡后分裂成两个小石头人(一左一右)。'
     },
     {
         id: 'elite_ice',
@@ -585,7 +585,7 @@ const cardLibrary = [
         heroDeployColor: '#000000',
         heroDeployDuration: 1500,
         eliteIce: true,
-        description: '金卡。双击制造5×5冰场（随自身移动，持续到敌方回合结束）：接触冰场的敌人被冰冻，下一个敌方回合不能行动。被施加灼烧立即解冻。'
+        description: '金卡。双击制造5×5冰场(随自身移动,持续到敌方回合结束):接触冰场的敌人被冰冻,下一个敌方回合不能行动。被施加灼烧立即解冻。'
     },
     {
         id: 'mirror',
@@ -599,11 +599,126 @@ const cardLibrary = [
         artwork: 'mirror',
         critChance: 0.6,
         mirror: true,
-        description: '60%暴击。攻击后以敌人为对称点召唤半透明分身（本体与分身可再同时攻击一次）。双击分身互换位置。双击本体选中4格内敌人开启镜面法阵：冲撞2伤+定身，创造圆形法阵（菱形镜片），点击敌人换位（经过敌人2伤穿甲1+镜片1真伤），每次换位回1血（上限+1）。冷却2回合。'
+        description: '60%暴击。攻击后以敌人为对称点召唤半透明分身(本体与分身可再同时攻击一次)。双击分身互换位置。双击本体选中4格内敌人开启镜面法阵:冲撞2伤+定身,创造圆形法阵(菱形镜片),点击敌人换位(经过敌人2伤穿甲1+镜片1真伤),每次换位回1血(上限+1)。冷却2回合。'
+    },
+    {
+        id: 'super_knight',
+        name: '觉醒超级骑士',
+        attack: 3,
+        hp: 8,
+        armor: 0,
+        moveRange: 4,
+        attackRange: 2,
+        cost: 9,
+        artwork: 'super_knight',
+        superKnight: true,
+        description: '部署时对3×3范围敌人造成4伤并击退1格(霸体免疫)。攻击为范围攻击(目标+左右+后方4格),目标被击退4格。敌人距离3-5格时跃击:跳砸4伤,前方2×3敌人击退1格(霸体免疫)。每回合可攻击两次。'
+    },
+    {
+        id: 'heal_fairy',
+        name: '治疗精灵',
+        attack: 0,
+        hp: 1,
+        moveRange: 10,
+        attackRange: 2,
+        cost: 2,
+        artwork: 'heal_fairy',
+        oneShot: true,
+        healFairy: true,
+        description: '一次性卡牌。选择队友或敌人跳向目标:以目标为中心3×3内友方恢复2生命、敌方受到1伤害,随后奶豆消失。'
+    },
+    {
+        id: 'cannon',
+        name: '加农炮',
+        attack: 2,
+        hp: 4,
+        armor: 0,
+        moveRange: 0,
+        attackRange: 5,
+        cost: 3,
+        artwork: 'cannon',
+        building: true,
+        cannon: true,
+        description: '建筑,不可移动。免疫所有击退击飞(冰冻仍可生效)。'
+    },
+    {
+        id: 'doom_shroom',
+        name: '毁灭菇',
+        attack: 0,
+        hp: 3,
+        armor: 0,
+        moveRange: 0,
+        attackRange: 0,
+        cost: 13,
+        artwork: 'doom_shroom',
+        building: true,
+        doomShroom: true,
+        description: '一次性·不可移动。己方回合双击引爆:以自身为中心7×7爆炸(7伤)后死亡,留下持续4回合的弹坑(仅掘地矿工可部署)。敌方回合被攻击致死也会爆炸。'
+    },
+    {
+        id: 'small_shroom',
+        name: '小喷菇',
+        attack: 1,
+        hp: 1,
+        armor: 0,
+        armorPen: 999,
+        moveRange: 0,
+        attackRange: 3,
+        cost: 0,
+        artwork: 'small_shroom',
+        building: true,
+        smallShroom: true,
+        description: '不可移动,攻击距离3。穿甲无限(真实伤害)。每回合最多部署2个。'
+    },
+    {
+        id: 'patroller',
+        name: '巡视者',
+        attack: 0,
+        hp: 1,
+        armor: 0,
+        moveRange: 10,
+        attackRange: 2,
+        cost: 3,
+        artwork: 'patroller',
+        patroller: true,
+        description: '功能性卡牌。选择攻击范围内一个敌人咬住:持续3回合无法移动,3回合后巡视者自动消失。'
+    },
+    {
+        id: 'royal_guard',
+        name: '觉醒皇家卫队',
+        attack: 2,
+        hp: 4,
+        armor: 0,
+        moveRange: 5,
+        attackRange: 2,
+        cost: 8,
+        artwork: 'royal_guard',
+        royalGuard: true,
+        description: '部署6个皇家卫兵(横向排列,每两个间隔1格)。每个卫兵4血/2攻/移动5/攻击距离2,自带抵御3伤的护盾(破盾前本体不受伤害)。一回合内移动≥3格进入冲锋状态,伤害翻倍。'
+    },
+    {
+        id: 'madara_solve',
+        name: '宇智波斑·秽土转生·解',
+        attack: 0,
+        hp: 7,
+        armor: 1,
+        moveRange: 5,
+        attackRange: 0,
+        cost: 19,
+        artwork: 'madara_solve',
+        critChance: 0.25,
+        hero: true,
+        heroDeployText: '你已经没有希望了。剩下来的......只有绝望而已',
+        heroDeployColor: '#2980b9',
+        heroDeployDuration: 2000,
+        madaraSolve: true,
+        solveEnergy: 0,
+        solveMaxEnergy: 4,
+        description: '25%暴击。一回合两个技能:木龙之术(选3×8内敌人,木龙冲3伤+俯冲3×3四伤+树缠)与火遁豪火灭却(3×6范围,树缠额外2伤)。技能命中+1能量,4能量双击开启完全体须佐能乎(霸体/无敌/推敌/子弹/十字斩),回合结束自动终极奥义(大剑5×5三伤×3)。敌方回合受击或冰冻/树缠时可双击开启特殊须佐(一局一次)。'
     }
 ];
 
-// 卡牌按费用从低到高排序（新增卡也自动排进去）
+// 卡牌按费用从低到高排序(新增卡也自动排进去)
 cardLibrary.sort((a, b) => (a.cost || 0) - (b.cost || 0));
 
 // 游戏状态
@@ -611,7 +726,7 @@ const gameState = {
     // 卡包相关
     cardCollection: [...cardLibrary],
     battleDeck: [],
-    
+
     // 游戏相关
     board: [],
     units: [],
@@ -637,6 +752,8 @@ const gameState = {
     iceFields: [],
     erinRings: [],
     missileMarks: [],
+    craters: [],
+    shroomCount: { red: 0, blue: 0 },
     winner: null
 };
 
@@ -704,7 +821,7 @@ function initPreviewBoard() {
 function initBoard() {
     gameBoard.innerHTML = '';
     gameState.board = [];
-    
+
     for (let row = 0; row < BOARD_ROWS; row++) {
         const rowArray = [];
         for (let col = 0; col < BOARD_COLS; col++) {
@@ -712,33 +829,33 @@ function initBoard() {
             cell.className = 'cell';
             cell.dataset.row = row;
             cell.dataset.col = col;
-            
+
             // 棋盘格子颜色交替
             if ((row + col) % 2 === 0) {
                 cell.classList.add('light');
             }
-            
-            // 中心分界线（在第13行底部）
+
+            // 中心分界线(在第13行底部)
             if (row === 13) {
                 cell.classList.add('center-line-bottom');
             }
-            
-            // 蓝方大本营：行0-2，列10-13
+
+            // 蓝方大本营:行0-2,列10-13
             if (row >= 0 && row <= 2 && col >= 10 && col <= 13) {
                 cell.classList.add('blue-base');
                 if (row === 1 && (col === 11 || col === 12)) {
                     cell.classList.add('blue-base-center');
                 }
             }
-            
-            // 红方大本营：行25-27，列10-13
+
+            // 红方大本营:行25-27,列10-13
             if (row >= 25 && row <= 27 && col >= 10 && col <= 13) {
                 cell.classList.add('red-base');
                 if (row === 26 && (col === 11 || col === 12)) {
                     cell.classList.add('red-base-center');
                 }
             }
-            
+
             cell.addEventListener('click', handleCellClick);
     cell.addEventListener('dblclick', handleCellDblClick);
             gameBoard.appendChild(cell);
@@ -746,18 +863,18 @@ function initBoard() {
         }
         gameState.board.push(rowArray);
     }
-    
+
     // 添加大本营血量显示覆盖层
     const blueOverlay = document.createElement('div');
     blueOverlay.id = 'blueBaseOverlay';
     blueOverlay.className = 'base-hp-overlay blue-base-overlay';
     gameBoard.appendChild(blueOverlay);
-    
+
     const redOverlay = document.createElement('div');
     redOverlay.id = 'redBaseOverlay';
     redOverlay.className = 'base-hp-overlay red-base-overlay';
     gameBoard.appendChild(redOverlay);
-    
+
     // 设置初始 HP 值
     blueOverlay.textContent = gameState.blueBaseHp;
     redOverlay.textContent = gameState.redBaseHp;
@@ -766,20 +883,20 @@ function initBoard() {
 // 处理格子点击
 function handleCellClick(e) {
     if (gameState.gameOver) return;
-    
-    // 部署弹框开着时点击棋盘：先关闭（不清选中，让本次点击继续处理——双击可正常触发技能）
+
+    // 部署弹框开着时点击棋盘:先关闭(不清选中,让本次点击继续处理--双击可正常触发技能)
     if (!deployModal.classList.contains('hidden')) {
         closeDeployModalFunc();
     }
-    
-    // 点击可能落在 .unit 等子元素上，用 closest 向上找到 .cell
+
+    // 点击可能落在 .unit 等子元素上,用 closest 向上找到 .cell
     const cell = e.target.closest('.cell');
     if (!cell) return;
-    
+
     const row = parseInt(cell.dataset.row);
     const col = parseInt(cell.dataset.col);
-    
-    // 黑绝技能模式：选择6格内敌人，点其他处取消
+
+    // 黑绝技能模式:选择6格内敌人,点其他处取消
     if (gameState.selectedUnit && gameState.selectedUnit.blackZetsu && gameState.selectedUnit._zetsuTargeting) {
         const tCellUnit = gameState.units.find(u => u.row === row && u.col === col);
         if (tCellUnit && tCellUnit.team !== gameState.selectedUnit.team && !tCellUnit.ghost) {
@@ -794,7 +911,7 @@ function handleCellClick(e) {
         gameState.selectedUnit = null;
         return;
     }
-    // 凋零冲撞模式：选择12格内敌人，点其他处取消
+    // 凋零冲撞模式:选择12格内敌人,点其他处取消
     if (gameState.selectedUnit && gameState.selectedUnit.wither && gameState.selectedUnit._witherTargeting) {
         const tCellUnit = gameState.units.find(u => u.row === row && u.col === col);
         if (tCellUnit && tCellUnit.team !== gameState.selectedUnit.team && !tCellUnit.ghost) {
@@ -809,13 +926,58 @@ function handleCellClick(e) {
         gameState.selectedUnit = null;
         return;
     }
-    // 点击镜的分身：互换位置
+    // 治疗精灵:点击10格内任意单位(友方/敌方)跳向目标
+    if (gameState.selectedUnit && gameState.selectedUnit.healFairy) {
+        const tf = gameState.units.find(u => u.row === row && u.col === col);
+        if (tf && tf.id !== gameState.selectedUnit.id) {
+            const dd = Math.max(Math.abs(tf.row - gameState.selectedUnit.row), Math.abs(tf.col - gameState.selectedUnit.col));
+            if (dd <= 2) {
+                healFairyJump(gameState.selectedUnit, tf);
+                return;
+            }
+        }
+        clearHighlights();
+        gameState.selectedUnit = null;
+        return;
+    }
+    // 解斑:木龙之术选敌(3×8范围)
+    if (gameState.selectedUnit && gameState.selectedUnit.madaraSolve && gameState.selectedUnit._solvePhase === 'dragon') {
+        const tU = gameState.units.find(u => u.row === row && u.col === col);
+        if (tU && tU.team !== gameState.selectedUnit.team && !tU.ghost) {
+            const dR = Math.abs(tU.row - gameState.selectedUnit.row), dC = Math.abs(tU.col - gameState.selectedUnit.col);
+            if (dR <= 8 && dC <= 1) {
+                solveWoodDragon(gameState.selectedUnit, tU);
+                return;
+            }
+        }
+        gameState.selectedUnit._solvePhase = null;
+        document.querySelectorAll('.dragon-range').forEach(el => el.remove());
+        clearHighlights();
+        gameState.selectedUnit = null;
+        return;
+    }
+    // 解斑:终极奥义选敌(6格内)
+    if (gameState.selectedUnit && gameState.selectedUnit.madaraSolve && gameState.selectedUnit._solvePhase === 'meteor') {
+        const tU = gameState.units.find(u => u.row === row && u.col === col);
+        if (tU && tU.team !== gameState.selectedUnit.team && !tU.ghost) {
+            const dM = Math.max(Math.abs(tU.row - gameState.selectedUnit.row), Math.abs(tU.col - gameState.selectedUnit.col));
+            if (dM <= 6) {
+                solveUltimateAttack(gameState.selectedUnit, tU);
+                return;
+            }
+        }
+        gameState.selectedUnit._solvePhase = null;
+        clearHighlights();
+        gameState.selectedUnit = null;
+        return;
+    }
+    // 点击镜的分身:互换位置
     const cloneOwner = gameState.units.find(u => u.mirror && u._mirrorClone && u._mirrorClone.row === row && u._mirrorClone.col === col);
     if (cloneOwner) {
         mirrorSwapWithClone(cloneOwner);
         return;
     }
-    // 镜技能：换位阶段——直接点击定身敌人即可换位（无需先选中镜本体）
+    // 镜技能:换位阶段--直接点击定身敌人即可换位(无需先选中镜本体)
     const activeMirror = gameState.units.find(u => u.mirror && u._mirrorSkillTargetId);
     if (activeMirror) {
         const tgt = gameState.units.find(u => u.id === activeMirror._mirrorSkillTargetId);
@@ -824,7 +986,7 @@ function handleCellClick(e) {
             return;
         }
     }
-    // 镜技能：选敌阶段点击敌人（4格内）
+    // 镜技能:选敌阶段点击敌人(4格内)
     if (gameState.selectedUnit && gameState.selectedUnit.mirror && gameState.selectedUnit._mirrorSkillMode) {
         const tCellUnit2 = gameState.units.find(u => u.row === row && u.col === col);
         if (tCellUnit2 && tCellUnit2.team !== gameState.selectedUnit.team && !tCellUnit2.ghost) {
@@ -839,7 +1001,7 @@ function handleCellClick(e) {
         gameState.selectedUnit = null;
         return;
     }
-    // 战车攻击模式：选择导弹目标（标红敌人），点其他处取消
+    // 战车攻击模式:选择导弹目标(标红敌人),点其他处取消
     if (gameState.selectedUnit && gameState.selectedUnit.tank && gameState.selectedUnit._targeting) {
         const tCellUnit = gameState.units.find(u => u.row === row && u.col === col);
         if (tCellUnit && tCellUnit.team !== gameState.selectedUnit.team && !tCellUnit.ghost) {
@@ -851,10 +1013,10 @@ function handleCellClick(e) {
         }
         return;
     }
-    
-    // 部署模式（已选择卡牌后，再次点击格子部署——作为备用入口）
+
+    // 部署模式(已选择卡牌后,再次点击格子部署--作为备用入口)
     if (gameState.deployMode && gameState.deployPosition !== null) {
-        // 检查是否可部署（矿工全图可部署）
+        // 检查是否可部署(矿工全图可部署)
         const card = gameState.battleDeck[gameState.deployPosition];
         const isMiner = card && card.miner;
         let isValidPosition;
@@ -865,7 +1027,7 @@ function handleCellClick(e) {
         } else {
             isValidPosition = row <= 13 && !isBlueBase(row, col);
         }
-        
+
         if (isValidPosition) {
             const unitAtPos = gameState.units.find(u => u.row === row && u.col === col);
             if (!unitAtPos) {
@@ -875,7 +1037,7 @@ function handleCellClick(e) {
         closeDeployModalFunc();
         return;
     }
-    
+
     // 行动模式 - 点击选中的单位可以移动到的格子
     if (gameState.selectedUnit && cell.classList.contains('movable')) {
         moveUnit(row, col);
@@ -883,10 +1045,10 @@ function handleCellClick(e) {
         gameState.selectedUnit = null;
         return;
     }
-    
+
     // 行动模式 - 点击可攻击的目标
     if (gameState.selectedUnit && cell.classList.contains('attackable')) {
-        // 额外检查：目标是否在敌方烟雾中
+        // 额外检查:目标是否在敌方烟雾中
         if (isCellSmokedFor(row, col, gameState.currentTurn)) {
             clearHighlights();
             gameState.selectedUnit = null;
@@ -906,20 +1068,31 @@ function handleCellClick(e) {
         gameState.selectedUnit = null;
         return;
     }
-    
+
     // 点击己方单位进入行动模式
     const clickedUnit = gameState.units.find(u => u.row === row && u.col === col);
     if (clickedUnit && clickedUnit.team === gameState.currentTurn) {
         if (clickedUnit.frozen || clickedUnit.galeReviving) {
+            // 解斑:冰冻/树缠时可双击开启特殊须佐(不耗能,一局一次)
+            if (clickedUnit.madaraSolve && !clickedUnit._susanooActive && (clickedUnit.frozen || clickedUnit.treeBound) && !clickedUnit._solveSpecialUsed) {
+                if (clickedUnit === gameState.selectedUnit) {
+                    solveActivateSusanoo(clickedUnit, true);
+                    return;
+                }
+                // 第一次点击:仅选中(等待第二次点击触发)
+                gameState.selectedUnit = clickedUnit;
+                showActionMode(clickedUnit);
+                return;
+            }
             clearHighlights();
             gameState.selectedUnit = null;
             return;
         }
-        // 黑绝附身：点击友方单位弹出部署框（黑绝在手牌且能量够），关闭后正常选中
+        // 黑绝附身:点击友方单位弹出部署框(黑绝在手牌且能量够),关闭后正常选中
         if ((gameState.currentTurn === 'red' || gameState.maxEnergy >= 500) && gameState.battleDeck.some(c => c.blackZetsu) && !clickedUnit._possessed && clickedUnit !== gameState.selectedUnit && (gameState.currentTurn === 'red' ? gameState.redEnergy : gameState.blueEnergy) >= 14) {
             openDeployModal(row, col);
             gameState.selectedUnit = clickedUnit;
-            // 同时显示移动/攻击范围（弹框关闭后即可正常行动）
+            // 同时显示移动/攻击范围(弹框关闭后即可正常行动)
             showActionMode(clickedUnit);
             return;
         }
@@ -930,17 +1103,22 @@ function handleCellClick(e) {
             showActionMode(clickedUnit);
             return;
         }
-        // Pain 能力激活：再次点击已选中的 Pain
+        // Pain 能力激活:再次点击已选中的 Pain
         if (clickedUnit.shinraRange && clickedUnit === gameState.selectedUnit) {
             activatePainAbility(clickedUnit);
             return;
         }
-        // 马斑天下无双：4格能量+再次点击
+        // 解斑:双击技能(能量/须佐/木龙/火遁/特殊须佐)
+        if (clickedUnit.madaraSolve && clickedUnit === gameState.selectedUnit) {
+            activateSolveAbility(clickedUnit);
+            return;
+        }
+        // 马斑天下无双:4格能量+再次点击
         if (clickedUnit.madaraMaxEnergy && clickedUnit === gameState.selectedUnit && (clickedUnit.madaraEnergy||0) >= 4) {
             activateMusou(clickedUnit);
             return;
         }
-        // 铠大招：双击激活不灭魔躯（冷却结束且未激活时可用）
+        // 铠大招:双击激活不灭魔躯(冷却结束且未激活时可用)
         if (clickedUnit.kaiShurikenRange && clickedUnit === gameState.selectedUnit && !clickedUnit.kaiUltActive && (clickedUnit.kaiUltCooldown||0) === 0) {
             activateKaiUlt(clickedUnit);
             return;
@@ -948,6 +1126,11 @@ function handleCellClick(e) {
         // 厂长双击召唤木炭
         if (clickedUnit.percentAttack && clickedUnit === gameState.selectedUnit && (clickedUnit.charcoalCount||0) < (clickedUnit.charcoalMax||2)) {
             summonCharcoal(clickedUnit);
+            return;
+        }
+        // 毁灭菇:己方回合双击引爆(7×7爆炸+留弹坑)
+        if (clickedUnit.doomShroom && clickedUnit === gameState.selectedUnit && !clickedUnit._doomExploded) {
+            doomShroomExplode(clickedUnit);
             return;
         }
         // 疾风双击紧急回避
@@ -960,22 +1143,22 @@ function handleCellClick(e) {
             spawnCops(clickedUnit);
             return;
         }
-        // 艾琳技能：计数≥6双击激活
+        // 艾琳技能:计数≥6双击激活
         if (clickedUnit.erin && clickedUnit === gameState.selectedUnit && !clickedUnit.erinSkillActive && (clickedUnit.erinCount||0) >= 6) {
             activateErinSkill(clickedUnit);
             return;
         }
-        // 千手柱间技能：能量≥4双击（火之意志）
+        // 千手柱间技能:能量≥4双击(火之意志)
         if (clickedUnit.hashirama && clickedUnit === gameState.selectedUnit && (clickedUnit.hashiEnergy||0) >= 4) {
             activateHashiramaSkill(clickedUnit);
             return;
         }
-        // 查克拉：马斑/植物人能量<4时双击获得2格能量（佩恩在activatePainAbility内处理）
+        // 查克拉:马斑/植物人能量<4时双击获得2格能量(佩恩在activatePainAbility内处理)
         if ((clickedUnit.madaraMaxEnergy || clickedUnit.hashiMaxEnergy) && clickedUnit === gameState.selectedUnit && ((clickedUnit.madaraEnergy || clickedUnit.hashiEnergy || 0)) < 4 && !clickedUnit.chakraCd) {
             activateChakra(clickedUnit);
             return;
         }
-        // 镜：双击开启镜像法阵（4格内有敌人）
+        // 镜:双击开启镜像法阵(4格内有敌人)
         if (clickedUnit.mirror && clickedUnit === gameState.selectedUnit && !clickedUnit._mirrorSkillCd && !clickedUnit._mirrorSkillMode && !clickedUnit._mirrorSkillTargetId) {
             const hasEnemy4 = gameState.units.some(e => e.team !== clickedUnit.team && !e.ghost && Math.max(Math.abs(e.row - clickedUnit.row), Math.abs(e.col - clickedUnit.col)) <= 4);
             if (hasEnemy4) {
@@ -986,24 +1169,24 @@ function handleCellClick(e) {
                 showHeroDeployText(clickedUnit, '4格内无敌人', '#888888', 1000);
             }
         }
-        // 精英冰人：双击制造冰场（5×5，随自身移动）
+        // 精英冰人:双击制造冰场(5×5,随自身移动)
         if (clickedUnit.eliteIce && clickedUnit === gameState.selectedUnit && !clickedUnit._iceSkillActive) {
             activateEliteIceSkill(clickedUnit);
             return;
         }
-        // 黑绝技能：双击进入跳跃爆炸模式（6格，一回合一次）
+        // 黑绝技能:双击进入跳跃爆炸模式(6格,一回合一次)
         if (clickedUnit.blackZetsu && clickedUnit === gameState.selectedUnit && !clickedUnit._zetsuSkillUsed && !clickedUnit._zetsuTargeting) {
             clickedUnit._zetsuTargeting = true;
             enterZetsuSkillMode(clickedUnit);
             return;
         }
-        // 凋零：半血以下双击进入冲撞模式（12格）
+        // 凋零:半血以下双击进入冲撞模式(12格)
         if (clickedUnit.wither && clickedUnit === gameState.selectedUnit && (clickedUnit.currentHp || 0) <= (clickedUnit.maxHp || 8) / 2 && !clickedUnit._witherCharged && !clickedUnit._witherTargeting) {
             clickedUnit._witherTargeting = true;
             enterWitherChargeMode(clickedUnit);
             return;
         }
-        // 战车双击：进入攻击模式（全图标红选导弹目标，不显示字）
+        // 战车双击:进入攻击模式(全图标红选导弹目标,不显示字)
         if (clickedUnit.tank && clickedUnit === gameState.selectedUnit && !clickedUnit._targeting) {
             clickedUnit._targeting = true;
             enterTankTargetMode(clickedUnit);
@@ -1014,11 +1197,11 @@ function handleCellClick(e) {
         showActionMode(clickedUnit);
         return;
     }
-    
+
     // 点击空白格子进入部署模式
     const hasUnit = gameState.units.some(u => u.row === row && u.col === col);
     if (!hasUnit) {
-        // 检查是否可部署（矿工全图可部署，除大本营12格）
+        // 检查是否可部署(矿工全图可部署,除大本营12格)
         const hasMiner = gameState.battleDeck.some(c => c.miner);
         let isInOwnZone;
         if (hasMiner) {
@@ -1028,12 +1211,12 @@ function handleCellClick(e) {
         } else {
             isInOwnZone = row <= 13 && !isBlueBase(row, col);
         }
-        
+
         if (isInOwnZone) {
             openDeployModal(row, col);
         }
     }
-    
+
     // 清除选择
     clearHighlights();
     gameState.selectedUnit = null;
@@ -1043,13 +1226,13 @@ function handleCellClick(e) {
 function showActionMode(unit) {
     // 冰冻/定身无法行动
     if (unit.frozen || unit.stunned) return;
-    
-    // 显示可移动范围（只要还有剩余移动点数）
+
+    // 显示可移动范围(只要还有剩余移动点数;被巡视者咬住无法移动)
     const used = gameState.moveUsed[unit.id] || 0;
-    if (used < unit.moveRange) {
+    if (used < unit.moveRange && !unit.grabbed) {
         showMovableRange(unit);
     }
-    
+
     // 显示可攻击目标
     if (!gameState.attackedUnits.has(unit.id) || (unit.tankSpawn && (unit.demuAttacksUsed||0) < (unit.demuBonusAttacks||0)) || (unit.erin && (unit.erinSkillActive ? (unit.erinSkillAttacks||0) > 0 : (unit.erinAttacksUsed||0) < 2)) || (unit.blowdart && (unit.blowdartAttacksUsed||0) < 2) || (unit.hashirama && (unit.hashiAttacksUsed||0) < 2)) {
         // 铠飞镖攻击时使用飞镖射程
@@ -1064,7 +1247,7 @@ function showActionMode(unit) {
     }
 }
 
-// 风阵移动修正：友军+4，敌军-3
+// 风阵移动修正:友军+4,敌军-3
 function getWindMoveMod(unit) {
     var mod = 0;
     gameState.windZones.forEach(z => {
@@ -1078,19 +1261,19 @@ function getWindMoveMod(unit) {
 
 // 显示可移动范围
 function showMovableRange(unit) {
-    // 警车：警察下车时不可移动
+    // 警车:警察下车时不可移动
     if (unit.copSpawn && unit.copsSpawned) return;
     const { row, col, moveRange } = unit;
     const used = gameState.moveUsed[unit.id] || 0;
     let remaining = moveRange - used + getWindMoveMod(unit) + (unit.erinMoveBonus||0);
     if (remaining <= 0) return;
-    // 循环边界用最大可达距离（防止加成后的移动范围被基础值截断）
+    // 循环边界用最大可达距离(防止加成后的移动范围被基础值截断)
     const maxReach = Math.max(moveRange, remaining);
     for (let dr = -maxReach; dr <= maxReach; dr++) {
         for (let dc = -maxReach; dc <= maxReach; dc++) {
             const newRow = row + dr;
             const newCol = col + dc;
-            
+
             if (isValidPosition(newRow, newCol)) {
                 // 曼哈顿距离
                 const distance = Math.abs(dr) + Math.abs(dc);
@@ -1098,7 +1281,7 @@ function showMovableRange(unit) {
                     const cell = gameState.board[newRow][newCol];
                     // 检查是否有其他单位
                     const hasUnit = gameState.units.some(u => u.row === newRow && u.col === newCol);
-                    // 检查是否是大本营（双方大本营均不可进入）
+                    // 检查是否是大本营(双方大本营均不可进入)
                     const isBase = isBlueBase(newRow, newCol) || isRedBase(newRow, newCol);
                     if (!hasUnit && !isBase) {
                         if (unit.tank) { var master = gameState.units.find(function(u) { return u.id === unit.tankMaster; }); if (!master) return; var td = Math.max(Math.abs(newRow - master.row), Math.abs(newCol - master.col)); if (td > 4) continue; }
@@ -1110,7 +1293,7 @@ function showMovableRange(unit) {
     }
 }
 
-// 对空判定：飞行单位恒可对空；白名单含植物人（骷髅军团不在白名单，不能对空）
+// 对空判定:飞行单位恒可对空;白名单含植物人(骷髅军团不在白名单,不能对空)
 function canHitAirUnit(unit) {
     if (unit.flying) return true;
     return ['musketeer','saeed','warden_gherros','cattail','electric_pea','reynolds','pain_tendo','lightning_dragon','asala_flamer','gale','demulan','hashirama'].includes(unit.cardId);
@@ -1119,13 +1302,23 @@ function canHitAirUnit(unit) {
 // 显示可攻击目标
 function showAttackableTargets(unit) {
     const { row, col } = unit;
-    const attackRange = unit.hashirama ? ((unit.hashiAttacksUsed||0) === 0 ? 3 : 4) : unit.attackRange;
-    
+    const attackRange = unit.superKnight ? 5 : (unit.hashirama ? ((unit.hashiAttacksUsed||0) === 0 ? 3 : 4) : unit.attackRange);
+    // 治疗精灵:可跳向2格内任意单位(队友或敌人,需走到目标旁)
+    if (unit.healFairy) {
+        gameState.units.forEach(u => {
+            if (u.id === unit.id) return;
+            if (Math.max(Math.abs(u.row - unit.row), Math.abs(u.col - unit.col)) <= 2) {
+                gameState.board[u.row][u.col].classList.add('attackable');
+            }
+        });
+        return;
+    }
+
     for (let dr = -attackRange; dr <= attackRange; dr++) {
         for (let dc = -attackRange; dc <= attackRange; dc++) {
             const newRow = row + dr;
             const newCol = col + dc;
-            
+
             if (isValidPosition(newRow, newCol)) {
                 const distance = Math.abs(dr) + Math.abs(dc);
                 if (distance > 0 && distance <= attackRange) {
@@ -1146,13 +1339,13 @@ function showAttackableTargets(unit) {
                             cell.classList.add('attackable');
                         }
                     }
-                    
-                    // 检查大本营
-                    if (unit.team === 'red' && isBlueBase(newRow, newCol) && !unit.inMusou) {
+
+                    // 检查大本营（被巡视者咬住只能攻击敌人，不能打基地）
+                    if (unit.team === 'red' && isBlueBase(newRow, newCol) && !unit.inMusou && !unit.grabbed) {
                         const cell = gameState.board[newRow][newCol];
                         cell.classList.add('attackable');
                     }
-                    if (unit.team === 'blue' && isRedBase(newRow, newCol) && !unit.inMusou) {
+                    if (unit.team === 'blue' && isRedBase(newRow, newCol) && !unit.inMusou && !unit.grabbed) {
                         const cell = gameState.board[newRow][newCol];
                         cell.classList.add('attackable');
                     }
@@ -1163,7 +1356,7 @@ function showAttackableTargets(unit) {
 }
 
 // 部署单位
-// 中毒特效显示（绿/紫/红）
+// 中毒特效显示(绿/紫/红)
 function updatePoisonVisual(unit) {
     const cell = gameState.board[unit.row][unit.col];
     const existing = cell.querySelector('.poison-badge');
@@ -1176,7 +1369,7 @@ function updatePoisonVisual(unit) {
     }
 }
 
-// 艾琳：黄子弹特效
+// 艾琳:黄子弹特效
 function showErinBullet(attacker, target) {
     const board = document.getElementById('gameBoard');
     const bullet = document.createElement('div');
@@ -1191,7 +1384,7 @@ function showErinBullet(attacker, target) {
     setTimeout(() => { if (bullet.parentNode) bullet.parentNode.removeChild(bullet); }, 400);
 }
 
-// 艾琳：黄圈（3×3边框8格）
+// 艾琳:黄圈(3×3边框8格)
 function createErinRing(attacker, target) {
     gameState.erinRings.push({ row: target.row, col: target.col, team: attacker.team, turns: 2 });
     renderErinRings();
@@ -1212,7 +1405,7 @@ function renderErinRings() {
     });
 }
 
-// 艾琳：普通攻击后撤2格
+// 艾琳:普通攻击后撤2格
 function erinRetreat(unit) {
     const dir = unit.team === 'red' ? 1 : -1;
     let targetRow = unit.row + dir * 2;
@@ -1227,21 +1420,21 @@ function erinRetreat(unit) {
     }
 }
 
-// 艾琳：计数显示
+// 艾琳:计数显示
 function updateErinCounter(unit) {
     const el = gameState.board[unit.row][unit.col].querySelector('.erin-counter');
     if (el) el.textContent = (unit.erinCount||0) + (unit.erinShield > 0 ? ' 🛡' + unit.erinShield : '');
 }
 
-// 艾琳：技能激活
+// 艾琳:技能激活
 function activateErinSkill(unit) {
     unit.erinSkillActive = true;
     unit.erinSkillAttacks = unit.erinCount || 6;
     unit.attackRange = 8;
     unit.moveRange = 10;
-    showHeroDeployText(unit, '锁定目标！', '#f1c40f', 1500);
+    showHeroDeployText(unit, '锁定目标!', '#f1c40f', 1500);
 }
-// 艾琳：技能结束（次数用完，数字清零）
+// 艾琳:技能结束(次数用完,数字清零)
 function endErinSkill(unit) {
     unit.erinSkillActive = false;
     unit.attackRange = 5;
@@ -1252,7 +1445,7 @@ function endErinSkill(unit) {
     updateErinCounter(unit);
 }
 
-// 千手柱间：暴击掷骰（50%几率伤害翻倍）
+// 千手柱间:暴击掷骰(50%几率伤害翻倍)
 function rollCrit(attacker, baseDamage) {
     if (attacker.critChance && Math.random() < attacker.critChance) {
         showCritText(attacker.row, attacker.col, '暴击');
@@ -1261,10 +1454,10 @@ function rollCrit(attacker, baseDamage) {
     return baseDamage;
 }
 
-// 千手柱间：木人之术·金龙（周围3格所有敌人3次×2伤）
+// 千手柱间:木人之术·金龙(周围3格所有敌人3次×2伤)
 function goldenDragonAttack(attacker) {
     const dragonEl = showGoldenDragon(attacker);
-    // 3段伤害逐段打出（环绕半径3格）
+    // 3段伤害逐段打出(环绕半径3格)
     for (let hit = 0; hit < 3; hit++) {
         setTimeout(() => {
             const a = gameState.units.find(x => x.id === attacker.id);
@@ -1280,11 +1473,11 @@ function goldenDragonAttack(attacker) {
             });
         }, hit * 400);
     }
-    // 环绕两圈(1.8s)后向前飞出：前方3×8区域2次×2伤（可暴击）
+    // 环绕两圈(1.8s)后向前飞出:前方3×8区域2次×2伤(可暴击)
     setTimeout(() => {
         const a = gameState.units.find(x => x.id === attacker.id);
         if (!a) {
-            // 植物人已死：移除残留的金龙特效
+            // 植物人已死:移除残留的金龙特效
             if (dragonEl.parentNode) dragonEl.parentNode.removeChild(dragonEl);
             return;
         }
@@ -1309,9 +1502,9 @@ function goldenDragonAttack(attacker) {
     }, 1800);
 }
 
-// 千手柱间：第一次格挡反击（木人+蓝色光柱）
+// 千手柱间:第一次格挡反击(木人+蓝色光柱)
 function counterGolem(target, attacker) {
-    // 木人现身（攻击者身后）
+    // 木人现身(攻击者身后)
     const dir = target.team === 'red' ? 1 : -1;
     const gr = attacker.row + dir;
     if (isValidPosition(gr, attacker.col) && !gameState.units.some(u => u.row === gr && u.col === attacker.col)) {
@@ -1321,11 +1514,11 @@ function counterGolem(target, attacker) {
         gameState.board[gr][attacker.col].appendChild(golem);
         setTimeout(() => { if (golem.parentNode) golem.parentNode.removeChild(golem); }, 1200);
     }
-    // 木人打一下：1伤（可暴击）
+    // 木人打一下:1伤(可暴击)
     attacker.currentHp -= rollCrit(target, 1);
     updateUnitHp(attacker);
     if (attacker.currentHp <= 0) removeUnit(attacker);
-    // 蓝色光柱：3×3两段×2伤（逐段打出）
+    // 蓝色光柱:3×3两段×2伤(逐段打出)
     showBluePillar(attacker);
     for (let hit = 0; hit < 2; hit++) {
         setTimeout(() => {
@@ -1345,12 +1538,12 @@ function counterGolem(target, attacker) {
     }
 }
 
-// 千手柱间：第二次格挡反击（大树缠绕+花粉中毒）
+// 千手柱间:第二次格挡反击(大树缠绕+花粉中毒)
 function counterPollen(target, attacker) {
     showTreeEffect(attacker);
     showGoldPollen(attacker);
     showHeroDeployText(attacker, '花树界降临', '#8b5a2b', 1200);
-    // 与树界降临相同的捆绑效果（棕色光晕，持续2回合）
+    // 与树界降临相同的捆绑效果(棕色光晕,持续2回合)
     attacker.treeBound = true;
     attacker.treeBoundTurns = 2;
     updateTreeVisual(attacker);
@@ -1367,13 +1560,13 @@ function counterPollen(target, attacker) {
     });
 }
 
-// 千手柱间：技能（火之意志/大佛/神掌）
+// 千手柱间:技能(火之意志/大佛/神掌)
 function activateHashiramaSkill(unit) {
     const golden = (unit.hashiEnergy||0) >= 5;
     const hits = golden ? ((unit.hashiEnergy||0) === 6 ? 5 : 4) : 3;
     showHeroDeployText(unit, '火之意志!!', '#e74c3c', 3000);
     showGodPalm(unit, golden);
-    // 前方5×5（不含植物人本体）：红方 row-5..row-1，蓝方 row+1..row+5
+    // 前方5×5(不含植物人本体):红方 row-5..row-1,蓝方 row+1..row+5
     const r0 = unit.team === 'red' ? unit.row - 5 : unit.row + 1;
     const r1 = unit.team === 'red' ? unit.row - 1 : unit.row + 5;
     // 神掌多段伤害逐段打出
@@ -1405,14 +1598,14 @@ function showGoldenDragon(unit) {
     board.appendChild(d);
     return d;
 }
-// 金龙转完后：拉直成一条直线（粗细=圆环粗细不变），直着向前飞出
+// 金龙转完后:拉直成一条直线(粗细=圆环粗细不变),直着向前飞出
 function flyGoldenDragon(unit, el) {
     if (!el) return;
     const board = document.getElementById('gameBoard');
     const dir = unit.team === 'red' ? -1 : 1;
     const cx = unit.col * cellW + cellW/2;
     const cy = unit.row * cellH + cellH/2;
-    // 拉直：圆环展开成一条直线（粗细约8px不变），长度=圆环周长≈260px，从植物人位置向前延伸
+    // 拉直:圆环展开成一条直线(粗细约8px不变),长度=圆环周长≈260px,从植物人位置向前延伸
     el.style.animation = 'none';
     el.style.borderRadius = '8px';
     el.style.width = '16px';
@@ -1444,7 +1637,7 @@ function showBluePillar(attacker) {
         }
     }
 }
-// 树界降临：常驻大树缠绕特效（随定身解除而消失）
+// 树界降临:常驻大树缠绕特效(随定身解除而消失)
 function updateTreeVisual(unit) {
     const el = gameState.board[unit.row][unit.col].querySelector('.unit');
     if (!el) return;
@@ -1452,7 +1645,7 @@ function updateTreeVisual(unit) {
     else el.classList.remove('bound-glow');
 }
 
-// 金色花粉云雾：3×3范围金色光晕粒子
+// 金色花粉云雾:3×3范围金色光晕粒子
 function showGoldPollen(attacker) {
     for (let dr = -1; dr <= 1; dr++) {
         for (let dc = -1; dc <= 1; dc++) {
@@ -1486,14 +1679,14 @@ function showBuddha(unit, golden) {
         }
     }
 }
-// 火之意志：前方5×5大手按下，停留3秒
+// 火之意志:前方5×5大手按下,停留3秒
 function showGodPalm(unit, golden) {
     const board = document.getElementById('gameBoard');
     const r0 = unit.team === 'red' ? unit.row - 5 : unit.row + 1;
     const hand = document.createElement('div');
     hand.className = golden ? 'god-palm god-palm-gold' : 'god-palm';
     hand.textContent = golden ? '✋' : '✋🏽';
-    // 手掌覆盖前方5×5，落到5×5中心
+    // 手掌覆盖前方5×5,落到5×5中心
     hand.style.left = ((unit.col - 2) * cellW) + 'px';
     hand.style.top = (r0 * cellH) + 'px';
     hand.style.width = (5 * cellW) + 'px';
@@ -1509,14 +1702,14 @@ function flashUnitIcon(unit) {
     setTimeout(() => el.classList.remove('block-flash'), 500);
 }
 
-// 觉醒骷髅海：召唤15骷髅军团（3×5，中间大哥）
+// 觉醒骷髅海:召唤15骷髅军团(3×5,中间大哥)
 function spawnSkullArmy(boss) {
     for (let dr = -1; dr <= 1; dr++) {
         for (let dc = -2; dc <= 2; dc++) {
             if (dr === 0 && dc === 0) continue;
             const nr = boss.row + dr, nc = boss.col + dc;
             if (!isValidPosition(nr, nc)) continue;
-            // 不能溢出到对方半场（红方行≥14，蓝方行≤13），多余的直接消失
+            // 不能溢出到对方半场(红方行≥14,蓝方行≤13),多余的直接消失
             if ((boss.row >= 14) ? nr < 14 : nr >= 14) continue;
             if (gameState.units.some(u => u.row === nr && u.col === nc)) continue;
             const sk = {id:'sk_'+Date.now()+'_'+Math.random(),cardId:'skull_army',name:'骷髅',attack:1,maxHp:1,currentHp:1,moveRange:9,attackRange:1,armor:0,armorPen:0,team:boss.team,row:nr,col:nc,artwork:'skull-soldier',skullSoldier:true,skullBossId:boss.id,ghost:false};
@@ -1529,7 +1722,7 @@ function spawnSkullArmy(boss) {
     updateSkullShieldVisual(boss);
 }
 
-// 阴兵视觉：半透明浅紫
+// 阴兵视觉:半透明浅紫
 function makeGhostVisual(unit) {
     const el = gameState.board[unit.row][unit.col].querySelector('.unit');
     if (el) el.classList.add('skull-ghost');
@@ -1543,7 +1736,7 @@ function updateSkullShieldVisual(boss) {
     else el.classList.remove('skull-shield');
 }
 
-// 战车攻击模式：全图标红敌人
+// 战车攻击模式:全图标红敌人
 function enterTankTargetMode(tank) {
     clearHighlights();
     gameState.units.forEach(u => {
@@ -1552,7 +1745,7 @@ function enterTankTargetMode(tank) {
     });
 }
 
-// 凋零冲撞模式：12格内敌人标红
+// 凋零冲撞模式:12格内敌人标红
 function enterWitherChargeMode(unit) {
     clearHighlights();
     gameState.units.forEach(u => {
@@ -1562,7 +1755,7 @@ function enterWitherChargeMode(unit) {
     });
 }
 
-// 凋零冲撞：图标飞过去（动画非瞬移），造成6伤+凋零，保留普攻
+// 凋零冲撞:图标飞过去(动画非瞬移),造成6伤+凋零,保留普攻
 function witherCharge(unit, target) {
     unit._witherTargeting = false;
     unit._witherCharged = true;
@@ -1595,7 +1788,7 @@ function witherCharge(unit, target) {
     });
     setTimeout(() => {
         dealWitherChargeDamage(unit, target);
-        // 落点：目标死亡则占目标格，否则找目标旁最近空位（防重叠）
+        // 落点:目标死亡则占目标格,否则找目标旁最近空位(防重叠)
         let landR = target.row, landC = target.col;
         if (target.currentHp > 0) {
             let found = false;
@@ -1622,7 +1815,7 @@ function witherCharge(unit, target) {
     }, 470);
 }
 
-// 冲撞结算：6伤+凋零
+// 冲撞结算:6伤+凋零
 function dealWitherChargeDamage(unit, target) {
     if (!target || target._removing || target.ghost) return;
     target.currentHp -= 6;
@@ -1632,7 +1825,7 @@ function dealWitherChargeDamage(unit, target) {
     if (target.currentHp <= 0) removeUnit(target);
 }
 
-// 标记导弹目标（标记格子，非敌人）
+// 标记导弹目标(标记格子,非敌人)
 function markMissileTarget(tank, enemy) {
     gameState.missileMarks.push({ row: enemy.row, col: enemy.col, team: tank.team, owner: tank.id });
     renderMissileMarks();
@@ -1641,7 +1834,7 @@ function markMissileTarget(tank, enemy) {
     gameState.selectedUnit = null;
 }
 
-// 黄色烟雾标记特效（3×3）
+// 黄色烟雾标记特效(3×3)
 function renderMissileMarks() {
     document.querySelectorAll('.missile-smoke').forEach(el => el.remove());
     gameState.missileMarks.forEach(m => {
@@ -1657,7 +1850,7 @@ function renderMissileMarks() {
     });
 }
 
-// 导弹轰炸特效（红色长方体砸下）
+// 导弹轰炸特效(红色长方体砸下)
 function showMissile(m) {
     for (let dr = -1; dr <= 1; dr++) {
         for (let dc = -1; dc <= 1; dc++) {
@@ -1671,11 +1864,27 @@ function showMissile(m) {
     }
 }
 
-// 部署生效效果：金卡台词/沙尘暴/召唤类（玩家与AI共用）
+// 部署生效效果:金卡台词/沙尘暴/召唤类(玩家与AI共用)
 function runDeployEffects(unit) {
     // 金卡登场特效
     if (unit.hero) {
         showHeroDeployText(unit, unit.heroDeployText, unit.heroDeployColor, unit.heroDeployDuration);
+    }
+    // 觉醒超级骑士:部署时对3×3范围敌人造成4伤并击退1格(霸体免疫)
+    if (unit.superKnight) {
+        gameState.units.slice().forEach(e => {
+            if (e.team === unit.team || e.ghost || e._removing) return;
+            if (Math.max(Math.abs(e.row - unit.row), Math.abs(e.col - unit.col)) <= 1) {
+                e.currentHp -= 4;
+                updateUnitHp(e);
+                showCritText(e.row, e.col, '震撼');
+                if (e.currentHp > 0) {
+                    const dr = Math.sign(e.row - unit.row), dc = Math.sign(e.col - unit.col);
+                    knockbackUnit(e, dr, dc, 1);
+                }
+                if (e.currentHp <= 0) removeUnit(e);
+            }
+        });
     }
     // 雷诺沙尘暴+回血
     if (unit.deployEffect) {
@@ -1723,52 +1932,66 @@ function runDeployEffects(unit) {
 
 function deployUnit(row, col) {
     if (gameState.deployPosition === null) return;
-    
+
     const cardIndex = gameState.deployPosition;
     const card = gameState.battleDeck[cardIndex];
-    
+
     if (!card) return;
-    
-    // 训练木偶仅可在训练营模式使用（maxEnergy=500 是训练营专属，AI/联机/其他模式全部拦截）
+
+    // 训练木偶仅可在训练营模式使用(maxEnergy=500 是训练营专属,AI/联机/其他模式全部拦截)
     if (card.trainingOnly && gameState.maxEnergy < 500) {
         alert('训练木偶仅可在训练营模式中使用');
         closeDeployModalFunc();
         return;
     }
-    
+
+    // 弹坑内不可部署(掘地矿工除外)
+    if ((gameState.craters || []).some(c => c.row === row && c.col === col) && !card.miner) {
+        alert('弹坑内不可部署!');
+        closeDeployModalFunc();
+        return;
+    }
+
+    // 小喷菇:每回合最多部署2个
+    if (card.smallShroom && (gameState.shroomCount[gameState.currentTurn] || 0) >= 2) {
+        alert('小喷菇每回合最多部署2个!');
+        closeDeployModalFunc();
+        return;
+    }
+
     // 非矿工卡不能部署在敌方半场/大本营
     if (!card.miner) {
         const isBase = isBlueBase(row, col) || isRedBase(row, col);
-        if (isBase) { alert('大本营内不可部署！'); return; }
-        if (gameState.currentTurn === 'red' && row <= 13) { alert('矿工以外的卡不能部署在敌方半场！'); return; }
-        if (gameState.currentTurn === 'blue' && row >= 14) { alert('矿工以外的卡不能部署在敌方半场！'); return; }
+        if (isBase) { alert('大本营内不可部署!'); return; }
+        if (gameState.currentTurn === 'red' && row <= 13) { alert('矿工以外的卡不能部署在敌方半场!'); return; }
+        if (gameState.currentTurn === 'blue' && row >= 14) { alert('矿工以外的卡不能部署在敌方半场!'); return; }
     } else {
-        if (isBlueBase(row, col) || isRedBase(row, col)) { alert('大本营内不可部署！'); return; }
+        if (isBlueBase(row, col) || isRedBase(row, col)) { alert('大本营内不可部署!'); return; }
     }
     const unitAtPos = gameState.units.find(u => u.row === row && u.col === col);
     if (unitAtPos) {
-        // 黑绝附身：目标格有己方单位 → 附身（不部署本体）
+        // 黑绝附身:目标格有己方单位 → 附身(不部署本体)
         if (card.blackZetsu && unitAtPos.team === gameState.currentTurn && !unitAtPos._possessed && !unitAtPos.blackZetsu) {
             const curE = gameState.currentTurn === 'red' ? gameState.redEnergy : gameState.blueEnergy;
-            if (curE < card.cost) { alert('能量不足！'); return; }
+            if (curE < card.cost) { alert('能量不足!'); return; }
             if (gameState.currentTurn === 'red') gameState.redEnergy -= card.cost; else gameState.blueEnergy -= card.cost;
             updateEnergyDisplay();
             possessUnit(card, unitAtPos);
-            // 附身后清除选中，避免下次点击被判定为双击触发技能
+            // 附身后清除选中,避免下次点击被判定为双击触发技能
             gameState.selectedUnit = null;
             return;
         }
-        alert('该位置已有单位！');
+        alert('该位置已有单位!');
         return;
     }
-    
+
     // 检查能量
     const currentEnergy = gameState.currentTurn === 'red' ? gameState.redEnergy : gameState.blueEnergy;
     if (currentEnergy < card.cost) {
-        alert('能量不足！');
+        alert('能量不足!');
         return;
     }
-    
+
     // 创建单位
     const unit = {
         id: `${card.id}_${Date.now()}`,
@@ -1855,6 +2078,16 @@ function deployUnit(row, col) {
         golem: card.golem || false,
         eliteIce: card.eliteIce || false,
         mirror: card.mirror || false,
+        superKnight: card.superKnight || false,
+        healFairy: card.healFairy || false,
+        cannon: card.cannon || false,
+        madaraSolve: card.madaraSolve || false,
+        doomShroom: card.doomShroom || false,
+        smallShroom: card.smallShroom || false,
+        patroller: card.patroller || false,
+        royalGuard: card.royalGuard || false,
+        solveEnergy: card.solveEnergy || 0,
+        solveMaxEnergy: card.solveMaxEnergy || 0,
         miner: card.miner || false,
         deployEffect: card.deployEffect || false,
         flying: card.flying || false,
@@ -1879,9 +2112,13 @@ function deployUnit(row, col) {
         row,
         col
     };
-    
+
+    // 小喷菇部署计数
+    if (unit.smallShroom) {
+        gameState.shroomCount[gameState.currentTurn] = (gameState.shroomCount[gameState.currentTurn] || 0) + 1;
+    }
     gameState.units.push(unit);
-    
+
     // 扣除能量
     if (gameState.currentTurn === 'red') {
         gameState.redEnergy -= card.cost;
@@ -1890,13 +2127,20 @@ function deployUnit(row, col) {
         gameState.blueEnergy -= card.cost;
         updateEnergyDisplay();
     }
-    
-    // 不从出战卡组移除，局内可以无限放置（只要能量够）
-    
+
+    // 不从出战卡组移除,局内可以无限放置(只要能量够)
+
     // 关闭部署弹窗
     closeDeployModalFunc();
-    
-    // 矿工地道特效（延迟渲染）
+
+    // 觉醒皇家卫队:部署为6个横向卫兵(每两个间隔1格),本体不出现
+    if (unit.royalGuard) {
+        spawnRoyalGuards(unit);
+        gameState.units = gameState.units.filter(u => u.id !== unit.id);
+        return;
+    }
+
+    // 矿工地道特效(延迟渲染)
     if (unit.miner) {
         const dist = Math.max(Math.abs(unit.row - (unit.team === 'red' ? 26 : 1)), Math.abs(unit.col - 15));
         const bends = Math.max(1, Math.min(6, Math.floor(dist / 5) + 1));
@@ -1905,39 +2149,53 @@ function deployUnit(row, col) {
         setTimeout(() => renderUnit(unit), tunnelTime);
         return;
     }
-    
+
     // 渲染单位
     renderUnit(unit);
-    
-    // 部署生效效果（英雄台词/沙尘暴/召唤类——玩家与AI共用）
+
+    // 部署生效效果(英雄台词/沙尘暴/召唤类--玩家与AI共用)
     runDeployEffects(unit);
 }
 
 // 移动单位
 function moveUnit(row, col) {
     if (!gameState.selectedUnit) return;
-    
+
     const unit = gameState.selectedUnit;
+    // 被巡视者咬住:无法移动
+    if (unit.grabbed) {
+        clearHighlights();
+        gameState.selectedUnit = null;
+        return;
+    }
     const oldRow = unit.row;
     const oldCol = unit.col;
-    
-    // 目的地已被占用则不能移动（防止警车压到警察等重叠）
+
+    // 目的地已被占用则不能移动(防止警车压到警察等重叠)
+    // 解斑须佐:目标格被敌人占则先推走(须佐推着敌人走)
+    if (unit.madaraSolve && unit._susanooActive) {
+        const blocker = gameState.units.find(u => u.row === row && u.col === col && u.id !== unit.id && u.team !== unit.team && !u.ghost && !u._removing);
+        if (blocker) {
+            const mdr = Math.sign(row - unit.row), mdc = Math.sign(col - unit.col);
+            if (mdr !== 0 || mdc !== 0) knockbackUnit(blocker, mdr, mdc, 2);
+        }
+    }
     if (gameState.units.some(u => u.id !== unit.id && u.row === row && u.col === col)) {
         clearHighlights();
         gameState.selectedUnit = null;
         return;
     }
-    
+
     // 更新位置
     unit.row = row;
     unit.col = col;
-    
-    // 累计已用移动点数（曼哈顿距离），允许分次移动
+
+    // 累计已用移动点数(曼哈顿距离),允许分次移动
     const distance = Math.abs(row - oldRow) + Math.abs(col - oldCol);
     gameState.moveUsed[unit.id] = (gameState.moveUsed[unit.id] || 0) + distance;
     unit.lastMoveDist = distance;
-    
-    // 艾琳黄圈：出圈/进圈受伤（穿甲1）
+
+    // 艾琳黄圈:出圈/进圈受伤(穿甲1)
     gameState.erinRings.forEach(r => {
         if (r.team === unit.team) return;
         const inOld = Math.max(Math.abs(oldRow - r.row), Math.abs(oldCol - r.col)) <= 1;
@@ -1949,18 +2207,18 @@ function moveUnit(row, col) {
             if (unit.currentHp <= 0) removeUnit(unit);
         }
     });
-    
+
     // 更新UI
     const oldCell = gameState.board[oldRow][oldCol];
     const newCell = gameState.board[row][col];
-    
+
     const unitElement = oldCell.querySelector('.unit');
     if (unitElement) {
         oldCell.removeChild(unitElement);
         newCell.appendChild(unitElement);
     }
-    
-    // 镜分身镜像跟随：镜移动 d，分身反向移动 d（保持关于对称中心镜像）
+
+    // 镜分身镜像跟随:镜移动 d,分身反向移动 d(保持关于对称中心镜像)
     if (unit.mirror && unit._mirrorClone && unit._mirrorCenter) {
         const c = unit._mirrorCenter;
         const nr = 2 * c.row - unit.row;
@@ -1971,6 +2229,22 @@ function moveUnit(row, col) {
             renderMirrorClone(unit);
         }
     }
+    // 解斑须佐:移动推前方敌人(沿移动方向,逐格推直到离开须佐3×3)
+    if (unit.madaraSolve && unit._susanooActive && unit.lastMoveDist > 0) {
+        const mdr = Math.sign(unit.row - oldRow), mdc = Math.sign(unit.col - oldCol);
+        gameState.units.slice().forEach(p => {
+            if (p.team === unit.team || p.ghost || p._removing) return;
+            if (p.row === unit.row && p.col === unit.col) return;
+            // 须佐 3×3 内的敌人全部推走(沿移动方向,连锁推开挡路单位,直到离开须佐)
+            if (Math.max(Math.abs(p.row - unit.row), Math.abs(p.col - unit.col)) > 1) return;
+            for (let i = 1; i <= 3; i++) {
+                if (Math.max(Math.abs(p.row - unit.row), Math.abs(p.col - unit.col)) > 1) break;
+                if (!susanooPush(p, mdr, mdc)) break;
+            }
+        });
+        // 须佐视觉跟随解斑
+        renderSusanooVisual(unit);
+    }
     // 精英冰人冰场随自己移动
     if (unit.eliteIce && unit._iceSkillActive) {
         gameState.iceFields.forEach(f => {
@@ -1979,19 +2253,19 @@ function moveUnit(row, col) {
         renderIceFields();
         freezeEnemiesInIce(gameState.iceFields.find(f => f.owner === unit.id));
     }
-    // 黑绝显现：附身队友一回合移动超5格（光晕加重，承受伤害）
+    // 黑绝显现:附身队友一回合移动超5格(光晕加重,承受伤害)
     if (unit._possessed && unit.zetsu && !unit.zetsu.revealed && (gameState.moveUsed[unit.id] || 0) > 5) {
         unit.zetsu.revealed = true;
         const uel2 = newCell.querySelector('.unit');
         if (uel2) uel2.classList.add('zetsu-revealed');
     }
-    
+
     // 更新烟雾可见性
     updateSmokeVisibility();
-    
+
     // 踏入火焰区域
     checkFireZoneBurn(unit);
-    
+
     // 疾风弹力绳重绘
     if (unit.galeSkillActive && unit.galeAnchor) drawGaleRope(unit);
 }
@@ -2001,11 +2275,11 @@ function attackUnit(target) {
     if (!gameState.selectedUnit) return;
     // 缩进地底的特斯拉电磁塔不可被攻击
     if (target.teslaHidden) return;
-    
+
     const attacker = gameState.selectedUnit;
     let lastDamage = 0;
-    
-    // === 处决：切比雪夫距离 ≤ executionRange 秒杀 ===
+
+    // === 处决:切比雪夫距离 ≤ executionRange 秒杀 ===
     if (attacker.executionRange) {
         const dist = Math.max(Math.abs(attacker.row - target.row), Math.abs(attacker.col - target.col));
         if (dist <= attacker.executionRange) {
@@ -2020,8 +2294,8 @@ function attackUnit(target) {
             return;
         }
     }
-    
-    // === 闪避机制：被攻击方首次受击时翻滚闪避 ===
+
+    // === 闪避机制:被攻击方首次受击时翻滚闪避 ===
     if (target.dodge && !target.dodgeUsed) {
         const dirs = [[-1,0],[1,0],[0,-1],[0,1]];  // 上下左右
         const valid = dirs.filter(([dr,dc]) => {
@@ -2054,17 +2328,39 @@ function attackUnit(target) {
             return;
         }
     }
-    
+
     // 计算攻击距离
     const dist = Math.abs(attacker.row - target.row) + Math.abs(attacker.col - target.col);
-    
-    // 德穆兰首击：第一次攻击强制敌人剩1血
+
+    // 巡视者:咬住敌人(不造成伤害,持续3回合无法移动)
+    if (attacker.patroller && !attacker._grabbing) {
+        if (target.grabbed) {
+            showHeroDeployText(target, '已被咬住', '#000', 1000);
+            clearHighlights();
+            gameState.selectedUnit = null;
+            return;
+        }
+        target.grabbed = { by: attacker.id, turns: 3 };
+        attacker._grabbing = true;
+        attacker._grabTarget = target.id;
+        updateGrabVisual(target);
+        // 巡视者图标消失(单位保留,3回合后自动消失)
+        const pEl = gameState.board[attacker.row][attacker.col].querySelector('.unit');
+        if (pEl) pEl.style.display = 'none';
+        showHeroDeployText(target, '咬住!', '#000', 1200);
+        gameState.attackedUnits.add(attacker.id);
+        clearHighlights();
+        gameState.selectedUnit = null;
+        return;
+    }
+
+    // 德穆兰首击:第一次攻击强制敌人剩1血
     if (attacker.firstStrike) {
         if (target.maxHp > 1 && target.currentHp > 1 && !target._firstStruck) {
             target._firstStruck = true;
             target.currentHp = Math.max(1, target.currentHp - attacker.attack);
             updateUnitHp(target);
-            // 首击消耗本次攻击机会（德穆兰计入多段攻击次数，有加成则继续可攻击）
+            // 首击消耗本次攻击机会(德穆兰计入多段攻击次数,有加成则继续可攻击)
             if (attacker.tankSpawn) {
                 attacker.demuAttacksUsed = (attacker.demuAttacksUsed || 0) + 1;
                 if (attacker.demuAttacksUsed > (attacker.demuBonusAttacks || 0)) {
@@ -2079,14 +2375,14 @@ function attackUnit(target) {
             return;
         }
     }
-    // 铠飞镖攻击：固定1伤不暴击，跳过正常伤害
+    // 铠飞镖攻击:固定1伤不暴击,跳过正常伤害
     if (attacker.kaiShurikenRange && attacker.kaiAttacks >= 1) {
         target.currentHp -= 1;
         updateUnitHp(target);
         if (target.currentHp <= 0) removeUnit(target);
         // 不进入正常伤害流程
     } else {
-    // 千手柱间：第一击木人之术·金龙，第二击树界降临
+    // 千手柱间:第一击木人之术·金龙,第二击树界降临
     if (attacker.hashirama) {
         if ((attacker.hashiAttacksUsed||0) === 0) {
             attacker.hashiAttacksUsed = 1;
@@ -2107,7 +2403,7 @@ function attackUnit(target) {
             showHeroDeployText(target, '树界降临', '#8b5a2b', 1000);
         }
     } else
-    // 艾琳特殊攻击（子弹4伤/普攻2伤+后撤/技能3伤）
+    // 艾琳特殊攻击(子弹4伤/普攻2伤+后撤/技能3伤)
     if (attacker.erin) {
         if (attacker.erinSkillActive) {
             damage = 3;
@@ -2132,9 +2428,33 @@ function attackUnit(target) {
             attacker.erinBonusPending = true;
         }
     } else
+    // 觉醒超级骑士:距离<3普通范围攻击(目标+左右+后方4格,目标倒退4格);距离3-5跃击(4伤+前方2×3击退)
+    if (attacker.superKnight) {
+        const skDist = Math.max(Math.abs(target.row - attacker.row), Math.abs(target.col - attacker.col));
+        if (skDist < 3) {
+            const dr = Math.sign(target.row - attacker.row), dc = Math.sign(target.col - attacker.col);
+            gameState.units.slice().forEach(u => {
+                if (u.team === attacker.team || u.ghost || u._removing) return;
+                const isT = u.id === target.id;
+                const isSide = u.row === target.row && (u.col === target.col - 1 || u.col === target.col + 1);
+                const isBack = u.row === target.row + dr && u.col === target.col + dc;
+                if (isT || isSide || isBack) {
+                    u.currentHp -= attacker.attack;
+                    updateUnitHp(u);
+                    if (u.currentHp <= 0) removeUnit(u);
+                }
+            });
+            // 目标被击飞4格(无视中间障碍,霸体免疫)
+            if (target && !target._removing && target.currentHp > 0) flingUnit(target, dr, dc, 4);
+            damage = 0;
+        } else {
+            superKnightLeap(attacker, target);
+            damage = 0;
+        }
+    } else
     // 百分比攻击
     if (attacker.percentAttack) {
-        // 第一击扣一半（向上取整），确保两击必杀
+        // 第一击扣一半(向上取整),确保两击必杀
         if (target.maxHp === target.currentHp && target.currentHp > 2) {
             damage = Math.ceil(target.currentHp * attacker.percentAttack);
         } else {
@@ -2146,7 +2466,7 @@ function attackUnit(target) {
     } else {
         // 远程攻击
         damage = attacker.attack;
-        // 镜：第二次攻击本体+分身同时攻击（伤害翻倍）
+        // 镜:第二次攻击本体+分身同时攻击(伤害翻倍)
         if (attacker.mirror && attacker._mirrorSecond) damage *= 2;
         // 首次远程暴击
         if (attacker.rangedCrit && !attacker.rangedCritUsed) {
@@ -2160,16 +2480,29 @@ function attackUnit(target) {
             showCritText(target.row, target.col);
         }
     }
-    
+
     // 冲锋机制
     if (attacker.chargeDamage && attacker.lastMoveDist >= attacker.chargeMove) {
         damage = attacker.chargeDamage;
     }
-    
-    // 护甲减伤（考虑穿甲）——百分比攻击为真实伤害，无视护甲（保证两击必杀）
+
+    // 护甲减伤(考虑穿甲)--百分比攻击为真实伤害,无视护甲(保证两击必杀)
     const effectiveArmor = attacker.percentAttack ? 0 : Math.max(0, (target.armor || 0) - (attacker.armorPen || 0));
     let actualDamage = Math.max(0, damage - effectiveArmor);
-    // 艾琳保命装：护盾先吸收；致命伤害免疫并获得3血护盾（一次性）
+    // 皇家卫兵冲锋:本回合移动≥3格 → 伤害翻倍(先翻倍再减护甲)
+    if (attacker.royalGuard && (gameState.moveUsed[attacker.id] || 0) >= 3) {
+        actualDamage *= 2;
+        showCritText(target.row, target.col, '冲锋');
+    }
+    // 皇家卫兵护盾:先吸收伤害(护盾破后才能伤本体)
+    if (target.royalGuard && target.guardShield > 0 && actualDamage > 0) {
+        const absorbed = Math.min(target.guardShield, actualDamage);
+        target.guardShield -= absorbed;
+        actualDamage -= absorbed;
+        showHeroDeployText(target, '护盾', '#f1c40f', 800);
+        updateGuardShieldVisual(target);
+    }
+    // 艾琳保命装:护盾先吸收;致命伤害免疫并获得3血护盾(一次性)
     if (target.erin) {
         if (target.erinShield > 0) {
             var absorbed = Math.min(target.erinShield, actualDamage);
@@ -2182,11 +2515,11 @@ function attackUnit(target) {
             target.erinShieldUsed = true;
             target.erinShield = 3;
             actualDamage = 0;
-            showHeroDeployText(target, '保命装！', '#f1c40f', 1500);
+            showHeroDeployText(target, '保命装!', '#f1c40f', 1500);
             updateErinCounter(target);
         }
     }
-    // 千手柱间格挡：每回合前两次受击格挡并反击
+    // 千手柱间格挡:每回合前两次受击格挡并反击
     if (target.hashirama && actualDamage > 0 && (target.hashiBlocksUsed||0) < 2) {
         target.hashiBlocksUsed++;
         target.hashiEnergy = Math.min(6, (target.hashiEnergy||0) + 1);
@@ -2199,27 +2532,43 @@ function attackUnit(target) {
             counterPollen(target, attacker);
         }
     }
-    // 骷髅大哥护盾：抵挡一次攻击（任何伤害，抵挡后护盾消失）
+    // 骷髅大哥护盾:抵挡一次攻击(任何伤害,抵挡后护盾消失)
     if (target.skullBoss && target.skullShield && actualDamage > 0) {
         target.skullShield = false;
         actualDamage = 0;
         showHeroDeployText(target, '护盾抵挡', '#b39ddb', 1000);
         updateSkullShieldVisual(target);
     }
-    // 阴兵无敌：免疫所有伤害
+    // 阴兵无敌:免疫所有伤害
     if (target.ghost) actualDamage = 0;
-    // 黑绝显现：敌方对该队友的攻击由黑绝承受
+    // 解斑须佐:无敌(可被选中但不受伤)
+    if (target.madaraSolve && target._susanooActive) actualDamage = 0;
+    // 解斑:敌方回合受击受伤 → 可双击开特殊须佐
+    if (target.madaraSolve && !target._susanooActive && actualDamage > 0 && target.team !== gameState.currentTurn) {
+        target._solveCanSpecial = true;
+    }
+    // 解斑反击:每回合第一次受击 → 火球自动追踪敌人(3×3火焰)→ 释放完后自动开启特殊须佐(一局一次,无需手动)
+    if (target.madaraSolve && !target._susanooActive && actualDamage > 0 && !target._solveCountered) {
+        target._solveCountered = true;
+        solveCounterFire(target, attacker, () => {
+            const mm = gameState.units.find(x => x.id === target.id);
+            if (mm && !mm._susanooActive && !mm._solveSpecialUsed && !mm._removing) {
+                solveActivateSusanoo(mm, true);
+            }
+        });
+    }
+    // 黑绝显现:敌方对该队友的攻击由黑绝承受
     if (target._possessed && target.zetsu && target.zetsu.revealed && actualDamage > 0) {
         target.zetsu.currentHp -= actualDamage;
         showCritText(target.row, target.col, '黑绝承受');
         if (target.zetsu.currentHp <= 0) {
             releaseZetsu(target);
-            showHeroDeployText(target, '黑绝消亡！', '#000', 1500);
+            showHeroDeployText(target, '黑绝消亡!', '#000', 1500);
         }
         actualDamage = 0;
     }
     target.currentHp -= actualDamage;
-    // 觉醒吹箭哥布林：命中附加中毒（连续命中升级）
+    // 觉醒吹箭哥布林:命中附加中毒(连续命中升级)
     if (attacker.blowdart) {
         target.goblinHitThisTurn = true;
         target.poisonHits = (target.poisonHits || 0) + 1;
@@ -2228,27 +2577,27 @@ function attackUnit(target) {
         updatePoisonVisual(target);
     }
     lastDamage = actualDamage;
-    // 德穆兰受伤：本回合首次受伤+1次攻击
+    // 德穆兰受伤:本回合首次受伤+1次攻击
     if (target.tankSpawn && actualDamage > 0 && !target._demuDamaged) {
         target._demuDamaged = true;
         target.demuBonusAttacks = (target.demuBonusAttacks || 0) + 1;
-        showHeroDeployText(target, '一群接着一群，真把这里当金矿了', '#1a1a1a', 2000);
+        showHeroDeployText(target, '一群接着一群,真把这里当金矿了', '#1a1a1a', 2000);
     }
 
-    // 觉醒飞龙宝宝：攻击命中后形成风阵（5×5，持续4回合，不可叠加，攻击可续）
+    // 觉醒飞龙宝宝:攻击命中后形成风阵(5×5,持续4回合,不可叠加,攻击可续)
     if (attacker.windForm) {
         gameState.windZones = gameState.windZones.filter(z => z.owner !== attacker.id);
         gameState.windZones.push({ row: attacker.row, col: attacker.col, team: attacker.team, turns: 4, owner: attacker.id });
         renderWindZones();
     }
 
-    // 反击：首次受真实伤害触发
+    // 反击:首次受真实伤害触发
     if (target.counterAttack && !target.counterUsed && actualDamage > 0) {
         target.counterUsed = true;
         attacker.currentHp -= target.counterAttack;
         updateUnitHp(attacker);
         showCritText(attacker.row, attacker.col, '反击');
-        // 赛伊德专属：3x3燃烧
+        // 赛伊德专属:3x3燃烧
         if (target.counterBurn) {
             gameState.units.forEach(e => {
                 if (e.team === target.team) return;
@@ -2266,8 +2615,8 @@ function attackUnit(target) {
         }
         if (attacker.currentHp <= 0) removeUnit(attacker);
     }
-    
-    // 马斑反击：被1格距离攻击时3×3 AoE反伤+燃烧
+
+    // 马斑反击:被1格距离攻击时3×3 AoE反伤+燃烧
     if (target.aoeAttack && !target.madaraCounted) {
         const atkDist = Math.max(Math.abs(attacker.row - target.row), Math.abs(attacker.col - target.col));
         if (atkDist <= 3) {
@@ -2291,13 +2640,13 @@ function attackUnit(target) {
         }
     }
     target.madaraCounted = false;
-    
-    // 半血触发（仅典狱长/渡鸦等有此特效的单位）
+
+    // 半血触发(仅典狱长/渡鸦等有此特效的单位)
     if (target.maxHp && target.currentHp > 0 && target.currentHp <= target.maxHp / 2 && (target.halfHpText || target.halfHpSmoke)) {
         showHalfHpText(target);
     }
-    
-    // 铠双次攻击处理（if 块结束：跳过正常伤害后直接进入）
+
+    // 铠双次攻击处理(if 块结束:跳过正常伤害后直接进入)
     }
     if (attacker.kaiShurikenRange) {
         attacker.kaiAttacks = (attacker.kaiAttacks || 0) + 1;
@@ -2316,16 +2665,16 @@ function attackUnit(target) {
                 shurikenTargets.push(next.id);
                 current = next;
             }
-            // 动画+顺序伤害 (跳过主目标，主目标已在普通攻击中受伤)
+            // 动画+顺序伤害 (跳过主目标,主目标已在普通攻击中受伤)
             animateShuriken(attacker, shurikenTargets);
         }
     }
-    
-    // 马斑 AoE：攻击范围内所有敌军 + 施加燃烧 + 能量
+
+    // 马斑 AoE:攻击范围内所有敌军 + 施加燃烧 + 能量
     if (attacker.aoeAttack) {
         const aoeR = attacker.attackRange;
         const forward = attacker.team === 'red' ? -1 : 1;
-        // 攻击特效：红色箭头
+        // 攻击特效:红色箭头
         showMadaraAttackFX(attacker, target);
         gameState.units.forEach(e => {
             if (e.id === target.id || e.team === attacker.team) return;
@@ -2348,8 +2697,8 @@ function attackUnit(target) {
             renderEnergyBar(attacker, gameState.board[attacker.row][attacker.col].querySelector('.unit'));
         }
     }
-    
-    // 标记已攻击（天下无双/铠双攻期间不限制）
+
+    // 标记已攻击(天下无双/铠双攻期间不限制)
     if (attacker.inMusou) {
         attacker.musouAttacks = (attacker.musouAttacks || 0) + 1;
         if (attacker.musouAttacks >= attacker.musouAttacksMax) {
@@ -2363,44 +2712,48 @@ function attackUnit(target) {
             renderEnergyBar(attacker, gameState.board[attacker.row][attacker.col].querySelector('.unit'));
             gameState.attackedUnits.add(attacker.id);
         }
+    } else if (attacker.superKnight) {
+        // 超骑:每回合可攻击两次
+        attacker._skAttacks = (attacker._skAttacks || 0) + 1;
+        if (attacker._skAttacks >= 2) gameState.attackedUnits.add(attacker.id);
     } else if (attacker.mirror && !attacker._mirrorSecond) {
-        // 镜：第一次攻击召唤分身，允许第二次（不标记）
+        // 镜:第一次攻击召唤分身,允许第二次(不标记)
         attacker._mirrorSecond = true;
         attacker._mirrorAttacked = true;
         mirrorSummonClone(attacker, target);
     } else if (attacker.mirror) {
-        // 镜：第二次攻击后标记
+        // 镜:第二次攻击后标记
         gameState.attackedUnits.add(attacker.id);
         attacker._mirrorSecond = false;
     } else if (attacker.kaiShurikenRange && attacker.kaiAttacks < 2) {
-        // 铠第一击后不标记，允许第二击
+        // 铠第一击后不标记,允许第二击
     } else if (attacker.tankSpawn) {
-        // 德穆兰多段攻击：还有额外次数则不标记
+        // 德穆兰多段攻击:还有额外次数则不标记
         attacker.demuAttacksUsed = (attacker.demuAttacksUsed || 0) + 1;
         if (attacker.demuAttacksUsed > (attacker.demuBonusAttacks || 0)) {
             gameState.attackedUnits.add(attacker.id);
         }
     } else if (attacker.erin) {
-        // 艾琳：技能有剩余次数或普攻未满2次则不标记
+        // 艾琳:技能有剩余次数或普攻未满2次则不标记
         var erinCanContinue = attacker.erinSkillActive ? (attacker.erinSkillAttacks||0) > 0 : (attacker.erinAttacksUsed||0) < 2;
         if (!erinCanContinue) gameState.attackedUnits.add(attacker.id);
     } else if (attacker.blowdart) {
-        // 吹箭：每回合可攻击两次
+        // 吹箭:每回合可攻击两次
         attacker.blowdartAttacksUsed = (attacker.blowdartAttacksUsed || 0) + 1;
         if (attacker.blowdartAttacksUsed >= 2) gameState.attackedUnits.add(attacker.id);
     } else if (attacker.hashirama) {
-        // 柱间：两次攻击后标记
+        // 柱间:两次攻击后标记
         if ((attacker.hashiAttacksUsed||0) >= 2) gameState.attackedUnits.add(attacker.id);
     } else {
         gameState.attackedUnits.add(attacker.id);
     }
-    
+
     // 更新目标血量显示
     updateUnitHp(target);
-    
+
     // 检查目标是否死亡
     if (target.currentHp <= 0) {
-        // 疾风技能期间复活拉回（带动画）
+        // 疾风技能期间复活拉回(带动画)
         if (target.galeSkillActive && target.galeAnchor) {
             const unitEl = gameState.board[target.row][target.col].querySelector('.unit');
             if (unitEl) {
@@ -2453,7 +2806,7 @@ function attackUnit(target) {
                 setTimeout(() => {
                     target.currentHp = target.maxHp;
                     updateUnitHp(target);
-                    // 锚点被占则找最近空位（防重叠）
+                    // 锚点被占则找最近空位(防重叠)
                     var gr = target.galeAnchor.row, gc = target.galeAnchor.col;
                     if (gameState.units.some(uu => uu.id !== target.id && uu.row === gr && uu.col === gc)) {
                         var placed2 = false;
@@ -2488,15 +2841,15 @@ function attackUnit(target) {
             removeUnit(target);
         }
     }
-    
-    // 觉醒大皮卡：击杀敌人回复3生命（可超上限，最高12）
+
+    // 觉醒大皮卡:击杀敌人回复3生命(可超上限,最高12)
     if (target.currentHp <= 0 && attacker.pekkaHeal && !target.galeSkillActive && !target.galeAnchor) {
         attacker.currentHp = Math.min(12, (attacker.currentHp || 0) + 3);
         updateUnitHp(attacker);
         showCritText(attacker.row, attacker.col, '回复');
     }
-    
-    // 大雪怪：每受1伤召唤冰雪精灵
+
+    // 大雪怪:每受1伤召唤冰雪精灵
     if (target.snowMonster && lastDamage > 0) {
         for (let dmg = 0; dmg < lastDamage; dmg++) {
                 const dirs = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
@@ -2519,7 +2872,7 @@ function attackUnit(target) {
                 }
             }
     }
-    
+
     // 冰冻效果
     if (attacker.freeze && target.currentHp > 0) {
         if (!isImmuneToFreeze(target)) {
@@ -2532,19 +2885,19 @@ function attackUnit(target) {
             summonCharcoal(target);
         }
     }
-    
-    // 一次性兵种：攻击后自毁
+
+    // 一次性兵种:攻击后自毁
     if (attacker.oneShot) {
         removeUnit(attacker);
     }
-    
-    // 电大直线攻击+闪电链（顺序伤害+线特效）
+
+    // 电大直线攻击+闪电链(顺序伤害+线特效)
     if (attacker.lineAttack) {
         attacker.electricHit = [];
         attacker._baseHit = false;
         const forward = attacker.team === 'red' ? -1 : 1;
         let lineTargets = [];
-        // 正前方3列扫描（只收集，不立即伤害）
+        // 正前方3列扫描(只收集,不立即伤害)
         for (let r = attacker.row + forward; attacker.team === 'red' ? r >= 0 : r < 30; r += forward) {
             for (let c = attacker.col - 1; c <= attacker.col + 1; c++) {
                 if (!isValidPosition(r, c)) continue;
@@ -2558,7 +2911,7 @@ function attackUnit(target) {
                 }
             }
         }
-        // 闪电链无限传播（距离≤4继续传播；每敌最多被锁定2次；被球击中的敌人不再被链锁定）
+        // 闪电链无限传播(距离≤4继续传播;每敌最多被锁定2次;被球击中的敌人不再被链锁定)
         let allChainTargets = [];
         const chainR = attacker.chainRange || 4;
         const lockCount = {};
@@ -2579,7 +2932,7 @@ function attackUnit(target) {
                 }
             });
         }
-        // 技能：10%概率扇形5闪电球
+        // 技能:10%概率扇形5闪电球
         if (Math.random() < 0.1) {
             const toward = attacker.team === 'red' ? -1 : 1;
             const dirs = [[toward,0],[toward,-1],[toward,1],[toward,-2],[toward,2]];
@@ -2609,25 +2962,25 @@ function attackUnit(target) {
                 }, 550);
             });
         }
-        // 子弹+闪电链特效（顺序伤害）
+        // 子弹+闪电链特效(顺序伤害)
         showElectricBullet(attacker, lineTargets, allChainTargets);
     }
-    
+
     // 溅射伤害
     if (attacker.splashRadius) {
         applySplashDamage(target, attacker);
     }
-    
-    // 凋零：命中附加黑色毒（每回合1伤，不可叠加）
+
+    // 凋零:命中附加黑色毒(每回合1伤,不可叠加)
     if (attacker.wither) {
         applyWitherEffect(target, attacker);
     }
-    
+
     // 雷电飞龙连锁攻击
     if (attacker.chainAttack) {
         applyChainAttack(attacker, target);
     }
-    
+
     // 喷火兵燃烧
     if (attacker.fireAttack) {
         target.burnTurns = 3;
@@ -2635,7 +2988,7 @@ function attackUnit(target) {
         updateBurnVisual(target);
         showCritText(target.row, target.col, '火焰');
     }
-    
+
     // 检查游戏结束
     checkGameOver();
 }
@@ -2645,14 +2998,18 @@ function attackBase(isBlueBase) {
     if (!gameState.selectedUnit) return;
     // 马斑无双状态不能攻击大本营
     if (gameState.selectedUnit.inMusou) return;
-    
+    // 巡视者无法咬大本营
+    if (gameState.selectedUnit.patroller) return;
+    // 被巡视者咬住：只能攻击敌人，不能攻击大本营
+    if (gameState.selectedUnit.grabbed) return;
+
     const attacker = gameState.selectedUnit;
-    
-    // 计算攻击距离（取最近的大本营格子）
+
+    // 计算攻击距离(取最近的大本营格子)
     const baseRow = isBlueBase ? 1 : 26;
     const baseCol = 15;
     const dist = Math.abs(attacker.row - baseRow) + Math.abs(attacker.col - baseCol);
-    
+
     // 决定攻击模式
     let damage;
     if (attacker.meleeAttack && dist <= attacker.meleeRange) {
@@ -2669,13 +3026,13 @@ function attackBase(isBlueBase) {
             showCritText(isBlueBase ? 1 : 26, 15);
         }
     }
-    
+
     // 冲锋机制
     if (attacker.chargeDamage && attacker.lastMoveDist >= attacker.chargeMove) {
         damage = attacker.chargeDamage;
     }
     attacker.lastMoveDist = 0;
-    
+
     if (isBlueBase) {
         gameState.blueBaseHp -= damage;
         updateBaseHpDisplay();
@@ -2683,8 +3040,8 @@ function attackBase(isBlueBase) {
         gameState.redBaseHp -= damage;
         updateBaseHpDisplay();
     }
-    
-    // 标记已攻击（多段攻击单位也消耗次数，防止无限打大本营）
+
+    // 标记已攻击(多段攻击单位也消耗次数,防止无限打大本营)
     if (attacker.tankSpawn) {
         attacker.demuAttacksUsed = (attacker.demuAttacksUsed || 0) + 1;
         if (attacker.demuAttacksUsed > (attacker.demuBonusAttacks || 0)) gameState.attackedUnits.add(attacker.id);
@@ -2706,7 +3063,7 @@ function attackBase(isBlueBase) {
     } else {
         gameState.attackedUnits.add(attacker.id);
     }
-    
+
     // 检查游戏结束
     checkGameOver();
 }
@@ -2727,24 +3084,129 @@ function checkGameOver() {
 // 显示游戏结束
 function showGameOver() {
     stopTimer();
-    winnerText.textContent = gameState.winner === 'red' ? '红方获胜！' : '蓝方获胜！';
+    winnerText.textContent = gameState.winner === 'red' ? '红方获胜!' : '蓝方获胜!';
     gameOverModal.classList.remove('hidden');
+}
+
+// 毁灭菇:以自身为中心 7×7 爆炸(紫色蘑菇云),7伤,自身死亡并留下持续4回合的弹坑
+function doomShroomExplode(unit) {
+    if (unit._doomExploded) return;
+    unit._doomExploded = true;
+    showDoomMushroom(unit);
+    // 7×7 范围伤害(仅敌方,7伤减护甲)
+    gameState.units.slice().forEach(u => {
+        if (u.team === unit.team || u.ghost || u._removing) return;
+        if (Math.max(Math.abs(u.row - unit.row), Math.abs(u.col - unit.col)) <= 3) {
+            const dmg = Math.max(0, 7 - Math.max(0, (u.armor || 0) - (unit.armorPen || 0)));
+            u.currentHp -= dmg;
+            updateUnitHp(u);
+            showCritText(u.row, u.col, '爆炸');
+            if (u.currentHp <= 0) removeUnit(u);
+        }
+    });
+    // 留下弹坑(自身位置,持续4回合)
+    gameState.craters.push({ row: unit.row, col: unit.col, turns: 4 });
+    renderCraters();
+    // 自身死亡(_doomExploded 已标记,防递归)
+    removeUnit(unit);
+}
+
+// 紫色蘑菇云特效(7×7)
+function showDoomMushroom(unit) {
+    const board = document.getElementById('gameBoard');
+    const cloud = document.createElement('div');
+    cloud.className = 'doom-mushroom';
+    cloud.style.position = 'absolute';
+    const w = 7 * cellW, h = 7 * cellH;
+    cloud.style.left = ((unit.col - 3) * cellW) + 'px';
+    cloud.style.top = ((unit.row - 3) * cellH) + 'px';
+    cloud.style.width = w + 'px';
+    cloud.style.height = h + 'px';
+    board.appendChild(cloud);
+    setTimeout(() => { if (cloud.parentNode) cloud.parentNode.removeChild(cloud); }, 1600);
+}
+
+// 弹坑渲染(深色坑洞)
+function renderCraters() {
+    document.querySelectorAll('.crater-cell').forEach(el => el.classList.remove('crater-cell'));
+    (gameState.craters || []).forEach(c => {
+        if (isValidPosition(c.row, c.col)) gameState.board[c.row][c.col].classList.add('crater-cell');
+    });
+}
+
+// 被巡视者咬住的视觉：敌人图标右下角小黑点（独立元素，不干扰图标文字）
+function updateGrabVisual(unit) {
+    const el = gameState.board[unit.row][unit.col].querySelector('.unit');
+    if (!el) return;
+    let dot = el.querySelector('.grab-dot');
+    if (unit.grabbed) {
+        if (!dot) {
+            dot = document.createElement('div');
+            dot.className = 'grab-dot';
+            el.appendChild(dot);
+        }
+    } else if (dot) {
+        dot.remove();
+    }
+}
+
+// 觉醒皇家卫队:部署6个横向卫兵(每两个之间隔1格),本体不出现
+function spawnRoyalGuards(unit) {
+    const cols = [unit.col - 5, unit.col - 3, unit.col - 1, unit.col + 1, unit.col + 3, unit.col + 5];
+    cols.forEach(c => {
+        if (!isValidPosition(unit.row, c)) return;
+        if (isBlueBase(unit.row, c) || isRedBase(unit.row, c)) return;
+        if (gameState.units.some(u => u.row === unit.row && u.col === c)) return;
+        const g = {
+            id: 'royal_guard_' + Date.now() + '_' + Math.random(),
+            cardId: 'royal_guard',
+            name: '皇家卫兵',
+            attack: 2,
+            maxHp: 4,
+            currentHp: 4,
+            armor: 0,
+            armorPen: 0,
+            moveRange: 5,
+            attackRange: 2,
+            artwork: 'royal_guard',
+            royalGuard: true,
+            guardShield: 3,
+            team: unit.team,
+            row: unit.row,
+            col: c
+        };
+        gameState.units.push(g);
+        renderUnit(g);
+    });
+}
+
+// 皇家卫兵护盾视觉
+function updateGuardShieldVisual(unit) {
+    const el = gameState.board[unit.row][unit.col].querySelector('.unit');
+    if (!el) return;
+    if (unit.guardShield > 0) el.classList.add('guard-shield');
+    else el.classList.remove('guard-shield');
 }
 
 // 移除单位
 function removeUnit(unit) {
+// 毁灭菇:死亡时爆炸(敌方攻击致死触发;双击引爆已标记 _doomExploded 防重复)
+if (unit.doomShroom && !unit._doomExploded) {
+    doomShroomExplode(unit);
+    return;
+}
     // 清除死亡单位的中毒徽章等残留特效
     const deathCell = gameState.board[unit.row] ? gameState.board[unit.row][unit.col] : null;
     if (deathCell) {
         const pb = deathCell.querySelector('.poison-badge');
         if (pb) pb.remove();
     }
-    // 阴兵无敌兜底：任何伤害/移除都杀不死（除非大哥死亡级联），被打自动回满血
+    // 阴兵无敌兜底:任何伤害/移除都杀不死(除非大哥死亡级联),被打自动回满血
     if (unit.ghost && !unit._bossKill) {
         unit.currentHp = unit.maxHp;
         return;
     }
-    // 戈仑石人：死亡分裂成两个小石头人（一左一右，不递归分裂）
+    // 戈仑石人:死亡分裂成两个小石头人(一左一右,不递归分裂)
     if (unit.golem) {
         [[0,-1],[0,1]].forEach(p => {
             const nr = unit.row + p[0], nc = unit.col + p[1];
@@ -2756,7 +3218,7 @@ function removeUnit(unit) {
             renderUnit(mini);
         });
     }
-    // 黑绝：队友死亡，黑绝回归本体（保留附身时血量）
+    // 黑绝:队友死亡,黑绝回归本体(保留附身时血量)
     if (unit._possessed && unit.zetsu) {
         const z = unit.zetsu;
         const zUnit = { id: 'black_zetsu_' + Date.now() + '_' + Math.random(), cardId: 'black_zetsu', name: '黑绝', attack: 2, maxHp: 6, currentHp: Math.max(1, z.currentHp), armor: 0, moveRange: 10, attackRange: 2, artwork: 'black_zetsu', team: unit.team, row: unit.row, col: unit.col, blackZetsu: true };
@@ -2765,7 +3227,7 @@ function removeUnit(unit) {
 
         releaseZetsu(unit);
     }
-    // 条子：警车被摧毁时，车内警察全部出来（不再回警车，独立行动）
+    // 条子:警车被摧毁时,车内警察全部出来(不再回警车,独立行动)
     if (unit.copSpawn && unit.copHps) {
         var dirs = [[-1,-1],[-1,1],[1,-1],[1,1]];
         unit.copHps.forEach((hp, i) => {
@@ -2777,9 +3239,9 @@ function removeUnit(unit) {
             gameState.units.push(cop);renderUnit(cop);
         });
     }
-    // 骷髅士兵（非大哥）死亡→阴兵状态（数值不变、无敌、不消失）——任何死亡途径统一处理
+    // 骷髅士兵(非大哥)死亡→阴兵状态(数值不变、无敌、不消失)--任何死亡途径统一处理
     if (unit.skullSoldier && !unit.ghost && !unit.skullBoss) {
-        // 大哥已死：骷髅直接死亡（不再变阴兵，防止延迟伤害中大哥先死后续骷髅逃过级联）
+        // 大哥已死:骷髅直接死亡(不再变阴兵,防止延迟伤害中大哥先死后续骷髅逃过级联)
         const bossAlive = gameState.units.some(u => u.id === unit.skullBossId);
         if (!bossAlive) {
             // 走正常移除流程
@@ -2790,25 +3252,25 @@ function removeUnit(unit) {
             return;
         }
     }
-    // 骷髅大哥死亡：所有阴兵状态的骷髅也死亡（活着的保留）
+    // 骷髅大哥死亡:所有阴兵状态的骷髅也死亡(活着的保留)
     if (unit.skullBoss) {
         gameState.units.filter(u => u.skullSoldier && u.ghost && u.skullBossId === unit.id).forEach(g => { g._bossKill = true; removeUnit(g); });
     }
-    // 警察阵亡：记录到警车（不复活）
+    // 警察阵亡:记录到警车(不复活)
     if (unit.cop && unit.copCar) {
         var copCar = gameState.units.find(function(u) { return u.id === unit.copCar; });
         if (copCar && copCar.copHps) copCar.copHps[unit.copIndex] = null;
     }
-    // 战车死亡：给老太加攻击次数
+    // 战车死亡:给老太加攻击次数
     if (unit.tankMaster) {
         var m = gameState.units.find(function(u) { return u.id === unit.tankMaster; });
         if (m && !m._demuTankBonus) {
             m._demuTankBonus = true;
             m.demuBonusAttacks = (m.demuBonusAttacks || 0) + 1;
-            showHeroDeployText(m, '我的战车！你要给它陪葬！', '#1a1a1a', 2000);
+            showHeroDeployText(m, '我的战车!你要给它陪葬!', '#1a1a1a', 2000);
         }
     }
-    // 主将死亡：战车一起死
+    // 主将死亡:战车一起死
     if (unit.tankSpawn) {
         gameState.units.filter(function(u) { return u.tankMaster === unit.id; }).forEach(function(t) {
             removeUnit(t);
@@ -2836,7 +3298,7 @@ function updateUnitHp(unit) {
         else if (percentage < 50) hpFill.style.background = '#f39c12';
         else hpFill.style.background = '#27ae60';
     }
-    // 凋零半血变身：降为正常单位（不再是飞行单位）
+    // 凋零半血变身:降为正常单位(不再是飞行单位)
     if (unit.wither && unit.currentHp <= (unit.maxHp || 8) / 2 && unit.flying) {
         unit.flying = false;
     }
@@ -2845,23 +3307,23 @@ function updateUnitHp(unit) {
 // 渲染单位
 function renderUnit(unit) {
     const cell = gameState.board[unit.row][unit.col];
-    
-    // 清理旧位置残留的单位 DOM（直接改坐标后渲染会留旧图标）
+
+    // 清理旧位置残留的单位 DOM(直接改坐标后渲染会留旧图标)
     document.querySelectorAll('.unit[data-unit-id="' + unit.id + '"]').forEach(el => {
         if (el.parentNode !== cell) el.parentNode.removeChild(el);
     });
-    
+
     // 移除已存在的单位
     const existingUnit = cell.querySelector('.unit');
     if (existingUnit) {
         cell.removeChild(existingUnit);
     }
-    
+
     const unitElement = document.createElement('div');
     const artworkClass = unit.artwork ? `art-${unit.artwork}` : '';
     unitElement.className = `unit ${unit.team} ${artworkClass}`;
     unitElement.dataset.unitId = unit.id;
-    
+
     // 训练木偶头顶血量
     if (unit.dummy) {
         const hpEl = document.createElement('div');
@@ -2869,7 +3331,7 @@ function renderUnit(unit) {
         hpEl.textContent = unit.currentHp + '/' + unit.maxHp;
         unitElement.appendChild(hpEl);
     }
-    
+
     // 艾琳头顶计数
     if (unit.erin) {
         const cntEl = document.createElement('div');
@@ -2877,8 +3339,8 @@ function renderUnit(unit) {
         cntEl.textContent = (unit.erinCount||0) + (unit.erinShield > 0 ? ' 🛡' + unit.erinShield : '');
         unitElement.appendChild(cntEl);
     }
-    
-    // 添加血量条（使用独立类名，避免被通用 .hp-bar 的 150px 宽样式影响）
+
+    // 添加血量条(使用独立类名,避免被通用 .hp-bar 的 150px 宽样式影响)
     const hpBar = document.createElement('div');
     hpBar.className = 'unit-hp-bar';
     const hpFill = document.createElement('div');
@@ -2890,28 +3352,39 @@ function renderUnit(unit) {
     else hpFill.style.background = '#27ae60';
     hpBar.appendChild(hpFill);
     unitElement.appendChild(hpBar);
-    
+
     // 标记已攻击的单位
     if (gameState.attackedUnits.has(unit.id)) {
         unitElement.classList.add('has-attacked');
     }
-    
-    // 阴兵半透明特效（重渲染后保留，防移动/攻击后丢失）
+
+    // 阴兵半透明特效(重渲染后保留,防移动/攻击后丢失)
     if (unit.ghost) unitElement.classList.add('skull-ghost');
-    
+
     cell.appendChild(unitElement);
-    
-    // 马斑/佩恩能量条（嵌在单位内部，跟随移动）
-    if (unit.madaraMaxEnergy || unit.painMaxEnergy || unit.hashiMaxEnergy) renderEnergyBar(unit, unitElement);
-    
+
+    // 马斑/佩恩能量条(嵌在单位内部,跟随移动)
+    if (unit.madaraMaxEnergy || unit.painMaxEnergy || unit.hashiMaxEnergy || unit.solveMaxEnergy) renderEnergyBar(unit, unitElement);
+
     // 铠大招紫色特效
     if (unit.kaiUltActive) unitElement.classList.add('kai-ult');
-    
+
     // 冰冻/烟雾可见性
     if (unit.frozen) updateFrozenVisual(unit);
     if (unit.burnTurns > 0) updateBurnVisual(unit);
     if (unit.witherTurns > 0) updateWitherVisual(unit);
+    if (unit.grabbed) {
+        unitElement.classList.add('grabbed-dot');
+        const dot = document.createElement('div');
+        dot.className = 'grab-dot';
+        unitElement.appendChild(dot);
+    }
+    if (unit.patroller && unit._grabbing) unitElement.style.display = 'none';
+    if (unit.royalGuard) unitElement.classList.add('awakened');
+    if (unit.royalGuard && unit.guardShield > 0) unitElement.classList.add('guard-shield');
     if (unit.teslaHidden) unitElement.classList.add('tesla-hidden');
+    if (unit.superKnight) unitElement.classList.add('awakened');
+    if (unit.madaraSolve && unit._susanooActive) renderSusanooVisual(unit);
     if (unit._possessed) {
         unitElement.classList.add('zetsu-possessed');
         if (unit.zetsu && unit.zetsu.revealed) unitElement.classList.add('zetsu-revealed');
@@ -2925,7 +3398,7 @@ function showHeroDeployText(unit, message, color, duration) {
     const cell = gameState.board[unit.row][unit.col];
     const text = document.createElement('div');
     text.className = 'hero-deploy-text';
-    text.textContent = message || '你掉进陷阱了！';
+    text.textContent = message || '你掉进陷阱了!';
     if (color) text.style.color = color;
     const ms = duration || 3500;
     text.style.animation = `heroFloat ${ms}ms ease-out forwards`;
@@ -3003,7 +3476,7 @@ function summonWardenGuards(warden) {
         if (!isValidPosition(row, col)) return;
         if (gameState.units.some(u => u.row === row && u.col === col)) return;
         if (isBlueBase(row, col) || isRedBase(row, col)) return;
-        
+
         const guard = {
             id: `guard_${Date.now()}_${Math.random()}`,
             team, row, col, artwork: null,
@@ -3023,7 +3496,7 @@ function showHalfHpText(unit) {
     const cell = gameState.board[unit.row][unit.col];
     const text = document.createElement('div');
     text.className = 'hero-deploy-text';
-    text.textContent = unit.halfHpText || '典狱长实力受损！';
+    text.textContent = unit.halfHpText || '典狱长实力受损!';
     text.style.color = '#e74c3c';
     cell.appendChild(text);
     setTimeout(() => { if (text.parentNode) text.remove(); }, 2000);
@@ -3043,9 +3516,9 @@ function updateFrozenVisual(unit) {
 }
 
 // 更新燃烧视觉效果
-// 霸体：免疫冰冻（马斑无双状态等）
+// 霸体:免疫冰冻(马斑无双状态等)
 function isImmuneToFreeze(unit) {
-    return !!unit.inMusou;
+    return !!unit.inMusou || (unit.madaraSolve && unit._susanooActive);
 }
 
 function updateBurnVisual(unit) {
@@ -3064,14 +3537,680 @@ function updateBurnVisual(unit) {
     }
 }
 
+// ===== 解斑机制 =====
+// 双击主入口:技能→能量→须佐→特殊须佐
+function activateSolveAbility(m) {
+    // 冰冻/树缠状态:可开特殊须佐(不耗能)
+    if (!m._susanooActive && (m.frozen || m.treeBound) && !m._solveSpecialUsed) {
+        solveActivateSusanoo(m, true);
+        return;
+    }
+    // 敌方回合受击后可开特殊须佐(一局一次)
+    if (!m._susanooActive && m._solveCanSpecial && !m._solveSpecialUsed) {
+        solveActivateSusanoo(m, true);
+        return;
+    }
+    // 须佐状态:技能1子弹 / 技能2十字斩(特殊须佐同样可用)
+    if (m._susanooActive) {
+        if ((m._solveSkillsUsed||0) === 0) { solveSusanooBullets(m); return; }
+        if ((m._solveSkillsUsed||0) === 1) { solveSusanooCross(m); return; }
+        clearHighlights();
+        gameState.selectedUnit = null;
+        return;
+    }
+    // 非须佐:木龙 → 火遁 → 4能量开须佐 → 查克拉
+    if ((m._solveSkillsUsed||0) === 0) {
+        m._solvePhase = 'dragon';
+        enterSolveDragonSelect(m);
+        return;
+    }
+    if ((m._solveSkillsUsed||0) === 1) {
+        solveFireBlast(m);
+        return;
+    }
+    if ((m.solveEnergy||0) >= 4) {
+        solveActivateSusanoo(m, false);
+        return;
+    }
+    // 查克拉:+2能量
+    m.solveEnergy = Math.min(m.solveMaxEnergy || 4, (m.solveEnergy || 0) + 2);
+    renderEnergyBar(m, gameState.board[m.row][m.col].querySelector('.unit'));
+    showHeroDeployText(m, '查克拉', '#2980b9', 1000);
+    clearHighlights();
+    gameState.selectedUnit = null;
+}
+// 木龙选敌模式:3×8(前方三数列)敌人标红 + 范围提示
+function enterSolveDragonSelect(m) {
+    clearHighlights();
+    // 显示 3×8 范围提示
+    document.querySelectorAll('.dragon-range').forEach(el => el.remove());
+    const dir = m.team === 'red' ? -1 : 1;
+    const board = document.getElementById('gameBoard');
+    for (let rr = 1; rr <= 8; rr++) {
+        for (let dc = -1; dc <= 1; dc++) {
+            const nr = m.row + dir * rr, nc = m.col + dc;
+            if (!isValidPosition(nr, nc)) continue;
+            const rg = document.createElement('div');
+            rg.className = 'dragon-range';
+            board.appendChild(rg);
+            rg.style.left = (nc * cellW) + 'px';
+            rg.style.top = (nr * cellH) + 'px';
+        }
+    }
+    gameState.units.forEach(u => {
+        if (u.team === m.team || u.ghost) return;
+        const dR = Math.abs(u.row - m.row), dC = Math.abs(u.col - m.col);
+        if (dR <= 8 && dC <= 1) gameState.board[u.row][u.col].classList.add('tank-target');
+    });
+}
+// 木龙之术:木龙冲(路径3伤)→ 俯冲3×3四伤 → 树缠 → 解斑落地
+function solveWoodDragon(m, target) {
+    m._solvePhase = null;
+    document.querySelectorAll('.dragon-range').forEach(el => el.remove());
+    clearHighlights();
+    gameState.selectedUnit = null;
+    gameState.attackedUnits.add(m.id);
+    m._solveSkillsUsed = (m._solveSkillsUsed||0) + 1;
+    // 木龙特效出来时显示技能名
+    showHeroDeployText(m, '木遁·木龙之术', '#8b5a2b', 1000);
+    const dir = m.team === 'red' ? -1 : 1;
+    const board = document.getElementById('gameBoard');
+    // 木龙从解斑处逐渐伸长飞出(体型/拖尾随飞行变长),头飞向被选敌人
+    const d = document.createElement('div');
+    d.className = 'wood-dragon' + (dir === 1 ? ' blue' : '');
+    d.style.position = 'absolute';
+    d.style.left = Math.max(0, (m.col * cellW + cellW / 2 - 9)) + 'px';
+    if (dir === -1) {
+        // 红方:底部锚定解斑格(bottom = 距容器底距离),向上生长
+        d.style.bottom = (BOARD_ROWS * cellH - (m.row + 1) * cellH) + 'px';
+        d.style.top = 'auto';
+    } else {
+        // 蓝方:顶部锚定解斑格,向下生长
+        d.style.top = (m.row * cellH) + 'px';
+    }
+    d.style.height = '0px';
+    board.appendChild(d);
+    // 解斑骑乘木龙:跟随木龙中央靠前位置(前端25%处)
+    const cell = gameState.board[m.row][m.col];
+    const el = cell.querySelector('.unit');
+    if (el) {
+        cell.removeChild(el);
+        el.style.position = 'absolute';
+        el.style.transform = 'none';
+        el.style.left = (m.col * cellW + cellW / 2 - 10) + 'px';
+        el.style.zIndex = '42';
+        el.style.pointerEvents = 'none';
+        board.appendChild(el);
+    }
+    let hitAny = false;
+    // 路径伤害:3×8 竖向范围内敌人 3 伤(木龙经过时)
+    const r0 = Math.min(m.row, target.row), r1 = Math.max(m.row, target.row);
+    gameState.units.slice().forEach(u => {
+        if (u.team === m.team || u.ghost) return;
+        if (u.row >= r0 - 1 && u.row <= r1 + 1 && Math.abs(u.col - m.col) <= 1) {
+            u.currentHp -= 3;
+            updateUnitHp(u);
+            hitAny = true;
+            if (u.currentHp <= 0) removeUnit(u);
+        }
+    });
+    // 生长动画:木龙从解斑处逐渐伸长到目标(解斑不骑乘,避免重绘闪动)
+    const distPx = Math.abs(target.row - m.row) * cellH;
+    const animStart = performance.now();
+    const animDur = 750;
+    const stepGrow = (now) => {
+        const p = Math.min(1, (now - animStart) / animDur);
+        const h = distPx * p;
+        d.style.height = h + 'px';
+        // 解斑骑乘:木龙中央靠前(前端25%)
+        if (el) {
+            if (dir === -1) el.style.top = ((m.row + 1) * cellH - h * 0.75 - cellH / 2 + 10) + 'px';
+            else el.style.top = (m.row * cellH + h * 0.75 - cellH / 2 + 10) + 'px';
+        }
+        if (p < 1) requestAnimationFrame(stepGrow);
+        else finishDragon();
+    };
+    const finishDragon = () => {
+        // 俯冲 3×3 四伤 + 树缠 + 解斑落地
+        const boom = document.createElement('div');
+        boom.className = 'solve-dive';
+        boom.style.position = 'absolute';
+        boom.style.left = (target.col * cellW) + 'px';
+        boom.style.top = (target.row * cellH) + 'px';
+        boom.style.width = (3 * cellW) + 'px';
+        boom.style.height = (3 * cellH) + 'px';
+        board.appendChild(boom);
+        setTimeout(() => boom.remove(), 500);
+        gameState.units.slice().forEach(u => {
+            if (u.team === m.team || u.ghost || u._removing) return;
+            if (Math.max(Math.abs(u.row - target.row), Math.abs(u.col - target.col)) <= 1) {
+                u.currentHp -= 4;
+                updateUnitHp(u);
+                hitAny = true;
+                if (u.currentHp <= 0) { removeUnit(u); return; }
+                if (u.treeBoundTurns === undefined || u.treeBoundTurns <= 0) {
+                    u.treeBound = true;
+                    u.treeBoundTurns = 2;
+                    updateTreeVisual(u);
+                }
+            }
+        });
+        // 木龙消失、解斑落地目标面前
+        if (d.parentNode) d.parentNode.removeChild(d);
+        const landR = target.row - dir, landC = target.col;
+        if (!isValidPosition(landR, landC)) { m.row = target.row + dir; m.col = target.col; } else { m.row = landR; m.col = landC; }
+        if (el) {
+            el.style.cssText = '';
+            if (el.parentNode) el.parentNode.removeChild(el);
+            gameState.board[m.row][m.col].appendChild(el);
+        }
+        renderUnit(m);
+        if (hitAny) {
+            m.solveEnergy = Math.min(m.solveMaxEnergy || 4, (m.solveEnergy || 0) + 1);
+            renderEnergyBar(m, gameState.board[m.row][m.col].querySelector('.unit'));
+        }
+    };
+    requestAnimationFrame(stepGrow);
+}
+// 火遁·豪火灭却:前方3×3 3伤 + 后方3×3 2伤(3×6竖向),树缠额外2伤
+function solveFireBlast(m) {
+    clearHighlights();
+    gameState.selectedUnit = null;
+    gameState.attackedUnits.add(m.id);
+    m._solveSkillsUsed = (m._solveSkillsUsed||0) + 1;
+    const dir = m.team === 'red' ? -1 : 1;
+    showHeroDeployText(m, '火遁·豪火灭却', '#e67e22', 1200);
+    let hitAny = false;
+    // 火焰统一消失时刻(技能开始 + 4.3s,两段一起消失)
+    const fireEndAt = performance.now() + 3800;
+    const board = document.getElementById('gameBoard');
+    // 解斑突出火球 → 火球飞向前方 → 变地上火焰
+    const fireball = document.createElement('div');
+    fireball.className = 'solve-fireball';
+    fireball.style.position = 'absolute';
+    fireball.style.left = (m.col * cellW + cellW / 2 - 9) + 'px';
+    fireball.style.top = (m.row * cellH + cellH / 2 - 9) + 'px';
+    fireball.style.transition = 'left 0.45s ease-in, top 0.45s ease-in';
+    board.appendChild(fireball);
+    // 火球飞向第一段中心(前方3格)
+    requestAnimationFrame(() => {
+        fireball.style.left = (m.col * cellW + cellW / 2 - 9) + 'px';
+        fireball.style.top = ((m.row + dir * 3) * cellH + cellH / 2 - 9) + 'px';
+    });
+    // 火球到达:变成地上火焰 3×3 + 3伤
+    setTimeout(() => {
+        if (fireball.parentNode) fireball.parentNode.removeChild(fireball);
+        renderSolveFire(m, 1, 3, dir, fireEndAt);
+        hitAny = dealSolveFire(m, 1, 3, dir, 3, hitAny) || hitAny;
+    }, 500);
+    // 第二段:火焰延长为 3×6(前方火保留)+ 后方2伤(间隔加长)
+    setTimeout(() => {
+        renderSolveFire(m, 4, 6, dir, fireEndAt);
+        hitAny = dealSolveFire(m, 4, 6, dir, 2, hitAny) || hitAny;
+        if (hitAny) {
+            m.solveEnergy = Math.min(m.solveMaxEnergy || 4, (m.solveEnergy || 0) + 1);
+            renderEnergyBar(m, gameState.board[m.row][m.col].querySelector('.unit'));
+        }
+    }, 1600);
+}
+// 火焰视觉:范围内格子显示火焰(统一到技能结束时刻一起消失)
+function renderSolveFire(m, offStart, offEnd, dir, fireEndAt) {
+    const board = document.getElementById('gameBoard');
+    for (let off = offStart; off <= offEnd; off++) {
+        for (let dc = -1; dc <= 1; dc++) {
+            const nr = m.row + dir * off, nc = m.col + dc;
+            if (!isValidPosition(nr, nc)) continue;
+            const f = document.createElement('div');
+            f.className = 'solve-fire';
+            f.style.position = 'absolute';
+            board.appendChild(f);
+            f.style.left = (nc * cellW) + 'px';
+            f.style.top = (nr * cellH) + 'px';
+            const remain = fireEndAt ? Math.max(200, fireEndAt - performance.now()) : 2700;
+            setTimeout(() => { if (f.parentNode) f.parentNode.removeChild(f); }, remain);
+        }
+    }
+}
+// 火焰伤害(含树缠额外2伤)
+function dealSolveFire(m, offStart, offEnd, dir, dmg, hitAny) {
+    for (let off = offStart; off <= offEnd; off++) {
+        gameState.units.slice().forEach(u => {
+            if (u.team === m.team || u.ghost || u._removing) return;
+            const rowOff = (u.row - m.row) * dir;
+            if (rowOff === off && Math.abs(u.col - m.col) <= 1) {
+                u.currentHp -= dmg;
+                updateUnitHp(u);
+                hitAny = true;
+                if (u.currentHp <= 0) { removeUnit(u); return; }
+                // 树缠敌人额外2伤
+                if (u.treeBound) {
+                    u.currentHp -= 2;
+                    updateUnitHp(u);
+                    if (u.currentHp <= 0) removeUnit(u);
+                }
+            }
+        });
+    }
+    return hitAny;
+}
+// 开启须佐能乎
+function solveActivateSusanoo(m, special) {
+    if (m._susanooActive) return;
+    if (!special) {
+        m.solveEnergy = Math.max(0, (m.solveEnergy || 0) - 4);
+    } else {
+        m._solveSpecialUsed = true;
+    }
+    m._susanooActive = true;
+    m._susanooSpecial = special;
+    m._solveSkillsUsed = 0;
+    m._solveCanSpecial = false;
+    // 须佐霸体:开启时解除冰冻(冰冻状态也能开须佐,开后可正常释放须佐技能)
+    if (m.frozen) {
+        m.frozen = false;
+        updateFrozenVisual(m);
+    }
+    // 开启须佐:把3×3范围内的敌人挤出范围(霸体/建筑免疫)
+    gameState.units.slice().forEach(u => {
+        if (u.team === m.team || u.ghost || u._removing) return;
+        if (Math.max(Math.abs(u.row - m.row), Math.abs(u.col - m.col)) <= 1) {
+            const dr = Math.sign(u.row - m.row), dc = Math.sign(u.col - m.col);
+            if (dr === 0 && dc === 0) return;
+            flingUnit(u, dr, dc, 2);
+        }
+    });
+    showHeroDeployText(m, '完全体须佐能乎', '#3498db', 2500);
+    // 移动范围 6
+    m.moveRange = 6;
+    renderSusanooVisual(m);
+    renderEnergyBar(m, gameState.board[m.row][m.col].querySelector('.unit'));
+    clearHighlights();
+    gameState.selectedUnit = null;
+}
+// 须佐 3×3 蓝色特效
+function renderSusanooVisual(m) {
+    document.querySelectorAll('.susanoo-cell').forEach(el => { if (el.dataset.owner === m.id) el.remove(); });
+    if (!m._susanooActive) return;
+    const board = document.getElementById('gameBoard');
+    for (let dr = -1; dr <= 1; dr++) {
+        for (let dc = -1; dc <= 1; dc++) {
+            const nr = m.row + dr, nc = m.col + dc;
+            if (!isValidPosition(nr, nc)) continue;
+            const cell = document.createElement('div');
+            cell.className = 'susanoo-cell';
+            cell.dataset.owner = m.id;
+            cell.style.position = 'absolute';
+            board.appendChild(cell);
+            cell.style.left = (nc * cellW) + 'px';
+            cell.style.top = (nr * cellH) + 'px';
+        }
+    }
+}
+    // 须佐技能1:前方竖向3×5 四颗蓝色子弹(并排≤2列、纵向错开、穿透),每颗2伤
+    function solveSusanooBullets(m) {
+        clearHighlights();
+        gameState.selectedUnit = null;
+        gameState.attackedUnits.add(m.id);
+        m._solveSkillsUsed = (m._solveSkillsUsed||0) + 1;
+        const dir = m.team === 'red' ? -1 : 1;
+        const board = document.getElementById('gameBoard');
+        // 4颗子弹分布在两列(colOff: 0,0,1,1),纵向稍微错开
+        const colOffs = [0, 0, 1, 1];
+        for (let i = 0; i < 4; i++) {
+            const colOff = colOffs[i];
+            const bullet = document.createElement('div');
+            bullet.className = 'solve-bullet';
+            bullet.style.position = 'absolute';
+            bullet.style.left = ((m.col + colOff) * cellW + cellW / 2 - 6) + 'px';
+            bullet.style.top = (m.row * cellH + cellH / 2 - 6 + i * 8) + 'px';
+            bullet.style.transition = 'top 0.7s linear';
+            board.appendChild(bullet);
+            // 目标行:前方5行
+            const targetRow = m.row + dir * 5;
+            setTimeout(() => {
+                bullet.style.top = (targetRow * cellH + cellH / 2 - 6 + i * 8) + 'px';
+            }, 40);
+            // 对路径上敌人造成伤害(穿透:3×5 竖向)
+            gameState.units.slice().forEach(u => {
+                if (u.team === m.team || u.ghost || u._removing) return;
+                const rOff = (u.row - m.row) * dir;
+                if (rOff >= 1 && rOff <= 5 && Math.abs(u.col - (m.col + colOff)) <= 1) {
+                    u.currentHp -= 2;
+                    updateUnitHp(u);
+                    if (u.currentHp <= 0) removeUnit(u);
+                }
+            });
+            setTimeout(() => bullet.remove(), 800);
+        }
+    }
+// 须佐技能2:前方5×5十字斩(蓝色×)
+function solveSusanooCross(m) {
+    clearHighlights();
+    gameState.selectedUnit = null;
+    gameState.attackedUnits.add(m.id);
+    m._solveSkillsUsed = (m._solveSkillsUsed||0) + 1;
+    const dir = m.team === 'red' ? -1 : 1;
+    const board = document.getElementById('gameBoard');
+    // 十字斩:从须佐处发射,飞向前方5×5区域并放大
+    const cross = document.createElement('div');
+    cross.className = 'solve-cross';
+    cross.textContent = '×';
+    cross.style.position = 'absolute';
+    const fromL = m.col * cellW + cellW / 2 - 20;
+    const fromT = m.row * cellH + cellH / 2 - 20;
+    const toL = (m.col - 2) * cellW;
+    const toT = (dir === -1 ? (m.row - 5) * cellH : m.row * cellH);
+    cross.style.left = fromL + 'px';
+    cross.style.top = fromT + 'px';
+    cross.style.width = '40px';
+    cross.style.height = '40px';
+    cross.style.fontSize = '50px';
+    cross.style.opacity = '0.6';
+    cross.style.transition = 'left 0.35s ease-out, top 0.35s ease-out, width 0.35s ease-out, height 0.35s ease-out, font-size 0.35s ease-out, opacity 0.35s ease-out';
+    board.appendChild(cross);
+    requestAnimationFrame(() => {
+        cross.style.left = toL + 'px';
+        cross.style.top = toT + 'px';
+        cross.style.width = (5 * cellW) + 'px';
+        cross.style.height = (5 * cellH) + 'px';
+        cross.style.fontSize = '175px';
+        cross.style.opacity = '1';
+    });
+    // 到达目标区域后造成伤害
+    setTimeout(() => {
+        gameState.units.slice().forEach(u => {
+            if (u.team === m.team || u.ghost || u._removing) return;
+            const rOff = (u.row - m.row) * dir;
+            if (rOff >= 1 && rOff <= 5 && Math.abs(u.col - m.col) <= 2) {
+                u.currentHp -= 3;
+                updateUnitHp(u);
+                if (u.currentHp <= 0) removeUnit(u);
+            }
+        });
+    }, 400);
+    setTimeout(() => cross.remove(), 900);
+}
+// 终极奥义:蓝色大剑插入5×5区域,3次×3伤
+function solveUltimateAttack(m, target) {
+    m._solvePhase = null;
+    clearHighlights();
+    gameState.selectedUnit = null;
+    const board = document.getElementById('gameBoard');
+    // 计算 5×5 范围内敌人的中间位置(单敌则瞄准该敌)
+    let sumR = 0, sumC = 0, cnt = 0;
+    gameState.units.forEach(u => {
+        if (u.team === m.team || u.ghost || u._removing) return;
+        if (Math.max(Math.abs(u.row - target.row), Math.abs(u.col - target.col)) <= 2) {
+            sumR += u.row; sumC += u.col; cnt++;
+        }
+    });
+    const cR = cnt > 0 ? Math.round(sumR / cnt) : target.row;
+    const cC = cnt > 0 ? Math.round(sumC / cnt) : target.col;
+    const sword = document.createElement('div');
+    sword.className = 'solve-sword';
+    sword.style.position = 'absolute';
+    // 蓝色大剑:剑身 + 剑尖 + 剑格 + 剑柄
+    const blade = document.createElement('div');
+    blade.className = 'solve-sword-blade';
+    const tip = document.createElement('div');
+    tip.className = 'solve-sword-tip';
+    const guard = document.createElement('div');
+    guard.className = 'solve-sword-guard';
+    const handle = document.createElement('div');
+    handle.className = 'solve-sword-handle';
+    blade.appendChild(tip);
+    sword.appendChild(blade);
+    sword.appendChild(guard);
+    sword.appendChild(handle);
+    // 剑头朝下、剑柄在上:从空中下落砸向敌人(落点=敌人中间位置)
+    const landT = (cR - 2) * cellH;
+    const startT = Math.max(0, (cR - 9) * cellH);
+    sword.style.left = ((cC - 2) * cellW) + 'px';
+    sword.style.top = startT + 'px';
+    sword.style.width = (5 * cellW) + 'px';
+    sword.style.height = (5 * cellH) + 'px';
+    sword.style.transition = 'top 0.55s ease-in';
+    board.appendChild(sword);
+    // 大剑从空中落下
+    requestAnimationFrame(() => {
+        sword.style.top = landT + 'px';
+    });
+    // 落地后造成伤害(3次×3伤,以敌人中间位置为中心5×5)
+    setTimeout(() => {
+        for (let hit = 0; hit < 3; hit++) {
+            setTimeout(() => {
+                gameState.units.slice().forEach(u => {
+                    if (u.team === m.team || u.ghost || u._removing) return;
+                    if (Math.max(Math.abs(u.row - cR), Math.abs(u.col - cC)) <= 2) {
+                        u.currentHp -= 3;
+                        updateUnitHp(u);
+                        if (u.currentHp <= 0) removeUnit(u);
+                    }
+                });
+            }, hit * 300);
+        }
+    }, 600);
+    setTimeout(() => sword.remove(), 1900);
+}
+
+// 解斑反击:火球自动追踪敌人(无论多远),3×3火焰+3伤(无第二段、不加能量)
+function solveCounterFire(m, enemy, onDone) {
+    const board = document.getElementById('gameBoard');
+    const fireball = document.createElement('div');
+    fireball.className = 'solve-fireball';
+    fireball.style.position = 'absolute';
+    fireball.style.left = (m.col * cellW + cellW / 2 - 9) + 'px';
+    fireball.style.top = (m.row * cellH + cellH / 2 - 9) + 'px';
+    fireball.style.transition = 'left 0.6s ease-in, top 0.6s ease-in';
+    board.appendChild(fireball);
+    requestAnimationFrame(() => {
+        fireball.style.left = (enemy.col * cellW + cellW / 2 - 9) + 'px';
+        fireball.style.top = (enemy.row * cellH + cellH / 2 - 9) + 'px';
+    });
+    setTimeout(() => {
+        if (fireball.parentNode) fireball.parentNode.removeChild(fireball);
+        const fireEndAt = performance.now() + 2500;
+        // 以敌人为中心 3×3 火焰
+        for (let dr = -1; dr <= 1; dr++) {
+            for (let dc = -1; dc <= 1; dc++) {
+                const nr = enemy.row + dr, nc = enemy.col + dc;
+                if (!isValidPosition(nr, nc)) continue;
+                const f = document.createElement('div');
+                f.className = 'solve-fire';
+                f.style.position = 'absolute';
+                board.appendChild(f);
+                f.style.left = (nc * cellW) + 'px';
+                f.style.top = (nr * cellH) + 'px';
+                const remain = Math.max(200, fireEndAt - performance.now());
+                setTimeout(() => { if (f.parentNode) f.parentNode.removeChild(f); }, remain);
+            }
+        }
+        // 伤害:3×3 内敌人 3伤 + 树缠额外2(不加能量)
+        gameState.units.slice().forEach(u => {
+            if (u.team === m.team || u.ghost || u._removing) return;
+            if (Math.max(Math.abs(u.row - enemy.row), Math.abs(u.col - enemy.col)) <= 1) {
+                u.currentHp -= 3;
+                updateUnitHp(u);
+                if (u.currentHp <= 0) { removeUnit(u); return; }
+                if (u.treeBound) {
+                    u.currentHp -= 2;
+                    updateUnitHp(u);
+                    if (u.currentHp <= 0) removeUnit(u);
+                }
+            }
+        });
+        // 豪火灭却释放完后:自动开启特殊须佐(一局一次,无需手动双击)
+        if (onDone) onDone();
+    }, 650);
+}
+
+// ===== 治疗精灵机制 =====
+// 跳向目标:3×3内友方+2血、敌方-1伤,随后消失
+function healFairyJump(attacker, target) {
+    clearHighlights();
+    gameState.selectedUnit = null;
+    gameState.attackedUnits.add(attacker.id);
+    // 以目标为中心 3×3
+    gameState.units.slice().forEach(u => {
+        if (Math.max(Math.abs(u.row - target.row), Math.abs(u.col - target.col)) > 1) return;
+        if (u.team === attacker.team) {
+            u.currentHp = Math.min((u.maxHp || 1), (u.currentHp || 0) + 2);
+            updateUnitHp(u);
+            showCritText(u.row, u.col, '回复');
+        } else if (!u.ghost && !u._removing) {
+            u.currentHp -= 1;
+            updateUnitHp(u);
+            showCritText(u.row, u.col, '治愈');
+            if (u.currentHp <= 0) removeUnit(u);
+        }
+    });
+    // 奶豆消失(一次性)
+    removeUnit(attacker);
+}
+
+// ===== 觉醒超级骑士机制 =====
+// 霸体免疫击退
+function isImmuneToKnockback(unit) {
+    return !!unit.inMusou || (unit.madaraSolve && unit._susanooActive);
+}
+// 须佐连锁推:推 unit 沿 (dr,dc) 1格,挡路单位连锁推开(霸体/建筑免疫)
+function susanooPush(unit, dr, dc) {
+    if (!unit || unit._removing || unit.ghost || isImmuneToKnockback(unit) || unit.building) return false;
+    const tr = unit.row + dr, tc = unit.col + dc;
+    if (!isValidPosition(tr, tc)) return false;
+    if (isBlueBase(tr, tc) || isRedBase(tr, tc)) return false;
+    const blocker = gameState.units.find(u => u.id !== unit.id && u.row === tr && u.col === tc);
+    if (blocker) {
+        if (!susanooPush(blocker, dr, dc)) return false;
+    }
+    const oldCell = gameState.board[unit.row][unit.col];
+    const newCell = gameState.board[tr][tc];
+    const el = oldCell.querySelector('.unit');
+    if (el) { oldCell.removeChild(el); newCell.appendChild(el); }
+    unit.row = tr; unit.col = tc;
+    return true;
+}
+// 击飞:无视中间障碍,强制飞到方向 dist 格外(落点无效则向前回溯找最近可站格)
+function flingUnit(unit, dr, dc, dist) {
+    if (!unit || unit._removing || unit.ghost || isImmuneToKnockback(unit) || unit.building) return false;
+    let nr = unit.row + dr * dist, nc = unit.col + dc * dist;
+    nr = Math.max(0, Math.min(BOARD_ROWS - 1, nr));
+    nc = Math.max(0, Math.min(BOARD_COLS - 1, nc));
+    while (nr !== unit.row || nc !== unit.col) {
+        if (!isBlueBase(nr, nc) && !isRedBase(nr, nc) && !gameState.units.some(u => u.id !== unit.id && u.row === nr && u.col === nc)) break;
+        nr -= dr; nc -= dc;
+    }
+    if (nr !== unit.row || nc !== unit.col) {
+        const oldCell = gameState.board[unit.row][unit.col];
+        const newCell = gameState.board[nr][nc];
+        const el = oldCell.querySelector('.unit');
+        if (el) { oldCell.removeChild(el); newCell.appendChild(el); }
+        unit.row = nr; unit.col = nc;
+        return true;
+    }
+    return false;
+}
+// 击退:向 (dr,dc) 方向推 dist 格(碰壁/阻挡停在最近可站位置)
+function knockbackUnit(unit, dr, dc, dist) {
+    if (!unit || unit._removing || unit.ghost || isImmuneToKnockback(unit) || unit.building) return false;
+    let nr = unit.row, nc = unit.col;
+    for (let i = 0; i < dist; i++) {
+        const tr = nr + dr, tc = nc + dc;
+        if (!isValidPosition(tr, tc)) break;
+        if (gameState.units.some(u => u.id !== unit.id && u.row === tr && u.col === tc)) break;
+        if (isBlueBase(tr, tc) || isRedBase(tr, tc)) break;
+        nr = tr; nc = tc;
+    }
+    if (nr !== unit.row || nc !== unit.col) {
+        const oldCell = gameState.board[unit.row][unit.col];
+        const newCell = gameState.board[nr][nc];
+        const el = oldCell.querySelector('.unit');
+        if (el) { oldCell.removeChild(el); newCell.appendChild(el); }
+        unit.row = nr; unit.col = nc;
+        return true;
+    }
+    return false;
+}
+// 跃击:跳向敌人砸4伤,前方2×3敌人击退1格(霸体免疫)
+function superKnightLeap(attacker, target) {
+    const board = document.getElementById('gameBoard');
+    // 跳跃动画:图标飞向敌人
+    const cell = gameState.board[attacker.row][attacker.col];
+    const el = cell.querySelector('.unit');
+    const fromR = attacker.row, fromC = attacker.col;
+    const finish = () => {
+        // 4伤
+        if (target && !target._removing && !target.ghost) {
+            target.currentHp -= 4;
+            updateUnitHp(target);
+            showCritText(target.row, target.col, '跃击');
+            if (target.currentHp <= 0) removeUnit(target);
+        }
+        // 落点 3×3 敌军全部向远离超骑方向击飞1格(含目标,霸体免疫)
+        const fromR2 = attacker.row, fromC2 = attacker.col;
+        for (let dr = -1; dr <= 1; dr++) {
+            for (let dc = -1; dc <= 1; dc++) {
+                const nr = target.row + dr, nc = target.col + dc;
+                if (!isValidPosition(nr, nc)) continue;
+                const u = gameState.units.find(e => e.row === nr && e.col === nc && e.team !== attacker.team && !e.ghost);
+                if (!u) continue;
+                const kdr = Math.sign(u.row - fromR2), kdc = Math.sign(u.col - fromC2);
+                if (kdr === 0 && kdc === 0) continue;
+                flingUnit(u, kdr, kdc, 1);
+            }
+        }
+        // 落地:敌人旁空位(敌人死则占敌人格)
+        let landR = target.row, landC = target.col;
+        if (target && target.currentHp > 0) {
+            let found = false;
+            for (let rr2 = 1; rr2 <= 2 && !found; rr2++) {
+                for (let dr2 = -rr2; dr2 <= rr2 && !found; dr2++) {
+                    for (let dc2 = -rr2; dc2 <= rr2 && !found; dc2++) {
+                        if (Math.max(Math.abs(dr2), Math.abs(dc2)) !== rr2) continue;
+                        const lr = target.row + dr2, lc = target.col + dc2;
+                        if (!isValidPosition(lr, lc)) continue;
+                        if (gameState.units.some(u2 => u2.id !== attacker.id && u2.row === lr && u2.col === lc)) continue;
+                        if (isBlueBase(lr, lc) || isRedBase(lr, lc)) continue;
+                        landR = lr; landC = lc; found = true;
+                    }
+                }
+            }
+        }
+        attacker.row = landR; attacker.col = landC;
+        if (el) {
+            el.style.cssText = '';
+            if (el.parentNode) el.parentNode.removeChild(el);
+            gameState.board[landR][landC].appendChild(el);
+        }
+        renderUnit(attacker);
+        clearHighlights();
+        gameState.selectedUnit = null;
+    };
+    if (!el) { finish(); return; }
+    cell.removeChild(el);
+    el.style.position = 'absolute';
+    el.style.transform = 'none';
+    el.style.left = (fromC * cellW + cellW / 2 - 10) + 'px';
+    el.style.top = (fromR * cellH + cellH / 2 - 10) + 'px';
+    el.style.transition = 'left 0.35s ease-in, top 0.35s ease-in';
+    el.style.zIndex = '40';
+    el.style.pointerEvents = 'none';
+    board.appendChild(el);
+    requestAnimationFrame(() => {
+        el.style.left = (target.col * cellW + cellW / 2 - 10) + 'px';
+        el.style.top = (target.row * cellH + cellH / 2 - 10) + 'px';
+    });
+    setTimeout(finish, 380);
+}
+
 // ===== 镜机制 =====
-// 攻击后以敌人为对称点召唤分身（动画：冲过去重叠→召唤分身→镜倒退、分身走向对称位）
+// 攻击后以敌人为对称点召唤分身(动画:冲过去重叠→召唤分身→镜倒退、分身走向对称位)
 function mirrorSummonClone(mirror, target) {
     const er = target.row, ec = target.col;
     const fromR = mirror.row, fromC = mirror.col;
     // 对称中心 = 被攻击的敌人
     mirror._mirrorCenter = { row: er, col: ec };
-    // 对称位置（关于敌人镜像）
+    // 对称位置(关于敌人镜像)
     const cr = er + (er - fromR), cc = ec + (ec - fromC);
     if (!isValidPosition(cr, cc)) return;
     const hadClone = !!mirror._mirrorClone;
@@ -3089,9 +4228,9 @@ function mirrorSummonClone(mirror, target) {
     el.style.zIndex = '40';
     el.style.pointerEvents = 'none';
     board.appendChild(el);
-    // 分身元素：已有分身则同步镜像移动；否则冲刺重叠后创建
+    // 分身元素:已有分身则同步镜像移动;否则冲刺重叠后创建
     let cloneDiv = document.querySelector('.mirror-clone[data-owner="' + mirror.id + '"]');
-    // 1. 镜冲向敌人（0.45s）；分身（若已有）从对称位镜像移动到敌人处（与镜同步反向同距）
+    // 1. 镜冲向敌人(0.45s);分身(若已有)从对称位镜像移动到敌人处(与镜同步反向同距)
     requestAnimationFrame(() => {
         el.style.left = (ec * cellW + cellW / 2 - 10) + 'px';
         el.style.top = (er * cellH + cellH / 2 - 10) + 'px';
@@ -3100,7 +4239,7 @@ function mirrorSummonClone(mirror, target) {
             cloneDiv.style.top = (er * cellH + cellH / 2 - 14) + 'px';
         }
     });
-    // 2. 到达敌人（重叠）：第一次攻击在此处创建分身（重叠处）
+    // 2. 到达敌人(重叠):第一次攻击在此处创建分身(重叠处)
     setTimeout(() => {
         if (!cloneDiv) {
             cloneDiv = document.createElement('div');
@@ -3116,14 +4255,14 @@ function mirrorSummonClone(mirror, target) {
             cloneDiv.style.pointerEvents = 'none';
             board.appendChild(cloneDiv);
         }
-        // 3. 镜倒退回原位；分身镜像移动：从敌人处（或重叠处）走到对称位置（反向同距）
+        // 3. 镜倒退回原位;分身镜像移动:从敌人处(或重叠处)走到对称位置(反向同距)
         requestAnimationFrame(() => {
             el.style.left = (fromC * cellW + cellW / 2 - 10) + 'px';
             el.style.top = (fromR * cellH + cellH / 2 - 10) + 'px';
             cloneDiv.style.left = (cc * cellW + cellW / 2 - 14) + 'px';
             cloneDiv.style.top = (cr * cellH + cellH / 2 - 14) + 'px';
         });
-        // 4. 动画结束：镜挂回原位、分身挂到对称位置
+        // 4. 动画结束:镜挂回原位、分身挂到对称位置
         setTimeout(() => {
             el.style.cssText = '';
             if (el.parentNode) el.parentNode.removeChild(el);
@@ -3135,7 +4274,7 @@ function mirrorSummonClone(mirror, target) {
         }, 470);
     }, 450);
 }
-// 渲染分身（半透明镜图标）
+// 渲染分身(半透明镜图标)
 function renderMirrorClone(mirror) {
     document.querySelectorAll('.mirror-clone').forEach(el => { if (el.dataset.owner === mirror.id) el.remove(); });
     const cl = mirror._mirrorClone;
@@ -3150,7 +4289,7 @@ function removeMirrorClone(mirror) {
     document.querySelectorAll('.mirror-clone').forEach(el => { if (el.dataset.owner === mirror.id) el.remove(); });
     if (mirror) mirror._mirrorClone = null;
 }
-// 双击分身：互换位置
+// 双击分身:互换位置
 function mirrorSwapWithClone(mirror) {
     const cl = mirror._mirrorClone;
     if (!cl) return;
@@ -3162,7 +4301,7 @@ function mirrorSwapWithClone(mirror) {
     clearHighlights();
     gameState.selectedUnit = null;
 }
-// 技能选敌模式：4格内敌人标红
+// 技能选敌模式:4格内敌人标红
 function enterMirrorSkillMode(mirror) {
     clearHighlights();
     gameState.units.forEach(u => {
@@ -3172,10 +4311,10 @@ function enterMirrorSkillMode(mirror) {
         }
     });
 }
-// 技能开始：冲撞2伤+定身，创造圆形法阵
+// 技能开始:冲撞2伤+定身,创造圆形法阵
 function mirrorSkillStart(mirror, target) {
-    // 开启法阵台词（黄色，2秒渐隐）
-    showHeroDeployText(mirror, '怀八荒，入九重', '#f1c40f', 2000);
+    // 开启法阵台词(黄色,2秒渐隐)
+    showHeroDeployText(mirror, '怀八荒,入九重', '#f1c40f', 2000);
     mirror._mirrorSkillMode = false;
     mirror._mirrorSkillCd = 2;
     mirror._mirrorSkillTargetId = target.id;
@@ -3184,7 +4323,7 @@ function mirrorSkillStart(mirror, target) {
     let mr = er, mc = ec - 3, cr = er, cc = ec + 3;
     if (!isValidPosition(mr, mc)) { mr = er; mc = ec + 3; cr = er; cc = ec - 3; }
     const fromR = mirror.row, fromC = mirror.col;
-    // 动画：镜冲向敌人（重叠）→ 冲撞2伤+定身 → 镜向左走3格、分身从敌人处向右走3格 → 法阵
+    // 动画:镜冲向敌人(重叠)→ 冲撞2伤+定身 → 镜向左走3格、分身从敌人处向右走3格 → 法阵
     const board = document.getElementById('gameBoard');
     const cell = gameState.board[fromR][fromC];
     const el = cell.querySelector('.unit');
@@ -3207,7 +4346,7 @@ function mirrorSkillStart(mirror, target) {
         gameState.selectedUnit = null;
     };
     if (!el) {
-        // 兜底：瞬移放置
+        // 兜底:瞬移放置
         mirror.row = mr; mirror.col = mc;
         renderUnit(mirror);
         mirror._mirrorClone = { row: cr, col: cc };
@@ -3232,12 +4371,12 @@ function mirrorSkillStart(mirror, target) {
     el.style.zIndex = '40';
     el.style.pointerEvents = 'none';
     board.appendChild(el);
-    // 1. 镜冲向敌人（重叠）
+    // 1. 镜冲向敌人(重叠)
     requestAnimationFrame(() => {
         el.style.left = (ec * cellW + cellW / 2 - 10) + 'px';
         el.style.top = (er * cellH + cellH / 2 - 10) + 'px';
     });
-    // 2. 到达敌人：冲撞 2 伤 + 定身；分身从敌人处出现
+    // 2. 到达敌人:冲撞 2 伤 + 定身;分身从敌人处出现
     setTimeout(() => {
         if (target && !target._removing && !target.ghost) {
             target.currentHp -= 2;
@@ -3266,7 +4405,7 @@ function mirrorSkillStart(mirror, target) {
             cloneDiv.style.left = (cc * cellW + cellW / 2 - 14) + 'px';
             cloneDiv.style.top = (cr * cellH + cellH / 2 - 14) + 'px';
         });
-        // 4. 到达：归位 + 法阵生成
+        // 4. 到达:归位 + 法阵生成
         setTimeout(() => {
             mirror.row = mr; mirror.col = mc;
             el.style.cssText = '';
@@ -3291,9 +4430,9 @@ function renderMirrorShards(mirror) {
         gameState.board[s.row][s.col].appendChild(div);
     });
 }
-// 换位：镜与分身互换（经过敌人），敌人2伤穿甲1 + 镜片1真伤，回1血
+// 换位:镜与分身互换(经过敌人),敌人2伤穿甲1 + 镜片1真伤,回1血
 function mirrorSwapOnce(mirror) {
-    // 换位进行中锁：位置到了才能进行下一次换位
+    // 换位进行中锁:位置到了才能进行下一次换位
     if (mirror._mirrorSwapping) return;
     mirror._mirrorSwapping = true;
     const cl = mirror._mirrorClone;
@@ -3303,7 +4442,7 @@ function mirrorSwapOnce(mirror) {
         mirrorSkillEnd(mirror);
         return;
     }
-    // 镜与分身互相飞向对方位置（必然经过中间的敌人）
+    // 镜与分身互相飞向对方位置(必然经过中间的敌人)
     const board = document.getElementById('gameBoard');
     const unitEl = gameState.board[mirror.row][mirror.col].querySelector('.unit');
     const cloneEl = document.querySelector('.mirror-clone[data-owner="' + mirror.id + '"]');
@@ -3316,7 +4455,7 @@ function mirrorSwapOnce(mirror) {
         cl.row = mr2; cl.col = mc2;
         renderUnit(mirror);
         renderMirrorClone(mirror);
-        // 敌人 2 伤（穿甲1）+ 镜片 1 真伤 + 回血
+        // 敌人 2 伤(穿甲1)+ 镜片 1 真伤 + 回血
         if (target.currentHp > 0) {
             const dmg = Math.max(0, 2 - Math.max(0, (target.armor || 0) - 1));
             target.currentHp -= dmg;
@@ -3385,7 +4524,7 @@ function mirrorSwapOnce(mirror) {
     }
     if (remaining === 0) finish();
 }
-// 技能结束：剩余镜片自动攻击最近敌人
+// 技能结束:剩余镜片自动攻击最近敌人
 function mirrorSkillEnd(mirror) {
     if (mirror._mirrorShards && mirror._mirrorShards.length > 0) {
         mirror._mirrorShards.forEach(s => {
@@ -3403,7 +4542,7 @@ function mirrorSkillEnd(mirror) {
     mirror._mirrorSkillTargetId = null;
     mirror._mirrorSkillMode = false;
     removeMirrorClone(mirror);
-    // 确保技能结束后场上留下的是本体（不透明图标）
+    // 确保技能结束后场上留下的是本体(不透明图标)
     renderUnit(mirror);
     document.querySelectorAll('.mirror-shard').forEach(el => { if (el.dataset.owner === mirror.id) el.remove(); });
     clearHighlights();
@@ -3411,7 +4550,7 @@ function mirrorSkillEnd(mirror) {
 }
 
 // ===== 精英冰人机制 =====
-// 制造冰场（5×5，随自身移动，持续到敌方回合结束）
+// 制造冰场(5×5,随自身移动,持续到敌方回合结束)
 function activateEliteIceSkill(unit) {
     if (unit._iceSkillActive) return;
     unit._iceSkillActive = true;
@@ -3422,7 +4561,7 @@ function activateEliteIceSkill(unit) {
     clearHighlights();
     gameState.selectedUnit = null;
 }
-// 渲染冰场（5×5 蓝色冰面）
+// 渲染冰场(5×5 蓝色冰面)
 function renderIceFields() {
     document.querySelectorAll('.ice-field').forEach(el => el.remove());
     gameState.iceFields.forEach(f => {
@@ -3432,6 +4571,7 @@ function renderIceFields() {
                 if (!isValidPosition(nr, nc)) continue;
                 const ic = document.createElement('div');
                 ic.className = 'ice-field';
+                ic.style.position = 'absolute';
                 gameState.board[nr][nc].appendChild(ic);
             }
         }
@@ -3448,7 +4588,7 @@ function freezeEnemiesInIce(ice) {
         }
     });
 }
-// 灼烧：立即解除冰冻
+// 灼烧:立即解除冰冻
 function thawIfBurned(unit) {
     if (unit.frozen) {
         unit.frozen = false;
@@ -3457,7 +4597,7 @@ function thawIfBurned(unit) {
 }
 
 // ===== 黑绝机制 =====
-// 附身：加成队友
+// 附身:加成队友
 function possessUnit(card, host) {
     host._possessed = true;
     host.zetsu = { currentHp: 6, maxHp: 6, revealed: false };
@@ -3485,7 +4625,7 @@ function releaseZetsu(unit) {
     const el = gameState.board[unit.row][unit.col].querySelector('.unit');
     if (el) { el.classList.remove('zetsu-possessed', 'zetsu-revealed'); }
 }
-// 黑绝技能：6格内敌人标红
+// 黑绝技能:6格内敌人标红
 function enterZetsuSkillMode(unit) {
     clearHighlights();
     gameState.units.forEach(u => {
@@ -3494,7 +4634,7 @@ function enterZetsuSkillMode(unit) {
         if (d <= 6) gameState.board[u.row][u.col].classList.add('tank-target');
     });
 }
-// 黑绝跳跃爆炸：跳过去→爆炸3伤（无溅射）→留在敌人旁边
+// 黑绝跳跃爆炸:跳过去→爆炸3伤(无溅射)→留在敌人旁边
 function zetsuJumpAttack(unit, target) {
     unit._zetsuTargeting = false;
     unit._zetsuSkillUsed = true;
@@ -3523,12 +4663,12 @@ function zetsuJumpAttack(unit, target) {
         el.style.left = (target.col * cellW) + 'px';
         el.style.top = (target.row * cellH) + 'px';
     });
-    // 跳到敌人身上（0.4s动画）→ 停留1.5秒 → 爆炸 → 从敌人身上落下到旁边
+    // 跳到敌人身上(0.4s动画)→ 停留1.5秒 → 爆炸 → 从敌人身上落下到旁边
     setTimeout(() => {
-        // 停留 1.5 秒（黑绝踩在敌人身上）
+        // 停留 1.5 秒(黑绝踩在敌人身上)
         setTimeout(() => {
             zetsuBoom(unit, target);
-            // 落点：目标死亡占目标格，否则敌人旁最近空位
+            // 落点:目标死亡占目标格,否则敌人旁最近空位
             let landR = target.row, landC = target.col;
             if (target.currentHp > 0) {
                 let found = false;
@@ -3554,7 +4694,7 @@ function zetsuJumpAttack(unit, target) {
         }, 1500);
     }, 400);
 }
-// 黑绝爆炸：黑色特效 + 3伤（无溅射）
+// 黑绝爆炸:黑色特效 + 3伤(无溅射)
 function zetsuBoom(unit, target) {
     if (!target || target._removing || target.ghost) return;
     const board = document.getElementById('gameBoard');
@@ -3571,7 +4711,7 @@ function zetsuBoom(unit, target) {
     if (target.currentHp <= 0) removeUnit(target);
 }
 
-// 凋零毒：黑色毒雾（每回合1伤，不可叠加）
+// 凋零毒:黑色毒雾(每回合1伤,不可叠加)
 function applyWitherEffect(unit, attacker) {
     if (unit.ghost) return;
     if (!unit.witherTurns) {
@@ -3582,7 +4722,7 @@ function applyWitherEffect(unit, attacker) {
 function updateWitherVisual(unit) {
     const cell = gameState.board[unit.row] ? gameState.board[unit.row][unit.col] : null;
     if (!cell) return;
-    // 黑色毒雾覆盖层（明显特效）
+    // 黑色毒雾覆盖层(明显特效)
     let fx = cell.querySelector('.wither-fx');
     if (unit.witherTurns > 0) {
         if (!fx) {
@@ -3600,9 +4740,9 @@ function updateWitherVisual(unit) {
     }
 }
 
-// 查克拉：立即获得2格能量（蓝色字，1.5秒渐隐）
+// 查克拉:立即获得2格能量(蓝色字,1.5秒渐隐)
 function activateChakra(unit) {
-    // 只有佩恩/马斑/植物人可获得查克拉，其他角色无效
+    // 只有佩恩/马斑/植物人可获得查克拉,其他角色无效
     if (!unit.shinraRange && !unit.madaraMaxEnergy && !unit.hashiMaxEnergy) return;
     const maxE = unit.hashiMaxEnergy || unit.madaraMaxEnergy || unit.painMaxEnergy || 4;
     if (unit.hashirama) unit.hashiEnergy = Math.min(maxE, (unit.hashiEnergy || 0) + 2);
@@ -3616,7 +4756,7 @@ function activateChakra(unit) {
 
 // Pain 技能激活
 function activatePainAbility(pain) {
-    // 4格能量释放地爆天星（万象/神罗释放过程中也可触发；释放后还能再用万象天引和神罗天征）
+    // 4格能量释放地爆天星(万象/神罗释放过程中也可触发;释放后还能再用万象天引和神罗天征)
     if ((pain.painEnergy || 0) >= (pain.painMaxEnergy || 4) && !gameState.attackedUnits.has(pain.id)) {
         chibakuTensei(pain);
         pain._chibakuBonus = 2;
@@ -3630,8 +4770,8 @@ function activatePainAbility(pain) {
         gameState.selectedUnit = null;
         return;
     }
-    
-    // 攻击范围内无敌人时，优先放查克拉（能量<4且不在冷却）
+
+    // 攻击范围内无敌人时,优先放查克拉(能量<4且不在冷却)
     const painEnemyInRange = gameState.units.some(e => e.team !== pain.team && !e.ghost && Math.max(Math.abs(e.row - pain.row), Math.abs(e.col - pain.col)) <= (pain.shinraRange || 4));
     if (!painEnemyInRange && (pain.painEnergy || 0) < 4 && !pain.chakraCd) {
         activateChakra(pain);
@@ -3639,8 +4779,8 @@ function activatePainAbility(pain) {
         gameState.selectedUnit = null;
         return;
     }
-    
-    // 一回合两次技能：先万象天引，后神罗天征（地爆天星后同样可再用两次）
+
+    // 一回合两次技能:先万象天引,后神罗天征(地爆天星后同样可再用两次)
     if (!pain._banshoUsed) {
         banshoTenin(pain);
         pain._banshoUsed = true;
@@ -3655,7 +4795,7 @@ function activatePainAbility(pain) {
         gameState.selectedUnit = null;
         return;
     }
-    // 万象+神罗都用了且能量不足4（无地爆机会）才标记已攻击
+    // 万象+神罗都用了且能量不足4(无地爆机会)才标记已攻击
     if (pain._banshoUsed && pain._shinraUsed && !pain._chibakuBonus && (pain.painEnergy || 0) < 4) {
         gameState.attackedUnits.add(pain.id);
     }
@@ -3671,7 +4811,7 @@ function shinraTensei(pain) {
     }
     const radius = pain.shinraRange;
     pain.shinraCovers = [];
-    // 范围特效（持续至技能结束）
+    // 范围特效(持续至技能结束)
     for (let r = pain.row - radius; r <= pain.row + radius; r++) {
         for (let c = pain.col - radius; c <= pain.col + radius; c++) {
             if (!isValidPosition(r, c)) continue;
@@ -3721,7 +4861,7 @@ function shinraTensei(pain) {
     shinraText.style.animation = 'heroFloat 30s ease-out forwards';
     gameState.board[pain.row][pain.col].appendChild(shinraText);
     pain._shinraText = shinraText;
-    // 伤害时已计numShinraHits，这里结算能量
+    // 伤害时已计numShinraHits,这里结算能量
     if (pain._shinraHits > 0) { pain.painEnergy = Math.min(pain.painMaxEnergy, (pain.painEnergy || 0) + 1); renderEnergyBar(pain, gameState.board[pain.row][pain.col].querySelector('.unit')); }
     checkGameOver();
 }
@@ -3748,7 +4888,7 @@ function banshoTenin(pain) {
             if (!isValidPosition(tr, tc)) continue;
             const u = gameState.units.find(uu => uu.row === tr && uu.col === tc && uu.team !== team && !uu.ghost);
             if (!u) continue;
-            // 伤害+能量（无论拉没拉到）
+            // 伤害+能量(无论拉没拉到)
             u.currentHp -= pain.banshoDamage;
             updateUnitHp(u);
             showCritText(u.row, u.col, '万象');
@@ -3797,7 +4937,7 @@ function activateMusou(madara) {
     text.textContent = '天下无双';
     cell.appendChild(text);
     setTimeout(() => { if (text.parentNode) text.remove(); }, 1500);
-    // 保持选中，立即显示行动范围
+    // 保持选中,立即显示行动范围
     clearHighlights();
     showActionMode(madara);
 }
@@ -3812,7 +4952,7 @@ function madaraJumpAndPillar(madara) {
         if (d <= 4 && d < minDist) { nearest = e; minDist = d; }
     });
     if (!nearest) return;
-    
+
     // 延迟0.8s等反击环放完再跳
     setTimeout(() => {
     const oldCell = gameState.board[madara.row][madara.col];
@@ -3829,17 +4969,17 @@ function madaraJumpAndPillar(madara) {
         if (unitEl) { oldCell.removeChild(unitEl); newCell.appendChild(unitEl); }
         placed = true; break;
     }
-    
+
     // 重击
     nearest.currentHp -= 1;
     updateUnitHp(nearest);
     if (nearest.burnTurns <= 0) nearest.burnTurns = 3;
     updateBurnVisual(nearest);
     if (nearest.currentHp <= 0) removeUnit(nearest);
-    
-    // 火柱（无论跳跃成功与否都显示）
+
+    // 火柱(无论跳跃成功与否都显示)
     showFirePillar(nearest.row, nearest.col);
-    
+
     // 火柱伤害
     setTimeout(() => {
         let hitAny = false;
@@ -3886,7 +5026,7 @@ function animateShuriken(attacker, shurikenTargets) {
     shuriken.style.left = startX + 'px';
     shuriken.style.top = startY + 'px';
     board.appendChild(shuriken);
-    
+
     let delay = 100;
     for (let i = 0; i < shurikenTargets.length; i++) {
         const id = shurikenTargets[i];
@@ -3906,7 +5046,7 @@ function animateShuriken(attacker, shurikenTargets) {
         })(u, delay);
         delay += 500;
     }
-    
+
     const totalDelay = delay + 300;
     setTimeout(() => { shuriken.style.left = startX + 'px'; shuriken.style.top = startY + 'px'; }, delay);
     setTimeout(() => {
@@ -3930,13 +5070,13 @@ function showSandstorm(unit) {
     setTimeout(() => storm.remove(), 2500);
 }
 
-// 矿工地道特效（弯曲土道）
+// 矿工地道特效(弯曲土道)
 function showMinerTunnel(miner) {
     const board = document.getElementById('gameBoard');
     const cs = cellW;
     const baseR = miner.team === 'red' ? 26 : 1;
     const baseC = 11;
-    // 分段弯曲路径（距离越远弯越多，1-6弯，只朝前180°转弯）
+    // 分段弯曲路径(距离越远弯越多,1-6弯,只朝前180°转弯)
     const dist = Math.max(Math.abs(miner.row - baseR), Math.abs(miner.col - baseC));
     const bends = Math.max(1, Math.min(6, Math.floor(dist / 5) + 1));
     const steps = bends;
@@ -3982,25 +5122,25 @@ function showElectricBullet(unit, lineTargets, allChainTargets) {
     const board = document.getElementById('gameBoard');
     const cs = cellW;
     const forward = unit.team === 'red' ? -1 : 1;
-    
+
     // 子弹
     const bullet = document.createElement('div');
     bullet.className = 'electric-bullet';
     bullet.style.left = (unit.col * cs + 6) + 'px';
     bullet.style.top = (unit.row * cs + 6) + 'px';
     board.appendChild(bullet);
-    
+
     // 飞向路径末端
     let destR = unit.team === 'red' ? 0 : 29, destC = unit.col;
     const totalDist = Math.abs(destR - unit.row);
-    
+
     setTimeout(() => {
         bullet.style.transition = 'all 0.8s linear';
         bullet.style.left = (destC * cs + 6) + 'px';
         bullet.style.top = (destR * cs + 6) + 'px';
     }, 50);
-    
-    // 顺序伤害：子弹经过敌人时扣血
+
+    // 顺序伤害:子弹经过敌人时扣血
     lineTargets.forEach((u, i) => {
         const dist = Math.max(Math.abs(u.row - unit.row), Math.abs(u.col - unit.col));
         const delay = (dist / totalDist) * 800 + 100;
@@ -4010,8 +5150,8 @@ function showElectricBullet(unit, lineTargets, allChainTargets) {
             if (u.currentHp <= 0) removeUnit(u);
         }, delay);
     });
-    
-    // 闪电链特效：按传播深度分层并行播放（同层同时、层间120ms，敌人多也快速完成）
+
+    // 闪电链特效:按传播深度分层并行播放(同层同时、层间120ms,敌人多也快速完成)
     allChainTargets.forEach((ct, i) => {
         const pFrom = ct.from, pTo = ct.to;
         const delay = 1000 + (ct.depth || 0) * 120;
@@ -4036,7 +5176,7 @@ function showElectricBullet(unit, lineTargets, allChainTargets) {
             if (pTo.currentHp <= 0) removeUnit(pTo);
         }, delay);
     });
-    
+
     setTimeout(() => { bullet.remove(); }, 1000);
 }
 
@@ -4052,18 +5192,18 @@ function chibakuTensei(pain) {
     board.appendChild(ball);
     const bx = 11 * cellW, by = 13 * cellH;
     setTimeout(() => { ball.style.left = bx + 'px'; ball.style.top = by + 'px'; }, 100);
-    
-    // 收集敌方，移入board层飞行
+
+    // 收集敌方,移入board层飞行
     const enemies = gameState.units.filter(e => e.team !== pain.team);
     if (enemies.length === 0) { setTimeout(() => ball.remove(), 4000); return; }
     const enemyElements = [];
-    
+
     enemies.forEach((e, i) => {
         const oldCell = gameState.board[e.row][e.col];
         const el = oldCell.querySelector('.unit');
         if (!el) return;
         enemyElements.push({ unit: e, el: el });
-        // 脱离cell，挂到board上
+        // 脱离cell,挂到board上
         oldCell.removeChild(el);
         el.style.position = 'absolute';
         el.style.transform = 'none';
@@ -4072,8 +5212,8 @@ function chibakuTensei(pain) {
         el.style.transition = 'all 3s ease-in';
         el.style.zIndex = '30';
         board.appendChild(el);
-        
-        // 环绕黑球分布（以球中心为圆心）
+
+        // 环绕黑球分布(以球中心为圆心)
         const angle = (i / enemies.length) * Math.PI * 2;
         const rad = 0.9;
         const bcx = bx + 25, bcy = by + 25;
@@ -4085,17 +5225,17 @@ function chibakuTensei(pain) {
             el.style.top = ty + 'px';
         }, startDelay);
     });
-    
+
     // 等所有敌人到位后再伤害+下落
     const lastStart = 300 + (enemyElements.length - 1) * 80;
     const flyTime = 3200; // 飞行时间
     const landTime = lastStart + flyTime + 300;
-    
+
     // 落地位置生成
     function genLandingSpots(count) {
         const spots = []; const taken = new Set();
         taken.add(pain.row + ',' + pain.col);
-        // 其他单位位置也加入（防落点与骷髅等单位重叠）
+        // 其他单位位置也加入(防落点与骷髅等单位重叠)
         var enemyIdSet = new Set(enemies.map(function(e){ return e.id; }));
         gameState.units.forEach(function(u){ if (!enemyIdSet.has(u.id)) taken.add(u.row + ',' + u.col); });
         for (let ring = 0; ring < 20 && spots.length < count; ring++) {
@@ -4114,8 +5254,8 @@ function chibakuTensei(pain) {
         }
         return spots;
     }
-    
-    // 统一伤害+落地（先伤害，再为幸存者分配落点）
+
+    // 统一伤害+落地(先伤害,再为幸存者分配落点)
     setTimeout(() => {
         // 先统一扣血
         enemyElements.forEach(ee => {
@@ -4140,7 +5280,7 @@ function chibakuTensei(pain) {
             nc2.appendChild(ee.el);
         });
     }, landTime);
-    
+
     const text = document.createElement('div');
     text.className = 'hero-deploy-text';
     text.textContent = '地爆天星';
@@ -4149,21 +5289,21 @@ function chibakuTensei(pain) {
     setTimeout(() => { if (text.parentNode) text.remove(); }, landTime - 500);
     setTimeout(() => ball.remove(), landTime + 200);
 }
-// 马斑攻击特效：红色＞箭头
+// 马斑攻击特效:红色>箭头
 function showMadaraAttackFX(attacker, target) {
     const board = document.getElementById('gameBoard');
     const arrow = document.createElement('div');
-    arrow.textContent = '＞';
-    const angle = attacker.team === 'red' ? -90 : 90; // 红方向上，蓝方向下
+    arrow.textContent = '>';
+    const angle = attacker.team === 'red' ? -90 : 90; // 红方向上,蓝方向下
     arrow.style.cssText = 'position:absolute;color:#e74c3c;font-size:28px;font-weight:900;z-index:25;pointer-events:none;text-shadow:0 0 4px rgba(231,76,60,0.8);transform:rotate('+angle+'deg)';
     board.appendChild(arrow);
-    
+
     const cellSize = cellW; const cH = cellH;
     const startX = attacker.col * cellSize + cellSize / 2;
     const startY = attacker.row * cellH + cellH / 2;
     const endX = target.col * cellSize + cellSize / 2;
     const endY = target.row * cellH + cellH / 2;
-    
+
     const duration = 300;
     const start = performance.now();
     function animate(now) {
@@ -4179,7 +5319,7 @@ function showMadaraAttackFX(attacker, target) {
     requestAnimationFrame(animate);
 }
 
-// 马斑反击特效：红色环绕圈
+// 马斑反击特效:红色环绕圈
 function showCounterFX(madara) {
     const board = document.getElementById('gameBoard');
     const ring = document.createElement('div');
@@ -4200,7 +5340,7 @@ function showMeteorButton(u) {
         const d = Math.max(Math.abs(e.row - u.row), Math.abs(e.col - u.col));
         if (d < minDist) { target = e; minDist = d; }
     });
-    
+
     showCritText(target.row, target.col, '陨石');
     const board = document.getElementById('gameBoard');
     const cellSize = cellW, radius = 2;
@@ -4228,7 +5368,7 @@ function showMeteorButton(u) {
     }, 1000);
 }
 
-// 铠大招：不灭魔躯
+// 铠大招:不灭魔躯
 function activateKaiUlt(kai) {
     kai.kaiUltUsed = true;
     kai.kaiUltActive = true;
@@ -4277,7 +5417,7 @@ function updateSmokeVisibility() {
         const covers = cell.querySelectorAll('.smoke-cover');
         const unitEl = cell.querySelector(`.unit[data-unit-id="${unit.id}"]`);
         if (!unitEl) return;
-        // 如果烟雾是敌方放的，自己的兵应可见(z-index > cover)
+        // 如果烟雾是敌方放的,自己的兵应可见(z-index > cover)
         let hidden = false;
         covers.forEach(cv => {
             if (cv.dataset.smokeTeam === unit.team) hidden = true;
@@ -4355,7 +5495,7 @@ function checkFireZoneBurn(unit) {
     });
 }
 
-// 雷电飞龙连锁攻击（收集后动画伤害）
+// 雷电飞龙连锁攻击(收集后动画伤害)
 function applyChainAttack(attacker, target) {
     const hit = [target.id];
     const chainTargets = [];
@@ -4511,8 +5651,8 @@ function renderEnergyBar(unit, container) {
         container.appendChild(bar);
     }
     bar.innerHTML = '';
-    const maxE = unit.madaraMaxEnergy || unit.painMaxEnergy || unit.hashiMaxEnergy || 0;
-    const curE = unit.madaraEnergy || unit.painEnergy || unit.hashiEnergy || 0;
+    const maxE = unit.madaraMaxEnergy || unit.painMaxEnergy || unit.hashiMaxEnergy || unit.solveMaxEnergy || 0;
+    const curE = unit.madaraEnergy || unit.painEnergy || unit.hashiEnergy || unit.solveEnergy || 0;
     for (let i = 0; i < maxE; i++) {
         const dot = document.createElement('div');
         dot.className = i < curE ? 'energy-dot filled' : 'energy-dot';
@@ -4557,10 +5697,10 @@ function isRedBase(row, col) {
 function updateEnergyDisplay() {
     const redPercentage = (gameState.redEnergy / gameState.maxEnergy) * 100;
     const bluePercentage = (gameState.blueEnergy / gameState.maxEnergy) * 100;
-    
+
     redEnergyBar.style.width = `${redPercentage}%`;
     blueEnergyBar.style.width = `${bluePercentage}%`;
-    
+
     redEnergyText.textContent = `能量: ${gameState.redEnergy}/${gameState.maxEnergy}`;
     blueEnergyText.textContent = `能量: ${gameState.blueEnergy}/${gameState.maxEnergy}`;
 }
@@ -4569,13 +5709,13 @@ function updateEnergyDisplay() {
 function updateBaseHpDisplay() {
     const redPercentage = (gameState.redBaseHp / 50) * 100;
     const bluePercentage = (gameState.blueBaseHp / 50) * 100;
-    
+
     redBaseHpBar.style.width = `${redPercentage}%`;
     blueBaseHpBar.style.width = `${bluePercentage}%`;
-    
+
     redHpText.textContent = gameState.redBaseHp;
     blueHpText.textContent = gameState.blueBaseHp;
-    
+
     // 更新棋盘上的基地 HP 覆盖数字
     const blueOverlay = document.getElementById('blueBaseOverlay');
     const redOverlay = document.getElementById('redBaseOverlay');
@@ -4586,15 +5726,15 @@ function updateBaseHpDisplay() {
 // 开始计时器
 function startTimer() {
     stopTimer();
-    // 训练模式不限时（避免回合自动切换导致单位消失）
+    // 训练模式不限时(避免回合自动切换导致单位消失)
     if (gameState.maxEnergy >= 500) return;
     gameState.timer = 45;
     updateTimerDisplay();
-    
+
     timerInterval = setInterval(() => {
         gameState.timer--;
         updateTimerDisplay();
-        
+
         if (gameState.timer <= 0) {
             endTurn();
         }
@@ -4612,7 +5752,7 @@ function stopTimer() {
 // 更新计时器显示
 function updateTimerDisplay() {
     timerDisplay.textContent = `${gameState.timer}秒`;
-    
+
     if (gameState.timer <= 10) {
         timerDisplay.classList.add('warning');
     } else {
@@ -4626,11 +5766,11 @@ function endTurn() {
     clearHighlights();
     gameState.selectedUnit = null;
     gameState.deployMode = false;
-    // 战车：结束回合重置锁定模式
+    // 战车:结束回合重置锁定模式
     gameState.units.forEach(u => { u._targeting = false; u._witherTargeting = false; u._witherCharged = false; u._zetsuSkillUsed = false; u._zetsuTargeting = false; });
-    
+
     const prevTurn = gameState.currentTurn;
-    
+
     // 切换回合
     if (gameState.currentTurn === 'red') {
         gameState.currentTurn = 'blue';
@@ -4645,8 +5785,8 @@ function endTurn() {
         const redBoost = gameState.units.filter(u => u.team === 'red' && u.building).length;
         gameState.redEnergy = Math.min(gameState.redEnergy + redBoost, gameState.maxEnergy);
     }
-    
-    // 黑绝显现持续到敌方回合结束：敌方回合结束（轮到己方回合）时解除显现
+
+    // 黑绝显现持续到敌方回合结束:敌方回合结束(轮到己方回合)时解除显现
     gameState.units.forEach(u => {
         if (u._possessed && u.zetsu && u.zetsu.revealed && u.team === gameState.currentTurn) {
             u.zetsu.revealed = false;
@@ -4654,8 +5794,8 @@ function endTurn() {
             if (uel3) uel3.classList.remove('zetsu-revealed');
         }
     });
-    
-    // 精英冰人冰场：冰冻冰场内敌人（敌方回合开始）+ 每回合对场内敌人造成1伤；敌方回合结束冰场消失
+
+    // 精英冰人冰场:冰冻冰场内敌人(敌方回合开始)+ 每回合对场内敌人造成1伤;敌方回合结束冰场消失
     gameState.iceFields.forEach(f => freezeEnemiesInIce(f));
     gameState.iceFields.forEach(f => {
         gameState.units.forEach(u => {
@@ -4678,8 +5818,8 @@ function endTurn() {
             renderIceFields();
         }
     }
-    
-    // 凋零：己方回合开始回1血（敌方回合不回）
+
+    // 凋零:己方回合开始回1血(敌方回合不回)
     gameState.units.forEach(u => {
         if (u.wither && u.team === gameState.currentTurn && u.currentHp < (u.maxHp || 8)) {
             u.currentHp = Math.min(u.maxHp || 8, u.currentHp + 1);
@@ -4687,8 +5827,8 @@ function endTurn() {
             showCritText(u.row, u.col, '回血');
         }
     });
-    
-    // 特斯拉电磁塔：攻击范围内无敌人则缩进地底（半透明，不可被攻击）
+
+    // 特斯拉电磁塔:攻击范围内无敌人则缩进地底(半透明,不可被攻击)
     gameState.units.forEach(u => {
         if (u.tesla) {
             const hasEnemy = gameState.units.some(e => e.team !== u.team && !e.ghost && (Math.abs(e.row - u.row) + Math.abs(e.col - u.col)) <= (u.attackRange || 5));
@@ -4697,24 +5837,56 @@ function endTurn() {
             if (telEl) telEl.classList.toggle('tesla-hidden', u.teslaHidden);
         }
     });
-    
-    // 镜：分身消失（本回合未攻击则回合结束消失）、技能冷却递减
+
+    // 镜:分身消失(本回合未攻击则回合结束消失)、技能冷却递减
     gameState.units.forEach(u => {
         if (u.mirror) {
             if (u._mirrorClone && !u._mirrorAttacked) removeMirrorClone(u);
             u._mirrorAttacked = false;
             if (u._mirrorSkillCd > 0) u._mirrorSkillCd--;
-            // 镜技能：回合结束时自动结束（剩余镜片自动攻击最近敌人）
+            // 镜技能:回合结束时自动结束(剩余镜片自动攻击最近敌人)
             if (u._mirrorSkillTargetId) {
                 mirrorSkillEnd(u);
             }
         }
     });
-    
+
+    // 解斑:须佐结束 + 技能次数重置 + 受击反击标记清除(保留 _solveCanSpecial:敌方回合受击后己方回合仍可双击开特殊须佐)
+    gameState.units.forEach(u => {
+        if (!u.madaraSolve) return;
+        u._solveSkillsUsed = 0;
+        u._solveCountered = false;
+        // 兜底:敌方回合(蓝方)结束时血量比回合开始时低 → 视为受击(覆盖技能/闪电/毒/溅射等间接伤害),可双击开特殊须佐
+        if (prevTurn === 'blue' && !u._susanooActive && u.currentHp < (u._hpAtTurnStart !== undefined ? u._hpAtTurnStart : u.maxHp)) {
+            u._solveCanSpecial = true;
+        }
+        u._hpAtTurnStart = u.currentHp;
+        if (u._susanooActive && u.team === prevTurn) {
+            u._susanooActive = false;
+            u.moveRange = 5;
+            renderSusanooVisual(u);
+            if (u._susanooSpecial) {
+                // 特殊须佐:直接结束
+                u._susanooSpecial = false;
+            } else if (!gameState.gameOver) {
+                // 普通须佐结束:自动终极奥义(以最近敌人为目标)
+                let nearestE = null, nearestD = Infinity;
+                gameState.units.forEach(e => {
+                    if (e.team === u.team || e.ghost || e._removing) return;
+                    const d = Math.max(Math.abs(e.row - u.row), Math.abs(e.col - u.col));
+                    if (d < nearestD) { nearestD = d; nearestE = e; }
+                });
+                u._solvePhase = null;
+                if (nearestE) solveUltimateAttack(u, nearestE);
+            }
+        }
+    });
+    gameState.units.forEach(u => { if (u.superKnight) u._skAttacks = 0; });
+
     // 重置移动和攻击状态
     gameState.moveUsed = {};
     gameState.attackedUnits.clear();
-    
+
     // 重置远程暴击和闪避标记
     // 天下无双结束
     gameState.units.forEach(u => {
@@ -4757,13 +5929,13 @@ function endTurn() {
         }
         if (u.galeSkillActive && u.galeAnchor) drawGaleRope(u);
     });
-    
+
     gameState.units.forEach(u => { u.kaiAttacks = 0; u.kaiShurikenDone = false; u.electricHit = []; u._banshoUsed = false; u._shinraUsed = false; u._chibakuBonus = 0; });
     gameState.units.forEach(u => { if (u.tankSpawn) { u.demuBonusAttacks = 0; u.demuAttacksUsed = 0; u._demuDamaged = false; u._demuTankBonus = false; } });
 
     // 铠大招冷却递减
     gameState.units.forEach(u => { if (u.kaiUltCooldown > 0) u.kaiUltCooldown--; });
-    
+
     // 铠大招持续2回合后结束
     gameState.units.forEach(u => {
         if (u.kaiUltActive) {
@@ -4779,11 +5951,11 @@ function endTurn() {
             }
         }
     });
-    
+
     gameState.units.forEach(u => { u.rangedCritUsed = false; u.dodgeUsed = false; });
     gameState.units.forEach(u => { if (u.team === prevTurn) { u.frozen = false; updateFrozenVisual(u); } });
-    
-    // 凋零毒：每回合1点伤害（不可叠加）
+
+    // 凋零毒:每回合1点伤害(不可叠加)
     gameState.units.forEach(u => {
         if (u.witherTurns > 0 && !u.ghost) {
             u.currentHp -= 1;
@@ -4793,8 +5965,8 @@ function endTurn() {
             if (u.currentHp <= 0) removeUnit(u);
         }
     });
-    
-    // 燃烧伤害：每回合灼烧1点
+
+    // 燃烧伤害:每回合灼烧1点
     gameState.units.forEach(u => {
         if (u.burnTurns > 0 && !u.ghost) {
             u.currentHp -= (u.burnDamage || 1);
@@ -4804,8 +5976,8 @@ function endTurn() {
             if (u.currentHp <= 0) removeUnit(u);
         }
     });
-    
-    // 中毒结算：每回合扣血（无视护甲），连续计数未命中则重置
+
+    // 中毒结算:每回合扣血(无视护甲),连续计数未命中则重置
     gameState.units.slice().forEach(u => {
         if (u.poisonTurns > 0 && u.poisonLevel && !u.ghost) {
             u.currentHp -= (u.poisonLevel === 3 ? 5 : (u.poisonLevel === 2 ? 2 : 1));
@@ -4819,14 +5991,14 @@ function endTurn() {
         }
         u.goblinHitThisTurn = false;
     });
-    
-    // 定身清除（轮到该方回合结束时解除，下回合可行动）
+
+    // 定身清除(轮到该方回合结束时解除,下回合可行动)
     gameState.units.forEach(u => { if (u.stunned && u.team === prevTurn) { u.stunnedTurns--; if (u.stunnedTurns <= 0) u.stunned = false; } });
-    // 大树缠绕特效：固定2回合计时，到点消失
+    // 大树缠绕特效:固定2回合计时,到点消失
     gameState.units.forEach(u => { if (u.treeBound) { u.treeBoundTurns--; if (u.treeBoundTurns <= 0) { u.treeBound = false; updateTreeVisual(u); } } });
-    // 查克拉冷却：己方回合结束时递减（用过后下一个己方回合不可用，再下一个可用）
+    // 查克拉冷却:己方回合结束时递减(用过后下一个己方回合不可用,再下一个可用)
     gameState.units.forEach(u => { if (u.chakraCd > 0 && u.team === prevTurn) u.chakraCd--; });
-    // 战车导弹：敌方回合结束时轰炸标记的3×3区域（5伤，标记的是格子），己方回合结束保留标记
+    // 战车导弹:敌方回合结束时轰炸标记的3×3区域(5伤,标记的是格子),己方回合结束保留标记
     if (gameState.missileMarks.length > 0) {
         const remainingMarks = [];
         gameState.missileMarks.forEach(m => {
@@ -4837,7 +6009,7 @@ function endTurn() {
                 const dist = Math.max(Math.abs(u.row - m.row), Math.abs(u.col - m.col));
                 if (dist <= 1) {
                     var dmg = 5;
-                    // 骷髅大哥护盾：抵挡导弹（与普攻一致，任何伤害都挡）
+                    // 骷髅大哥护盾:抵挡导弹(与普攻一致,任何伤害都挡)
                     if (u.skullBoss && u.skullShield && dmg > 0) {
                         u.skullShield = false;
                         dmg = 0;
@@ -4854,8 +6026,8 @@ function endTurn() {
         gameState.missileMarks = remainingMarks;
         renderMissileMarks();
     }
-    
-    // 警察回警车（动画+回1血），全部阵亡则警车消失
+
+    // 警察回警车(动画+回1血),全部阵亡则警车消失
     gameState.units.filter(u => u.copSpawn && !u._removing).forEach(car => {
         var cops = gameState.units.filter(u => u.cop && u.copCar === car.id);
         if (cops.length > 0) {
@@ -4867,12 +6039,12 @@ function endTurn() {
             car.copsSpawned = false;
             gameState.units = gameState.units.filter(u => !(u.cop && u.copCar === car.id));
         } else if (car.copHps && car.copHps.every(h => h == null)) {
-            // 4个警察全部阵亡，警车跟着消失
+            // 4个警察全部阵亡,警车跟着消失
             removeUnit(car);
         }
     });
 
-    // 神罗天征持续伤害（己方回合末跳过，敌方回合末伤害+清特效）
+    // 神罗天征持续伤害(己方回合末跳过,敌方回合末伤害+清特效)
     gameState.units.forEach(u => {
         if (u.shinraRange && u.abilityTimer > 0) {
             if (!u.shinraSkipNext) {
@@ -4898,26 +6070,47 @@ function endTurn() {
             }
         }
     });
-    
+
     // 更新UI
     updateEnergyDisplay();
     updateTurnIndicator();
-    
+
     // 重新渲染所有单位
     gameState.units.forEach(unit => {
         renderUnit(unit);
     });
-    
+
     // 火焰区域递减+重绘
     gameState.fireZones = gameState.fireZones.filter(fz => { fz.turns--; return fz.turns > 0; });
     renderFireZones();
-    
+
     // 风阵递减+重绘
     gameState.windZones.forEach(z => z.turns--);
     gameState.windZones = gameState.windZones.filter(z => z.turns > 0);
     renderWindZones();
-    
-    // 艾琳回合重置（技能未用完结束回合则保留数字）
+
+    // 弹坑递减+重绘
+    gameState.craters.forEach(c => c.turns--);
+    gameState.craters = gameState.craters.filter(c => c.turns > 0);
+    renderCraters();
+
+    // 小喷菇每回合限制重置
+    gameState.shroomCount = { red: 0, blue: 0 };
+
+    // 巡视者:咬住回合递减,3回合后自动消失
+    gameState.units.forEach(u => {
+        if (u.grabbed) {
+            u.grabbed.turns--;
+            if (u.grabbed.turns <= 0) {
+                const p = gameState.units.find(x => x.id === u.grabbed.by);
+                u.grabbed = null;
+                updateGrabVisual(u);
+                if (p && !p._removing) removeUnit(p);
+            }
+        }
+    });
+
+    // 艾琳回合重置(技能未用完结束回合则保留数字)
     gameState.units.forEach(u => {
         if (u.blowdart) u.blowdartAttacksUsed = 0;
         if (u.hashirama) { u.hashiAttacksUsed = 0; u.hashiBlocksUsed = 0; }
@@ -4936,18 +6129,18 @@ function endTurn() {
     gameState.erinRings.forEach(r => r.turns--);
     gameState.erinRings = gameState.erinRings.filter(r => r.turns > 0);
     renderErinRings();
-    
+
     // 烟雾区域递减+清除
     gameState.smokeZones = gameState.smokeZones.filter(sz => {
         sz.turns--;
         return sz.turns > 0;
     });
     clearExpiredSmoke();
-    
+
     // 开始新回合计时
     startTimer();
-    
-    // AI模式：蓝色回合自动AI行动
+
+    // AI模式:蓝色回合自动AI行动
     if (gameState.aiMode && gameState.currentTurn === 'blue') {
         setTimeout(aiTurn, 500);
     }
@@ -4974,30 +6167,30 @@ function updateTurnIndicator() {
 function openDeployModal(row, col) {
     gameState.deployMode = true;
     gameState.deployPosition = null;
-    
+
     // 保存目标部署位置
     gameState.deployTargetRow = row;
     gameState.deployTargetCol = col;
-    
+
     // 更新弹窗中的卡牌列表
     updateDeployModalCards();
-    
+
     deployModal.classList.remove('hidden');
 }
 
 // 更新部署弹窗中的卡牌
 function updateDeployModalCards() {
     battleDeckGrid.innerHTML = '';
-    
+
     const currentEnergy = gameState.currentTurn === 'red' ? gameState.redEnergy : gameState.blueEnergy;
-    
+
     // 敌方半场只显示矿工
     const targetRow = gameState.deployTargetRow;
     const targetCol = gameState.deployTargetCol;
     const isEnemyHalf = (gameState.currentTurn === 'red' && targetRow <= 13) || (gameState.currentTurn === 'blue' && targetRow >= 14);
-    
+
     gameState.battleDeck.forEach((card, index) => {
-        // 目标格有友方单位：只显示黑绝（附身用，无视半场——镜技能后可能停在敌方半场）
+        // 目标格有友方单位:只显示黑绝(附身用,无视半场--镜技能后可能停在敌方半场)
         const targetHasUnit = gameState.units.some(u => u.row === targetRow && u.col === targetCol);
         if (targetHasUnit) {
             if (!card.blackZetsu) return;
@@ -5008,16 +6201,16 @@ function updateDeployModalCards() {
         cardElement.className = `battle-deck-card ${currentEnergy < card.cost ? 'disabled' : ''}`;
         cardElement.dataset.index = index;
         cardElement.dataset.cost = card.cost;
-        
+
         cardElement.innerHTML = `
             ${card.artwork ? `<div class="card-artwork art-${card.artwork}"></div>` : ''}
             <h4>${card.name}</h4>
             <div class="cost">${card.cost} 能量</div>
         `;
-        
+
         battleDeckGrid.appendChild(cardElement);
     });
-    
+
     if (gameState.battleDeck.length === 0) {
         battleDeckGrid.innerHTML = '<p style="color: #7f8c8d;">出战卡组为空</p>';
     }
@@ -5035,11 +6228,11 @@ function closeDeployModalFunc() {
 // 渲染卡包界面
 function renderCardCollection() {
     cardGrid.innerHTML = '';
-    
+
     gameState.cardCollection.forEach(card => {
         const cardElement = document.createElement('div');
         cardElement.className = 'card-item' + (card.hero ? ' hero' : '');
-        
+
         cardElement.innerHTML = `
             ${card.artwork ? `<div class="card-artwork art-${card.artwork}"></div>` : ''}
             <div class="card-cost-badge">${card.cost}</div>
@@ -5049,21 +6242,21 @@ function renderCardCollection() {
                 <button class="card-add-btn" data-card-id="${card.id}">出战</button>
             </div>
         `;
-        
+
         // 信息按钮
         cardElement.querySelector('.card-info-btn').addEventListener('click', (e) => {
             e.stopPropagation();
             showCardInfo(card);
         });
-        
+
         // 出战按钮
         const isDeployed = gameState.battleDeck.some(c => c.id === card.id);
         cardElement.querySelector('.card-add-btn').addEventListener('click', (e) => {
             e.stopPropagation();
             const btn = e.target;
             if (isDeployed) return;
-            if (gameState.battleDeck.length >= 10) { alert('出战卡组已满（最多10张）'); return; }
-            if (gameState.battleDeck.some(c => c.id === card.id)) { alert('每种卡只能带一张！'); return; }
+            if (gameState.battleDeck.length >= 10) { alert('出战卡组已满(最多10张)'); return; }
+            if (gameState.battleDeck.some(c => c.id === card.id)) { alert('每种卡只能带一张!'); return; }
             btn.textContent = '已出战';
             btn.disabled = true;
             addToBattleDeck(card);
@@ -5073,12 +6266,12 @@ function renderCardCollection() {
             btn.textContent = '已出战';
             btn.disabled = true;
         }
-        
+
         // 点击卡牌本身也显示信息
         cardElement.addEventListener('click', () => {
             showCardInfo(card);
         });
-        
+
         cardGrid.appendChild(cardElement);
     });
 }
@@ -5088,26 +6281,26 @@ function showCardInfo(card) {
     cardName.textContent = card.name;
     cardAttack.textContent = card.attack;
     cardMove.textContent = card.moveRange;
-    
+
     // HP + 护甲
     const hpLabel = document.querySelector('#cardHp').parentElement.querySelector('.label');
     hpLabel.textContent = '生命值:';
     let hpText = `${card.hp}`;
-    if (card.armor) hpText += `（护甲 ${card.armor}）`;
+    if (card.armor) hpText += `(护甲 ${card.armor})`;
     cardHp.textContent = hpText;
-    
+
     // 攻击范围
     if (card.meleeAttack) {
         cardRange.textContent = `远:${card.attackRange}格 ${card.attack}伤  近:${card.meleeRange}格 ${card.meleeAttack}伤`;
     } else {
         cardRange.textContent = card.attackRange;
     }
-    
+
     // 特殊属性汇集
     const features = [];
     if (card.critChance) features.push(`暴击 ${Math.round(card.critChance*100)}%`);
     if (card.rangedCrit) features.push('首次远程必暴击');
-    if (card.armorPen) features.push(`穿甲 ${card.armorPen}`);
+    if (card.armorPen) features.push(card.armorPen >= 999 ? '穿甲无限(真实伤害)' : '穿甲 ' + card.armorPen);
     if (card.splashRadius) features.push(`溅射 ${card.splashRadius}格`);
     if (card.chargeDamage) features.push(`冲锋≥${card.chargeMove}格 伤${card.chargeDamage}`);
     if (card.dodge) features.push('闪避');
@@ -5123,9 +6316,13 @@ function showCardInfo(card) {
     if (card.lineAttack) features.push(`直线3列射击/闪电链${card.chainDamage}伤`);
     if (card.hero) features.push('金卡');
     if (card.firstStrike) features.push('首击强制剩1血');
-    if (card.tankSpawn) features.push('召唤战车×2（攻3/护甲2/血4，限老太周围4格）');
+    if (card.tankSpawn) features.push('召唤战车×2(攻3/护甲2/血4,限老太周围4格)');
     if (card.erin) features.push('双发连击/黄圈/计数技能/保命装');
-    
+    if (card.doomShroom) features.push('双击引爆:7×7爆炸7伤+留弹坑4回合');
+    if (card.smallShroom) features.push('每回合限2个/不可移动');
+    if (card.patroller) features.push('咬住敌人3回合不能移动');
+    if (card.royalGuard) features.push('部署6卫兵/3伤护盾/移动≥3冲锋翻倍');
+
     const costLabel = document.querySelector('#cardCost').parentElement.querySelector('.label');
     if (features.length > 0) {
         costLabel.textContent = '特性:';
@@ -5134,22 +6331,22 @@ function showCardInfo(card) {
         costLabel.textContent = '能量花费:';
         cardCost.textContent = card.cost;
     }
-    
+
     cardInfoPanel.classList.remove('hidden');
-    
+
     // 卡牌介绍
     const descEl = document.getElementById('cardDesc');
     if (card.description && descEl) {
-        descEl.textContent = card.description + (card.leisiSpawn ? '（亲卫队×4：盾兵攻2/血4/护甲2，步兵攻3/血3/护甲1，射程5/移动4）' : '') + (card.copSpawn ? '（双击出警×4：远程攻4/射程6，近战攻2/穿甲1，护甲1/移动7，回合结束回警车+回1血）' : '') + (card.windForm ? '（攻击命中形成风阵：5×5范围，友军+4移动/敌军-3移动，持续4回合，不可叠加）' : '');
+        descEl.textContent = card.description + (card.leisiSpawn ? '(亲卫队×4:盾兵攻2/血4/护甲2,步兵攻3/血3/护甲1,射程5/移动4)' : '') + (card.copSpawn ? '(双击出警×4:远程攻4/射程6,近战攻2/穿甲1,护甲1/移动7,回合结束回警车+回1血)' : '') + (card.windForm ? '(攻击命中形成风阵:5×5范围,友军+4移动/敌军-3移动,持续4回合,不可叠加)' : '');
         descEl.style.display = '';
     } else if (descEl) {
         descEl.style.display = 'none';
     }
 }
 
-// 显示单位信息（双击棋盘上的单位）
+// 显示单位信息(双击棋盘上的单位)
 function showUnitInfo(unit) {
-    // 查看信息不残留选中（防止关闭信息框后再点击被误判为双击触发技能）
+    // 查看信息不残留选中(防止关闭信息框后再点击被误判为双击触发技能)
     if (gameState.selectedUnit) {
         clearHighlights();
         gameState.selectedUnit = null;
@@ -5157,12 +6354,12 @@ function showUnitInfo(unit) {
     const used = gameState.moveUsed[unit.id] || 0;
     const windMod = getWindMoveMod(unit) + (unit.erinMoveBonus||0);
     const remaining = Math.max(0, unit.moveRange - used + windMod);
-    
+
     cardName.textContent = unit.name;
     cardAttack.textContent = unit.attack;
     cardHp.textContent = `${unit.currentHp} / ${unit.maxHp}`;
-    cardMove.textContent = `${unit.moveRange}（剩余 ${remaining}）` + (windMod ? (windMod > 0 ? ` [风阵+${windMod}]` : ` [风阵${windMod}]`) : '');
-    
+    cardMove.textContent = `${unit.moveRange}(剩余 ${remaining})` + (windMod ? (windMod > 0 ? ` [风阵+${windMod}]` : ` [风阵${windMod}]`) : '');
+
     // 攻击范围信息
     if (unit.meleeAttack) {
         cardRange.textContent = `远:${unit.attackRange}格 ${unit.attack}伤  近:${unit.meleeRange}格 ${unit.meleeAttack}伤`;
@@ -5170,8 +6367,8 @@ function showUnitInfo(unit) {
         cardRange.textContent = unit.attackRange;
     }
     cardCost.textContent = gameState.attackedUnits.has(unit.id) ? '已攻击' : '可攻击';
-    
-    // 状态区：护甲 / 冲锋 / 暴击
+
+    // 状态区:护甲 / 冲锋 / 暴击
     const statContainer = document.querySelector('#cardCost').parentElement;
     const labelEl = statContainer.querySelector('.label');
     const extras = [];
@@ -5189,29 +6386,29 @@ function showUnitInfo(unit) {
     } else {
         labelEl.textContent = '状态:';
     }
-    
+
     cardInfoPanel.classList.remove('hidden');
 }
 
 // 添加到出战卡组
 function addToBattleDeck(card) {
-    // 限制卡组大小（最多10张）
+    // 限制卡组大小(最多10张)
     if (gameState.battleDeck.length >= 10) {
-        alert('出战卡组已满（最多10张）');
+        alert('出战卡组已满(最多10张)');
         return;
     }
-    
+
     // 每种卡只能带一张
     const alreadyHasCard = gameState.battleDeck.some(c => c.id === card.id);
     if (alreadyHasCard) {
-        alert('每种卡只能带一张！');
+        alert('每种卡只能带一张!');
         return;
     }
-    
+
     gameState.battleDeck.push({ ...card });
     gameState.battleDeck.sort((a, b) => (a.cost || 0) - (b.cost || 0));
     updateBattleDeckDisplay();
-    
+
     // 关闭信息面板
     cardInfoPanel.classList.add('hidden');
 }
@@ -5219,29 +6416,29 @@ function addToBattleDeck(card) {
 // 更新出战卡组显示
 function updateBattleDeckDisplay() {
     deckCount.textContent = gameState.battleDeck.length;
-    
+
     deckList.innerHTML = '';
-    
+
     if (gameState.battleDeck.length === 0) {
         deckList.innerHTML = '<p style="color: #7f8c8d;">点击左侧卡牌添加到出战卡组</p>';
         return;
     }
-    
+
     gameState.battleDeck.forEach((card, index) => {
         const cardElement = document.createElement('div');
         cardElement.className = 'deck-card';
-        
+
         cardElement.innerHTML = `
             <button class="remove-btn" data-index="${index}">×</button>
             <h5>${card.name}</h5>
         `;
-        
+
         cardElement.querySelector('.remove-btn').addEventListener('click', (e) => {
             e.target.textContent = '已移除';
             e.target.disabled = true;
             setTimeout(() => { removeFromBattleDeck(index); }, 400);
         });
-        
+
         deckList.appendChild(cardElement);
     });
 }
@@ -5267,7 +6464,7 @@ function switchTab(tabName) {
         battleDeck.classList.remove('hidden');
         cardCollection.classList.add('hidden');
     }
-    
+
     // 关闭信息面板
     cardInfoPanel.classList.add('hidden');
 }
@@ -5290,22 +6487,22 @@ function startGame() {
     gameState.gameOver = false;
     gameState.winner = null;
     gameState.windZones = [];
-    
+
     // 更新显示
     updateEnergyDisplay();
     updateBaseHpDisplay();
     updateTurnIndicator();
     updateTimerDisplay();
-    
+
     // 初始化棋盘
     initBoard();
-    
+
     // 切换界面 - 确保正确进入游戏界面
     startScreen.classList.add('hidden');
     cardPackScreen.classList.add('hidden');
     gameScreen.classList.remove('hidden');
     positionChatMessages();
-    
+
     // 开始计时
     startTimer();
 }
@@ -5329,8 +6526,9 @@ function restartGame() {
 // 事件监听
 startBtn.addEventListener('click', () => {
     cardInfoPanel.classList.add('hidden');
+    document.getElementById('howToScreen').classList.add('hidden');
     if (gameState.battleDeck.length === 0) {
-        alert('请先在卡包中添加出战卡组！');
+        alert('请先在卡包中添加出战卡组!');
         return;
     }
     startScreen.classList.add('hidden');
@@ -5339,6 +6537,7 @@ startBtn.addEventListener('click', () => {
 
 cardPackBtn.addEventListener('click', () => {
     cardInfoPanel.classList.add('hidden');
+    document.getElementById('howToScreen').classList.add('hidden');
     startScreen.classList.add('hidden');
     cardPackScreen.classList.remove('hidden');
     gameScreen.classList.add('hidden');
@@ -5354,6 +6553,18 @@ closeDeployModal.addEventListener('click', closeDeployModalFunc);
 
 // 模式选择按钮
 const modeSelectScreen = document.getElementById('modeSelectScreen');
+document.getElementById('howToBtn').addEventListener('click', () => {
+    // 记录来源界面(主界面或模式选择)
+    gameState._howToFrom = (!startScreen.classList.contains('hidden')) ? 'start' : 'mode';
+    // 隐藏所有其他界面,再显示玩法介绍
+    [startScreen, modeSelectScreen, cardPackScreen, gameScreen, document.getElementById('lobbyScreen')].forEach(s => { if (s) s.classList.add('hidden'); });
+    document.getElementById('howToScreen').classList.remove('hidden');
+});
+document.getElementById('howToBackBtn').addEventListener('click', () => {
+    document.getElementById('howToScreen').classList.add('hidden');
+    if (gameState._howToFrom === 'start') startScreen.classList.remove('hidden');
+    else modeSelectScreen.classList.remove('hidden');
+});
 document.getElementById('trainingBtn').addEventListener('click', () => {
     gameState.aiMode = false;
     gameState.maxEnergy = 500;
@@ -5364,11 +6575,11 @@ document.getElementById('trainingBtn').addEventListener('click', () => {
 });
 document.getElementById('aiBattleBtn').addEventListener('click', () => {
     if (gameState.battleDeck.length < 10) {
-        alert('人机对战需要携带至少10张卡牌才能开局，请先在卡包中添加卡牌！');
+        alert('人机对战需要携带至少10张卡牌才能开局,请先在卡包中添加卡牌!');
         return;
     }
     if (gameState.battleDeck.some(c => c.trainingOnly)) {
-        alert('出战卡组包含训练木偶，仅可在训练营模式使用，请先在卡组中移除！');
+        alert('出战卡组包含训练木偶,仅可在训练营模式使用,请先在卡组中移除!');
         return;
     }
     gameState.aiMode = true;
@@ -5392,7 +6603,7 @@ function aiTurn() {
     const deployable = aiDeck.filter(c => c.cost <= energy && aiUnits.filter(u => u.cardId === c.id).length < 2);
     if (deployable.length > 0) {
         const card = deployable[Math.floor(Math.random() * deployable.length)];
-        // 蓝方黑绝：优先附身己方未附身单位（无目标则正常部署本体）
+        // 蓝方黑绝:优先附身己方未附身单位(无目标则正常部署本体)
         if (card.blackZetsu) {
             const hosts = gameState.units.filter(u => u.team === 'blue' && !u._possessed && !u.blackZetsu);
             if (hosts.length > 0) {
@@ -5407,7 +6618,7 @@ function aiTurn() {
             for (let col = 10; col <= 19; col++) {
                 if (gameState.units.some(u => u.row === row && u.col === col)) continue;
                 if (isBlueBase(row, col) || isRedBase(row, col)) continue;
-                const unit = { id: card.id+'_'+Date.now(), cardId: card.id, name: card.name, attack: card.attack, maxHp: card.hp, currentHp: card.hp, moveRange: card.moveRange, attackRange: card.attackRange, artwork: card.artwork, armor: card.armor||0, team: 'blue', row, col, flying: card.flying||false, meleeAttack: card.meleeAttack||0, meleeRange: card.meleeRange||0, armorPen: card.armorPen||0, critChance: card.critChance||0, dodge: card.dodge||false, counterAttack: card.counterAttack||0, summon: card.summon||false, summonGuardType: card.summonGuardType||'', tankSpawn: card.tankSpawn||false, leisiSpawn: card.leisiSpawn||false, copSpawn: card.copSpawn||false, windForm: card.windForm||false, splashRadius: card.splashRadius||0, deployEffect: card.deployEffect||false, hero: card.hero||false, heroDeployText: card.heroDeployText||'', heroDeployColor: card.heroDeployColor||'', heroDeployDuration: card.heroDeployDuration||3500, chargeMove: card.chargeMove||0, chargeDamage: card.chargeDamage||0, erin: card.erin||false, pekkaHeal: card.pekkaHeal||false, blowdart: card.blowdart||false, hashirama: card.hashirama||false, hashiMaxEnergy: card.hashiMaxEnergy||0, skullArmy: card.skullArmy||false,wither: card.wither||false,tesla: card.tesla||false,blackZetsu: card.blackZetsu||false,golem: card.golem||false,eliteIce: card.eliteIce||false,mirror: card.mirror||false };
+                const unit = { id: card.id+'_'+Date.now(), cardId: card.id, name: card.name, attack: card.attack, maxHp: card.hp, currentHp: card.hp, moveRange: card.moveRange, attackRange: card.attackRange, artwork: card.artwork, armor: card.armor||0, team: 'blue', row, col, flying: card.flying||false, meleeAttack: card.meleeAttack||0, meleeRange: card.meleeRange||0, armorPen: card.armorPen||0, critChance: card.critChance||0, dodge: card.dodge||false, counterAttack: card.counterAttack||0, summon: card.summon||false, summonGuardType: card.summonGuardType||'', tankSpawn: card.tankSpawn||false, leisiSpawn: card.leisiSpawn||false, copSpawn: card.copSpawn||false, windForm: card.windForm||false, splashRadius: card.splashRadius||0, deployEffect: card.deployEffect||false, hero: card.hero||false, heroDeployText: card.heroDeployText||'', heroDeployColor: card.heroDeployColor||'', heroDeployDuration: card.heroDeployDuration||3500, chargeMove: card.chargeMove||0, chargeDamage: card.chargeDamage||0, erin: card.erin||false, pekkaHeal: card.pekkaHeal||false, blowdart: card.blowdart||false, hashirama: card.hashirama||false, hashiMaxEnergy: card.hashiMaxEnergy||0, skullArmy: card.skullArmy||false,wither: card.wither||false,tesla: card.tesla||false,blackZetsu: card.blackZetsu||false,golem: card.golem||false,eliteIce: card.eliteIce||false,mirror: card.mirror||false,superKnight: card.superKnight||false,healFairy: card.healFairy||false,cannon: card.cannon||false,madaraSolve: card.madaraSolve||false };
                 gameState.units.push(unit); renderUnit(unit);
                 runDeployEffects(unit);
                 gameState.blueEnergy -= card.cost; updateEnergyDisplay();
@@ -5423,7 +6634,7 @@ function aiMoveAndAttack() {
     aiUnits.forEach(u => {
         if (gameState.attackedUnits.has(u.id)) return;
         const atkRng = u.attackRange || 1;
-        
+
         // 1. 攻击范围内敌方单位
         let nearest = null, minD = Infinity;
         gameState.units.filter(e => e.team === 'red').forEach(e => {
@@ -5439,8 +6650,8 @@ function aiMoveAndAttack() {
             gameState.attackedUnits.add(u.id);
             return;
         }
-        
-        // 2. 攻击范围内红方大本营（无双状态不打大本营）
+
+        // 2. 攻击范围内红方大本营(无双状态不打大本营)
         let inBaseRange = false;
         for (let r = 25; r <= 27; r++) for (let c = 10; c <= 13; c++) {
             const d = Math.max(Math.abs(r-u.row), Math.abs(c-u.col));
@@ -5453,7 +6664,7 @@ function aiMoveAndAttack() {
             gameState.attackedUnits.add(u.id);
             return;
         }
-        
+
         // 3. 向最近红方单位/大本营移动
         let targetR = 26, targetC = 11;
         let closestEnemy = null, cDist = Infinity;
@@ -5464,7 +6675,7 @@ function aiMoveAndAttack() {
             if (d < cDist) { closestEnemy = e; cDist = d; }
         });
         if (closestEnemy) { targetR = closestEnemy.row; targetC = closestEnemy.col; }
-        
+
         const oldR = u.row, oldC = u.col, rng = u.moveRange;
         let br = u.row, bc = u.col, bd = Infinity;
         // 直接朝大本营走
@@ -5539,40 +6750,40 @@ function cancelLongPress() { if (longPressTimer) { clearTimeout(longPressTimer);
 function showUnitCardInfo(unit) {
     cardName.textContent = unit.name;
     cardAttack.textContent = unit.attack;
-    
+
     document.querySelector('#cardHp').parentElement.querySelector('.label').textContent = '生命值:';
     cardHp.textContent = (unit.currentHp < unit.maxHp ? unit.currentHp + ' / ' + unit.maxHp : String(unit.maxHp));
-    
+
     cardMove.textContent = unit.moveRange;
     if (unit.meleeAttack) {
         cardRange.textContent = '远:' + unit.attackRange + '格 ' + unit.attack + '伤  近:' + unit.meleeRange + '格 ' + unit.meleeAttack + '伤';
     } else {
         cardRange.textContent = unit.attackRange;
     }
-    
+
     const extras = [];
     if (unit.armor) extras.push('护甲:' + unit.armor);
     if (unit.flying) extras.push('空中单位');
     document.querySelector('#cardCost').parentElement.querySelector('.label').textContent = '状态:';
     cardCost.textContent = (gameState.attackedUnits.has(unit.id) ? '已攻击' : '可攻击') + (extras.length ? ' | ' + extras.join(' · ') : '');
-    
+
     const descEl = document.getElementById('cardDesc');
     if (descEl) descEl.textContent = (unit.currentHp < unit.maxHp ? '已受伤' : '满血') + ' | ' + (unit.team === 'red' ? '红方' : '蓝方');
-    
+
     cardInfoPanel.classList.remove('hidden');
 }
 
-// 部署弹窗卡牌点击——事件委托：在父容器上统一监听，取代逐卡牌绑定的 addEventListener
+// 部署弹窗卡牌点击--事件委托:在父容器上统一监听,取代逐卡牌绑定的 addEventListener
 battleDeckGrid.addEventListener('click', (e) => {
     const card = e.target.closest('.battle-deck-card');
     if (!card) return;
-    
+
     const index = parseInt(card.dataset.index);
     const cost = parseInt(card.dataset.cost);
     const currentEnergy = gameState.currentTurn === 'red' ? gameState.redEnergy : gameState.blueEnergy;
-    
+
     if (currentEnergy < cost) return;
-    
+
     gameState.deployPosition = index;
     deployUnit(gameState.deployTargetRow, gameState.deployTargetCol);
     closeDeployModalFunc();
