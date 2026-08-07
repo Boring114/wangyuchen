@@ -575,6 +575,14 @@ h1 {
 .art-doom_shroom::after { content: '毁灭菇'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #8e44ad; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; }
 .art-small_shroom::after { content: '小喷菇'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #9b59b6; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; }
 .art-patroller::after { content: '巡视者'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #000; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; }
+.art-hog::after { content: '🐗'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 16px; line-height: 1; }
+.art-fisherman::after { content: '⚓'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 19px; line-height: 1; }
+.art-yogg::after { content: '导演'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #1e8449; font-size: 14px; font-weight: 900; line-height: 1; white-space: nowrap; }
+.skill-btn { display: block; width: 100%; margin: 8px 0; padding: 10px; font-size: 15px; font-weight: 700; border-radius: 8px; border: none; background: #27ae60; color: #fff; cursor: pointer; }
+.skill-btn:disabled { background: #95a5a6; cursor: not-allowed; }
+.art-elite_knight::after { content: '骑士'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #000; font-size: 14px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 6px #f1c40f, 0 0 12px rgba(241,196,15,0.9); animation: knightGlow 1.5s ease-in-out infinite; }
+@keyframes knightGlow { 0%, 100% { text-shadow: 0 0 6px #f1c40f, 0 0 12px rgba(241,196,15,0.9); } 50% { text-shadow: 0 0 10px #f1c40f, 0 0 20px rgba(241,196,15,1), 0 0 30px rgba(241,196,15,0.7); } }
+.knight-zone { background: rgba(241, 196, 15, 0.13); box-shadow: inset 0 0 6px rgba(241, 196, 15, 0.55); }
 .art-royal_guard::after { content: '卫队'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #f1c40f; font-size: 16px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 6px #9b59b6, 0 0 12px rgba(155,89,182,0.9); animation: dragonGlow 1.5s ease-in-out infinite; }
 .guard-shield { box-shadow: 0 0 5px 1px rgba(241, 196, 15, 0.95) inset, 0 0 4px 1px rgba(241, 196, 15, 0.6); }
 .art-heal_fairy::after { content: '奶豆'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #f1c40f; font-size: 14px; font-weight: 900; line-height: 1; white-space: nowrap; }
@@ -1651,8 +1659,8 @@ h1 {
 /* ��ŵ����"��ŵ" ���� */
 
 
-.art-reynolds::after { content: '雷诺'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.3); color: #8B6914; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 2px rgba(0,0,0,0.5); }
-.card-artwork.art-reynolds::after { content: '雷诺'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #8B6914; font-size: 16px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 2px rgba(0,0,0,0.5); }
+.art-reynolds::after { content: '雷诺·游'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #8B6914; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 2px rgba(0,0,0,0.5); }
+.card-artwork.art-reynolds::after { content: '雷诺·游'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #8B6914; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 2px rgba(0,0,0,0.5); }
 
 .sandstorm { position: absolute; left: 0; width: 720px; height: 200px; background: linear-gradient(to bottom, rgba(212,175,55,0.9), rgba(184,134,11,0.7), rgba(210,180,140,0.6)); z-index: 30; pointer-events: none; transition: top 2s ease-in-out; box-shadow: 0 0 30px rgba(212,175,55,0.6); }
 
@@ -1818,3 +1826,139 @@ h1 {
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
     z-index: 5;
 }
+
+/* 大火球法术：从天而降的火球 + 3×3 冲击波 */
+.fireball-drop {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #ffe08a 0%, #ff9f43 40%, #e74c3c 75%, #c0392b 100%);
+    box-shadow: 0 0 18px 6px rgba(231, 76, 60, 0.8);
+    z-index: 50;
+    pointer-events: none;
+}
+.fireball-blast {
+    width: 30px;
+    height: 26px;
+    background: radial-gradient(circle, rgba(255, 160, 60, 0.85) 0%, rgba(231, 76, 60, 0.6) 60%, transparent 100%);
+    box-shadow: 0 0 10px rgba(255, 140, 50, 0.7);
+    animation: fireballBlast 0.6s ease-out forwards;
+    z-index: 40;
+    pointer-events: none;
+}
+@keyframes fireballBlast {
+    0% { transform: scale(0.3); opacity: 1; }
+    100% { transform: scale(1.25); opacity: 0; }
+}
+
+/* 大火球卡牌图标 */
+.art-fireball::after { content: '🔥'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 16px; line-height: 1; }
+
+/* 狂暴法术：紫红色 5×5 光环 + 图标 */
+.rage-buff {
+    width: 30px;
+    height: 26px;
+    background: radial-gradient(circle, rgba(200, 40, 220, 0.55) 0%, rgba(140, 20, 180, 0.3) 60%, transparent 100%);
+    box-shadow: inset 0 0 10px rgba(200, 40, 220, 0.6);
+    animation: ragePulse 1.2s ease-out forwards;
+    z-index: 38;
+    pointer-events: none;
+}
+@keyframes ragePulse {
+    0% { opacity: 1; transform: scale(0.5); }
+    60% { opacity: 0.85; transform: scale(1.1); }
+    100% { opacity: 0; transform: scale(1.3); }
+}
+.art-rage::after { content: '狂暴'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #e74c3c; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; }
+
+/* 复仇滚木：棕色木条 + 银色尖刺小点 */
+.log-spell {
+    background: linear-gradient(to bottom, #a06a2e 0%, #7a4e20 45%, #8b5a2b 100%);
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), inset 0 -2px 3px rgba(60, 35, 10, 0.6);
+    z-index: 42;
+    pointer-events: none;
+    transition: top 0.12s linear;
+}
+.log-spell::before, .log-spell::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 7px;
+    height: 7px;
+    background: #d5dbe0;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(220, 230, 240, 0.95);
+}
+.log-spell::before { left: 22%; }
+.log-spell::after { left: 78%; }
+.art-log::after { content: '滚木'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #8b5a2b; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; }
+
+/* 狂暴持续光环（一回合）与受加成单位紫红光效 */
+.rage-zone {
+    background: rgba(200, 40, 220, 0.12);
+    box-shadow: inset 0 0 8px rgba(200, 40, 220, 0.45);
+}
+.unit.raging {
+    box-shadow: 0 0 8px 2px rgba(200, 40, 220, 0.85);
+    animation: rageUnitPulse 1s ease-in-out infinite;
+}
+@keyframes rageUnitPulse {
+    0%, 100% { box-shadow: 0 0 8px 2px rgba(200, 40, 220, 0.7); }
+    50% { box-shadow: 0 0 14px 4px rgba(200, 40, 220, 1); }
+}
+
+/* 剩饭法术图标 */
+.art-leftover::after { content: '剩饭'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #e74c3c; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; }
+
+/* 石墙守护：棕色泡泡 + 图标 */
+.unit.stone-bubble {
+    box-shadow: 0 0 0 3px rgba(139, 90, 43, 0.75), 0 0 16px 6px rgba(139, 90, 43, 0.5);
+    border-radius: 50%;
+}
+.art-stone_wall::after { content: '守护'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #8b5a2b; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; }
+
+/* 大闪电：降雷特效 + 图标 */
+.lightning-strike {
+    width: 8px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #eaf6ff 35%, #3498db 100%);
+    box-shadow: 0 0 14px 4px rgba(52, 152, 219, 0.95);
+    clip-path: polygon(45% 0%, 60% 35%, 40% 35%, 55% 70%, 35% 70%, 50% 100%, 65% 60%, 45% 60%, 60% 25%, 42% 25%);
+    animation: lightningFlash 0.5s ease-out forwards;
+    z-index: 45;
+    pointer-events: none;
+}
+@keyframes lightningFlash {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    40% { opacity: 0.3; }
+    60% { opacity: 1; }
+    100% { opacity: 0; }
+}
+.art-big_lightning::after { content: '大闪'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #3498db; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; }
+
+/* 黑绝附身目标标记：2格内队友绿色高亮 */
+.ally-target {
+    box-shadow: 0 0 7px #27ae60, inset 0 0 7px rgba(39, 174, 96, 0.5);
+}
+
+/* 法术按钮 + 施放可选格子高亮 */
+.spell-btn {
+    padding: 10px 18px;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 8px;
+    border: none;
+    background: linear-gradient(135deg, #8e44ad, #6c3483);
+    color: #fff;
+    cursor: pointer;
+    margin-left: 8px;
+}
+.spell-btn:hover { filter: brightness(1.15); }
+
+/* 混乱触须图标 */
+.art-tentacle::after { content: '触须'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #000; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; }
+
+/* 雷诺·杰克逊图标 */
+.art-reynolds_jackson::after { content: '雷诺·杰'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #8B6914; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 2px rgba(0,0,0,0.5); }

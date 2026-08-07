@@ -166,6 +166,7 @@
 
         <!-- 底部控制栏 -->
         <div class="bottom-controls">
+            <button id="spellBtn" class="spell-btn">法术</button>
             <div class="chat-wrap">
                 <button id="chatBtn" class="chat-btn" title="聊天">💬</button>
                 <div id="chatOptions" class="chat-options hidden">
@@ -192,6 +193,26 @@
                 <!-- 出战卡组卡牌 -->
             </div>
             <button id="closeDeployModal" class="close-btn">关闭</button>
+        </div>
+    </div>
+
+    <!-- 尤格萨隆技能选择框 -->
+    <div id="yoggSkillModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>尤格萨隆 · 技能</h3>
+            <button id="yoggSkill1Btn" class="skill-btn">混沌统治（选一敌人变己方）</button>
+            <button id="yoggSkill2Btn" class="skill-btn">诱引狂乱（敌人互相攻击）</button>
+            <button id="yoggSkill3Btn" class="skill-btn">触须攒聚（获得混乱触须手牌）</button>
+            <button id="closeYoggSkillModal" class="close-btn">关闭</button>
+        </div>
+    </div>
+
+    <!-- 法术部署栏 -->
+    <div id="spellModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>选择法术</h3>
+            <div class="battle-deck-grid" id="spellModalGrid"></div>
+            <button id="closeSpellModal" class="close-btn">关闭</button>
         </div>
     </div>
 
