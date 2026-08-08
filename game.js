@@ -384,7 +384,7 @@ const cardLibrary = [
         armorPen: 99,
         moveRange: 2,
         attackRange: 99,
-        cost: 13,
+        cost: 12,
         artwork: 'demulan',
         description: '老太来了!全图狙神',
         firstStrike: true,
@@ -528,17 +528,17 @@ const cardLibrary = [
     },
     {
         id: 'tesla',
-        name: '特斯拉电磁塔',
+        name: '觉醒特斯拉电磁塔',
         attack: 3,
         hp: 5,
         armor: 0,
         moveRange: 0,
         attackRange: 5,
-        cost: 4,
+        cost: 5,
         artwork: 'tesla',
         building: true,
         tesla: true,
-        description: '建筑。攻击范围内没有敌人时缩进地底(图标半透明,敌人无法以它为攻击目标)。'
+        description: '建筑。攻击范围内没有敌人时缩进地底(图标半透明,敌人无法以它为攻击目标)。从地底现形时释放5×5紫色电圈:触碰的敌人受3伤。'
     },
     {
         id: 'black_zetsu',
@@ -743,7 +743,7 @@ const cardLibrary = [
         armor: 0,
         moveRange: 0,
         attackRange: 0,
-        cost: 3,
+        cost: 5,
         artwork: 'fireball',
         spell: true,
         spellDamage: 4,
@@ -753,9 +753,9 @@ const cardLibrary = [
     },
     {
         id: 'yogg',
-        name: '脱困古神·尤格萨隆',
-        attack: 5,
-        hp: 9,
+        name: '脱困古神·尤格-萨隆',
+        attack: 9,
+        hp: 5,
         armor: 0,
         moveRange: 2,
         attackRange: 3,
@@ -766,7 +766,24 @@ const cardLibrary = [
         heroDeployColor: '#000',
         heroDeployDuration: 2000,
         yogg: true,
-        description: '金卡。双击弹技能框:混沌统治(选一敌人变己方并拉至前方)/诱引狂乱(敌人互相攻击)。两技能各一次,用完才能普攻。'
+        description: '金卡。双击弹技能框:混沌统治(选一敌人变己方并拉至前方)/诱引狂乱(敌人互相攻击)/触须攒聚(获得混乱触须手牌)。三技能各一次,每回合限用1个,用完才能普攻。'
+    },
+    {
+        id: 'yogg_saron',
+        name: '尤格-萨隆',
+        attack: 9,
+        hp: 5,
+        armor: 0,
+        moveRange: 2,
+        attackRange: 4,
+        cost: 19,
+        artwork: 'yogg_saron',
+        hero: true,
+        heroDeployText: '在死亡之神的面前屈服吧!',
+        heroDeployColor: '#1e8449',
+        heroDeployDuration: 2000,
+        yoggSaron: true,
+        description: '金卡。登场时:本局每使用过1个法术就随机释放1个法术(增益→随机队友,负面/伤害→随机敌人),逐个释放;法术很多时一次性释放完。'
     },
     {
         id: 'rage_spell',
@@ -793,7 +810,7 @@ const cardLibrary = [
         armor: 0,
         moveRange: 0,
         attackRange: 0,
-        cost: 2,
+        cost: 3,
         artwork: 'log',
         spell: true,
         log: true,
@@ -881,6 +898,66 @@ const cardLibrary = [
         description: '金卡。登场为大本营回满生命值(50)。'
     },
     {
+        id: 'magic_shield',
+        name: '魔法护盾',
+        attack: 0,
+        hp: 0,
+        armor: 0,
+        moveRange: 0,
+        attackRange: 0,
+        cost: 4,
+        artwork: 'magic_shield',
+        spell: true,
+        magicShield: true,
+        description: '法术卡·全图释放。选择一个友军:免疫所有法术造成的效果与伤害(普通攻击/技能/燃烧/毒等不受影响),紫色护盾持续到该单位死亡。'
+    },
+    {
+        id: 'heal_spell',
+        name: '治疗术',
+        attack: 0,
+        hp: 0,
+        armor: 0,
+        moveRange: 0,
+        attackRange: 0,
+        cost: 6,
+        artwork: 'heal',
+        spell: true,
+        heal: true,
+        healAmount: 3,
+        healRadius: 1,
+        healMove: 1,
+        description: '法术卡·全图释放。以选中格为中心的3×3范围内所有友军恢复3点生命(不超过上限),并获得+1移动范围(仅本回合)。'
+    },
+    {
+        id: 'evil_moon',
+        name: '邪月当空',
+        attack: 0,
+        hp: 0,
+        armor: 0,
+        moveRange: 0,
+        attackRange: 0,
+        cost: 20,
+        artwork: 'evil_moon',
+        spell: true,
+        evilMoon: true,
+        description: '法术卡·增益。随机挑选8个队友,随机变成花费≥10的卡(变出的卡若带亲卫队则召唤亲卫队)。'
+    },
+    {
+        id: 'shield_spell',
+        name: '护盾',
+        attack: 0,
+        hp: 0,
+        armor: 0,
+        moveRange: 0,
+        attackRange: 0,
+        cost: 4,
+        artwork: 'shield',
+        spell: true,
+        shieldSpell: true,
+        shieldAmount: 4,
+        description: '法术卡·增益。选择一个队友:添加一个能承受4点伤害的护盾(可叠加)。'
+    },
+    {
         id: 'madara_solve',
         name: '宇智波斑·秽土转生·解',
         attack: 0,
@@ -888,7 +965,7 @@ const cardLibrary = [
         armor: 1,
         moveRange: 5,
         attackRange: 0,
-        cost: 19,
+        cost: 16,
         artwork: 'madara_solve',
         critChance: 0.25,
         hero: true,
@@ -1079,8 +1156,8 @@ function handleCellClick(e) {
             const row = parseInt(cell.dataset.row);
             const col = parseInt(cell.dataset.col);
             const card = gameState._spellCasting;
-            // 友军目标法术(石墙/剩饭):目标格必须是友军,否则不施放
-            const friendlyTarget = !!(card.stoneWall || card.leftover);
+            // 友军目标法术(石墙/剩饭/魔法护盾):目标格必须是友军,否则不施放
+            const friendlyTarget = !!(card.stoneWall || card.leftover || card.magicShield || card.shieldSpell);
             const hasFriendly = friendlyTarget && gameState.units.some(u => u.row === row && u.col === col && u.team === gameState.currentTurn && !u._removing);
             if (!isBlueBase(row, col) && !isRedBase(row, col) && (!friendlyTarget || hasFriendly)) {
                 const curE = gameState.currentTurn === 'red' ? gameState.redEnergy : gameState.blueEnergy;
@@ -1297,10 +1374,13 @@ function handleCellClick(e) {
             const unitAtPos = gameState.units.find(u => u.row === row && u.col === col);
             if (!unitAtPos || card.spell) {
                 deployUnit(row, col);
+                closeDeployModalFunc();
+                return;
             }
         }
-        closeDeployModalFunc();
-        return;
+        // 无法部署（有单位挡着等）：清残留但不 return——继续走正常点击逻辑（选中/双击技能）
+        gameState.deployMode = false;
+        gameState.deployPosition = null;
     }
 
     // 行动模式 - 点击选中的单位可以移动到的格子
@@ -1567,7 +1647,7 @@ function showMovableRange(unit) {
     if (unit.copSpawn && unit.copsSpawned) return;
     const { row, col, moveRange } = unit;
     const used = gameState.moveUsed[unit.id] || 0;
-    let remaining = moveRange - used + getWindMoveMod(unit) + (unit.erinMoveBonus||0) + (unit._rageMove||0);
+    let remaining = moveRange - used + getWindMoveMod(unit) + (unit.erinMoveBonus||0) + (unit._rageMove||0) + (unit._healMove||0);
     if (remaining <= 0) return;
     // 循环边界用最大可达距离(防止加成后的移动范围被基础值截断)
     const maxReach = Math.max(moveRange, remaining);
@@ -2246,7 +2326,7 @@ function runDeployEffects(unit) {
     if (unit.skullArmy) {
         spawnSkullArmy(unit);
     }
-    // 混乱触须：部署后自动释放一个随机法术（从全部法术池随机；增益对随机队友、伤害对随机敌人）
+    // 混乱触须:部署后自动释放一个随机法术(从全部法术池随机;增益对随机队友、伤害对随机敌人)
     if (unit.chaosTentacle) {
         const spells = cardLibrary.filter(c => c.spell);
         if (spells.length > 0) {
@@ -2254,11 +2334,31 @@ function runDeployEffects(unit) {
             setTimeout(() => castRandomSpell(s, unit), 300);
         }
     }
-    // 雷诺·杰克逊：登场为大本营回满生命值（50）
+    // 雷诺·杰克逊:登场为大本营回满生命值(50)
     if (unit.reynoldsHeal) {
         if (unit.team === 'red') gameState.redBaseHp = 50;
         else gameState.blueBaseHp = 50;
         updateBaseHpDisplay();
+    }
+    // 尤格-萨隆:登场时本局每用过1个法术就随机释放1个法术(逐个放;跳过回合时剩余的一次性释放完)
+    if (unit.yoggSaron) {
+        const count = gameState.spellsCastThisGame || 0;
+        if (count > 0) {
+            const spells = cardLibrary.filter(c => c.spell);
+            if (spells.length > 0) {
+                const picks = [];
+                for (let i = 0; i < count; i++) picks.push(spells[Math.floor(Math.random() * spells.length)]);
+                if (!gameState._saronQueue) gameState._saronQueue = [];
+                picks.forEach((s, i) => {
+                    gameState._saronQueue.push({ spell: s, unit: unit });
+                    setTimeout(() => {
+                        const qi = gameState._saronQueue.findIndex(q => q.spell === s && q.unit === unit);
+                        if (qi >= 0) gameState._saronQueue.splice(qi, 1);
+                        if (!gameState._saronSkip) castRandomSpell(s, unit);
+                    }, 400 * (i + 1));
+                });
+            }
+        }
     }
 }
 
@@ -2273,7 +2373,7 @@ function deployUnit(row, col) {
     // 法术卡:全图任意格直接施放(不创建单位)
     if (card.spell) {
         const curE = gameState.currentTurn === 'red' ? gameState.redEnergy : gameState.blueEnergy;
-        if (curE < card.cost) { alert('能量不足!'); return; }
+        if (curE < card.cost) { alert('能量不足!'); closeDeployModalFunc(); return; }
         if (gameState.currentTurn === 'red') gameState.redEnergy -= card.cost;
         else gameState.blueEnergy -= card.cost;
         updateEnergyDisplay();
@@ -2430,6 +2530,7 @@ function deployUnit(row, col) {
         spellRadius: card.spellRadius || 0,
         baseDamage: card.baseDamage || 0,
         yogg: card.yogg || false,
+        yoggSaron: card.yoggSaron || false,
         rage: card.rage || false,
         rageRadius: card.rageRadius || 0,
         rageAttack: card.rageAttack || 0,
@@ -2448,6 +2549,14 @@ function deployUnit(row, col) {
         lgtCount: card.lgtCount || 0,
         chaosTentacle: card.chaosTentacle || false,
         reynoldsHeal: card.reynoldsHeal || false,
+        magicShield: card.magicShield || false,
+        heal: card.heal || false,
+        healAmount: card.healAmount || 0,
+        healRadius: card.healRadius || 0,
+        healMove: card.healMove || 0,
+        evilMoon: card.evilMoon || false,
+        shieldSpell: card.shieldSpell || false,
+        shieldAmount: card.shieldAmount || 0,
         solveEnergy: card.solveEnergy || 0,
         solveMaxEnergy: card.solveMaxEnergy || 0,
         miner: card.miner || false,
@@ -2491,6 +2600,8 @@ function deployUnit(row, col) {
         gameState.blueEnergy -= cardCost;
         updateEnergyDisplay();
     }
+    // 导演部署后:法术减费机制回归原价(重新从20起算)
+    if (card.yogg) gameState.spellsCastThisGame = 0;
 
     // 不从出战卡组移除,局内可以无限放置(只要能量够)
 
@@ -2893,7 +3004,7 @@ function attackUnit(target) {
         showHeroDeployText(target, '护盾', '#f1c40f', 800);
         updateGuardShieldVisual(target);
     }
-    // 精英骑士技能护盾:抵挡3伤
+    // 精英骑士技能护盾：抵挡3伤
     if (target.eliteKnight && target._knightShield > 0 && actualDamage > 0) {
         const absorbed = Math.min(target._knightShield, actualDamage);
         target._knightShield -= absorbed;
@@ -2901,6 +3012,15 @@ function attackUnit(target) {
         showCritText(target.row, target.col, '护盾');
         const kel = gameState.board[target.row][target.col].querySelector('.unit');
         if (kel && target._knightShield <= 0) kel.classList.remove('guard-shield');
+    }
+    // 护盾法术：吸收4点伤害（可叠加）
+    if (target._shieldHp > 0 && actualDamage > 0) {
+        const absorbed = Math.min(target._shieldHp, actualDamage);
+        target._shieldHp -= absorbed;
+        actualDamage -= absorbed;
+        showCritText(target.row, target.col, '护盾');
+        const sel = gameState.board[target.row][target.col].querySelector('.unit');
+        if (sel && target._shieldHp <= 0) sel.classList.remove('guard-shield');
     }
     // 艾琳保命装:护盾先吸收;致命伤害免疫并获得3血护盾(一次性)
     if (target.erin) {
@@ -3648,7 +3768,7 @@ function castSpell(card, row, col) {
     if (card.rage) { castRageSpell(card, row, col); return; }
     if (card.log) { castLogSpell(card, row, col); return; }
     if (card.leftover) {
-        // 剩饭:点击的格子上有友军则直接加成(自动显示+1攻+1血并消失)
+        // 剩饭:点击的格子上有友军则直接加成(友方增益可生效)
         const tU = gameState.units.find(u => u.row === row && u.col === col);
         if (tU && tU.team === gameState.currentTurn && !tU._removing) applyLeftover(tU);
         clearHighlights();
@@ -3656,13 +3776,31 @@ function castSpell(card, row, col) {
         return;
     }
     if (card.stoneWall) {
-        // 石墙守护:点击的格子上有友军则直接保护
+        // 石墙守护:点击的格子上有友军则直接保护(友方增益可生效)
         const tU = gameState.units.find(u => u.row === row && u.col === col);
         if (tU && tU.team === gameState.currentTurn && !tU._removing) applyStoneWall(tU);
         clearHighlights();
         gameState.selectedUnit = null;
         return;
     }
+    if (card.magicShield) {
+        // 魔法护盾:点击的格子上有友军则施加护盾
+        const tU = gameState.units.find(u => u.row === row && u.col === col);
+        if (tU && tU.team === gameState.currentTurn && !tU._removing) applyMagicShield(tU);
+        clearHighlights();
+        gameState.selectedUnit = null;
+        return;
+    }
+    if (card.shieldSpell) {
+        // 护盾:点击的格子上有友军则添加4点护盾
+        const tU = gameState.units.find(u => u.row === row && u.col === col);
+        if (tU && tU.team === gameState.currentTurn && !tU._removing) applyShieldSpell(tU);
+        clearHighlights();
+        gameState.selectedUnit = null;
+        return;
+    }
+    if (card.heal) { castHealSpell(card, row, col); return; }
+    if (card.evilMoon) { castEvilMoon(card, row, col); return; }
     if (card.bigLightning) { castBigLightning(card, row, col); return; }
     // 火球法术
     const r = card.spellRadius || 1;
@@ -3699,7 +3837,7 @@ function castSpell(card, row, col) {
         // 3×3 内敌方单位(card.team 由 currentTurn 决定)
         const team = gameState.currentTurn;
         gameState.units.slice().forEach(u => {
-            if (u.team === team || u.ghost || u._removing) return;
+            if (u.team === team || u.ghost || u._removing || u._magicShield) return; // 魔法护盾免疫法术
             if (Math.max(Math.abs(u.row - row), Math.abs(u.col - col)) <= r) {
                 const dmg = Math.max(0, (card.spellDamage || 4) - Math.max(0, (u.armor || 0)));
                 u.currentHp -= dmg;
@@ -3751,11 +3889,11 @@ function castRageSpell(card, row, col) {
             setTimeout(() => { if (fx.parentNode) fx.parentNode.removeChild(fx); }, 1200);
         }
     }
-    // 持续一回合的范围光环 + 友军加成（多瓶各自保留，回合结束统一清除）
+    // 持续一回合的范围光环 + 友军加成(多瓶各自保留,回合结束统一清除)
     gameState.rageZones.push({ row: row, col: col, team: team });
     renderRageZones();
     gameState.units.forEach(u => {
-        if (u.team !== team || u._removing) return;
+        if (u.team !== team || u._removing) return; // 友方增益可生效(魔法护盾只免疫敌方法术)
         if (Math.max(Math.abs(u.row - row), Math.abs(u.col - col)) <= r) {
             u._rageAttack = card.rageAttack || 2;
             u._rageMove = card.rageMove || 2;
@@ -3808,7 +3946,7 @@ function castLogSpell(card, row, col) {
             if (!baseHit && team === 'blue' && isRedBase(r, nc)) { gameState.redBaseHp -= card.baseDamage || 1; baseHit = true; updateBaseHpDisplay(); }
             // 敌人:2伤穿甲1 + 向后击退1格(不重复受伤)
             const u = gameState.units.find(x => x.row === r && x.col === nc);
-            if (u && u.team !== team && !u.ghost && !u._removing && !u.flying && !hitSet.has(u.id)) {
+            if (u && u.team !== team && !u.ghost && !u._removing && !u.flying && !u._magicShield && !hitSet.has(u.id)) { // 魔法护盾免疫法术
                 hitSet.add(u.id);
                 let dmg = Math.max(0, (card.logDamage || 2) - Math.max(0, (u.armor || 0) - (card.logPen || 0)));
                 // 骷髅大哥护盾:抵挡滚木伤害(护盾破碎)
@@ -3827,7 +3965,7 @@ function castLogSpell(card, row, col) {
                 showCritText(u.row, u.col, '滚木');
                 if (u.currentHp <= 0) { removeUnit(u); }
                 else {
-                    knockbackUnit(u, dir, 0, 1); // 沿滚木滚动方向击退1格
+                    logPushChain(u, dir); // 沿滚木滚动方向连锁击退1格（扎堆也全推）
                 }
             }
         }
@@ -3865,6 +4003,98 @@ function applyStoneWall(unit) {
     showHeroDeployText(unit, '石墙守护', '#8b5a2b', 1200);
 }
 
+// 邪月当空:随机挑8个队友,随机变成花费≥10的卡(带亲卫队的卡召唤亲卫队)
+function castEvilMoon(card, row, col) {
+    const team = gameState.currentTurn;
+    const allies = gameState.units.filter(u => u.team === team && !u._removing);
+    const picked = allies.sort(() => Math.random() - 0.5).slice(0, 8);
+    const pool = cardLibrary.filter(c => c.cost >= 10 && !c.spell); // 排除法术卡
+    if (pool.length === 0) { clearHighlights(); gameState.selectedUnit = null; return; }
+    picked.forEach(u => {
+        const nc = pool[Math.floor(Math.random() * pool.length)];
+        transformToCard(u, nc);
+    });
+    clearHighlights();
+    gameState.selectedUnit = null;
+}
+
+// 单位变身:保留位置/阵营/id,数值与技能标记换成新卡;带亲卫队的卡召唤亲卫队
+function transformToCard(unit, newCard) {
+    Object.keys(newCard).forEach(k => {
+        if (k === 'id' || k === 'hp') return;
+        unit[k] = newCard[k];
+    });
+    unit.cardId = newCard.id;
+    unit.maxHp = newCard.hp;
+    unit.currentHp = newCard.hp;
+    renderUnit(unit);
+    showCritText(unit.row, unit.col, '邪月');
+    // 亲卫队类:召唤(典狱长守卫/雷斯亲卫队/战车)
+    if (newCard.summon) summonWardenGuards(unit);
+    if (newCard.leisiSpawn) summonLeisiGuards(unit);
+    if (newCard.tankSpawn) {
+        [[0,-1],[0,1]].forEach(p => {
+            const nr = unit.row + p[0], nc = unit.col + p[1];
+            if (!isValidPosition(nr, nc)) return;
+            if (gameState.units.some(u => u.row === nr && u.col === nc)) return;
+            const tank = { id: 'tank_' + Date.now() + '_' + Math.random(), name: '战车', attack: 3, maxHp: 4, currentHp: 4, armor: 2, armorPen: 1, moveRange: 99, attackRange: 3, team: unit.team, row: nr, col: nc, artwork: 'tank', tank: true, tankMaster: unit.id };
+            gameState.units.push(tank);
+            renderUnit(tank);
+        });
+    }
+}
+
+// 治疗术:3×3 内友军回3血(不超上限)+ 本回合+1移动
+function castHealSpell(card, row, col) {
+    const team = gameState.currentTurn;
+    const r = card.healRadius || 1;
+    const board = document.getElementById('gameBoard');
+    // 绿色治疗光效(3×3)
+    for (let dr = -r; dr <= r; dr++) {
+        for (let dc = -r; dc <= r; dc++) {
+            const nr = row + dr, nc = col + dc;
+            if (!isValidPosition(nr, nc)) continue;
+            const fx = document.createElement('div');
+            fx.className = 'heal-fx';
+            fx.style.position = 'absolute';
+            fx.style.left = (nc * cellW) + 'px';
+            fx.style.top = (nr * cellH) + 'px';
+            board.appendChild(fx);
+            setTimeout(() => { if (fx.parentNode) fx.parentNode.removeChild(fx); }, 900);
+        }
+    }
+    gameState.units.forEach(u => {
+        if (u.team !== team || u._removing) return; // 友方增益可生效(魔法护盾只免疫敌方法术)
+        if (Math.max(Math.abs(u.row - row), Math.abs(u.col - col)) <= r) {
+            const healed = Math.min(card.healAmount || 3, Math.max(0, u.maxHp - u.currentHp));
+            if (healed > 0) {
+                u.currentHp += healed;
+                updateUnitHp(u);
+                showCritText(u.row, u.col, '+' + healed);
+            }
+            u._healMove = card.healMove || 1; // +1移动(仅本回合)
+        }
+    });
+    clearHighlights();
+    gameState.selectedUnit = null;
+}
+
+// 护盾法术:给友军添加可承受4点伤害的护盾(可叠加)
+function applyShieldSpell(unit) {
+    unit._shieldHp = (unit._shieldHp || 0) + (4);
+    const el = gameState.board[unit.row][unit.col].querySelector('.unit');
+    if (el) el.classList.add('guard-shield');
+    showHeroDeployText(unit, '+4护盾', '#95a5a6', 1200);
+}
+
+// 魔法护盾:免疫所有法术伤害与效果(紫色护盾持续到死亡)
+function applyMagicShield(unit) {
+    unit._magicShield = true;
+    const el = gameState.board[unit.row][unit.col].querySelector('.unit');
+    if (el) el.classList.add('magic-shield');
+    showHeroDeployText(unit, '魔法护盾', '#9b59b6', 1200);
+}
+
 // 剩饭法术:进入选友军模式(全图友军标红)
 function enterLeftoverTargetMode(card) {
     gameState._leftoverTargeting = true;
@@ -3898,7 +4128,7 @@ function castBigLightning(card, row, col) {
     const count = card.lgtCount || 3;
     const dmg = card.lgtDamage || 5;
     const enemies = gameState.units
-        .filter(u => u.team !== team && !u.ghost && !u._removing && Math.max(Math.abs(u.row - row), Math.abs(u.col - col)) <= r)
+        .filter(u => u.team !== team && !u.ghost && !u._removing && !u._magicShield && Math.max(Math.abs(u.row - row), Math.abs(u.col - col)) <= r) // 魔法护盾免疫法术
         .sort((a, b) => b.currentHp - a.currentHp);
     const targets = enemies.slice(0, count);
     targets.forEach(t => {
@@ -4057,6 +4287,8 @@ function yoggSkill3(yogg) {
     }
     clearHighlights();
     gameState.selectedUnit = null;
+    // 技能用完后:随机释放两个法术
+    setTimeout(() => yoggCastRandomSpells(yogg), 300);
 }
 
 // 混沌统治:选敌模式(全图敌方单位标红)
@@ -4098,6 +4330,8 @@ function yoggChaos(yogg, target) {
     renderUnit(target);
     clearHighlights();
     gameState.selectedUnit = null;
+    // 技能用完后:随机释放两个法术
+    setTimeout(() => yoggCastRandomSpells(yogg), 300);
 }
 // 诱引狂乱:敌方单位互相攻击(每个攻击一次),计算最大化击杀
 function yoggFrenzy(yogg) {
@@ -4157,6 +4391,8 @@ function yoggFrenzy(yogg) {
     }
     clearHighlights();
     gameState.selectedUnit = null;
+    // 技能用完后:随机释放两个法术
+    setTimeout(() => yoggCastRandomSpells(yogg), 300);
 }
 
 // 大雪怪:每受1伤在周围3×3召唤一个冰雪精灵
@@ -4183,29 +4419,99 @@ function spawnIceSprites(unit, damage) {
     }
 }
 
-// 混乱触须:随机释放法术(增益牌→随机队友,伤害牌→随机敌人)
-function castRandomSpell(spellCard, tentacle) {
-    const team = tentacle.team;
+// 混乱触须/导演:随机释放法术(伤害类→随机敌人,增益类→随机队友;按字段自动分类,新法术自动纳入)
+function castRandomSpell(spellCard, caster) {
+    const team = caster.team;
     const allies = gameState.units.filter(u => u.team === team && !u._removing);
     const enemies = gameState.units.filter(u => u.team !== team && !u.ghost && !u._removing);
-    if (spellCard.rage) {
-        if (!allies.length) return;
-        const t = allies[Math.floor(Math.random() * allies.length)];
-        castRageSpell(spellCard, t.row, t.col);
-    } else if (spellCard.leftover) {
-        if (!allies.length) return;
-        const t = allies[Math.floor(Math.random() * allies.length)];
-        applyLeftover(t);
-    } else if (spellCard.stoneWall) {
-        if (!allies.length) return;
-        const t = allies[Math.floor(Math.random() * allies.length)];
-        applyStoneWall(t);
-    } else {
+    // 伤害类:带 spellDamage/logDamage/lgtDamage 字段的法术;其余为增益类
+    const isDamage = !!(spellCard.spellDamage || spellCard.logDamage || spellCard.lgtDamage);
+    if (isDamage) {
         if (!enemies.length) return;
         const t = enemies[Math.floor(Math.random() * enemies.length)];
         if (spellCard.log) castLogSpell(spellCard, t.row, t.col);
         else if (spellCard.bigLightning) castBigLightning(spellCard, t.row, t.col);
-        else castSpell(spellCard, t.row, t.col); // 火球
+        else castSpell(spellCard, t.row, t.col); // 火球等
+    } else {
+        if (!allies.length) return;
+        const t = allies[Math.floor(Math.random() * allies.length)];
+        if (spellCard.rage) castRageSpell(spellCard, t.row, t.col);
+        else if (spellCard.leftover) applyLeftover(t);
+        else if (spellCard.stoneWall) applyStoneWall(t);
+        else if (spellCard.heal) castHealSpell(spellCard, t.row, t.col);
+        else if (spellCard.magicShield) applyMagicShield(t);
+        else if (spellCard.evilMoon) castEvilMoon(spellCard, t.row, t.col);
+        else if (spellCard.shieldSpell) applyShieldSpell(t);
+        else castSpell(spellCard, t.row, t.col); // 兜底:以友军位置施放
+    }
+}
+
+// 导演:技能用完后随机释放两个法术(增益→随机友军,伤害→随机敌人)
+function yoggCastRandomSpells(yogg) {
+    const spells = cardLibrary.filter(c => c.spell);
+    if (!spells.length) return;
+    for (let i = 0; i < 2; i++) {
+        const s = spells[Math.floor(Math.random() * spells.length)];
+        castRandomSpell(s, yogg);
+    }
+}
+
+// 特斯拉电磁塔:从地底现形时释放5×5紫色电圈(从中心扩散,触碰敌人3伤)
+function teslaEmergence(unit) {
+    const board = document.getElementById('gameBoard');
+    const ring = document.createElement('div');
+    ring.className = 'tesla-ring';
+    ring.style.position = 'absolute';
+    const w = 5 * cellW, h = 5 * cellH;
+    ring.style.left = ((unit.col - 2) * cellW) + 'px';
+    ring.style.top = ((unit.row - 2) * cellH) + 'px';
+    ring.style.width = w + 'px';
+    ring.style.height = h + 'px';
+    board.appendChild(ring);
+    setTimeout(() => { if (ring.parentNode) ring.parentNode.removeChild(ring); }, 700);
+    // 电圈扩散触碰敌人:3伤
+    setTimeout(() => {
+        gameState.units.forEach(e => {
+            if (e.team === unit.team || e.ghost || e._removing) return;
+            if (Math.max(Math.abs(e.row - unit.row), Math.abs(e.col - unit.col)) <= 2) {
+                const dmg = Math.max(0, 3 - Math.max(0, (e.armor || 0)));
+                e.currentHp -= dmg;
+                updateUnitHp(e);
+                showCritText(e.row, e.col, '电圈');
+                if (e.currentHp <= 0) removeUnit(e);
+            }
+        });
+    }, 300);
+}
+
+// 滚木连锁击退：沿滚动方向推1格（推土机式——挡路的敌人一起被推；霸体/建筑/魔法护盾/阴兵挡路则停止）
+function logPushChain(unit, dir) {
+    const chain = [unit];
+    let blocked = false;
+    for (let i = 0; i < 8; i++) {
+        const front = chain[chain.length - 1];
+        const nr = front.row + dir, nc = front.col;
+        if (!isValidPosition(nr, nc)) { blocked = true; break; }
+        if (isBlueBase(nr, nc) || isRedBase(nr, nc)) { blocked = true; break; }
+        const blocker = gameState.units.find(u => u.row === nr && u.col === nc && !u._removing);
+        if (blocker) {
+            if (blocker.ghost || blocker.building || blocker._magicShield || isImmuneToKnockback(blocker)) { blocked = true; break; }
+            chain.push(blocker);
+            continue;
+        }
+        break;
+    }
+    if (blocked) return;
+    for (let i = chain.length - 1; i >= 0; i--) {
+        const u = chain[i];
+        const oc = gameState.board[u.row][u.col];
+        const el = oc ? oc.querySelector('.unit') : null;
+        const nr = u.row + dir;
+        if (el && oc && gameState.board[nr]) {
+            oc.removeChild(el);
+            gameState.board[nr][u.col].appendChild(el);
+        }
+        u.row = nr;
     }
 }
 
@@ -4320,7 +4626,7 @@ function updateUnitHp(unit) {
     if (unit._stoneWallProtect && unit.currentHp < unit._stoneWallHpBase) {
         unit.currentHp = unit._stoneWallHpBase;
     }
-    // 按单位id查找元素（单位可能被特效移出格子，如地爆天星收集阶段）
+    // 按单位id查找元素(单位可能被特效移出格子,如地爆天星收集阶段)
     const uel = document.querySelector('.unit[data-unit-id="' + unit.id + '"]');
     if (unit.dummy) {
         const hpText = uel ? uel.querySelector('.dummy-hp') : null;
@@ -4419,8 +4725,10 @@ function renderUnit(unit) {
     if (unit.royalGuard) unitElement.classList.add('awakened');
     if (unit.royalGuard && unit.guardShield > 0) unitElement.classList.add('guard-shield');
     if (unit.eliteKnight && unit._knightShield > 0) unitElement.classList.add('guard-shield');
+    if (unit._shieldHp > 0) unitElement.classList.add('guard-shield');
     if (unit._rageAttack) unitElement.classList.add('raging');
     if (unit._stoneWallProtect) unitElement.classList.add('stone-bubble');
+    if (unit._magicShield) unitElement.classList.add('magic-shield');
     if (unit.teslaHidden) unitElement.classList.add('tesla-hidden');
     if (unit.superKnight) unitElement.classList.add('awakened');
     if (unit.madaraSolve && unit._susanooActive) renderSusanooVisual(unit);
@@ -5794,10 +6102,10 @@ function activateChakra(unit) {
     unit.chakraCd = 2;
 }
 
-// 佩恩技能伤害加成：狂暴+剩饭+黑绝附身攻击加成
+// 佩恩技能伤害加成:狂暴+剩饭+黑绝附身攻击加成
 function painSkillBonus(pain) {
     let b = (pain._rageAttack || 0) + (pain._leftoverBuff || 0);
-    if (pain._possessed && pain.zetsu) b += 1; // 黑绝附身：攻击+1
+    if (pain._possessed && pain.zetsu) b += 1; // 黑绝附身:攻击+1
     return b;
 }
 
@@ -6272,7 +6580,7 @@ function chibakuTensei(pain) {
             el.style.left = tx + 'px';
             el.style.top = ty + 'px';
         }, startDelay);
-        // 吸引过程中两次伤害（每次1点+加成）
+        // 吸引过程中两次伤害(每次1点+加成)
         [0.33, 0.66].forEach(frac => {
             setTimeout(() => {
                 if (e._removing || e.currentHp <= 0) return;
@@ -6324,7 +6632,7 @@ function chibakuTensei(pain) {
         const survivors = enemyElements.filter(ee => ee.unit.currentHp > 0);
         // 为幸存者生成不重叠落点
         const spots = genLandingSpots(survivors.length);
-        // 移除死亡单位（吸引途中已移除的跳过）
+        // 移除死亡单位(吸引途中已移除的跳过)
         enemyElements.forEach(ee => {
             if (ee.unit.currentHp <= 0) {
                 if (gameState.units.some(u => u.id === ee.unit.id)) removeUnit(ee.unit);
@@ -6890,11 +7198,15 @@ function endTurn() {
         }
     });
 
-    // 特斯拉电磁塔:攻击范围内无敌人则缩进地底(半透明,不可被攻击)
+    // 特斯拉电磁塔:攻击范围内无敌人则缩进地底(半透明,不可被攻击);从地底现形时释放5×5紫色电圈
     gameState.units.forEach(u => {
         if (u.tesla) {
+            const wasHidden = !!u._wasHidden;
             const hasEnemy = gameState.units.some(e => e.team !== u.team && !e.ghost && (Math.abs(e.row - u.row) + Math.abs(e.col - u.col)) <= (u.attackRange || 5));
             u.teslaHidden = !hasEnemy;
+            // 从地底现形 → 紫色电圈扩散(触碰敌人3伤)
+            if (wasHidden && !u.teslaHidden) teslaEmergence(u);
+            u._wasHidden = u.teslaHidden;
             const telEl = gameState.board[u.row] ? gameState.board[u.row][u.col].querySelector('.unit') : null;
             if (telEl) telEl.classList.toggle('tesla-hidden', u.teslaHidden);
         }
@@ -6951,11 +7263,21 @@ function endTurn() {
     gameState.units.forEach(u => {
         if (u.yogg && u.team === prevTurn) u._yoggSkillUsedThisTurn = false;
     });
+    // 尤格-萨隆:跳过回合(倒计时结束)时,剩余待放法术一次性释放完
+    if (gameState._saronQueue && gameState._saronQueue.length > 0) {
+        gameState._saronSkip = true;
+        gameState._saronQueue.forEach(q => {
+            if (q.unit && !q.unit._removing) castRandomSpell(q.spell, q.unit);
+        });
+        gameState._saronQueue = [];
+        gameState._saronSkip = false;
+    }
     // 狂暴法术:持续一个回合,己方回合结束加成与特效消失
     gameState.units.forEach(u => {
         if (u.team === prevTurn) {
             u._rageAttack = 0;
             u._rageMove = 0;
+            u._healMove = 0;
             const el = gameState.board[u.row][u.col].querySelector('.unit');
             if (el) el.classList.remove('raging');
         }
@@ -7431,8 +7753,13 @@ function showCardInfo(card) {
         else features.push(`法术·全图释放:${card.spellRadius*2+1}×${card.spellRadius*2+1}范围${card.spellDamage}伤/基地${card.baseDamage}伤`);
     }
     if (card.yogg) features.push('混沌统治/诱引狂乱/触须攒聚/用完才能普攻');
+    if (card.yoggSaron) features.push('登场:每用法术随机放1个');
     if (card.chaosTentacle) features.push('部署自动释放随机法术');
     if (card.reynoldsHeal) features.push('登场大本营回满');
+    if (card.magicShield) features.push('法术·魔盾:友军免疫法术伤害/效果');
+    if (card.heal) features.push(`法术·治疗:3×3友军回${card.healAmount}血+1移`);
+    if (card.evilMoon) features.push('法术·邪月:8队友变高费卡');
+    if (card.shieldSpell) features.push(`法术·护盾:友军+${card.shieldAmount}伤护盾`);
 
     const costLabel = document.querySelector('#cardCost').parentElement.querySelector('.label');
     if (features.length > 0) {
@@ -7691,7 +8018,7 @@ function startSpellCasting(card) {
     gameState._spellCasting = card;
     clearHighlights();
     gameState.selectedUnit = null;
-    const friendlyTarget = !!(card.stoneWall || card.leftover); // 只能选友军的法术
+    const friendlyTarget = !!(card.stoneWall || card.leftover || card.magicShield || card.shieldSpell); // 只能选友军的法术
     for (let r = 0; r < BOARD_ROWS; r++) {
         for (let c = 0; c < BOARD_COLS; c++) {
             if (isBlueBase(r, c) || isRedBase(r, c)) continue;
@@ -7743,6 +8070,11 @@ document.getElementById('yoggSkill3Btn').addEventListener('click', () => {
     yoggSkill3(y);
 });
 document.getElementById('closeYoggSkillModal').addEventListener('click', closeYoggSkillModalFunc);
+
+// 弹窗遮罩点击关闭（防止面板挡住棋盘导致点击失效）
+deployModal.addEventListener('click', (e) => { if (e.target === deployModal) closeDeployModalFunc(); });
+spellModal.addEventListener('click', (e) => { if (e.target === spellModal) spellModal.classList.add('hidden'); });
+yoggSkillModal.addEventListener('click', (e) => { if (e.target === yoggSkillModal) closeYoggSkillModalFunc(); });
 
 
 // 模式选择按钮

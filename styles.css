@@ -596,7 +596,7 @@ h1 {
 .art-golem::after { content: '石人'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #7f8c8d; font-size: 14px; font-weight: 900; line-height: 1; white-space: nowrap; }
 .art-golem-mini::after { content: '小石人'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #7f8c8d; font-size: 10px; font-weight: 900; line-height: 1; white-space: nowrap; }
 .art-black_zetsu::after { content: '黑绝'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #000; font-size: 14px; font-weight: 900; line-height: 1; white-space: nowrap; }
-.art-tesla::after { content: '电塔'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #2980b9; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; }
+.art-tesla::after { content: '电塔'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #2980b9; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 6px #9b59b6, 0 0 12px rgba(155,89,182,0.9); animation: dragonGlow 1.5s ease-in-out infinite; }
 .art-wither::after { content: '凋零'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #000; font-size: 14px; font-weight: 900; line-height: 1; white-space: nowrap; letter-spacing: -1px; }
 .art-black-dot {
     background: #1a1a1a !important;
@@ -1659,8 +1659,8 @@ h1 {
 /* ��ŵ����"��ŵ" ���� */
 
 
-.art-reynolds::after { content: '雷诺·游'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #8B6914; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 2px rgba(0,0,0,0.5); }
-.card-artwork.art-reynolds::after { content: '雷诺·游'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #8B6914; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 2px rgba(0,0,0,0.5); }
+.art-reynolds::after { content: '雷诺'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #8B6914; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 2px rgba(0,0,0,0.5); }
+.card-artwork.art-reynolds::after { content: '雷诺'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #8B6914; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 2px rgba(0,0,0,0.5); }
 
 .sandstorm { position: absolute; left: 0; width: 720px; height: 200px; background: linear-gradient(to bottom, rgba(212,175,55,0.9), rgba(184,134,11,0.7), rgba(210,180,140,0.6)); z-index: 30; pointer-events: none; transition: top 2s ease-in-out; box-shadow: 0 0 30px rgba(212,175,55,0.6); }
 
@@ -1961,4 +1961,57 @@ h1 {
 .art-tentacle::after { content: '触须'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #000; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; }
 
 /* 雷诺·杰克逊图标 */
-.art-reynolds_jackson::after { content: '雷诺·杰'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #8B6914; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 2px rgba(0,0,0,0.5); }
+.art-reynolds_jackson::after { content: '雷诺'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #2980b9; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 2px rgba(0,0,0,0.3); }
+
+/* 魔法护盾：紫色护盾包裹 + 图标 */
+.unit.magic-shield {
+    box-shadow: 0 0 0 3px rgba(155, 89, 182, 0.8), 0 0 16px 6px rgba(155, 89, 182, 0.55);
+    border-radius: 50%;
+    animation: magicShieldPulse 1.2s ease-in-out infinite;
+}
+@keyframes magicShieldPulse {
+    0%, 100% { box-shadow: 0 0 0 3px rgba(155, 89, 182, 0.8), 0 0 16px 6px rgba(155, 89, 182, 0.55); }
+    50% { box-shadow: 0 0 0 3px rgba(155, 89, 182, 1), 0 0 22px 9px rgba(155, 89, 182, 0.8); }
+}
+.art-magic_shield::after { content: '扰魔'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #9b59b6; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; }
+
+/* 治疗术：绿色治疗光效 + 图标 */
+.heal-fx {
+    width: 30px;
+    height: 26px;
+    background: radial-gradient(circle, rgba(46, 204, 113, 0.55) 0%, rgba(39, 174, 96, 0.25) 60%, transparent 100%);
+    box-shadow: inset 0 0 10px rgba(46, 204, 113, 0.6);
+    animation: healPulse 0.9s ease-out forwards;
+    z-index: 38;
+    pointer-events: none;
+}
+@keyframes healPulse {
+    0% { opacity: 1; transform: scale(0.5); }
+    60% { opacity: 0.8; transform: scale(1.1); }
+    100% { opacity: 0; transform: scale(1.3); }
+}
+.art-heal::after { content: '治疗'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #27ae60; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; }
+
+/* 尤格-萨隆图标 */
+.art-yogg_saron::after { content: '导演'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #000; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; }
+
+/* 特斯拉现形电圈：紫色圆环从中心扩散 */
+.tesla-ring {
+    border: 4px solid rgba(155, 89, 182, 0.9);
+    border-radius: 50%;
+    box-shadow: 0 0 22px 8px rgba(155, 89, 182, 0.6), inset 0 0 18px rgba(155, 89, 182, 0.4);
+    animation: teslaRingExpand 0.6s ease-out forwards;
+    z-index: 40;
+    pointer-events: none;
+}
+@keyframes teslaRingExpand {
+    0% { transform: scale(0.12); opacity: 1; }
+    70% { transform: scale(1); opacity: 0.85; }
+    100% { transform: scale(1.06); opacity: 0; }
+}
+
+/* 邪月当空图标 */
+.art-evil_moon::after { content: '🌙'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 16px; line-height: 1; }
+
+/* 护盾法术图标 */
+.art-shield::after { content: '护盾'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #95a5a6; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; }
