@@ -2015,3 +2015,220 @@ h1 {
 
 /* 护盾法术图标 */
 .art-shield::after { content: '护盾'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #95a5a6; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; }
+
+/* 天鹰火炮：图标 + 弹道 + 爆炸特效 */
+.art-eagle_artillery::after { content: '天鹰'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #9b59b6; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; }
+.eagle-bolt {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #9b59b6;
+    box-shadow: 0 0 10px 3px rgba(155, 89, 182, 0.8);
+    animation: eagleBoltFly 0.35s ease-in forwards;
+    z-index: 45;
+    pointer-events: none;
+}
+@keyframes eagleBoltFly {
+    0% { opacity: 1; }
+    100% { opacity: 0; transform: translate(100px, 100px); }
+}
+.eagle-blast {
+    width: 30px;
+    height: 26px;
+    background: radial-gradient(circle, rgba(200, 120, 220, 0.7) 0%, rgba(155, 89, 182, 0.4) 60%, transparent 100%);
+    box-shadow: 0 0 10px rgba(155, 89, 182, 0.6);
+    animation: eagleBlast 0.5s ease-out forwards;
+    z-index: 40;
+    pointer-events: none;
+}
+@keyframes eagleBlast {
+    0% { transform: scale(0.3); opacity: 1; }
+    100% { transform: scale(1.3); opacity: 0; }
+}
+
+/* 卑劣的脏鼠图标 */
+.art-dirty_rat::after { content: '脏鼠'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #7f8c8d; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; }
+
+/* 克罗格·环形山之王图标 */
+.art-crog::after { content: '克罗格'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #2c3e50; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; }
+
+/* 尤格-萨隆命运之轮 */
+.fate-wheel-wrap { position: relative; width: 340px; height: 340px; }
+.fate-wheel {
+    width: 320px;
+    height: 320px;
+    margin: 10px auto;
+    border-radius: 50%;
+    border: 6px solid #2c3e50;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(52, 152, 219, 0.6);
+    background: conic-gradient(
+        #e74c3c 0deg 60deg, #f39c12 60deg 120deg, #f1c40f 120deg 180deg,
+        #27ae60 180deg 240deg, #3498db 240deg 300deg, #9b59b6 300deg 360deg
+    );
+}
+.fate-sector {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 110px;
+    height: 24px;
+    margin-left: -55px;
+    margin-top: -12px;
+    transform: rotate(calc(var(--i) * 60deg + 30deg)) translateY(-78px) rotate(calc(-1 * var(--i) * 60deg - 30deg));
+    font-size: 12px;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+    text-align: center;
+    pointer-events: none;
+}
+.fate-pointer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-bottom: 52px solid #2c3e50;
+    transform-origin: 50% 100%;
+    margin-top: -52px;
+    margin-left: -12px;
+    z-index: 6;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+.art-yogg_fate::after { content: '导演'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #2980b9; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; }
+
+/* 吕布：图标 + 神魔降世红圈 */
+.art-lvbu::after { content: '吕布'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #c0392b; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; }
+.lvbu-zone {
+    background: rgba(231, 76, 60, 0.15);
+    box-shadow: inset 0 0 7px rgba(231, 76, 60, 0.55);
+}
+
+/* 查克拉牌图标 + 可选目标绿色标记 */
+.art-chakra::after { content: '查克拉'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #3498db; font-size: 13px; font-weight: 900; line-height: 1; white-space: nowrap; }
+.chakra-target {
+    box-shadow: 0 0 8px #27ae60, inset 0 0 8px rgba(39, 174, 96, 0.5);
+}
+
+/* 吕布跳跃动画（抛物线跳起） + 白色旋转特效 */
+@keyframes lvbuJump {
+    0% { transform: translateY(0) scale(1); }
+    45% { transform: translateY(-46px) scale(1.06); }
+    100% { transform: translateY(0) scale(1); }
+}
+.lvbu-slash {
+    width: 72px;
+    height: 72px;
+    border: 4px solid #ffffff;
+    border-left-color: transparent;
+    border-radius: 50%;
+    box-shadow: 0 0 18px rgba(255, 255, 255, 0.85);
+    animation: lvbuSlashSpin 0.5s linear 1;
+    z-index: 46;
+    pointer-events: none;
+}
+@keyframes lvbuSlashSpin {
+    0% { transform: rotate(0deg); opacity: 1; }
+    100% { transform: rotate(360deg); opacity: 0; }
+}
+
+/* 导弹发射：图标 + 导弹下落 + 爆炸 */
+.art-missile::after { content: '导弹'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #c0392b; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; }
+.missile-fx {
+    width: 12px;
+    height: 26px;
+    background: linear-gradient(to bottom, #e74c3c 0%, #c0392b 60%, #7f8c8d 100%);
+    clip-path: polygon(40% 0%, 60% 0%, 60% 70%, 100% 100%, 0 100%, 40% 70%);
+    animation: missileFall 0.45s ease-in forwards;
+    z-index: 48;
+    pointer-events: none;
+}
+@keyframes missileFall {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(220px); opacity: 1; }
+}
+.missile-boom {
+    width: 30px;
+    height: 26px;
+    background: radial-gradient(circle, rgba(255, 150, 60, 0.9) 0%, rgba(231, 76, 60, 0.6) 60%, transparent 100%);
+    box-shadow: 0 0 16px rgba(231, 76, 60, 0.8);
+    animation: missileBoom 0.5s ease-out forwards;
+    z-index: 44;
+    pointer-events: none;
+}
+@keyframes missileBoom {
+    0% { transform: scale(0.3); opacity: 1; }
+    100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* 疯狂大炮图标 */
+.art-crazy_cannon::after { content: '疯炮'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #000; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; }
+
+/* 滚石：图标 + 滚动特效 */
+.art-rolling_stone::after { content: '滚石'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #7f8c8d; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; }
+.rolling-stone-fx {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #bdc3c7 0%, #7f8c8d 55%, #5d6d7e 100%);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+    animation: stoneRoll 0.5s linear 1;
+    z-index: 46;
+    pointer-events: none;
+}
+@keyframes stoneRoll {
+    0% { transform: translateX(-40px) rotate(0deg); opacity: 1; }
+    100% { transform: translateX(40px) rotate(360deg); opacity: 0.6; }
+}
+
+/* 病毒式传播图标 */
+.art-viral_spread::after { content: '病传'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #c0392b; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; }
+
+/* 迈特凯·死门：图标 + 爆衣红色呼吸光晕 + 白光特效 */
+.art-guy_death_gate::after { content: '死门凯'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #c0392b; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; }
+.unit.guy-awakened {
+    box-shadow: 0 0 10px 3px rgba(231, 76, 60, 0.9);
+    animation: guyAwakenBreath 1.2s ease-in-out infinite;
+}
+@keyframes guyAwakenBreath {
+    0%, 100% { box-shadow: 0 0 8px 2px rgba(231, 76, 60, 0.8); }
+    50% { box-shadow: 0 0 18px 6px rgba(231, 76, 60, 1); }
+}
+.guy-beam {
+    border: 1px solid rgba(120, 120, 130, 0.75);
+    width: 6px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, #ffffff 50%, rgba(255,255,255,0) 100%);
+    box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.8);
+    animation: guyBeamFlash 0.4s ease-out forwards;
+    z-index: 46;
+    pointer-events: none;
+}
+.guy-beam-thick {
+    border: 1.5px solid rgba(120, 120, 130, 0.75);
+    width: 16px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, #ffffff 40%, rgba(255,255,255,0.8) 100%);
+    box-shadow: 0 0 18px 5px rgba(255, 255, 255, 0.95);
+    animation: guyBeamFlash 0.5s ease-out forwards;
+    z-index: 47;
+    pointer-events: none;
+}
+.guy-beam-cross {
+    border: 1px solid rgba(120, 120, 130, 0.75);
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%, #ffffff 50%, rgba(255,255,255,0) 100%);
+    box-shadow: 0 0 12px 2px rgba(255, 255, 255, 0.8);
+    animation: guyBeamFlash 0.4s ease-out forwards;
+    z-index: 46;
+    pointer-events: none;
+}
+@keyframes guyBeamFlash {
+    0% { opacity: 0; }
+    30% { opacity: 1; }
+    100% { opacity: 0; }
+}
