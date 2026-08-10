@@ -2232,3 +2232,9 @@ h1 {
     30% { opacity: 1; }
     100% { opacity: 0; }
 }
+
+/* 牛奶图标 */
+.art-milk::after { content: '牛奶'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #95a5a6; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; }
+
+/* 野性之心古夫图标 */
+.art-guff::after { content: '古夫'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #3498db; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; }
