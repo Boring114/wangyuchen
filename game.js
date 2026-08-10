@@ -31,7 +31,7 @@ const cardLibrary = [
         id: 'musketeer',
         name: '火枪手',
         attack: 2,
-        hp: 1,
+        hp: 2,
         moveRange: 3,
         attackRange: 5,
         cost: 2,
@@ -1061,7 +1061,7 @@ const cardLibrary = [
         armor: 0,
         moveRange: 0,
         attackRange: 0,
-        cost: 2,
+        cost: 3,
         artwork: 'rolling_stone',
         spell: true,
         rollingStone: true,
@@ -1515,6 +1515,9 @@ function createUnitFromCard(card, team, row, col) {
 // 处理格子点击
 function handleCellClick(e) {
     if (gameState.gameOver) return;
+
+    // AI模式:蓝色回合由AI控制,玩家不能操控(移动/攻击/选中/部署/法术)
+    if (gameState.aiMode && gameState.currentTurn === 'blue') return;
 
     // 法术施放模式:点击任意非大本营格施放
     if (gameState._spellCasting) {
@@ -9642,8 +9645,8 @@ function startGame() {
     gameState.units = [];
     gameState.currentTurn = 'red';
     gameState.turnNumber = 1;
-    gameState.redEnergy = gameState.redEnergy || 1;
-    gameState.blueEnergy = gameState.blueEnergy || 1;
+    gameState.redEnergy = gameState.maxEnergy >= 500 ? gameState.maxEnergy : 1;
+    gameState.blueEnergy = gameState.maxEnergy >= 500 ? gameState.maxEnergy : 1;
     gameState.redBaseHp = 50;
     gameState.blueBaseHp = 50;
     gameState.timer = 45;
@@ -9655,6 +9658,13 @@ function startGame() {
     gameState.gameOver = false;
     gameState.winner = null;
     gameState.windZones = [];
+    gameState.craters = [];
+    gameState.shells = [];
+    gameState.knightZones = [];
+    gameState.rageZones = [];
+    gameState.fireZones = [];
+    gameState.iceFields = [];
+    gameState.shroomCount = { red: 0, blue: 0 };
 
     // 更新显示
     updateEnergyDisplay();
@@ -9916,12 +9926,70 @@ document.getElementById('modeBackBtn').addEventListener('click', () => {
     startScreen.classList.remove('hidden');
 });
 
-function pickAIDeck() { const s = [...cardLibrary].sort(() => Math.random()-0.5); return s.filter(c => !c.trainingOnly).slice(0,10).map(c=>({...c})); }
+function pickAIDeck() {
+    const pool = cardLibrary.filter(c => !c.trainingOnly);
+    const shuffle = [...pool].sort(() => Math.random() - 0.5);
+    const low = shuffle.filter(c => c.cost <= 3);
+    const mid = shuffle.filter(c => c.cost >= 4 && c.cost <= 6);
+    const high = shuffle.filter(c => c.cost >= 7);
+    const take = (arr, n) => { const s = [...arr].sort(() => Math.random() - 0.5); return s.slice(0, n); };
+    // 费用曲线:低费×3 / 中费×4 / 高费×3,避免全大费或全低费
+    const deck = [...take(low, 3), ...take(mid, 4), ...take(high, 3)];
+    if (deck.length < 10) {
+        const used = new Set(deck.map(c => c.id));
+        const rest = [...pool].filter(c => !used.has(c.id)).sort(() => Math.random() - 0.5);
+        deck.push(...rest.slice(0, 10 - deck.length));
+    }
+    return deck.map(c => ({ ...c }));
+}
+
+// AI尝试使用简单技能(无需复杂选目标的):精英骑士法阵/毁灭菇引爆/精英冰人冰场/渔夫拉钩
+function aiUseSkill(u) {
+    if (u.eliteKnight && !u._tauntSkillCd) {
+        activateEliteKnightSkill(u);
+        return true;
+    }
+    if (u.doomShroom && !u._doomExploded) {
+        doomShroomExplode(u);
+        return true;
+    }
+    if (u.eliteIce && !u._iceSkillActive) {
+        activateEliteIceSkill(u);
+        return true;
+    }
+    if (u.fisherman && !u._fisherTargeting) {
+        // 渔夫:拉最近敌人到身前
+        let nearest = null, best = Infinity;
+        gameState.units.forEach(e => {
+            if (e.team === u.team || e.ghost || e._removing || e.building || e.flying) return;
+            const d = Math.max(Math.abs(e.row - u.row), Math.abs(e.col - u.col));
+            if (d <= 11 && d < best) { best = d; nearest = e; }
+        });
+        if (nearest) {
+            u._fisherTargeting = true;
+            fishermanHook(u, nearest);
+            u._fisherTargeting = false;
+            return true;
+        }
+        return false;
+    }
+    return false;
+}
 function aiTurn() {
     if (gameState.gameOver || gameState.currentTurn !== 'blue') return;
     const aiDeck = gameState.aiDeck || [];
     const energy = gameState.blueEnergy;
-    const deployable = aiDeck.filter(c => c.cost <= energy && aiUnits.filter(u => u.cardId === c.id).length < 2);
+    const aiUnits = gameState.units.filter(u => u.team === 'blue');
+    // AI施放法术:随机选一张能量够的法术卡(伤害→随机敌人,增益→随机队友)
+    const spellCards = aiDeck.filter(c => c.spell && c.cost <= gameState.blueEnergy);
+    if (spellCards.length > 0 && Math.random() < 0.8) {
+        const sc = spellCards[Math.floor(Math.random() * spellCards.length)];
+        const caster = aiUnits[0] || { team: 'blue', row: 15, col: 12 };
+        gameState.blueEnergy -= sc.cost; updateEnergyDisplay();
+        castRandomSpell(sc, caster);
+    }
+    // 用当前能量判断可部署(法术扣费后),避免超支变负
+    const deployable = aiDeck.filter(c => !c.spell && c.cost <= gameState.blueEnergy && aiUnits.filter(u => u.cardId === c.id).length < 2);
     if (deployable.length > 0) {
         const card = deployable[Math.floor(Math.random() * deployable.length)];
         // 蓝方黑绝:优先附身己方未附身单位(无目标则正常部署本体)
@@ -9931,20 +9999,30 @@ function aiTurn() {
                 const host = hosts[Math.floor(Math.random() * hosts.length)];
                 gameState.blueEnergy -= card.cost; updateEnergyDisplay();
                 possessUnit(card, host);
-                setTimeout(aiMoveAndAttack, 500);
+                setTimeout(aiMoveAndAttack, 1200);
                 return;
             }
         }
-        for (let row = 14; row >= 3; row--) {
-            for (let col = 10; col <= 19; col++) {
-                if (gameState.units.some(u => u.row === row && u.col === col)) continue;
-                if (isBlueBase(row, col) || isRedBase(row, col)) continue;
-                const unit = { id: card.id+'_'+Date.now(), cardId: card.id, name: card.name, attack: card.attack, maxHp: card.hp, currentHp: card.hp, moveRange: card.moveRange, attackRange: card.attackRange, artwork: card.artwork, armor: card.armor||0, team: 'blue', row, col, flying: card.flying||false, meleeAttack: card.meleeAttack||0, meleeRange: card.meleeRange||0, armorPen: card.armorPen||0, critChance: card.critChance||0, dodge: card.dodge||false, counterAttack: card.counterAttack||0, summon: card.summon||false, summonGuardType: card.summonGuardType||'', tankSpawn: card.tankSpawn||false, leisiSpawn: card.leisiSpawn||false, copSpawn: card.copSpawn||false, windForm: card.windForm||false, splashRadius: card.splashRadius||0, deployEffect: card.deployEffect||false, hero: card.hero||false, heroDeployText: card.heroDeployText||'', heroDeployColor: card.heroDeployColor||'', heroDeployDuration: card.heroDeployDuration||3500, chargeMove: card.chargeMove||0, chargeDamage: card.chargeDamage||0, erin: card.erin||false, pekkaHeal: card.pekkaHeal||false, blowdart: card.blowdart||false, hashirama: card.hashirama||false, hashiMaxEnergy: card.hashiMaxEnergy||0, skullArmy: card.skullArmy||false,wither: card.wither||false,tesla: card.tesla||false,blackZetsu: card.blackZetsu||false,golem: card.golem||false,eliteIce: card.eliteIce||false,mirror: card.mirror||false,superKnight: card.superKnight||false,healFairy: card.healFairy||false,cannon: card.cannon||false,madaraSolve: card.madaraSolve||false };
-                gameState.units.push(unit); renderUnit(unit);
-                runDeployEffects(unit);
-                gameState.blueEnergy -= card.cost; updateEnergyDisplay();
-                setTimeout(aiMoveAndAttack, 500); return;
+        // 随机选一个合法部署格(避免AI总在同一位置下兵)
+        const spots = [];
+        for (let r = 3; r <= 13; r++) {
+            for (let c = 10; c <= 19; c++) {
+                if (gameState.units.some(u => u.row === r && u.col === c)) continue;
+                if (isBlueBase(r, c) || isRedBase(r, c)) continue;
+                spots.push([r, c]);
             }
+        }
+        if (spots.length > 0) {
+            const spot = spots[Math.floor(Math.random() * spots.length)];
+            const row = spot[0], col = spot[1];
+            const unit = createUnitFromCard(card, 'blue', row, col);
+            gameState.units.push(unit); renderUnit(unit);
+            runDeployEffects(unit);
+            // 部署扣费(尤格萨隆按动态费用);扣费前兜底验证能量,不足则放弃部署
+            const realCost = card.yogg ? getYoggCost() : card.cost;
+            if (gameState.blueEnergy < realCost) { aiMoveAndAttack(); return; }
+            gameState.blueEnergy -= realCost; updateEnergyDisplay();
+            setTimeout(aiMoveAndAttack, 1200); return;
         }
     }
     aiMoveAndAttack();
@@ -9952,93 +10030,126 @@ function aiTurn() {
 function aiMoveAndAttack() {
     if (gameState.gameOver) return;
     const aiUnits = gameState.units.filter(u => u.team === 'blue');
+    // 第一阶段:移动(所有AI单位先走位,不攻击)
     aiUnits.forEach(u => {
-        const tk = getTaunter(u);
         if (gameState.attackedUnits.has(u.id)) return;
+        if (aiUseSkill(u)) { gameState.attackedUnits.add(u.id); return; }
+        if (!u.attack && !u.percentAttack && !u.meleeAttack) { gameState.attackedUnits.add(u.id); return; }
+        const tk = getTaunter(u);
         const atkRng = u.attackRange || 1;
-
-        // 1. 攻击范围内敌方单位
-        let nearest = null, minD = Infinity;
-        gameState.units.filter(e => e.team === 'red' && (!tk || e.id === tk.id)).forEach(e => {
-            if (u.hogRider && !e.building) return;
-            if (e.flying && !canHitAirUnit(u)) return;
-            if (e.teslaHidden) return;
-            const d = Math.max(Math.abs(e.row-u.row), Math.abs(e.col-u.col));
-            if (d <= atkRng && d < minD) { nearest = e; minD = d; }
+        // 已能攻击到敌人/大本营:原地等待攻击阶段
+        let canAtk = false;
+        gameState.units.forEach(e => {
+            if (e.team === 'red' && (!tk || e.id === tk.id) && !e.ghost) {
+                if (u.hogRider && !e.building) return;
+                if (e.flying && !canHitAirUnit(u)) return;
+                if (e.teslaHidden) return;
+                if (Math.max(Math.abs(e.row-u.row), Math.abs(e.col-u.col)) <= atkRng) canAtk = true;
+            }
         });
-        if (nearest) {
-            gameState.selectedUnit = u;
-            attackUnit(nearest);
-            gameState.selectedUnit = null;
-            gameState.attackedUnits.add(u.id);
-            return;
+        if (!canAtk && !u.inMusou) {
+            for (let r = 25; r <= 27; r++) for (let c = 10; c <= 13; c++) {
+                if (Math.max(Math.abs(r-u.row), Math.abs(c-u.col)) <= atkRng) canAtk = true;
+            }
         }
-
-        // 2. 攻击范围内红方大本营(无双状态不打大本营)
-        let inBaseRange = false;
-        for (let r = 25; r <= 27; r++) for (let c = 10; c <= 13; c++) {
-            const d = Math.max(Math.abs(r-u.row), Math.abs(c-u.col));
-            if (d <= atkRng) { inBaseRange = true; break; }
-        }
-        if (inBaseRange && !u.inMusou) {
-            gameState.selectedUnit = u;
-            attackBase(false);
-            gameState.selectedUnit = null;
-            gameState.attackedUnits.add(u.id);
-            return;
-        }
-
-        // 3. 向最近红方单位/大本营移动
-        let targetR = 26, targetC = 11;
-        let closestEnemy = null, cDist = Infinity;
-        gameState.units.filter(e => e.team === 'red' && (!tk || e.id === tk.id)).forEach(e => {
-            if (u.hogRider && !e.building) return;
-            if (e.flying && !canHitAirUnit(u)) return;
-            if (e.teslaHidden) return;
-            const d = Math.max(Math.abs(e.row-u.row), Math.abs(e.col-u.col));
-            if (d < cDist) { closestEnemy = e; cDist = d; }
-        });
-        if (closestEnemy) { targetR = closestEnemy.row; targetC = closestEnemy.col; }
-
-        const oldR = u.row, oldC = u.col, rng = u.moveRange;
-        let br = u.row, bc = u.col, bd = Infinity;
-        // 直接朝大本营走
-        for (let dr = -rng; dr <= rng; dr++) for (let dc = -rng; dc <= rng; dc++) {
-            if (Math.abs(dr)+Math.abs(dc) > rng) continue;
-            const nr = u.row+dr, nc = u.col+dc;
-            if (!isValidPosition(nr, nc)) continue;
-            if (gameState.units.some(e => e.row===nr && e.col===nc)) continue;
-            if (isBlueBase(nr, nc) || isRedBase(nr, nc)) continue;
-            const d = Math.abs(nr-26)+Math.abs(nc-11);
-            if (d < bd) { br = nr; bc = nc; bd = d; }
-        }
-        if (br !== oldR || bc !== oldC) {
-            const oc = gameState.board[oldR][oldC], nc = gameState.board[br][bc];
-            const el = oc.querySelector('.unit');
-            if (el) { oc.removeChild(el); nc.appendChild(el); }
-            u.row = br; u.col = bc;
-            gameState.moveUsed[u.id] = (gameState.moveUsed[u.id]||0) + (Math.abs(br-oldR)+Math.abs(bc-oldC));
-            // 移动后检测能否攻击
-            let pn = null, pm = Infinity;
+        if (canAtk) return;
+        aiMoveUnit(u, tk);
+    });
+    // 第二阶段:攻击(延迟800ms,给玩家看清移动)
+    setTimeout(() => {
+        if (gameState.gameOver) return;
+        aiUnits.forEach(u => {
+            if (gameState.attackedUnits.has(u.id)) return;
+            const tk = getTaunter(u);
+            if (aiUseSkill(u)) { gameState.attackedUnits.add(u.id); return; }
+            if (!u.attack && !u.percentAttack && !u.meleeAttack) { gameState.attackedUnits.add(u.id); return; }
+            const atkRng = u.attackRange || 1;
+            // 攻击范围内敌方单位
+            let nearest = null, minD = Infinity;
             gameState.units.filter(e => e.team === 'red' && (!tk || e.id === tk.id)).forEach(e => {
                 if (u.hogRider && !e.building) return;
                 if (e.flying && !canHitAirUnit(u)) return;
                 if (e.teslaHidden) return;
                 const d = Math.max(Math.abs(e.row-u.row), Math.abs(e.col-u.col));
-                if (d <= atkRng && d < pm) { pn = e; pm = d; }
+                if (d <= atkRng && d < minD) { nearest = e; minD = d; }
             });
-            if (pn) { gameState.selectedUnit = u; attackUnit(pn); gameState.selectedUnit = null; }
-            else {
-                let pi = false;
-                for (let r = 25; r <= 27; r++) for (let c = 10; c <= 13; c++) {
-                    if (Math.max(Math.abs(r-u.row), Math.abs(c-u.col)) <= atkRng) { pi = true; break; }
-                }
-                if (pi) { gameState.selectedUnit = u; attackBase(false); gameState.selectedUnit = null; }
+            if (nearest) {
+                gameState.selectedUnit = u;
+                attackUnit(nearest);
+                gameState.selectedUnit = null;
+                gameState.attackedUnits.add(u.id);
+                return;
+            }
+            // 攻击范围内红方大本营(无双状态不打大本营)
+            let inBaseRange = false;
+            for (let r = 25; r <= 27; r++) for (let c = 10; c <= 13; c++) {
+                const d = Math.max(Math.abs(r-u.row), Math.abs(c-u.col));
+                if (d <= atkRng) { inBaseRange = true; break; }
+            }
+            if (inBaseRange && !u.inMusou) {
+                gameState.selectedUnit = u;
+                attackBase(false);
+                gameState.selectedUnit = null;
+                gameState.attackedUnits.add(u.id);
+                return;
+            }
+            gameState.attackedUnits.add(u.id);
+        });
+        // 第三阶段:结束回合(再延迟800ms)
+        setTimeout(() => { if (!gameState.gameOver) endTurn(); }, 800);
+    }, 800);
+}
+
+// AI移动:朝最近红方单位/大本营走(移动后不攻击,攻击在下一阶段)
+function aiMoveUnit(u, tk) {
+    let targetR = 26, targetC = 11;
+    let closestEnemy = null, cDist = Infinity;
+    gameState.units.filter(e => e.team === 'red' && (!tk || e.id === tk.id)).forEach(e => {
+        if (u.hogRider && !e.building) return;
+        if (e.flying && !canHitAirUnit(u)) return;
+        if (e.teslaHidden) return;
+        const d = Math.max(Math.abs(e.row-u.row), Math.abs(e.col-u.col));
+        if (d < cDist) { closestEnemy = e; cDist = d; }
+    });
+    if (closestEnemy) { targetR = closestEnemy.row; targetC = closestEnemy.col; }
+    const oldR = u.row, oldC = u.col, rng = u.moveRange;
+    let br = u.row, bc = u.col, bd = Infinity;
+    // 直接朝大本营走
+    for (let dr = -rng; dr <= rng; dr++) for (let dc = -rng; dc <= rng; dc++) {
+        if (Math.abs(dr)+Math.abs(dc) > rng) continue;
+        const nr = u.row+dr, nc = u.col+dc;
+        if (!isValidPosition(nr, nc)) continue;
+        if (gameState.units.some(e => e.row===nr && e.col===nc)) continue;
+        if (isBlueBase(nr, nc) || isRedBase(nr, nc)) continue;
+        const d = Math.abs(nr-26)+Math.abs(nc-11);
+        if (d < bd) { br = nr; bc = nc; bd = d; }
+    }
+    if (br !== oldR || bc !== oldC) {
+        const oc = gameState.board[oldR][oldC], ncell = gameState.board[br][bc];
+        const el = oc.querySelector('.unit');
+        if (el) { oc.removeChild(el); ncell.appendChild(el); }
+        u.row = br; u.col = bc;
+        gameState.moveUsed[u.id] = (gameState.moveUsed[u.id]||0) + (Math.abs(br-oldR)+Math.abs(bc-oldC));
+        // 皮尔斯:移动路线拾取弹壳
+        if (u.pierce) {
+            const path = [];
+            const steps = Math.max(Math.abs(br-oldR), Math.abs(bc-oldC));
+            for (let i = 0; i <= steps; i++) {
+                const pr = Math.round(oldR + (br-oldR) * i / steps);
+                const pc = Math.round(oldC + (bc-oldC) * i / steps);
+                if (!path.some(p => p[0] === pr && p[1] === pc)) path.push([pr, pc]);
+            }
+            let guard = 0;
+            while (guard < 30 && gameState.shells.length > 0) {
+                const idx = gameState.shells.findIndex(s => path.some(p => p[0] === s.row && p[1] === s.col));
+                if (idx === -1) break;
+                gameState.shells.splice(idx, 1);
+                renderShells();
+                pierceShellAutoAttack(u);
+                guard++;
             }
         }
-        gameState.attackedUnits.add(u.id);
-    });
-    setTimeout(() => endTurn(), 1000);
+    }
 }
 
 
@@ -10102,6 +10213,9 @@ function showUnitCardInfo(unit) {
 battleDeckGrid.addEventListener('click', (e) => {
     const card = e.target.closest('.battle-deck-card');
     if (!card) return;
+
+    // AI模式:蓝色回合由AI控制,玩家不能替AI部署
+    if (gameState.aiMode && gameState.currentTurn === 'blue') return;
 
     const index = parseInt(card.dataset.index);
     const cost = parseInt(card.dataset.cost);
