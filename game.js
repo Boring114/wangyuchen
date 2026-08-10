@@ -9683,7 +9683,20 @@ function startGame() {
 
     // 开始计时
     startTimer();
+
+    // 手机端适配:按视口宽度缩放游戏界面(棋盘+UI整体缩小,保证完整显示)
+    fitGameScreen();
 }
+
+// 手机端适配:根据视口宽度动态缩放游戏界面(桌面基准宽度960px,窄屏等比缩小)
+function fitGameScreen() {
+    const screen = document.getElementById('gameScreen');
+    if (!screen) return;
+    const scale = Math.min(1, window.innerWidth / 960);
+    screen.style.transform = 'scale(' + scale + ')';
+    screen.style.transformOrigin = 'top center';
+}
+window.addEventListener('resize', fitGameScreen);
 
 // 返回初始界面
 function goToStartScreen() {
