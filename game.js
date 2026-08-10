@@ -1146,6 +1146,20 @@ const cardLibrary = [
         description: '普攻命中敌人后在身边生成1个弹壳;走到弹壳格拾起并自动攻击最近敌人(拾起攻击不生成弹壳、不触发反击)。双击选点(8格内任意格):以该格为中心5×5所有敌人受普攻,每命中1敌生成1弹壳。大招冷却2个己方回合。可对空。'
     },
     {
+        id: 'deep_blue',
+        name: '深蓝',
+        attack: 3,
+        hp: 6,
+        armor: 2,
+        armorPen: 1,
+        moveRange: 3,
+        attackRange: 6,
+        cost: 13,
+        artwork: 'deep_blue',
+        deepBlue: true,
+        description: '被动持盾:正面180°的敌人距离2格外攻击不造成伤害(毒/火/溅射照常,法术伤害无法免疫);2格内用近战攻击2伤并击倒(敌回合无法行动,回合结束站起)。双击技能:钩锁(拉10格内敌人至身前)/钢刺(5格选任意格,5×5钢刺网,网内敌人每回合2真伤,网5血需敌人打碎,碎了冷却2回合)。'
+    },
+    {
         id: 'madara_solve',
         name: '宇智波斑·秽土转生·解',
         attack: 0,
@@ -1208,6 +1222,7 @@ const gameState = {
     shroomCount: { red: 0, blue: 0 },
     knightZones: [],
     rageZones: [],
+    spikeNets: [],
     spellsCastThisGame: 0,
     _fateWheelProgress: 0,
     energySpent: { red: 0, blue: 0 },
@@ -1483,6 +1498,7 @@ function createUnitFromCard(card, team, row, col) {
         milk: card.milk || false,
         guff: card.guff || false,
         pierce: card.pierce || false,
+        deepBlue: card.deepBlue || false,
         solveEnergy: card.solveEnergy || 0,
         solveMaxEnergy: card.solveMaxEnergy || 0,
         miner: card.miner || false,
@@ -1518,6 +1534,19 @@ function handleCellClick(e) {
 
     // AI模式:蓝色回合由AI控制,玩家不能操控(移动/攻击/选中/部署/法术)
     if (gameState.aiMode && gameState.currentTurn === 'blue') return;
+
+    // 技能框打开时点击棋盘:关闭技能框并忽略本次点击(避免误触部署弹窗)
+    const skillModals = ['deepBlueSkillModal', 'lvbuSkillModal', 'yoggSkillModal', 'guySkillModal'];
+    for (const id of skillModals) {
+        const m = document.getElementById(id);
+        if (m && !m.classList.contains('hidden')) {
+            if (id === 'deepBlueSkillModal') closeDeepBlueSkillModalFunc();
+            else if (id === 'lvbuSkillModal') closeLvbuSkillModalFunc();
+            else if (id === 'yoggSkillModal') closeYoggSkillModalFunc();
+            else if (id === 'guySkillModal') closeGuySkillModalFunc();
+            return;
+        }
+    }
 
     // 法术施放模式:点击任意非大本营格施放
     if (gameState._spellCasting) {
@@ -1616,6 +1645,30 @@ function handleCellClick(e) {
             pierceSkill(gameState.selectedUnit, row, col);
         } else {
             gameState.selectedUnit._pierceTargeting = false;
+            clearHighlights();
+            gameState.selectedUnit = null;
+        }
+        return;
+    }
+    // 深蓝钩锁选敌:点击10格内敌人拉至身前
+    if (gameState.selectedUnit && gameState.selectedUnit.deepBlue && gameState.selectedUnit._hookTargeting) {
+        const su = gameState.selectedUnit;
+        const tU = gameState.units.find(u => u.row === row && u.col === col);
+        if (tU && tU.team !== gameState.currentTurn && !tU.ghost && !tU.building && cell.classList.contains('tank-target')) {
+            deepBlueHook(su, tU);
+        }
+        su._hookTargeting = false;
+        clearHighlights();
+        gameState.selectedUnit = null;
+        return;
+    }
+    // 深蓝钢刺选点:点击5格内任意格生成5×5钢刺网
+    if (gameState.selectedUnit && gameState.selectedUnit.deepBlue && gameState.selectedUnit._spikeTargeting) {
+        const d = Math.max(Math.abs(row - gameState.selectedUnit.row), Math.abs(col - gameState.selectedUnit.col));
+        if (d <= 5 && cell.classList.contains('pierce-target')) {
+            deepBlueSpike(gameState.selectedUnit, row, col);
+        } else {
+            gameState.selectedUnit._spikeTargeting = false;
             clearHighlights();
             gameState.selectedUnit = null;
         }
@@ -1919,6 +1972,24 @@ function handleCellClick(e) {
             gameState.selectedUnit = null;
             return;
         }
+        // 攻击钢刺网:点击敌方网内任意格(网掉血;格上有网方单位则同时受攻击伤害)
+        const atkVal = gameState.selectedUnit.attack || 1;
+        const spikeNet = gameState.spikeNets.find(n => n.team !== gameState.currentTurn && Math.abs(n.row - row) <= 2 && Math.abs(n.col - col) <= 2);
+        if (spikeNet) {
+            const netUnit = gameState.units.find(u => u.row === row && u.col === col && u.team === spikeNet.team && !u._removing);
+            if (netUnit) {
+                // 网内格有网方单位:单位与网同时受伤害(单位走正常攻击结算)
+                attackUnit(netUnit);
+                hitSpikeNet(spikeNet, atkVal);
+            } else {
+                hitSpikeNet(spikeNet, atkVal);
+                gameState.attackedUnits.add(gameState.selectedUnit.id);
+                gameState.selectedUnit.lastMoveDist = 0;
+            }
+            clearHighlights();
+            gameState.selectedUnit = null;
+            return;
+        }
         const targetUnit = gameState.units.find(u => u.row === row && u.col === col);
         if (targetUnit && targetUnit.team !== gameState.currentTurn) {
             attackUnit(targetUnit);
@@ -2096,6 +2167,11 @@ function handleCellClick(e) {
             pierceDoubleClick(clickedUnit);
             return;
         }
+        // 深蓝:双击弹技能栏(钩锁/钢刺)
+        if (clickedUnit.deepBlue && clickedUnit === gameState.selectedUnit) {
+            openDeepBlueSkillModal(clickedUnit);
+            return;
+        }
         clearHighlights();
         gameState.selectedUnit = clickedUnit;
         showActionMode(clickedUnit);
@@ -2132,6 +2208,11 @@ function handleCellClick(e) {
 function showActionMode(unit) {
     // 冰冻/定身无法行动
     if (unit.frozen || unit.stunned) return;
+    // 被击倒:本回合无法行动(敌方回合结束才站起)
+    if (unit._knockedDown) {
+        showHeroDeployText(unit, '被击倒', '#3498db', 800);
+        return;
+    }
 
     // 天鹰火炮:未开启不显示任何攻击目标;开启后单击显示可攻击目标(全图、自身5×5盲区外)
     if (unit.eagleArtillery) {
@@ -2232,13 +2313,25 @@ function showMovableRange(unit) {
 // 对空判定:飞行单位恒可对空;白名单含植物人(骷髅军团不在白名单,不能对空)
 function canHitAirUnit(unit) {
     if (unit.flying) return true;
-    return ['musketeer','saeed','warden_gherros','cattail','electric_pea','reynolds','reynolds_jackson','pain_tendo','lightning_dragon','asala_flamer','gale','demulan','hashirama','doom_shroom','crazy_cannon','yogg','yogg_saron','yogg_fate','guy_death_gate','pierce'].includes(unit.cardId);
+    return ['musketeer','saeed','warden_gherros','cattail','electric_pea','reynolds','reynolds_jackson','pain_tendo','lightning_dragon','asala_flamer','gale','demulan','hashirama','doom_shroom','crazy_cannon','yogg','yogg_saron','yogg_fate','guy_death_gate','pierce','deep_blue'].includes(unit.cardId);
 }
 
 // 显示可攻击目标
 function showAttackableTargets(unit) {
     const { row, col } = unit;
     const attackRange = unit.superKnight ? 5 : (unit.hashirama ? ((unit.hashiAttacksUsed||0) === 0 ? 3 : 4) : unit.attackRange);
+    // 钢刺网:敌方网内任意格(5×5)在攻击范围内可攻击
+    gameState.spikeNets.forEach(n => {
+        if (n.team === unit.team) return;
+        for (let r = n.row - 2; r <= n.row + 2; r++) {
+            for (let c = n.col - 2; c <= n.col + 2; c++) {
+                if (!isValidPosition(r, c)) continue;
+                if (Math.max(Math.abs(r - row), Math.abs(c - col)) <= attackRange) {
+                    gameState.board[r][c].classList.add('attackable');
+                }
+            }
+        }
+    });
     // 嘲讽:法阵内敌方单位只能攻击精英骑士
     const taunter = getTaunter(unit);
     if (taunter) {
@@ -2275,6 +2368,8 @@ function showAttackableTargets(unit) {
                         // 空军只能被特定兵种攻击
                         if (targetUnit.flying) {
                             if (!canHitAirUnit(unit)) continue;
+                            // 深蓝:近战(2格内)无法对空,只有远程普攻可对空
+                            if (unit.deepBlue && distance <= 2) continue;
                         }
                         // 电大只能攻击前方3列
                         if (unit.lineAttack) {
@@ -3629,6 +3724,25 @@ function attackUnit(target) {
     // 护甲减伤(考虑穿甲)--百分比攻击为真实伤害,无视护甲(保证两击必杀);吕布附魔为真实伤害(无视护甲)
     const effectiveArmor = (attacker.percentAttack || (attacker.lvbu && attacker._enchant)) ? 0 : Math.max(0, (target.armor || 0) - (attacker.armorPen || 0));
     let actualDamage = Math.max(0, damage - effectiveArmor);
+    // 深蓝持盾:正面180°、敌人距离2格外攻击不造成伤害(毒/火/溅射等状态效果照常;法术伤害不走此处不受影响)
+    if (target.deepBlue && actualDamage > 0 && attacker.id !== target.id) {
+        const dDist = Math.max(Math.abs(target.row - attacker.row), Math.abs(target.col - attacker.col));
+        if (dDist > 2 && isInDeepBlueFront(target, attacker)) {
+            actualDamage = 0;
+            showHeroDeployText(target, '盾牌格挡', '#3498db', 700);
+        }
+    }
+    // 深蓝近战:2格内(含2格)使用近战攻击2伤并击倒(敌回合无法行动,敌方回合结束站起)
+    if (attacker.deepBlue) {
+        const dDist2 = Math.max(Math.abs(target.row - attacker.row), Math.abs(target.col - attacker.col));
+        if (dDist2 <= 2) {
+            actualDamage = 2;
+            target._knockedDown = true;
+            showHeroDeployText(target, '击倒!', '#3498db', 1000);
+            const kel = gameState.board[target.row] ? gameState.board[target.row][target.col].querySelector('.unit') : null;
+            if (kel) kel.classList.add('knocked-down');
+        }
+    }
     // 皇家卫兵冲锋:本回合移动≥3格 → 伤害翻倍(先翻倍再减护甲)
     if (attacker.royalGuard && (gameState.moveUsed[attacker.id] || 0) >= 3) {
         actualDamage *= 2;
@@ -5034,6 +5148,223 @@ function pierceDoubleClick(unit) {
     }
 }
 
+// 深蓝持盾判定:攻击者在深蓝固定朝向(面朝敌方大本营:红方面朝上/蓝方面朝下)的前方180°(点积≥0)
+function isInDeepBlueFront(dBlue, attacker) {
+    const vx = 0, vy = dBlue.team === 'red' ? -1 : 1;
+    const ax = attacker.col - dBlue.col, ay = attacker.row - dBlue.row;
+    return vx * ax + vy * ay >= 0;
+}
+
+// 钢刺网渲染
+function renderSpikeNets() {
+    document.querySelectorAll('.spike-net-cell').forEach(el => el.remove());
+    gameState.spikeNets.forEach(n => {
+        for (let r = n.row - 2; r <= n.row + 2; r++) {
+            for (let c = n.col - 2; c <= n.col + 2; c++) {
+                if (!isValidPosition(r, c)) continue;
+                const cell = gameState.board[r][c];
+                if (!cell) continue;
+                const mark = document.createElement('div');
+                mark.className = 'spike-net-cell';
+                cell.appendChild(mark);
+            }
+        }
+    });
+}
+
+// 钢刺网:网内敌人每回合2真伤(无视护甲;无法对空,飞行单位不受网伤害)
+function spikeNetTick() {
+    gameState.spikeNets.forEach(n => {
+        gameState.units.slice().forEach(e => {
+            if (e.team === n.team || e.ghost || e._removing || e.flying) return;
+            if (Math.max(Math.abs(e.row - n.row), Math.abs(e.col - n.col)) <= 2) {
+                e.currentHp -= 2;
+                updateUnitHp(e);
+                showCritText(e.row, e.col, '钢刺');
+                if (e.currentHp <= 0) removeUnit(e);
+            }
+        });
+    });
+}
+
+// 钢刺网被攻击(网掉血,打碎后进入冷却2回合)
+function hitSpikeNet(net, damage) {
+    net.hp -= Math.max(1, damage);
+    showCritText(net.row, net.col, '网受击 ' + Math.max(0, net.hp));
+    if (net.hp <= 0) {
+        gameState.spikeNets = gameState.spikeNets.filter(x => x !== net);
+        renderSpikeNets();
+        // 网主冷却2回合(一个己方回合一个敌方回合,己方回合结束递减)
+        gameState.units.forEach(u => {
+            if (u.deepBlue && u.team === net.team) u._spikeNetCd = 2;
+        });
+        showHeroDeployText({ row: net.row, col: net.col, team: net.team }, '钢刺网破碎', '#8e44ad', 1200);
+    }
+}
+
+// 深蓝钩锁:拉10格内敌人至身前
+function deepBlueHook(unit, target) {
+    unit._hookUsedThisTurn = true;
+    unit._hookTargeting = false;
+    clearHighlights();
+    gameState.selectedUnit = null;
+    showHeroDeployText(unit, '钩锁', '#3498db', 800);
+    const board = document.getElementById('gameBoard');
+    const fromR = target.row, fromC = target.col;
+    const fx = unit.col * cellW + cellW / 2, fy = unit.row * cellH + cellH / 2;
+    const el = gameState.board[fromR][fromC].querySelector('.unit');
+    // 落点:深蓝朝目标方向前方一格,被占则找周围空位
+    const dr = Math.sign(target.row - unit.row), dc = Math.sign(target.col - unit.col);
+    let landR = unit.row + dr, landC = unit.col + dc;
+    if (!isValidPosition(landR, landC) || gameState.units.some(u => u.id !== target.id && u.row === landR && u.col === landC) || isBlueBase(landR, landC) || isRedBase(landR, landC)) {
+        let found = false;
+        for (let rr = 1; rr <= 4 && !found; rr++) {
+            for (let dr2 = -rr; dr2 <= rr && !found; dr2++) {
+                for (let dc2 = -rr; dc2 <= rr && !found; dc2++) {
+                    if (Math.max(Math.abs(dr2), Math.abs(dc2)) !== rr) continue;
+                    const lr = unit.row + dr2, lc = unit.col + dc2;
+                    if (!isValidPosition(lr, lc)) continue;
+                    if (gameState.units.some(u => u.id !== target.id && u.row === lr && u.col === lc)) continue;
+                    if (isBlueBase(lr, lc) || isRedBase(lr, lc)) continue;
+                    landR = lr; landC = lc; found = true;
+                }
+            }
+        }
+    }
+    // 船锚钩子飞向目标 + 黑绳(渔夫同款特效)
+    const hook = document.createElement('div');
+    hook.className = 'fisher-hook';
+    hook.textContent = '?';
+    hook.style.position = 'absolute';
+    hook.style.fontSize = '14px';
+    hook.style.zIndex = '45';
+    hook.style.pointerEvents = 'none';
+    board.appendChild(hook);
+    const tx0 = fromC * cellW + cellW / 2, ty0 = fromR * cellH + cellH / 2;
+    const steps = 15;
+    for (let s = 1; s <= steps; s++) {
+        setTimeout(() => {
+            const t = s / steps;
+            const hx = fx + (tx0 - fx) * t;
+            const hy = fy + (ty0 - fy) * t;
+            hook.style.left = (hx - 7) + 'px';
+            hook.style.top = (hy - 7) + 'px';
+            drawFisherRope(fx, fy, hx, hy);
+        }, s * 30);
+    }
+    // 钩子命中后:目标被绳子拉回
+    setTimeout(() => {
+        if (hook.parentNode) hook.parentNode.removeChild(hook);
+        if (!el) {
+            target.row = landR;
+            target.col = landC;
+            renderUnit(target);
+            document.querySelectorAll('.fisher-rope').forEach(r => r.remove());
+            return;
+        }
+        const cell = gameState.board[fromR][fromC];
+        cell.removeChild(el);
+        el.style.position = 'absolute';
+        el.style.transform = 'none';
+        el.style.left = (fromC * cellW + cellW / 2 - 10) + 'px';
+        el.style.top = (fromR * cellH + cellH / 2 - 10) + 'px';
+        el.style.transition = 'left 0.45s ease-in, top 0.45s ease-in';
+        el.style.zIndex = '40';
+        el.style.pointerEvents = 'none';
+        board.appendChild(el);
+        const lx = landC * cellW + cellW / 2, ly = landR * cellH + cellH / 2;
+        const steps2 = 15;
+        for (let s = 1; s <= steps2; s++) {
+            setTimeout(() => {
+                const t = s / steps2;
+                const mx = tx0 + (lx - tx0) * t;
+                const my = ty0 + (ly - ty0) * t;
+                drawFisherRope(fx, fy, mx, my);
+            }, s * 30);
+        }
+        requestAnimationFrame(() => {
+            el.style.left = (lx - 10) + 'px';
+            el.style.top = (ly - 10) + 'px';
+        });
+        setTimeout(() => {
+            target.row = landR;
+            target.col = landC;
+            el.style.cssText = '';
+            if (el.parentNode) el.parentNode.removeChild(el);
+            gameState.board[landR][landC].appendChild(el);
+            document.querySelectorAll('.fisher-rope').forEach(r => r.remove());
+        }, 500);
+    }, 15 * 30 + 50);
+}
+
+// 深蓝钢刺:选点(5格任意格)生成5×5钢刺网(网5血)
+function deepBlueSpike(unit, row, col) {
+    unit._spikeTargeting = false;
+    gameState.spikeNets.push({ row, col, hp: 5, team: unit.team });
+    renderSpikeNets();
+    showPierceSkillFX(row, col);
+    clearHighlights();
+    gameState.selectedUnit = null;
+}
+
+// 深蓝技能框
+const deepBlueSkillModal = document.getElementById('deepBlueSkillModal');
+function openDeepBlueSkillModal(unit) {
+    gameState._deepBlueSelected = unit;
+    deepBlueSkillModal.classList.remove('hidden');
+}
+function closeDeepBlueSkillModalFunc() {
+    deepBlueSkillModal.classList.add('hidden');
+    gameState._deepBlueSelected = null;
+}
+// 深蓝钩锁:进入选敌模式(10格内非建筑非飞行敌人,一回合一次)
+function enterDeepBlueHookMode(unit) {
+    if (unit._hookUsedThisTurn) {
+        showHeroDeployText(unit, '钩锁已使用', '#888888', 800);
+        return;
+    }
+    unit._hookTargeting = true;
+    clearHighlights();
+    gameState.units.forEach(e => {
+        if (e.team === unit.team || e.ghost || e._removing || e.building) return;
+        const d = Math.max(Math.abs(e.row - unit.row), Math.abs(e.col - unit.col));
+        if (d <= 10) gameState.board[e.row][e.col].classList.add('tank-target');
+    });
+}
+// 深蓝钢刺:进入选点模式(5格内任意格;场上已有己方钢刺网时不可再下,网碎后进入冷却)
+function enterDeepBlueSpikeMode(unit) {
+    if (gameState.spikeNets.some(n => n.team === unit.team)) {
+        showHeroDeployText(unit, '已有钢刺网', '#888888', 800);
+        return;
+    }
+    if (unit._spikeNetCd > 0) {
+        showHeroDeployText(unit, '冷却中', '#888888', 800);
+        return;
+    }
+    unit._spikeTargeting = true;
+    clearHighlights();
+    for (let r = 0; r < BOARD_ROWS; r++) {
+        for (let c = 0; c < BOARD_COLS; c++) {
+            const dist = Math.max(Math.abs(r - unit.row), Math.abs(c - unit.col));
+            if (dist <= 5) gameState.board[r][c].classList.add('pierce-target');
+        }
+    }
+}
+document.getElementById('deepBlueSkill1Btn').addEventListener('click', () => {
+    const d = gameState._deepBlueSelected;
+    if (!d) return;
+    closeDeepBlueSkillModalFunc();
+    enterDeepBlueHookMode(d);
+});
+document.getElementById('deepBlueSkill2Btn').addEventListener('click', () => {
+    const d = gameState._deepBlueSelected;
+    if (!d) return;
+    closeDeepBlueSkillModalFunc();
+    enterDeepBlueSpikeMode(d);
+});
+document.getElementById('closeDeepBlueSkillModal').addEventListener('click', closeDeepBlueSkillModalFunc);
+document.getElementById('deepBlueSkillModal').addEventListener('click', (e) => { if (e.target === document.getElementById('deepBlueSkillModal')) closeDeepBlueSkillModalFunc(); });
+
 // 病毒式传播：全体己方单位获得狂热（击杀后可再攻击，连环击杀连续攻击）
 function castViralSpread(card, row, col) {
     const team = gameState.currentTurn;
@@ -6313,6 +6644,8 @@ function renderUnit(unit) {
     const unitElement = document.createElement('div');
     const artworkClass = unit.artwork ? `art-${unit.artwork}` : '';
     unitElement.className = `unit ${unit.team} ${artworkClass}`;
+    // 被击倒:保持击倒特效(旋转倾斜)直到恢复
+    if (unit._knockedDown) unitElement.classList.add('knocked-down');
     unitElement.dataset.unitId = unit.id;
 
     // 训练木偶头顶血量
@@ -8807,6 +9140,29 @@ function endTurn() {
         gameState.redEnergy = Math.min(gameState.redEnergy + redBoost, gameState.redMaxEnergy || gameState.maxEnergy);
     }
 
+    // 击倒:敌方回合结束(轮到己方回合)时被击倒单位站起
+    gameState.units.forEach(u => {
+        if (u._knockedDown && u.team === prevTurn) {
+            u._knockedDown = false;
+            const kel = gameState.board[u.row] ? gameState.board[u.row][u.col].querySelector('.unit') : null;
+            if (kel) kel.classList.remove('knocked-down');
+        }
+    });
+    // 击倒:被击倒单位在其回合无法行动(进入其回合时标记为已攻击)
+    gameState.units.forEach(u => {
+        if (u._knockedDown && u.team === gameState.currentTurn) gameState.attackedUnits.add(u.id);
+    });
+    // 钢刺网:网方回合开始时,网内敌人受2真伤(无视护甲)
+    spikeNetTick();
+    // 深蓝钢刺网冷却递减(己方回合结束-1:碎了后1个己方回合+1个敌方回合不可用,再下个己方回合可用)
+    gameState.units.forEach(u => {
+        if (u.deepBlue && u.team === prevTurn && u._spikeNetCd > 0) u._spikeNetCd--;
+    });
+    // 深蓝钩锁:己方回合结束重置(每回合可使用一次)
+    gameState.units.forEach(u => {
+        if (u.deepBlue && u.team === prevTurn) u._hookUsedThisTurn = false;
+    });
+
     // 黑绝显现持续到敌方回合结束:敌方回合结束(轮到己方回合)时解除显现
     gameState.units.forEach(u => {
         if (u._possessed && u.zetsu && u.zetsu.revealed && u.team === gameState.currentTurn) {
@@ -9664,6 +10020,7 @@ function startGame() {
     gameState.rageZones = [];
     gameState.fireZones = [];
     gameState.iceFields = [];
+    gameState.spikeNets = [];
     gameState.shroomCount = { red: 0, blue: 0 };
 
     // 更新显示
@@ -10046,6 +10403,8 @@ function aiMoveAndAttack() {
     // 第一阶段:移动(所有AI单位先走位,不攻击)
     aiUnits.forEach(u => {
         if (gameState.attackedUnits.has(u.id)) return;
+        // 被击倒:无法行动(不移动不攻击)
+        if (u._knockedDown) { gameState.attackedUnits.add(u.id); return; }
         if (aiUseSkill(u)) { gameState.attackedUnits.add(u.id); return; }
         if (!u.attack && !u.percentAttack && !u.meleeAttack) { gameState.attackedUnits.add(u.id); return; }
         const tk = getTaunter(u);
@@ -10073,6 +10432,8 @@ function aiMoveAndAttack() {
         if (gameState.gameOver) return;
         aiUnits.forEach(u => {
             if (gameState.attackedUnits.has(u.id)) return;
+            // 被击倒:无法行动
+            if (u._knockedDown) { gameState.attackedUnits.add(u.id); return; }
             const tk = getTaunter(u);
             if (aiUseSkill(u)) { gameState.attackedUnits.add(u.id); return; }
             if (!u.attack && !u.percentAttack && !u.meleeAttack) { gameState.attackedUnits.add(u.id); return; }

@@ -2255,3 +2255,13 @@ h1 {
 /* 皮尔斯大招冲击特效 */
 .pierce-skill-fx { position: absolute; border: 3px solid rgba(241, 196, 15, 0.85); border-radius: 12px; box-shadow: 0 0 24px 8px rgba(241, 196, 15, 0.5); z-index: 44; pointer-events: none; animation: pierceFx 0.5s ease-out forwards; }
 @keyframes pierceFx { 0% { opacity: 0.9; transform: scale(0.6); } 100% { opacity: 0; transform: scale(1.15); } }
+
+/* 深蓝图标(蓝色横向15px) */
+.art-deep_blue::after { content: '深蓝'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #3498db; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; }
+
+/* 被击倒单位(倾斜+眩晕) */
+.knocked-down { filter: grayscale(0.6) brightness(0.85); transform: rotate(90deg) !important; transition: transform 0.3s; }
+
+/* 钢刺网格子(蓝色网格) */
+.spike-net-cell { position: absolute; inset: 0; background: rgba(52, 152, 219, 0.12); box-shadow: inset 0 0 0 1px rgba(52, 152, 219, 0.45); z-index: 20; pointer-events: none; animation: spikeNetPulse 1.5s ease-in-out infinite; }
+@keyframes spikeNetPulse { 0%,100% { background: rgba(52,152,219,0.12); } 50% { background: rgba(52,152,219,0.22); } }
