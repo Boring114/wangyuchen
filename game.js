@@ -5604,32 +5604,14 @@ function showGuyBeam(target, dir, type) {
         const b = document.createElement('div');
         b.className = 'guy-beam';
         b.style.position = 'absolute';
-        // dir 1-4：上/下/左/右 四个方向插入（米字形）
-        if (dir === 1) {
-            b.style.left = (cx - 3) + 'px';
-            b.style.top = ((target.row - 6) * cellH) + 'px';
-            b.style.width = '6px';
-            b.style.height = (7 * cellH) + 'px';
-        } else if (dir === 2) {
-            b.style.left = (cx - 3) + 'px';
-            b.style.top = ((target.row + 1) * cellH) + 'px';
-            b.style.width = '6px';
-            b.style.height = (7 * cellH) + 'px';
-            b.style.transform = 'rotate(180deg)';
-        } else if (dir === 3) {
-            b.className = 'guy-beam-cross';
-            b.style.top = (cy - 3) + 'px';
-            b.style.left = ((target.col - 7) * cellW) + 'px';
-            b.style.width = (8 * cellW) + 'px';
-            b.style.height = '6px';
-        } else {
-            b.className = 'guy-beam-cross';
-            b.style.top = (cy - 3) + 'px';
-            b.style.left = ((target.col + 1) * cellW) + 'px';
-            b.style.width = (8 * cellW) + 'px';
-            b.style.height = '6px';
-            b.style.transform = 'rotate(180deg)';
-        }
+        // 四道白光各有角度（30/75/120/165度，不相互垂直），从敌人中心向各自方向放射插入
+        const angle = [30, 75, 120, 165][(dir - 1) % 4] || 45;
+        b.style.left = (cx - 3) + 'px';
+        b.style.top = (cy - 70) + 'px';
+        b.style.width = '6px';
+        b.style.height = '140px';
+        b.style.transformOrigin = '50% 50%';
+        b.style.transform = 'rotate(' + angle + 'deg)';
         board.appendChild(b);
         setTimeout(() => b.remove(), 500);
     } else if (type === 'cross') {
