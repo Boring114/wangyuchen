@@ -337,7 +337,7 @@ const cardLibrary = [
         hp: 8,
         moveRange: 3,
         attackRange: 2,
-        cost: 9,
+        cost: 8,
         artwork: 'snow-monster',
         description: '每受1伤召唤1个冰雪精灵',
         snowMonster: true
@@ -1132,6 +1132,20 @@ const cardLibrary = [
         description: '金卡。登场:己方能量条上限+20(敌方不变),己方大本营恢复5点生命值(可超出上限)。'
     },
     {
+        id: 'pierce',
+        name: '皮尔斯',
+        attack: 3,
+        hp: 4,
+        armor: 0,
+        armorPen: 1,
+        moveRange: 7,
+        attackRange: 8,
+        cost: 8,
+        artwork: 'pierce',
+        pierce: true,
+        description: '普攻命中敌人后在身边生成1个弹壳;走到弹壳格拾起并自动攻击最近敌人(拾起攻击不生成弹壳、不触发反击)。双击选点(8格内任意格):以该格为中心5×5所有敌人受普攻,每命中1敌生成1弹壳。大招冷却2个己方回合。可对空。'
+    },
+    {
         id: 'madara_solve',
         name: '宇智波斑·秽土转生·解',
         attack: 0,
@@ -1190,6 +1204,7 @@ const gameState = {
     erinRings: [],
     missileMarks: [],
     craters: [],
+    shells: [],
     shroomCount: { red: 0, blue: 0 },
     knightZones: [],
     rageZones: [],
@@ -1467,6 +1482,7 @@ function createUnitFromCard(card, team, row, col) {
         guyMaxEnergy: card.guyMaxEnergy || 0,
         milk: card.milk || false,
         guff: card.guff || false,
+        pierce: card.pierce || false,
         solveEnergy: card.solveEnergy || 0,
         solveMaxEnergy: card.solveMaxEnergy || 0,
         miner: card.miner || false,
@@ -1588,6 +1604,18 @@ function handleCellClick(e) {
         gameState._chakraTargeting = false;
         clearHighlights();
         gameState.selectedUnit = null;
+        return;
+    }
+    // 皮尔斯大招选点:点击8格内任意格(队友/敌人/空格)施放5×5普攻
+    if (gameState.selectedUnit && gameState.selectedUnit.pierce && gameState.selectedUnit._pierceTargeting) {
+        const d = Math.max(Math.abs(row - gameState.selectedUnit.row), Math.abs(col - gameState.selectedUnit.col));
+        if (d <= 8 && cell.classList.contains('pierce-target')) {
+            pierceSkill(gameState.selectedUnit, row, col);
+        } else {
+            gameState.selectedUnit._pierceTargeting = false;
+            clearHighlights();
+            gameState.selectedUnit = null;
+        }
         return;
     }
     // 死门凯奥义选敌:点击3格内敌人释放奥义
@@ -2060,6 +2088,11 @@ function handleCellClick(e) {
             enterTankTargetMode(clickedUnit);
             return;
         }
+        // 皮尔斯:双击进入选点模式(8格内任意格,大招冷却2个己方回合)
+        if (clickedUnit.pierce && clickedUnit === gameState.selectedUnit && !clickedUnit._pierceTargeting) {
+            pierceDoubleClick(clickedUnit);
+            return;
+        }
         clearHighlights();
         gameState.selectedUnit = clickedUnit;
         showActionMode(clickedUnit);
@@ -2196,7 +2229,7 @@ function showMovableRange(unit) {
 // 对空判定:飞行单位恒可对空;白名单含植物人(骷髅军团不在白名单,不能对空)
 function canHitAirUnit(unit) {
     if (unit.flying) return true;
-    return ['musketeer','saeed','warden_gherros','cattail','electric_pea','reynolds','reynolds_jackson','pain_tendo','lightning_dragon','asala_flamer','gale','demulan','hashirama','doom_shroom','crazy_cannon','yogg','yogg_saron','yogg_fate','guy_death_gate'].includes(unit.cardId);
+    return ['musketeer','saeed','warden_gherros','cattail','electric_pea','reynolds','reynolds_jackson','pain_tendo','lightning_dragon','asala_flamer','gale','demulan','hashirama','doom_shroom','crazy_cannon','yogg','yogg_saron','yogg_fate','guy_death_gate','pierce'].includes(unit.cardId);
 }
 
 // 显示可攻击目标
@@ -3302,6 +3335,26 @@ function moveUnit(row, col) {
 
     // 疾风弹力绳重绘
     if (unit.galeSkillActive && unit.galeAnchor) drawGaleRope(unit);
+
+    // 皮尔斯:移动路线经过弹壳格自动拾起(不必停在弹壳格,路径上多个弹壳逐个拾取攻击)
+    if (unit.pierce) {
+        const path = [];
+        const steps = Math.max(Math.abs(row - oldRow), Math.abs(col - oldCol));
+        for (let i = 0; i <= steps; i++) {
+            const pr = Math.round(oldRow + (row - oldRow) * i / steps);
+            const pc = Math.round(oldCol + (col - oldCol) * i / steps);
+            if (!path.some(p => p[0] === pr && p[1] === pc)) path.push([pr, pc]);
+        }
+        let guard = 0;
+        while (guard < 30 && gameState.shells.length > 0) {
+            const idx = gameState.shells.findIndex(s => path.some(p => p[0] === s.row && p[1] === s.col));
+            if (idx === -1) break;
+            gameState.shells.splice(idx, 1);
+            renderShells();
+            pierceShellAutoAttack(unit);
+            guard++;
+        }
+    }
 }
 
 // 攻击单位
@@ -3872,6 +3925,11 @@ function attackUnit(target) {
     // 通用反击:任何单位攻击都会触发被攻击方反击(被攻击方为技能输出型/阴兵除外);
     // 敌方存活且在攻击范围内则反击一次(一回合对同一攻击者最多1次,致命伤害也先反击再死)
     triggerCounter(attacker, target);
+
+    // 皮尔斯:普攻命中敌人后生成1个弹壳(拾取自动攻击不生成)
+    if (attacker.pierce && lastDamage > 0) {
+        spawnPierceShell(attacker, 1);
+    }
 
     // 更新目标血量显示
     updateUnitHp(target);
@@ -4684,6 +4742,8 @@ function triggerCounter(attacker, target) {
     if (target._removing) return;
     if (attacker._removing || attacker.currentHp <= 0) return;
     if (target.ghost || isSkillOutputUnit(target)) return;
+    // 野猪骑士:只能攻击建筑,所以只反击建筑的攻击(普通兵种攻击无法反击)
+    if (target.hogRider && !attacker.building) return;
     // 天鹰火炮:未开启时不能攻击,也不反击
     if (target.eagleArtillery && !target._eagleActive) return;
     if (!target.attackRange) return;
@@ -4833,6 +4893,142 @@ function isUniqueGroupBlocked(card) {
         return aliveSame(id => id === card.id);
     }
     return false;
+}
+
+// 皮尔斯弹壳渲染:棋盘上显示金色弹壳标记
+function renderShells() {
+    document.querySelectorAll('.shell-mark').forEach(el => el.remove());
+    gameState.shells.forEach(s => {
+        const cell = gameState.board[s.row] ? gameState.board[s.row][s.col] : null;
+        if (!cell) return;
+        const mark = document.createElement('div');
+        mark.className = 'shell-mark';
+        cell.appendChild(mark);
+    });
+}
+
+// 皮尔斯:普攻命中后在身边生成1个弹壳(先找周围1格,没有则向外扩大到3格保证生成)
+function spawnPierceShell(unit, count) {
+    for (let i = 0; i < count; i++) {
+        let placed = false;
+        for (let radius = 1; radius <= 3 && !placed; radius++) {
+            for (let dr = -radius; dr <= radius && !placed; dr++) {
+                for (let dc = -radius; dc <= radius && !placed; dc++) {
+                    if (Math.max(Math.abs(dr), Math.abs(dc)) !== radius) continue;
+                    const nr = unit.row + dr, nc = unit.col + dc;
+                    if (!isValidPosition(nr, nc)) continue;
+                    if (gameState.units.some(u => u.row === nr && u.col === nc)) continue;
+                    if (gameState.shells.some(s => s.row === nr && s.col === nc)) continue;
+                    if (isBlueBase(nr, nc) || isRedBase(nr, nc)) continue;
+                    gameState.shells.push({ row: nr, col: nc });
+                    placed = true;
+                }
+            }
+        }
+        if (!placed) return;
+    }
+    renderShells();
+}
+
+// 皮尔斯:拾起弹壳后自动攻击最近敌人(不生成弹壳、不触发反击)
+function pierceShellAutoAttack(unit) {
+    let nearest = null, best = Infinity;
+    gameState.units.forEach(e => {
+        if (e.team === unit.team || e.ghost || e._removing) return;
+        if (!canHitAirUnit(unit) && e.flying) return;
+        const d = Math.max(Math.abs(e.row - unit.row), Math.abs(e.col - unit.col));
+        if (d < best) { best = d; nearest = e; }
+    });
+    if (!nearest) return;
+    // 拾取自动攻击:不生成弹壳、不触发反击
+    const dmg = Math.max(0, unit.attack - Math.max(0, (nearest.armor || 0) - (unit.armorPen || 0)));
+    showPierceBullet(unit, nearest);
+    nearest.currentHp -= dmg;
+    updateUnitHp(nearest);
+    if (nearest.currentHp <= 0) removeUnit(nearest);
+    gameState.attackedUnits.add(unit.id);
+}
+
+// 皮尔斯:拾起所在格弹壳并自动攻击最近敌人
+function pickupPierceShell(unit) {
+    const idx = gameState.shells.findIndex(s => s.row === unit.row && s.col === unit.col);
+    if (idx === -1) return;
+    gameState.shells.splice(idx, 1);
+    renderShells();
+    pierceShellAutoAttack(unit);
+}
+
+// 皮尔斯子弹弹道特效
+function showPierceBullet(from, to) {
+    const board = document.getElementById('gameBoard');
+    const cs = cellW;
+    const bullet = document.createElement('div');
+    bullet.className = 'pierce-bullet';
+    bullet.style.left = (from.col * cs + cs / 2 - 3) + 'px';
+    bullet.style.top = (from.row * cs + cs / 2 - 3) + 'px';
+    board.appendChild(bullet);
+    setTimeout(() => {
+        bullet.style.transition = 'all 0.3s linear';
+        bullet.style.left = (to.col * cs + cs / 2 - 3) + 'px';
+        bullet.style.top = (to.row * cs + cs / 2 - 3) + 'px';
+    }, 30);
+    setTimeout(() => { if (bullet.parentNode) bullet.parentNode.removeChild(bullet); }, 400);
+}
+
+// 皮尔斯大招:以选点为中心5×5敌人受普攻,每命中1敌生成1弹壳
+function pierceSkill(unit, row, col) {
+    unit._pierceTargeting = false;
+    unit._pierceSkillCd = 2;
+    clearHighlights();
+    let hits = 0;
+    gameState.units.slice().forEach(e => {
+        if (e.team === unit.team || e.ghost || e._removing) return;
+        const d = Math.max(Math.abs(e.row - row), Math.abs(e.col - col));
+        if (d <= 2) {
+            const dmg = Math.max(0, unit.attack - Math.max(0, (e.armor || 0) - (unit.armorPen || 0)));
+            showPierceBullet(unit, e);
+            e.currentHp -= dmg;
+            updateUnitHp(e);
+            hits++;
+            if (e.currentHp <= 0) removeUnit(e);
+        }
+    });
+    // 每命中1敌生成1弹壳
+    if (hits > 0) spawnPierceShell(unit, hits);
+    showPierceSkillFX(row, col);
+    gameState.attackedUnits.add(unit.id);
+    gameState.selectedUnit = null;
+}
+
+// 皮尔斯大招落点特效(金色冲击)
+function showPierceSkillFX(row, col) {
+    const board = document.getElementById('gameBoard');
+    const fx = document.createElement('div');
+    fx.className = 'pierce-skill-fx';
+    fx.style.left = (col * cellW - 2 * cellW) + 'px';
+    fx.style.top = (row * cellH - 2 * cellH) + 'px';
+    fx.style.width = (5 * cellW) + 'px';
+    fx.style.height = (5 * cellH) + 'px';
+    board.appendChild(fx);
+    setTimeout(() => { if (fx.parentNode) fx.parentNode.removeChild(fx); }, 500);
+}
+
+// 皮尔斯双击:进入选点模式(8格内任意格:队友/敌人/空格)
+function pierceDoubleClick(unit) {
+    if (unit._pierceSkillCd > 0) {
+        showHeroDeployText(unit, '冷却中', '#888888', 800);
+        return;
+    }
+    unit._pierceTargeting = true;
+    clearHighlights();
+    for (let r = 0; r < BOARD_ROWS; r++) {
+        for (let c = 0; c < BOARD_COLS; c++) {
+            const dist = Math.max(Math.abs(r - unit.row), Math.abs(c - unit.col));
+            if (dist <= 8 && dist > 0) {
+                gameState.board[r][c].classList.add('pierce-target');
+            }
+        }
+    }
 }
 
 // 病毒式传播：全体己方单位获得狂热（击杀后可再攻击，连环击杀连续攻击）
@@ -8483,7 +8679,7 @@ function renderEnergyBar(unit, container) {
 // 清除高亮
 function clearHighlights() {
     document.querySelectorAll('.cell').forEach(cell => {
-        cell.classList.remove('movable', 'attackable', 'selected', 'tank-target', 'chakra-target');
+        cell.classList.remove('movable', 'attackable', 'selected', 'tank-target', 'chakra-target', 'pierce-target');
     });
 }
 
@@ -8710,6 +8906,10 @@ function endTurn() {
     // 精英骑士技能冷却递减(按己方回合计:用后第1个己方回合不可用,第2个可用)
     gameState.units.forEach(u => {
         if (u.eliteKnight && u.team === prevTurn && u._tauntSkillCd > 0) u._tauntSkillCd--;
+    });
+    // 皮尔斯大招冷却递减(己方回合结束-1:用后第1个己方回合不可用,第2个可用)
+    gameState.units.forEach(u => {
+        if (u.pierce && u.team === prevTurn && u._pierceSkillCd > 0) u._pierceSkillCd--;
     });
     // 尤格萨隆:每回合技能使用标记重置
     gameState.units.forEach(u => {
