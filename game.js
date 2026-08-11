@@ -9135,7 +9135,8 @@ function endTurn() {
     // 切换回合
     if (gameState.currentTurn === 'red') {
         gameState.currentTurn = 'blue';
-        gameState.blueEnergy = Math.min(gameState.maxEnergy >= 500 ? (gameState.blueMaxEnergy || gameState.maxEnergy) : gameState.turnNumber + 1, gameState.blueMaxEnergy || gameState.maxEnergy);
+        // 蓝方能量与红方同步(turnNumber,不再+1):玩家1→AI1→玩家2→AI2
+        gameState.blueEnergy = Math.min(gameState.maxEnergy >= 500 ? (gameState.blueMaxEnergy || gameState.maxEnergy) : gameState.turnNumber, gameState.blueMaxEnergy || gameState.maxEnergy);
         // 能量收集器加成
         const blueBoost = gameState.units.filter(u => u.team === 'blue' && u.building).length;
         gameState.blueEnergy = Math.min(gameState.blueEnergy + blueBoost, gameState.blueMaxEnergy || gameState.maxEnergy);
