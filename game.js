@@ -1581,6 +1581,9 @@ function createUnitFromCard(card, team, row, col) {
 function handleCellClick(e) {
     if (gameState.gameOver) return;
 
+    // 联机模式:只能操作自己队伍(轮到对方回合时不能操作,避免各玩各的)
+    if (gameState.onlineMode && gameState.currentTurn !== onlineTeam) return;
+
     // AI模式:蓝色回合由AI控制,玩家不能操控(移动/攻击/选中/部署/法术)
     if (gameState.aiMode && gameState.currentTurn === 'blue') return;
 
@@ -10574,6 +10577,11 @@ cardPackBtn.addEventListener('click', () => {
 backBtn.addEventListener('click', goToStartScreen);
 exitBtn.addEventListener('click', goToStartScreen);
 skipBtn.addEventListener('click', endTurn);
+// 联机模式:跳过回合按钮只能跳过自己的回合(轮到对方时点击无效)
+skipBtn.addEventListener('click', () => {
+    if (gameState.onlineMode && gameState.currentTurn !== onlineTeam) return;
+    endTurn();
+});
 restartBtn.addEventListener('click', restartGame);
 closeDeployModal.addEventListener('click', closeDeployModalFunc);
 
@@ -11072,6 +11080,8 @@ battleDeckGrid.addEventListener('click', (e) => {
 
     // AI模式:蓝色回合由AI控制,玩家不能替AI部署
     if (gameState.aiMode && gameState.currentTurn === 'blue') return;
+    // 联机模式:只能在自己的回合部署(轮到对方时不能替对方部署)
+    if (gameState.onlineMode && gameState.currentTurn !== onlineTeam) return;
 
     const index = parseInt(card.dataset.index);
     const cost = parseInt(card.dataset.cost);
