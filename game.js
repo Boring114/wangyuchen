@@ -384,7 +384,7 @@ const cardLibrary = [
         armorPen: 99,
         moveRange: 2,
         attackRange: 99,
-        cost: 12,
+        cost: 11,
         artwork: 'demulan',
         description: '老太来了!全图狙神',
         firstStrike: true,
@@ -422,7 +422,7 @@ const cardLibrary = [
         armor: 1,
         moveRange: 10,
         attackRange: 0,
-        cost: 13,
+        cost: 12,
         artwork: 'cop-car',
         description: '白捷达 黑普桑 条子来了!',
         copSpawn: true
@@ -1090,7 +1090,7 @@ const cardLibrary = [
         armor: 0,
         moveRange: 5,
         attackRange: 5,
-        cost: 18,
+        cost: 17,
         artwork: 'guy_death_gate',
         hero: true,
         heroDeployText: '第八死门...开!',
@@ -1183,7 +1183,7 @@ const cardLibrary = [
         armorPen: 2,
         moveRange: 5,
         attackRange: 0,
-        cost: 14,
+        cost: 13,
         artwork: 'shangbole',
         shangbole: true,
         hero: true,
@@ -5992,13 +5992,17 @@ function castBigLightning(card, row, col) {
         .filter(u => u.team !== team && !u.ghost && !u._removing && !u._magicShield && Math.max(Math.abs(u.row - row), Math.abs(u.col - col)) <= r) // 魔法护盾免疫法术
         .sort((a, b) => b.currentHp - a.currentHp);
     const targets = enemies.slice(0, count);
-    targets.forEach(t => {
-        showLightningStrike(t);
-        const d = Math.max(0, dmg - Math.max(0, (t.armor || 0)));
-        t.currentHp -= d;
-        updateUnitHp(t);
-        showCritText(t.row, t.col, '雷击');
-        if (t.currentHp <= 0) removeUnit(t);
+    // 一次一次落雷:每个目标间隔300ms逐道劈下(不再同时落下)
+    targets.forEach((t, i) => {
+        setTimeout(() => {
+            if (t._removing) return;
+            showLightningStrike(t);
+            const d = Math.max(0, dmg - Math.max(0, (t.armor || 0)));
+            t.currentHp -= d;
+            updateUnitHp(t);
+            showCritText(t.row, t.col, '雷击');
+            if (t.currentHp <= 0) removeUnit(t);
+        }, i * 300);
     });
     clearHighlights();
     gameState.selectedUnit = null;
