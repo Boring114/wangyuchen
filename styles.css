@@ -2296,3 +2296,6 @@ h1 {
 
 /* 地狱之塔红色激光线 */
 .inferno-laser { position: absolute; height: 3px; background: linear-gradient(90deg, rgba(231,76,60,0.2), #e74c3c); box-shadow: 0 0 10px 2px rgba(231,76,60,0.8); z-index: 60; pointer-events: none; }
+
+/* 联机对方聊天消息(蓝色区分) */
+.chat-msg-opp { background: rgba(52, 152, 219, 0.18); border: 1px solid rgba(52, 152, 219, 0.4); }

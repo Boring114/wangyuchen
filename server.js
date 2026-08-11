@@ -51,6 +51,16 @@ wss.on('connection', (ws) => {
                 // 通知双方开始
                 room.players[0].ws.send(JSON.stringify({ type: 'opponentJoined' }));
             }
+            else if (data.type === 'chat' && (userRoom || ws.userRoom)) {
+                // 转发聊天消息给对方
+                const room = rooms[userRoom || ws.userRoom];
+                if (!room) return;
+                room.players.forEach(p => {
+                    if (p.ws !== ws && p.ws.readyState === 1) {
+                        p.ws.send(JSON.stringify({ type: 'chat', text: data.text }));
+                    }
+                });
+            }
             else if (data.type === 'gameState' && (userRoom || ws.userRoom)) {
                 // 转发游戏状态给对方
                 const room = rooms[userRoom || ws.userRoom];

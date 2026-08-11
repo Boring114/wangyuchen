@@ -1577,6 +1577,11 @@ function createUnitFromCard(card, team, row, col) {
     return unit;
 }
 
+// 联机实时同步:下兵/移动/攻击后立即同步状态,对面实时可见(不等结束回合)
+function syncOnlineNow() {
+    if (gameState.onlineMode && typeof syncGameState === 'function') syncGameState();
+}
+
 // 处理格子点击
 function handleCellClick(e) {
     if (gameState.gameOver) return;
@@ -2087,6 +2092,8 @@ function handleCellClick(e) {
             // 蓝方攻击红方大本营
             attackBase(false);
         }
+        // 联机实时同步:攻击后立即同步(对面实时看到血量变化)
+        syncOnlineNow();
         clearHighlights();
         gameState.selectedUnit = null;
         return;
@@ -3446,6 +3453,8 @@ function deployUnit(row, col) {
 
     // 部署生效效果(英雄台词/沙尘暴/召唤类--玩家与AI共用)
     runDeployEffects(unit);
+    // 联机实时同步:下兵后立即同步(对面实时看到新单位)
+    syncOnlineNow();
 }
 
 // 移动单位
@@ -3579,6 +3588,8 @@ function moveUnit(row, col) {
             guard++;
         }
     }
+    // 联机实时同步:移动后立即同步(对面实时看到走位)
+    syncOnlineNow();
 }
 
 // 攻击单位
@@ -11143,6 +11154,10 @@ function sendChatMessage(text) {
         msg.classList.add('chat-msg-out');
         setTimeout(() => { if (msg.parentNode) msg.parentNode.removeChild(msg); }, 500);
     }, 1500); // 1.5秒后渐变消失
+    // 联机模式:聊天消息同步给对方
+    if (gameState.onlineMode && typeof ws !== 'undefined' && ws && ws.readyState === 1) {
+        ws.send(JSON.stringify({ type: 'chat', text }));
+    }
 }
 
 // 点击页面其他地方关闭卡牌信息面板 + 点击棋盘外空白取消选中

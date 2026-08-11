@@ -1,5 +1,5 @@
 // 联机对战客户端
-const ONLINE_SERVER = 'wss://319ac561.r17.cpolar.top';
+const ONLINE_SERVER = 'wss://4cd42114.r17.cpolar.top';
 
 let ws = null;
 let onlineRoomId = null;
@@ -85,6 +85,18 @@ function tryConnect(cb) {
             document.getElementById('lobbyTeamName').textContent = data.team === 'red' ? '红方' : '蓝方';
             document.getElementById('lobbyStatus').textContent = '匹配成功！开始游戏中...';
             startOnlineGame();
+        }
+        if (data.type === 'chat') {
+            // 显示对方聊天消息
+            const cm = document.getElementById('chatMessages');
+            const msg = document.createElement('div');
+            msg.className = 'chat-msg chat-msg-opp';
+            msg.textContent = data.text;
+            cm.appendChild(msg);
+            setTimeout(() => {
+                msg.classList.add('chat-msg-out');
+                setTimeout(() => { if (msg.parentNode) msg.parentNode.removeChild(msg); }, 500);
+            }, 1500);
         }
         if (data.type === 'roomCreated') {
             onlineRoomId = data.roomId;
