@@ -1160,6 +1160,52 @@ const cardLibrary = [
         description: '被动持盾:正面180°的敌人距离2格外攻击不造成伤害(毒/火/溅射照常,法术伤害无法免疫);2格内用近战攻击2伤并击倒(敌回合无法行动,回合结束站起)。双击技能:钩锁(拉10格内敌人至身前)/钢刺(5格选任意格,5×5钢刺网,网内敌人每回合2真伤,网5血需敌人打碎,碎了冷却2回合)。'
     },
     {
+        id: 'balloon',
+        name: '精英气球兵',
+        attack: 6,
+        hp: 5,
+        armor: 0,
+        moveRange: 3,
+        attackRange: 2,
+        cost: 5,
+        artwork: 'balloon',
+        balloon: true,
+        flying: true,
+        hero: true,
+        description: '金卡·空中单位。只能攻击建筑单位和大本营。死亡后3×3敌军3伤。周围4格内有敌人时双击:从气球上下来一个骷髅(血3攻3攻距2移3),骷髅自动俯冲向距离气球最近的单位(含建筑)造成3伤(不触发反击),随后可普攻(普攻会触发反击),骷髅不能对空。每只气球兵全局只能召唤一次。'
+    },
+    {
+        id: 'shangbole',
+        name: '尚博勒',
+        attack: 0,
+        hp: 5,
+        armor: 0,
+        armorPen: 2,
+        moveRange: 5,
+        attackRange: 0,
+        cost: 14,
+        artwork: 'shangbole',
+        shangbole: true,
+        hero: true,
+        critChance: 0.3,
+        description: '金卡(无攻击能力)。双击技能栏切换形态:猎头手枪(攻3穿2攻距5暴击30%翻倍)/狙击枪(攻4无限穿甲射程14),切换后才能攻击。慢行特区(8格空格放视野精灵:视野让烟雾失效,点视野选4格内敌人攻击1伤后消失,敌下回合移-2)/传送(6格放传送装置,双击装置传送至其前方)。所有攻击可对空。'
+    },
+    {
+        id: 'inferno_tower',
+        name: '地狱之塔',
+        attack: 1,
+        hp: 6,
+        armor: 0,
+        armorPen: 999,
+        moveRange: 0,
+        attackRange: 6,
+        cost: 8,
+        artwork: 'inferno_tower',
+        infernoTower: true,
+        building: true,
+        description: '建筑·可对空。攻击1点真实伤害(无视护甲),攻距6,不可移动。攻击特效:红色激光线连着塔和敌人;激光连住的单位在敌方回合结束还会受到当前倍率灼烧伤害。若攻击目标未改变,下一次伤害翻倍(1→2→4…);切换目标伤害重置为1。'
+    },
+    {
         id: 'madara_solve',
         name: '宇智波斑·秽土转生·解',
         attack: 0,
@@ -1499,6 +1545,9 @@ function createUnitFromCard(card, team, row, col) {
         guff: card.guff || false,
         pierce: card.pierce || false,
         deepBlue: card.deepBlue || false,
+        balloon: card.balloon || false,
+        shangbole: card.shangbole || false,
+        infernoTower: card.infernoTower || false,
         solveEnergy: card.solveEnergy || 0,
         solveMaxEnergy: card.solveMaxEnergy || 0,
         miner: card.miner || false,
@@ -1536,7 +1585,7 @@ function handleCellClick(e) {
     if (gameState.aiMode && gameState.currentTurn === 'blue') return;
 
     // 技能框打开时点击棋盘:关闭技能框并忽略本次点击(避免误触部署弹窗)
-    const skillModals = ['deepBlueSkillModal', 'lvbuSkillModal', 'yoggSkillModal', 'guySkillModal'];
+    const skillModals = ['deepBlueSkillModal', 'lvbuSkillModal', 'yoggSkillModal', 'guySkillModal', 'shangboleSkillModal'];
     for (const id of skillModals) {
         const m = document.getElementById(id);
         if (m && !m.classList.contains('hidden')) {
@@ -1544,6 +1593,7 @@ function handleCellClick(e) {
             else if (id === 'lvbuSkillModal') closeLvbuSkillModalFunc();
             else if (id === 'yoggSkillModal') closeYoggSkillModalFunc();
             else if (id === 'guySkillModal') closeGuySkillModalFunc();
+            else if (id === 'shangboleSkillModal') closeShangboleSkillModalFunc();
             return;
         }
     }
@@ -1669,6 +1719,40 @@ function handleCellClick(e) {
             deepBlueSpike(gameState.selectedUnit, row, col);
         } else {
             gameState.selectedUnit._spikeTargeting = false;
+            clearHighlights();
+            gameState.selectedUnit = null;
+        }
+        return;
+    }
+    // 尚博勒视野部署选点:点击8格内空格生成视野精灵
+    if (gameState.selectedUnit && gameState.selectedUnit.shangbole && gameState.selectedUnit._spyTargeting) {
+        if (cell.classList.contains('pierce-target')) {
+            deploySpyEye(gameState.selectedUnit, row, col);
+        } else {
+            gameState.selectedUnit._spyTargeting = false;
+            clearHighlights();
+            gameState.selectedUnit = null;
+        }
+        return;
+    }
+    // 尚博勒传送部署选点:点击6格内空格生成传送装置
+    if (gameState.selectedUnit && gameState.selectedUnit.shangbole && gameState.selectedUnit._teleportTargeting) {
+        if (cell.classList.contains('pierce-target')) {
+            deployTeleporter(gameState.selectedUnit, row, col);
+        } else {
+            gameState.selectedUnit._teleportTargeting = false;
+            clearHighlights();
+            gameState.selectedUnit = null;
+        }
+        return;
+    }
+    // 视野精灵攻击选敌:点击4格内敌人(1伤后视野消失,敌下回合移-2)
+    if (gameState.selectedUnit && gameState.selectedUnit.spyEye && gameState.selectedUnit._spyTargeting) {
+        const tU = gameState.units.find(u => u.row === row && u.col === col);
+        if (tU && tU.team !== gameState.selectedUnit.team && !tU.ghost && cell.classList.contains('tank-target')) {
+            spyEyeAttack(gameState.selectedUnit, tU);
+        } else {
+            gameState.selectedUnit._spyTargeting = false;
             clearHighlights();
             gameState.selectedUnit = null;
         }
@@ -2008,6 +2092,12 @@ function handleCellClick(e) {
     // 点击己方单位进入行动模式
     const clickedUnit = gameState.units.find(u => u.row === row && u.col === col);
     if (clickedUnit && clickedUnit.team === gameState.currentTurn) {
+        // 视野精灵:单击选中即进入攻击模式(选4格内敌人,一次性攻击)
+        if (clickedUnit.spyEye && !clickedUnit._spyTargeting) {
+            gameState.selectedUnit = clickedUnit;
+            enterSpyEyeTarget(clickedUnit);
+            return;
+        }
         if (clickedUnit.frozen || clickedUnit.galeReviving) {
             // 解斑:冰冻/树缠时可双击开启特殊须佐(不耗能,一局一次)
             if (clickedUnit.madaraSolve && !clickedUnit._susanooActive && (clickedUnit.frozen || clickedUnit.treeBound) && !clickedUnit._solveSpecialUsed) {
@@ -2172,6 +2262,31 @@ function handleCellClick(e) {
             openDeepBlueSkillModal(clickedUnit);
             return;
         }
+        // 精英气球兵:周围4格内有敌人时双击召唤骷髅(每只气球兵全局一次)
+        if (clickedUnit.balloon && clickedUnit === gameState.selectedUnit && !clickedUnit._skullUsed) {
+            const hasEnemy4 = gameState.units.some(e => e.team !== clickedUnit.team && !e.ghost && Math.max(Math.abs(e.row - clickedUnit.row), Math.abs(e.col - clickedUnit.col)) <= 4);
+            if (hasEnemy4) {
+                balloonSkeletonSkill(clickedUnit);
+            } else {
+                showHeroDeployText(clickedUnit, '4格内无敌人', '#888888', 1000);
+            }
+            return;
+        }
+        // 尚博勒:双击弹技能栏(手枪/视野/传送/狙击枪)
+        if (clickedUnit.shangbole && clickedUnit === gameState.selectedUnit) {
+            openShangboleSkillModal(clickedUnit);
+            return;
+        }
+        // 视野精灵:双击进入攻击模式(选4格内敌人)
+        if (clickedUnit.spyEye && clickedUnit === gameState.selectedUnit && !clickedUnit._spyTargeting) {
+            enterSpyEyeTarget(clickedUnit);
+            return;
+        }
+        // 传送装置:双击使尚博勒传送至装置前方
+        if (clickedUnit.teleporter && clickedUnit === gameState.selectedUnit) {
+            teleportShangbole(clickedUnit);
+            return;
+        }
         clearHighlights();
         gameState.selectedUnit = clickedUnit;
         showActionMode(clickedUnit);
@@ -2313,12 +2428,18 @@ function showMovableRange(unit) {
 // 对空判定:飞行单位恒可对空;白名单含植物人(骷髅军团不在白名单,不能对空)
 function canHitAirUnit(unit) {
     if (unit.flying) return true;
-    return ['musketeer','saeed','warden_gherros','cattail','electric_pea','reynolds','reynolds_jackson','pain_tendo','lightning_dragon','asala_flamer','gale','demulan','hashirama','doom_shroom','crazy_cannon','yogg','yogg_saron','yogg_fate','guy_death_gate','pierce','deep_blue'].includes(unit.cardId);
+    return ['musketeer','saeed','warden_gherros','cattail','electric_pea','reynolds','reynolds_jackson','pain_tendo','lightning_dragon','asala_flamer','gale','demulan','hashirama','doom_shroom','crazy_cannon','yogg','yogg_saron','yogg_fate','guy_death_gate','pierce','deep_blue','shangbole','inferno_tower'].includes(unit.cardId);
 }
 
 // 显示可攻击目标
 function showAttackableTargets(unit) {
     const { row, col } = unit;
+    // 尚博勒:未切换手枪/狙击枪形态时无攻击能力;手枪/狙击枪各每回合攻击一次
+    if (unit.shangbole) {
+        if (!unit._form) return;
+        if (unit._form === 'pistol' && unit._pistolAttacked) return;
+        if (unit._form === 'sniper' && unit._sniperAttacked) return;
+    }
     const attackRange = unit.superKnight ? 5 : (unit.hashirama ? ((unit.hashiAttacksUsed||0) === 0 ? 3 : 4) : unit.attackRange);
     // 钢刺网:敌方网内任意格(5×5)在攻击范围内可攻击
     gameState.spikeNets.forEach(n => {
@@ -2364,6 +2485,8 @@ function showAttackableTargets(unit) {
                     if (targetUnit && targetUnit.patroller && targetUnit._grabbing) continue;
                     // 野猪骑士:只能攻击建筑单位
                     if (unit.hogRider && targetUnit && !targetUnit.building) continue;
+                    // 气球兵:只能攻击建筑单位
+                    if (unit.balloon && targetUnit && !targetUnit.building) continue;
                     if (targetUnit && targetUnit.team !== unit.team && !targetUnit.ghost && !targetUnit.teslaHidden) {
                         // 空军只能被特定兵种攻击
                         if (targetUnit.flying) {
@@ -3532,6 +3655,12 @@ function attackUnit(target) {
         gameState.selectedUnit = null;
         return;
     }
+    // 气球兵:只能攻击建筑单位(大本营走 attackBase)
+    if (attacker.balloon && !target.building) {
+        clearHighlights();
+        gameState.selectedUnit = null;
+        return;
+    }
 
     // 嘲讽:法阵内敌方单位必须攻击精英骑士
     const taunter = getTaunter(attacker);
@@ -3692,6 +3821,17 @@ function attackUnit(target) {
     } else if (attacker.meleeAttack && dist <= attacker.meleeRange) {
         // 近战攻击
         damage = attacker.meleeAttack;
+    } else if (attacker.infernoTower) {
+        // 地狱之塔:激光伤害(同目标递增翻倍1→2→4…,切换目标重置为1;真实伤害无视护甲)
+        if (attacker._infernoTarget !== target.id) {
+            attacker._infernoTarget = target.id;
+            attacker._infernoMult = 1;
+        } else {
+            attacker._infernoMult = Math.min(32, (attacker._infernoMult || 1) * 2);
+        }
+        damage = attacker._infernoMult || 1;
+        attacker._infernoLaserTarget = target.id;
+        showInfernoLaser(attacker, target);
     } else {
         // 远程攻击
         damage = attacker.attack;
@@ -3847,6 +3987,24 @@ function attackUnit(target) {
             showHeroDeployText(target, '黑绝消亡!', '#000', 1500);
         }
         actualDamage = 0;
+    }
+    // 尚博勒:受到致命伤害且场上有自己的传送装置 → 免疫伤害并自动传送到装置前方
+    if (target.shangbole && actualDamage > 0 && target.currentHp - actualDamage <= 0) {
+        const tp = gameState.units.find(u => u.teleporter && u.team === target.team && !u._removing);
+        if (tp) {
+            actualDamage = 0;
+            const dir = target.team === 'red' ? -1 : 1;
+            let nr = tp.row + dir, nc = tp.col;
+            if (gameState.units.some(u => u.row === nr && u.col === nc) || !isValidPosition(nr, nc) || isBlueBase(nr, nc) || isRedBase(nr, nc)) {
+                nr = tp.row; nc = tp.col;
+            }
+            const oldCell = gameState.board[target.row][target.col];
+            const el = oldCell ? oldCell.querySelector('.unit') : null;
+            if (el) oldCell.removeChild(el);
+            target.row = nr; target.col = nc;
+            renderUnit(target);
+            showHeroDeployText(target, '传送', '#f1c40f', 1200);
+        }
     }
     target.currentHp -= actualDamage;
     // 觉醒吹箭哥布林:命中附加中毒(连续命中升级)
@@ -4035,6 +4193,10 @@ function attackUnit(target) {
         if (attacker._galeAttacks >= 2) gameState.attackedUnits.add(attacker.id);
     } else if (attacker._frenzy && (target.currentHp <= 0 || target._removing)) {
         // 病毒式传播狂热:一击击杀敌人后可再攻击(连环击杀可连续攻击)
+    } else if (attacker.shangbole) {
+        // 尚博勒:手枪/狙击枪各每回合一次(不标记普通攻击)
+        if (attacker._form === 'pistol') attacker._pistolAttacked = true;
+        else attacker._sniperAttacked = true;
     } else {
         gameState.attackedUnits.add(attacker.id);
     }
@@ -4859,8 +5021,12 @@ function triggerCounter(attacker, target) {
     if (target._removing) return;
     if (attacker._removing || attacker.currentHp <= 0) return;
     if (target.ghost || isSkillOutputUnit(target)) return;
+    // 陆地单位无法反击空中单位(反击者不对空则打不到飞行)
+    if (attacker.flying && !target.flying && !canHitAirUnit(target)) return;
     // 野猪骑士:只能攻击建筑,所以只反击建筑的攻击(普通兵种攻击无法反击)
     if (target.hogRider && !attacker.building) return;
+    // 气球兵:只能攻击建筑,所以只反击建筑的攻击(普通兵种攻击无法反击)
+    if (target.balloon && !attacker.building) return;
     // 天鹰火炮:未开启时不能攻击,也不反击
     if (target.eagleArtillery && !target._eagleActive) return;
     if (!target.attackRange) return;
@@ -5364,6 +5530,251 @@ document.getElementById('deepBlueSkill2Btn').addEventListener('click', () => {
 });
 document.getElementById('closeDeepBlueSkillModal').addEventListener('click', closeDeepBlueSkillModalFunc);
 document.getElementById('deepBlueSkillModal').addEventListener('click', (e) => { if (e.target === document.getElementById('deepBlueSkillModal')) closeDeepBlueSkillModalFunc(); });
+
+// 精英气球兵:双击召唤骷髅(每只气球兵全局一次)——骷髅自动俯冲向距离气球最近的单位(含建筑)3伤(不触发反击),随后可普攻
+function balloonSkeletonSkill(balloon) {
+    if (balloon._skullUsed) return;
+    balloon._skullUsed = true;
+    // 气球旁找空格放骷髅
+    let skRow = -1, skCol = -1;
+    for (let r = 1; r <= 2 && skRow === -1; r++) {
+        for (let dr = -r; dr <= r && skRow === -1; dr++) {
+            for (let dc = -r; dc <= r && skRow === -1; dc++) {
+                if (Math.max(Math.abs(dr), Math.abs(dc)) !== r) continue;
+                const nr = balloon.row + dr, nc = balloon.col + dc;
+                if (!isValidPosition(nr, nc)) continue;
+                if (gameState.units.some(u => u.row === nr && u.col === nc)) continue;
+                if (isBlueBase(nr, nc) || isRedBase(nr, nc)) continue;
+                skRow = nr; skCol = nc;
+            }
+        }
+    }
+    if (skRow === -1) return;
+    const sk = {
+        id: 'skull_' + Date.now() + '_' + Math.random(), cardId: 'balloon_skull', name: '骷髅',
+        attack: 3, maxHp: 3, currentHp: 3, armor: 0, armorPen: 0,
+        moveRange: 3, attackRange: 2, artwork: 'skull', team: balloon.team,
+        row: skRow, col: skCol, skullSoldier: true, balloonOwner: balloon.id
+    };
+    gameState.units.push(sk); renderUnit(sk);
+    // 自动俯冲:距离气球最近的单位(含建筑)3伤,不触发反击
+    let nearest = null, best = Infinity;
+    gameState.units.forEach(u => {
+        if (u.id === sk.id || u.team === sk.team || u.ghost || u._removing) return;
+        const d = Math.max(Math.abs(u.row - balloon.row), Math.abs(u.col - balloon.col));
+        if (d < best) { best = d; nearest = u; }
+    });
+    if (nearest) {
+        const dmg = Math.max(0, 3 - Math.max(0, (nearest.armor || 0) - (sk.armorPen || 0)));
+        nearest.currentHp -= dmg;
+        updateUnitHp(nearest);
+        showCritText(nearest.row, nearest.col, '俯冲');
+        if (nearest.currentHp <= 0) removeUnit(nearest);
+    }
+    clearHighlights();
+    gameState.selectedUnit = null;
+}
+
+// 尚博勒技能框
+const shangboleSkillModal = document.getElementById('shangboleSkillModal');
+function openShangboleSkillModal(unit) {
+    gameState._shangboleSelected = unit;
+    shangboleSkillModal.classList.remove('hidden');
+}
+function closeShangboleSkillModalFunc() {
+    shangboleSkillModal.classList.add('hidden');
+    gameState._shangboleSelected = null;
+}
+// 形态切换:手枪/狙击枪(每回合攻击一次,无冷却)
+function shangboleSwitchForm(unit, form) {
+    if (form === 'pistol') {
+        unit.attack = 3; unit.armorPen = 2; unit.attackRange = 5; unit.critChance = 0.3;
+        unit._form = 'pistol';
+    } else {
+        unit.attack = 4; unit.armorPen = 999; unit.attackRange = 14; unit.critChance = 0;
+        unit._form = 'sniper';
+    }
+}
+// 慢行特区:8格选点部署视野精灵(每个尚博勒场上最多1个)
+function enterShangboleSpyMode(unit) {
+    if (unit._spyEyeUsedThisTurn) {
+        showHeroDeployText(unit, '本回合已用', '#888888', 800);
+        return;
+    }
+    if (gameState.units.some(u => u.spyEye && u.owner === unit.id && !u._removing)) {
+        showHeroDeployText(unit, '已有视野精灵', '#888888', 800);
+        return;
+    }
+    unit._spyTargeting = true;
+    clearHighlights();
+    for (let r = 0; r < BOARD_ROWS; r++) {
+        for (let c = 0; c < BOARD_COLS; c++) {
+            const dist = Math.max(Math.abs(r - unit.row), Math.abs(c - unit.col));
+            if (dist <= 8 && dist > 0 && !gameState.units.some(u => u.row === r && u.col === c)) {
+                gameState.board[r][c].classList.add('pierce-target');
+            }
+        }
+    }
+}
+function deploySpyEye(unit, row, col) {
+    unit._spyTargeting = false;
+    unit._spyEyeUsedThisTurn = true;
+    clearHighlights();
+    const spy = {
+        id: 'spyeye_' + Date.now() + '_' + Math.random(), cardId: 'spy_eye', name: '视野',
+        attack: 0, maxHp: 3, currentHp: 3, armor: 0, armorPen: 0,
+        moveRange: 0, attackRange: 4, artwork: 'spy_eye', team: unit.team,
+        row, col, spyEye: true, owner: unit.id
+    };
+    gameState.units.push(spy); renderUnit(spy);
+    gameState.selectedUnit = null;
+}
+// 视野攻击:点击视野选4格内敌人,1伤后消失,敌下回合移-2
+function enterSpyEyeTarget(spy) {
+    spy._spyTargeting = true;
+    clearHighlights();
+    gameState.units.forEach(e => {
+        if (e.team === spy.team || e.ghost || e._removing) return;
+        const d = Math.max(Math.abs(e.row - spy.row), Math.abs(e.col - spy.col));
+        if (d <= 4) gameState.board[e.row][e.col].classList.add('tank-target');
+    });
+}
+function spyEyeAttack(spy, target) {
+    spy._spyTargeting = false;
+    target.currentHp -= 1;
+    updateUnitHp(target);
+    showCritText(target.row, target.col, '视野');
+    // 敌人下回合移动距离-2
+    target._slowMove = 2;
+    const el = gameState.board[target.row] ? gameState.board[target.row][target.col].querySelector('.unit') : null;
+    if (el) el.classList.add('slowed');
+    removeUnit(spy);
+    clearHighlights();
+    gameState.selectedUnit = null;
+}
+// 传送:6格选点部署传送装置(每个尚博勒场上最多1个)
+function enterShangboleTeleportMode(unit) {
+    if (unit._teleportUsedThisTurn) {
+        showHeroDeployText(unit, '本回合已用', '#888888', 800);
+        return;
+    }
+    if (gameState.units.some(u => u.teleporter && u.owner === unit.id && !u._removing)) {
+        showHeroDeployText(unit, '已有传送装置', '#888888', 800);
+        return;
+    }
+    unit._teleportTargeting = true;
+    clearHighlights();
+    for (let r = 0; r < BOARD_ROWS; r++) {
+        for (let c = 0; c < BOARD_COLS; c++) {
+            const dist = Math.max(Math.abs(r - unit.row), Math.abs(c - unit.col));
+            if (dist <= 6 && dist > 0 && !gameState.units.some(u => u.row === r && u.col === c)) {
+                gameState.board[r][c].classList.add('pierce-target');
+            }
+        }
+    }
+}
+function deployTeleporter(unit, row, col) {
+    unit._teleportTargeting = false;
+    unit._teleportUsedThisTurn = true;
+    clearHighlights();
+    const tp = {
+        id: 'teleporter_' + Date.now() + '_' + Math.random(), cardId: 'teleporter', name: '传送',
+        attack: 0, maxHp: 3, currentHp: 3, armor: 0, armorPen: 0,
+        moveRange: 0, attackRange: 0, artwork: 'teleporter', team: unit.team,
+        row, col, teleporter: true, owner: unit.id
+    };
+    gameState.units.push(tp); renderUnit(tp);
+    gameState.selectedUnit = null;
+}
+// 双击传送装置:尚博勒传送至装置前方一格(每回合只能传送一次)
+function teleportShangbole(tp) {
+    const shang = gameState.units.find(u => u.id === tp.owner && !u._removing);
+    if (!shang) return;
+    if (shang._teleportedThisTurn) {
+        showHeroDeployText(shang, '本回合已传送', '#888888', 800);
+        return;
+    }
+    shang._teleportedThisTurn = true;
+    const dir = tp.team === 'red' ? -1 : 1;
+    let nr = tp.row + dir, nc = tp.col;
+    if (gameState.units.some(u => u.row === nr && u.col === nc) || !isValidPosition(nr, nc) || isBlueBase(nr, nc) || isRedBase(nr, nc)) {
+        nr = shang.row; nc = shang.col;
+    }
+    const oldCell = gameState.board[shang.row][shang.col];
+    const el = oldCell.querySelector('.unit');
+    if (el) { oldCell.removeChild(el); }
+    shang.row = nr; shang.col = nc;
+    renderUnit(shang);
+    // 传送后自动选中尚博勒并显示行动(可直接移动/攻击)
+    clearHighlights();
+    gameState.selectedUnit = shang;
+    showActionMode(shang);
+}
+document.getElementById('shangboleSkill1Btn').addEventListener('click', () => {
+    const s = gameState._shangboleSelected;
+    if (!s) return;
+    closeShangboleSkillModalFunc();
+    shangboleSwitchForm(s, 'pistol');
+    showHeroDeployText(s, '猎头手枪', '#f1c40f', 800);
+});
+document.getElementById('shangboleSkill2Btn').addEventListener('click', () => {
+    const s = gameState._shangboleSelected;
+    if (!s) return;
+    closeShangboleSkillModalFunc();
+    enterShangboleSpyMode(s);
+});
+document.getElementById('shangboleSkill3Btn').addEventListener('click', () => {
+    const s = gameState._shangboleSelected;
+    if (!s) return;
+    closeShangboleSkillModalFunc();
+    enterShangboleTeleportMode(s);
+});
+document.getElementById('shangboleSkill4Btn').addEventListener('click', () => {
+    const s = gameState._shangboleSelected;
+    if (!s) return;
+    closeShangboleSkillModalFunc();
+    shangboleSwitchForm(s, 'sniper');
+    showHeroDeployText(s, '狙击枪', '#f1c40f', 800);
+});
+document.getElementById('closeShangboleSkillModal').addEventListener('click', closeShangboleSkillModalFunc);
+document.getElementById('shangboleSkillModal').addEventListener('click', (e) => { if (e.target === document.getElementById('shangboleSkillModal')) closeShangboleSkillModalFunc(); });
+
+// 取格子实际中心坐标(相对 gameBoard,考虑grid实际布局/border,精确连到图标)
+function cellCenterPx(row, col) {
+    const cell = gameState.board[row] && gameState.board[row][col];
+    if (cell) {
+        const boardRect = document.getElementById('gameBoard').getBoundingClientRect();
+        const r = cell.getBoundingClientRect();
+        return { x: r.left - boardRect.left + r.width / 2, y: r.top - boardRect.top + r.height / 2 };
+    }
+    return { x: col * cellW + cellW / 2, y: row * cellH + cellH / 2 };
+}
+
+// 地狱之塔:红色激光线(塔→目标图标中心)——一直存在直到目标改变/目标死亡/塔死亡
+function showInfernoLaser(tower, target) {
+    const board = document.getElementById('gameBoard');
+    // 每塔一根激光:移除旧线再画新线
+    if (tower._infernoLaserEl && tower._infernoLaserEl.parentNode) {
+        tower._infernoLaserEl.parentNode.removeChild(tower._infernoLaserEl);
+    }
+    const p1 = cellCenterPx(tower.row, tower.col);
+    const p2 = cellCenterPx(target.row, target.col);
+    const dx = p2.x - p1.x, dy = p2.y - p1.y;
+    const len = Math.sqrt(dx * dx + dy * dy);
+    const line = document.createElement('div');
+    line.className = 'inferno-laser';
+    // 激光粗度随伤害倍率增加:倍率1→3px,2→4.5px,4→6px,8→7.5px…上限10px
+    const mult = tower._infernoMult || 1;
+    const thickness = Math.min(10, 3 + Math.log2(mult) * 1.5);
+    line.style.left = p1.x + 'px';
+    line.style.top = (p1.y - thickness / 2) + 'px';
+    line.style.width = len + 'px';
+    line.style.height = thickness + 'px';
+    line.style.transform = 'rotate(' + (Math.atan2(dy, dx) * 180 / Math.PI) + 'deg)';
+    line.style.transformOrigin = '0 50%';
+    board.appendChild(line);
+    tower._infernoLaserEl = line;
+}
 
 // 病毒式传播：全体己方单位获得狂热（击杀后可再攻击，连环击杀连续攻击）
 function castViralSpread(card, row, col) {
@@ -6508,6 +6919,27 @@ function removeUnit(unit) {
 if (unit._stoneWallProtect) {
     unit.currentHp = unit._stoneWallHpBase;
     return;
+}
+// 地狱之塔激光:塔死亡或激光目标死亡时移除对应激光线
+gameState.units.forEach(u => {
+    if (u.infernoTower && u._infernoLaserEl && (u.id === unit.id || u._infernoLaserTarget === unit.id)) {
+        if (u._infernoLaserEl.parentNode) u._infernoLaserEl.parentNode.removeChild(u._infernoLaserEl);
+        u._infernoLaserEl = null;
+        u._infernoLaserTarget = null;
+    }
+});
+// 气球兵:死亡时以所在格为中心3×3敌军3伤(只炸一次)
+if (unit.balloon && !unit._balloonExploded) {
+    unit._balloonExploded = true;
+    showCritText(unit.row, unit.col, '爆炸!');
+    gameState.units.slice().forEach(e => {
+        if (e.team === unit.team || e.ghost || e._removing) return;
+        if (Math.max(Math.abs(e.row - unit.row), Math.abs(e.col - unit.col)) <= 1) {
+            e.currentHp -= 3;
+            updateUnitHp(e);
+            if (e.currentHp <= 0) removeUnit(e);
+        }
+    });
 }
 // 毁灭菇:死亡时爆炸(敌方攻击致死触发;双击引爆已标记 _doomExploded 防重复)
 if (unit.doomShroom && !unit._doomExploded) {
@@ -9035,6 +9467,8 @@ function isValidPosition(row, col) {
 function isCellSmokedFor(row, col, team) {
     const cell = gameState.board[row]?.[col];
     if (!cell) return false;
+    // 视野精灵:让渡鸦的烟雾弹失效
+    if (gameState.units.some(u => u.row === row && u.col === col && u.spyEye)) return false;
     const covers = cell.querySelectorAll('.smoke-cover');
     for (const cv of covers) {
         if (cv.dataset.smokeTeam !== team) return true;
@@ -9162,6 +9596,21 @@ function endTurn() {
     });
     // 钢刺网:网方回合开始时,网内敌人受2真伤(无视护甲)
     spikeNetTick();
+    // 地狱之塔:激光连住的目标每个回合自动灼烧(当前倍率真伤),同一目标每次自动翻倍
+    gameState.units.forEach(u => {
+        if (u.infernoTower && u._infernoLaserTarget) {
+            const t = gameState.units.find(x => x.id === u._infernoLaserTarget && !x._removing);
+            if (t && t.team !== u.team) {
+                t.currentHp -= (u._infernoMult || 1);
+                updateUnitHp(t);
+                showCritText(t.row, t.col, '灼烧');
+                showInfernoLaser(u, t);
+                if (t.currentHp <= 0) removeUnit(t);
+                // 同一目标每次灼烧后翻倍(1→2→4…,全自动无需手动攻击)
+                u._infernoMult = Math.min(32, (u._infernoMult || 1) * 2);
+            }
+        }
+    });
     // 深蓝钢刺网冷却递减(己方回合结束-1:碎了后1个己方回合+1个敌方回合不可用,再下个己方回合可用)
     gameState.units.forEach(u => {
         if (u.deepBlue && u.team === prevTurn && u._spikeNetCd > 0) u._spikeNetCd--;
@@ -9169,6 +9618,24 @@ function endTurn() {
     // 深蓝钩锁:己方回合结束重置(每回合可使用一次)
     gameState.units.forEach(u => {
         if (u.deepBlue && u.team === prevTurn) u._hookUsedThisTurn = false;
+    });
+    // 尚博勒:慢行特区/传送每回合一次重置;视野减速应用与恢复
+    gameState.units.forEach(u => {
+        if (u.shangbole && u.team === prevTurn) { u._spyEyeUsedThisTurn = false; u._teleportUsedThisTurn = false; u._teleportedThisTurn = false; u._pistolAttacked = false; u._sniperAttacked = false; }
+        // 视野减速:上一回合被减速单位回合结束恢复移动
+        if (u._slowMove && u.team === prevTurn) {
+            u.moveRange = u.baseMoveRange || u.moveRange;
+            u._slowMove = 0;
+            const sel = gameState.board[u.row] ? gameState.board[u.row][u.col].querySelector('.unit') : null;
+            if (sel) sel.classList.remove('slowed');
+        }
+        // 视野减速:被减速单位回合开始时移动-2
+        if (u._slowMove && u.team === gameState.currentTurn) {
+            u.baseMoveRange = u.baseMoveRange || u.moveRange;
+            u.moveRange = Math.max(1, u.baseMoveRange - 2);
+            const sel = gameState.board[u.row] ? gameState.board[u.row][u.col].querySelector('.unit') : null;
+            if (sel) sel.classList.add('slowed');
+        }
     });
 
     // 黑绝显现持续到敌方回合结束:敌方回合结束(轮到己方回合)时解除显现
@@ -10422,6 +10889,7 @@ function aiMoveAndAttack() {
         gameState.units.forEach(e => {
             if (e.team === 'red' && (!tk || e.id === tk.id) && !e.ghost) {
                 if (u.hogRider && !e.building) return;
+                if (u.balloon && !e.building) return;
                 if (e.flying && !canHitAirUnit(u)) return;
                 if (e.teslaHidden) return;
                 if (Math.max(Math.abs(e.row-u.row), Math.abs(e.col-u.col)) <= atkRng) canAtk = true;
@@ -10450,6 +10918,7 @@ function aiMoveAndAttack() {
             let nearest = null, minD = Infinity;
             gameState.units.filter(e => e.team === 'red' && (!tk || e.id === tk.id)).forEach(e => {
                 if (u.hogRider && !e.building) return;
+                if (u.balloon && !e.building) return;
                 if (e.flying && !canHitAirUnit(u)) return;
                 if (e.teslaHidden) return;
                 const d = Math.max(Math.abs(e.row-u.row), Math.abs(e.col-u.col));
@@ -10488,6 +10957,7 @@ function aiMoveUnit(u, tk) {
     let closestEnemy = null, cDist = Infinity;
     gameState.units.filter(e => e.team === 'red' && (!tk || e.id === tk.id)).forEach(e => {
         if (u.hogRider && !e.building) return;
+                if (u.balloon && !e.building) return;
         if (e.flying && !canHitAirUnit(u)) return;
         if (e.teslaHidden) return;
         const d = Math.max(Math.abs(e.row-u.row), Math.abs(e.col-u.col));
