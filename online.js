@@ -66,8 +66,9 @@ function tryConnect(cb) {
             onlineTeam = data.team;
             document.getElementById('lobbyTeam').style.display = '';
             document.getElementById('lobbyTeamName').textContent = '蓝方';
-            document.getElementById('lobbyStatus').textContent = '已加入！等待房主开始...';
-            ws.send(JSON.stringify({ type: 'ready' }));
+            document.getElementById('lobbyStatus').textContent = '已加入！开始游戏中...';
+            // 加入成功直接开始(无需等房主ready,双方同时进入对局)
+            startOnlineGame();
         }
         if (data.type === 'opponentJoined') {
             document.getElementById('lobbyStatus').textContent = '对手已加入！开始游戏中...';
@@ -98,6 +99,19 @@ function tryConnect(cb) {
                 gameState.aiDeck = [
                     { id: 'red_owner', name: '红方指挥官', attack: 0, hp: 1, moveRange: 0, attackRange: 0, cost: 0 }
                 ];
+            } else {
+                // 红方接收蓝方状态(蓝方回合结束后回合流转回红方)
+                gameState.units = gs.units.map(u => ({...u}));
+                gameState.redBaseHp = gs.redBaseHp;
+                gameState.blueBaseHp = gs.blueBaseHp;
+                gameState.redEnergy = gs.redEnergy;
+                gameState.blueEnergy = gs.blueEnergy;
+                gameState.turnNumber = gs.turnNumber;
+                gameState.currentTurn = 'red';
+                updateEnergyDisplay();
+                updateBaseHpDisplay();
+                initBoard();
+                gameState.units.forEach(u => renderUnit(u));
             }
         }
         if (data.type === 'opponentLeft') {
