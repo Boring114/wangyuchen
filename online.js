@@ -128,10 +128,6 @@ function tryConnect(cb) {
                 updateBaseHpDisplay();
                 initBoard();
                 gameState.units.forEach(u => renderUnit(u));
-                // AI 用蓝方单位
-                gameState.aiDeck = [
-                    { id: 'red_owner', name: '红方指挥官', attack: 0, hp: 1, moveRange: 0, attackRange: 0, cost: 0 }
-                ];
             } else {
                 // 红方接收蓝方状态(蓝方回合结束后回合流转回红方)
                 gameState.units = gs.units.map(u => ({...u}));

@@ -10114,8 +10114,8 @@ function endTurn() {
     // 开始新回合计时
     startTimer();
 
-    // AI模式:蓝色回合自动AI行动
-    if (gameState.aiMode && gameState.currentTurn === 'blue') {
+    // AI模式:蓝色回合自动AI行动(联机模式绝无AI)
+    if (gameState.aiMode && !gameState.onlineMode && gameState.currentTurn === 'blue') {
         setTimeout(aiTurn, 500);
     }
 }
@@ -10576,8 +10576,7 @@ cardPackBtn.addEventListener('click', () => {
 });
 backBtn.addEventListener('click', goToStartScreen);
 exitBtn.addEventListener('click', goToStartScreen);
-skipBtn.addEventListener('click', endTurn);
-// 联机模式:跳过回合按钮只能跳过自己的回合(轮到对方时点击无效)
+// 跳过回合按钮(联机模式只能跳过自己的回合,轮到对方时点击无效)
 skipBtn.addEventListener('click', () => {
     if (gameState.onlineMode && gameState.currentTurn !== onlineTeam) return;
     endTurn();
