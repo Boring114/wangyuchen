@@ -5,7 +5,7 @@ const { WebSocketServer } = require('ws');
 
 const rooms = {}; // roomId -> { password, players: [], state }
 
-const wss = new WebSocketServer({ port: process.env.PORT || 8080 });
+const wss = new WebSocketServer({ port: process.env.PORT || 8090 });
 
 wss.on('connection', (ws) => {
     let userRoom = null;
@@ -68,4 +68,4 @@ wss.on('connection', (ws) => {
     });
 });
 
-console.log('Server running on port', process.env.PORT || 8080);
+console.log('Server running on port', process.env.PORT || 8090);
