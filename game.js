@@ -6340,6 +6340,13 @@ function guyElephantStomp(guy, target) {
             const x = cx + Math.cos(ang) * radius - 10;
             const y = cy + Math.sin(ang) * radius - 10;
             if (el) { el.style.left = x + 'px'; el.style.top = y + 'px'; }
+            // 红色拖尾:每步在图标位置留下红色残影(逐渐淡出)
+            const trail = document.createElement('div');
+            trail.className = 'guy-trail';
+            trail.style.left = (x + 10 - 4) + 'px';
+            trail.style.top = (y + 10 - 4) + 'px';
+            board.appendChild(trail);
+            setTimeout(() => { if (trail.parentNode) trail.parentNode.removeChild(trail); }, 500);
             if (i % 20 === 0) {
                 // 每圈结束对敌人2伤
                 if (!target._removing) {

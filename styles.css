@@ -2265,3 +2265,7 @@ h1 {
 /* 钢刺网格子(蓝色网格) */
 .spike-net-cell { position: absolute; inset: 0; background: rgba(52, 152, 219, 0.12); box-shadow: inset 0 0 0 1px rgba(52, 152, 219, 0.45); z-index: 20; pointer-events: none; animation: spikeNetPulse 1.5s ease-in-out infinite; }
 @keyframes spikeNetPulse { 0%,100% { background: rgba(52,152,219,0.12); } 50% { background: rgba(52,152,219,0.22); } }
+
+/* 夕象伍足红色拖尾 */
+.guy-trail { position: absolute; width: 8px; height: 8px; border-radius: 50%; background: radial-gradient(circle, rgba(255,80,80,0.9), rgba(200,30,30,0.4)); box-shadow: 0 0 10px 3px rgba(255,50,50,0.7); z-index: 44; pointer-events: none; animation: guyTrailFade 0.5s ease-out forwards; }
+@keyframes guyTrailFade { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0.4); } }
