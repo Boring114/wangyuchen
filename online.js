@@ -43,6 +43,28 @@ document.getElementById('joinRoomBtn').addEventListener('click', () => {
     });
 });
 
+// 随机匹配:自动匹配同时在匹配的玩家
+let matching = false;
+document.getElementById('matchBtn').addEventListener('click', () => {
+    if (matching) {
+        alert('正在匹配中,请稍候...');
+        return;
+    }
+    if (gameState.battleDeck.length < 10) {
+        alert('联机对战需要携带至少10张卡牌才能开局，请先在卡包中添加卡牌！');
+        return;
+    }
+    if (gameState.battleDeck.some(c => c.trainingOnly)) {
+        alert('出战卡组包含训练木偶，仅可在训练营模式使用，请先在卡组中移除！');
+        return;
+    }
+    matching = true;
+    tryConnect(() => {
+        document.getElementById('lobbyStatus').textContent = '匹配中... 等待其他玩家';
+        ws.send(JSON.stringify({ type: 'match' }));
+    });
+});
+
 function tryConnect(cb) {
     if (ws && ws.readyState === 1) { cb(); return; }
     document.getElementById('lobbyStatus').textContent = '连接中...';
@@ -53,6 +75,17 @@ function tryConnect(cb) {
     };
     ws.onmessage = (e) => {
         const data = JSON.parse(e.data);
+        if (data.type === 'matching') {
+            document.getElementById('lobbyStatus').textContent = '匹配中... 等待其他玩家';
+        }
+        if (data.type === 'matchFound') {
+            matching = false;
+            onlineTeam = data.team;
+            document.getElementById('lobbyTeam').style.display = '';
+            document.getElementById('lobbyTeamName').textContent = data.team === 'red' ? '红方' : '蓝方';
+            document.getElementById('lobbyStatus').textContent = '匹配成功！开始游戏中...';
+            startOnlineGame();
+        }
         if (data.type === 'roomCreated') {
             onlineRoomId = data.roomId;
             onlineTeam = data.team;

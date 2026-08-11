@@ -4,6 +4,7 @@
 const { WebSocketServer } = require('ws');
 
 const rooms = {}; // roomId -> { password, players: [], state }
+const matchQueue = []; // 随机匹配等待队列
 
 const wss = new WebSocketServer({ port: process.env.PORT || 8090 });
 
@@ -15,7 +16,22 @@ wss.on('connection', (ws) => {
         try {
             const data = JSON.parse(msg.toString());
 
-            if (data.type === 'create') {
+            if (data.type === 'match') {
+                // 随机匹配:进入等待队列,凑齐两人自动配对
+                if (!matchQueue.includes(ws)) matchQueue.push(ws);
+                ws.send(JSON.stringify({ type: 'matching', msg: '匹配中...' }));
+                if (matchQueue.length >= 2) {
+                    const p1 = matchQueue.shift();
+                    const p2 = matchQueue.shift();
+                    const roomId = Math.random().toString(36).slice(2, 8).toUpperCase();
+                    rooms[roomId] = { password: '', players: [{ ws: p1, ready: true }, { ws: p2, ready: true }], state: {} };
+                    p1.userRoom = roomId; p2.userRoom = roomId;
+                    p1.userTeam = 'red'; p2.userTeam = 'blue';
+                    p1.send(JSON.stringify({ type: 'matchFound', roomId, team: 'red' }));
+                    p2.send(JSON.stringify({ type: 'matchFound', roomId, team: 'blue' }));
+                }
+            }
+            else if (data.type === 'create') {
                 // 创建房间
                 const roomId = Math.random().toString(36).slice(2, 8).toUpperCase();
                 rooms[roomId] = { password: data.password, players: [{ ws, ready: false }], state: null };
@@ -35,9 +51,9 @@ wss.on('connection', (ws) => {
                 // 通知双方开始
                 room.players[0].ws.send(JSON.stringify({ type: 'opponentJoined' }));
             }
-            else if (data.type === 'gameState' && userRoom) {
+            else if (data.type === 'gameState' && (userRoom || ws.userRoom)) {
                 // 转发游戏状态给对方
-                const room = rooms[userRoom];
+                const room = rooms[userRoom || ws.userRoom];
                 if (!room) return;
                 room.players.forEach(p => {
                     if (p.ws !== ws && p.ws.readyState === 1) {
@@ -46,7 +62,7 @@ wss.on('connection', (ws) => {
                 });
             }
             else if (data.type === 'ready' && userRoom) {
-                const room = rooms[userRoom];
+                const room = rooms[userRoom || ws.userRoom];
                 const me = room.players.find(p => p.ws === ws);
                 if (me) me.ready = true;
                 if (room.players.every(p => p.ready)) {
@@ -57,13 +73,16 @@ wss.on('connection', (ws) => {
     });
 
     ws.on('close', () => {
-        if (userRoom && rooms[userRoom]) {
-            rooms[userRoom].players.forEach(p => {
+        // 从匹配队列移除
+        const qi = matchQueue.indexOf(ws);
+        if (qi !== -1) matchQueue.splice(qi, 1);
+        if ((userRoom || ws.userRoom) && rooms[userRoom || ws.userRoom]) {
+            rooms[userRoom || ws.userRoom].players.forEach(p => {
                 if (p.ws !== ws && p.ws.readyState === 1) {
                     p.ws.send(JSON.stringify({ type: 'opponentLeft' }));
                 }
             });
-            delete rooms[userRoom];
+            delete rooms[userRoom || ws.userRoom];
         }
     });
 });
