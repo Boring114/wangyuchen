@@ -141,13 +141,13 @@ function startOnlineGame() {
     }
 }
 
-// 每次操作后同步状态
+// 每次操作后同步状态(单位完整对象,含属性/技能字段,确保对方渲染正常)
 function syncGameState() {
     if (!gameState.onlineMode || !ws || ws.readyState !== 1) return;
     ws.send(JSON.stringify({
         type: 'gameState',
         state: JSON.stringify({
-            units: gameState.units.map(u => ({ id: u.id, row: u.row, col: u.col, currentHp: u.currentHp, maxHp: u.maxHp, team: u.team })),
+            units: gameState.units.map(u => ({...u})),
             redBaseHp: gameState.redBaseHp,
             blueBaseHp: gameState.blueBaseHp,
             redEnergy: gameState.redEnergy,
