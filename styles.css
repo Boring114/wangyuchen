@@ -863,7 +863,7 @@ h1 {
     width: 100%;
     height: 100%;
     background: radial-gradient(circle, rgba(255,255,255,0.4) 20%, rgba(255,255,255,0.9) 55%, rgba(160,180,220,1) 100%);
-    z-index: 1;
+    z-index: 16;
     pointer-events: none;
     box-shadow: inset 0 0 16px rgba(255,255,255,0.9);
     animation: shinraPulse 1.5s ease-in-out infinite;
@@ -2323,3 +2323,8 @@ h1 {
 /* 木龙落地爆炸 */
 .wood-boom { background: radial-gradient(circle, rgba(255,215,0,0.9), rgba(139,90,43,0.6), transparent 70%); border-radius: 50%; z-index: 46; pointer-events: none; animation: woodBoom 0.5s ease-out forwards; }
 @keyframes woodBoom { 0% { opacity: 1; transform: scale(0.3); } 100% { opacity: 0; transform: scale(1.3); } }
+
+/* 蓝方视角:信息栏顺序固定(红方在上、棋盘中间、蓝方在下,与翻转棋盘一致) */
+.blue-view .red-player { order: 1; }
+.blue-view .game-board-container { order: 2; }
+.blue-view .blue-player { order: 3; }

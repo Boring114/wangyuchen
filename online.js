@@ -157,7 +157,7 @@ function tryConnect(cb) {
                 gameState.iceFields = gs.iceFields || [];
                 gameState.windZones = gs.windZones || [];
                 gameState.fireZones = gs.fireZones || [];
-                gameState.currentTurn = 'blue';
+                gameState.currentTurn = gs.currentTurn || 'blue';
                 updateEnergyDisplay();
                 updateBaseHpDisplay();
                 updateTurnIndicator();
@@ -176,6 +176,7 @@ function tryConnect(cb) {
                 gameState.units.forEach(u => { if (u._susanooActive && typeof renderSusanooVisual === 'function') renderSusanooVisual(u); });
                 gameState.units.forEach(u => { if (u._infernoLaserTarget && typeof showInfernoLaser === 'function') { const tar = gameState.units.find(x => x.id === u._infernoLaserTarget); if (tar) showInfernoLaser(u, tar); } });
                 gameState.units.forEach(u => { if (u.poisonTurns > 0 && typeof updatePoisonVisual === 'function') updatePoisonVisual(u); if (u.treeBound && typeof updateTreeVisual === 'function') updateTreeVisual(u); });
+                gameState.units.forEach(u => { const uel = gameState.board[u.row] && gameState.board[u.row][u.col] && gameState.board[u.row][u.col].querySelector('.unit'); if (uel) { if (u._magicShield) uel.classList.add('magic-shield'); if ((u._shieldHp || 0) > 0) uel.classList.add('guard-shield'); if (u._stoneWall) uel.classList.add('stone-bubble'); } });
             } else {
                 // 红方接收蓝方状态(蓝方回合结束后回合流转回红方)
                 gameState.units = gs.units.map(u => ({...u}));
@@ -191,7 +192,7 @@ function tryConnect(cb) {
                 gameState.iceFields = gs.iceFields || [];
                 gameState.windZones = gs.windZones || [];
                 gameState.fireZones = gs.fireZones || [];
-                gameState.currentTurn = 'red';
+                gameState.currentTurn = gs.currentTurn || 'red';
                 updateEnergyDisplay();
                 updateBaseHpDisplay();
                 updateTurnIndicator();
@@ -210,6 +211,7 @@ function tryConnect(cb) {
                 gameState.units.forEach(u => { if (u._susanooActive && typeof renderSusanooVisual === 'function') renderSusanooVisual(u); });
                 gameState.units.forEach(u => { if (u._infernoLaserTarget && typeof showInfernoLaser === 'function') { const tar = gameState.units.find(x => x.id === u._infernoLaserTarget); if (tar) showInfernoLaser(u, tar); } });
                 gameState.units.forEach(u => { if (u.poisonTurns > 0 && typeof updatePoisonVisual === 'function') updatePoisonVisual(u); if (u.treeBound && typeof updateTreeVisual === 'function') updateTreeVisual(u); });
+                gameState.units.forEach(u => { const uel = gameState.board[u.row] && gameState.board[u.row][u.col] && gameState.board[u.row][u.col].querySelector('.unit'); if (uel) { if (u._magicShield) uel.classList.add('magic-shield'); if ((u._shieldHp || 0) > 0) uel.classList.add('guard-shield'); if (u._stoneWall) uel.classList.add('stone-bubble'); } });
             }
         }
         if (data.type === 'opponentLeft') {
@@ -286,6 +288,15 @@ function playSkillFx(fx) {
             case 'infernoLaser': if (typeof showInfernoLaser === 'function') { const tar = gameState.units.find(x => x.id === u._infernoLaserTarget); if (tar) showInfernoLaser(u, tar); } else showOnlineAttackFx(fx.row, fx.col, fx.toR, fx.toC); break;
             case 'goldenDragon': if (typeof showGoldenDragon === 'function') { const d = showGoldenDragon(u); setTimeout(() => { if (d && d.parentNode) d.remove(); }, 1500); } else showSkillFlashFx(fx.row, fx.col, '#f1c40f', 50); break;
             case 'bluePillar': if (typeof showBluePillar === 'function') showBluePillar(u); else showSkillFlashFx(fx.row, fx.col, '#3498db', 45); break;
+            case 'spellFireball': if (typeof showFireballVisual === 'function') showFireballVisual(fx.toR, fx.toC, 1); else showSkillFlashFx(fx.toR, fx.toC, '#e74c3c', 50); break;
+            case 'spellRage': showSkillFlashFx(fx.toR, fx.toC, '#e67e22', 45); break;
+            case 'spellLog': showSkillFlashFx(fx.toR, fx.toC, '#8b5a2b', 45); break;
+            case 'spellHeal': showSkillFlashFx(fx.toR, fx.toC, '#27ae60', 40); break;
+            case 'spellMoon': showSkillFlashFx(fx.toR, fx.toC, '#8e44ad', 50); break;
+            case 'spellMissile': if (typeof showMissileSpellVisual === 'function') showMissileSpellVisual(t); else showSkillFlashFx(fx.toR, fx.toC, '#e67e22', 40); break;
+            case 'spellShield': showSkillFlashFx(fx.row, fx.col, '#95a5a6', 35); break;
+            case 'spellMagicShield': showSkillFlashFx(fx.row, fx.col, '#9b59b6', 35); break;
+            case 'spellStoneWall': showSkillFlashFx(fx.row, fx.col, '#8b5a2b', 35); break;
             case 'doom': if (typeof showDoomMushroom === 'function') showDoomMushroom(u); else showSkillFlashFx(fx.row, fx.col, '#c0392b', 55); break;
             case 'pierce': showPierceSkillFX(fx.toR, fx.toC); break;
             case 'spike': showSkillFlashFx(fx.row, fx.col, '#3498db', 50); break;
@@ -356,6 +367,7 @@ function syncGameState() {
             redEnergy: gameState.redEnergy,
             blueEnergy: gameState.blueEnergy,
             turnNumber: gameState.turnNumber,
+            currentTurn: gameState.currentTurn,
             spikeNets: gameState.spikeNets || [],
             craters: gameState.craters || [],
             rageZones: gameState.rageZones || [],

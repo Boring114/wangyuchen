@@ -460,8 +460,8 @@ const cardLibrary = [
         attack: 1,
         hp: 2,
         armorPen: 2,
-        moveRange: 8,
-        attackRange: 7,
+        moveRange: 5,
+        attackRange: 5,
         cost: 4,
         artwork: 'blowdart',
         description: '吹箭带毒!连续命中3次毒伤提升为2,5次提升为5!',
@@ -1586,8 +1586,8 @@ function syncOnlineNow() {
 function handleCellClick(e) {
     if (gameState.gameOver) return;
 
-    // 联机模式:只能操作自己队伍(轮到对方回合时不能操作,避免各玩各的)
-    if (gameState.onlineMode && gameState.currentTurn !== onlineTeam) return;
+    // 联机操作限制:非自己回合禁止一切操作
+    if (!canActNow()) return;
 
     // AI模式:蓝色回合由AI控制,玩家不能操控(移动/攻击/选中/部署/法术)
     if (gameState.aiMode && gameState.currentTurn === 'blue') return;
@@ -1610,8 +1610,11 @@ function handleCellClick(e) {
     if (gameState._spellCasting) {
         const cell = e.target.closest('.cell');
         if (cell) {
-            const row = parseInt(cell.dataset.row);
+            let row = parseInt(cell.dataset.row);
             const col = parseInt(cell.dataset.col);
+            // 蓝方翻转视角:棋盘 scaleY(-1) 后视觉点击命中会偏1行,统一修正
+            const gsEl = document.getElementById('gameScreen');
+            if (gsEl && gsEl.classList.contains('blue-view')) row = Math.min(BOARD_ROWS - 1, row + 1);
             const card = gameState._spellCasting;
             // 友军目标法术(石墙/剩饭/魔法护盾):目标格必须是友军,否则不施放
             const friendlyTarget = !!(card.stoneWall || card.leftover || card.magicShield || card.shieldSpell || card.milk);
@@ -2332,6 +2335,11 @@ function handleCellClick(e) {
     // 清除选择
     clearHighlights();
     gameState.selectedUnit = null;
+}
+
+// 联机操作限制:非自己回合禁止操作(统一拦截)
+function canActNow() {
+    return !(gameState.onlineMode && gameState.currentTurn !== onlineTeam);
 }
 
 // 显示行动模式
@@ -4781,6 +4789,38 @@ function getYoggCost() {
 }
 
 // 法术卡施放:分发到具体法术
+// 火球法术特效(纯视觉,联机重放用——原版:火球从天而降+3×3冲击波)
+function showFireballVisual(row, col, r) {
+    const board = document.getElementById('gameBoard');
+    if (!board) return;
+    const fb = document.createElement('div');
+    fb.className = 'fireball-drop';
+    fb.style.position = 'absolute';
+    const cx = col * cellW + cellW / 2 - 12;
+    const cy = row * cellH + cellH / 2 - 12;
+    fb.style.left = cx + 'px';
+    fb.style.top = (cy - 300) + 'px';
+    fb.style.transition = 'top 0.4s ease-in';
+    board.appendChild(fb);
+    requestAnimationFrame(() => { fb.style.top = cy + 'px'; });
+    setTimeout(() => {
+        if (fb.parentNode) fb.parentNode.removeChild(fb);
+        for (let dr = -r; dr <= r; dr++) {
+            for (let dc = -r; dc <= r; dc++) {
+                const nr = row + dr, nc = col + dc;
+                if (!isValidPosition(nr, nc)) continue;
+                const wave = document.createElement('div');
+                wave.className = 'fireball-blast';
+                wave.style.position = 'absolute';
+                wave.style.left = (nc * cellW) + 'px';
+                wave.style.top = (nr * cellH) + 'px';
+                board.appendChild(wave);
+                setTimeout(() => { if (wave.parentNode) wave.parentNode.removeChild(wave); }, 400);
+            }
+        }
+    }, 400);
+}
+
 function castSpell(card, row, col) {
     gameState.spellsCastThisGame = (gameState.spellsCastThisGame || 0) + 1;
     gameState._fateWheelProgress = (gameState._fateWheelProgress || 0) + 1; // 命运之轮进度(转轮后重置)
@@ -4852,6 +4892,8 @@ function castSpell(card, row, col) {
     if (card.bigLightning) { castBigLightning(card, row, col); return; }
     // 火球法术
     const r = card.spellRadius || 1;
+    // 联机:火球法术特效同步
+    sendSkillFx('spellFireball', null, row, col);
     const board = document.getElementById('gameBoard');
     // 火球从天而降
     const fb = document.createElement('div');
@@ -4922,6 +4964,9 @@ function castSpell(card, row, col) {
 
 // 狂暴法术:5×5 范围内友军攻击+2(技能每段+2)、下次移动+2,持续一个回合(特效同步持续)
 function castRageSpell(card, row, col) {
+    // 联机:狂暴法术特效同步
+    sendSkillFx('spellRage', null, row, col);
+
     const r = card.rageRadius || 2;
     const board = document.getElementById('gameBoard');
     const team = gameState.currentTurn;
@@ -4971,6 +5016,9 @@ function renderRageZones() {
 
 // 复仇滚木:选中格为中间,向前滚动11格(竖向3×11),逐格命中敌人2伤穿甲1+击退1格,基地固定1伤
 function castLogSpell(card, row, col) {
+    // 联机:滚木法术特效同步
+    sendSkillFx('spellLog', null, row, col);
+
     const team = gameState.currentTurn;
     const dir = team === 'red' ? -1 : 1;
     const dist = card.logRange || 11;
@@ -5046,6 +5094,9 @@ function enterStoneWallTargetMode(card) {
 
 // 石墙守护:下一个敌方回合无敌(记录血量基准,任何伤害都被恢复;冰冻等效果仍正常)
 function applyStoneWall(unit) {
+    // 联机:石墙特效同步
+    sendSkillFx('spellStoneWall', unit);
+
     unit._stoneWallHpBase = unit.currentHp;
     unit._stoneWallProtect = 1;
     const el = gameState.board[unit.row][unit.col].querySelector('.unit');
@@ -5632,12 +5683,14 @@ function enterDeepBlueSpikeMode(unit) {
     }
 }
 document.getElementById('deepBlueSkill1Btn').addEventListener('click', () => {
+    if (!canActNow()) return;
     const d = gameState._deepBlueSelected;
     if (!d) return;
     closeDeepBlueSkillModalFunc();
     enterDeepBlueHookMode(d);
 });
 document.getElementById('deepBlueSkill2Btn').addEventListener('click', () => {
+    if (!canActNow()) return;
     const d = gameState._deepBlueSelected;
     if (!d) return;
     closeDeepBlueSkillModalFunc();
@@ -5828,6 +5881,7 @@ function teleportShangbole(tp) {
     showActionMode(shang);
 }
 document.getElementById('shangboleSkill1Btn').addEventListener('click', () => {
+    if (!canActNow()) return;
     const s = gameState._shangboleSelected;
     if (!s) return;
     closeShangboleSkillModalFunc();
@@ -5835,18 +5889,21 @@ document.getElementById('shangboleSkill1Btn').addEventListener('click', () => {
     showHeroDeployText(s, '猎头手枪', '#f1c40f', 800);
 });
 document.getElementById('shangboleSkill2Btn').addEventListener('click', () => {
+    if (!canActNow()) return;
     const s = gameState._shangboleSelected;
     if (!s) return;
     closeShangboleSkillModalFunc();
     enterShangboleSpyMode(s);
 });
 document.getElementById('shangboleSkill3Btn').addEventListener('click', () => {
+    if (!canActNow()) return;
     const s = gameState._shangboleSelected;
     if (!s) return;
     closeShangboleSkillModalFunc();
     enterShangboleTeleportMode(s);
 });
 document.getElementById('shangboleSkill4Btn').addEventListener('click', () => {
+    if (!canActNow()) return;
     const s = gameState._shangboleSelected;
     if (!s) return;
     closeShangboleSkillModalFunc();
@@ -5955,8 +6012,33 @@ function enterMissileTargetMode(card) {
     });
 }
 
+// 导弹法术特效(纯视觉,联机重放用——原版:导弹从天而降+爆炸圈)
+function showMissileSpellVisual(target) {
+    const board = document.getElementById('gameBoard');
+    if (!board || !target) return;
+    const missile = document.createElement('div');
+    missile.className = 'missile-fx';
+    missile.style.position = 'absolute';
+    missile.style.left = (target.col * cellW + cellW / 2 - 6) + 'px';
+    missile.style.top = ((target.row - 8) * cellH) + 'px';
+    board.appendChild(missile);
+    setTimeout(() => {
+        if (missile.parentNode) missile.parentNode.removeChild(missile);
+        const boom = document.createElement('div');
+        boom.className = 'missile-boom';
+        boom.style.position = 'absolute';
+        boom.style.left = (target.col * cellW) + 'px';
+        boom.style.top = (target.row * cellH) + 'px';
+        board.appendChild(boom);
+        setTimeout(() => { if (boom.parentNode) boom.parentNode.removeChild(boom); }, 600);
+    }, 450);
+}
+
 // 导弹消灭:导弹从天而降消灭目标
 function missileKill(target) {
+    // 联机:导弹法术特效同步
+    sendSkillFx('spellMissile', null, target.row, target.col);
+
     gameState._missileTargeting = false;
     clearHighlights();
     const board = document.getElementById('gameBoard');
@@ -5985,6 +6067,9 @@ function missileKill(target) {
 
 // 邪月当空:随机挑8个队友,随机变成花费≥10的卡(带亲卫队的卡召唤亲卫队)
 function castEvilMoon(card, row, col) {
+    // 联机:邪月法术特效同步
+    sendSkillFx('spellMoon', null, row, col);
+
     const team = gameState.currentTurn;
     const allies = gameState.units.filter(u => u.team === team && !u._removing);
     const picked = allies.sort(() => Math.random() - 0.5).slice(0, 8);
@@ -6026,6 +6111,9 @@ function transformToCard(unit, newCard) {
 
 // 治疗术:3×3 内友军回3血(不超上限)+ 本回合+1移动
 function castHealSpell(card, row, col) {
+    // 联机:治疗法术特效同步
+    sendSkillFx('spellHeal', null, row, col);
+
     const team = gameState.currentTurn;
     const r = card.healRadius || 1;
     const board = document.getElementById('gameBoard');
@@ -6061,6 +6149,9 @@ function castHealSpell(card, row, col) {
 
 // 护盾法术:给友军添加可承受4点伤害的护盾(可叠加)
 function applyShieldSpell(unit) {
+    // 联机:护盾法术特效同步
+    sendSkillFx('spellShield', unit);
+
     unit._shieldHp = (unit._shieldHp || 0) + (4);
     const el = gameState.board[unit.row][unit.col].querySelector('.unit');
     if (el) el.classList.add('guard-shield');
@@ -6069,6 +6160,9 @@ function applyShieldSpell(unit) {
 
 // 魔法护盾:免疫所有法术伤害与效果(紫色护盾持续到死亡)
 function applyMagicShield(unit) {
+    // 联机:魔法护盾特效同步
+    sendSkillFx('spellMagicShield', unit);
+
     unit._magicShield = true;
     const el = gameState.board[unit.row][unit.col].querySelector('.unit');
     if (el) el.classList.add('magic-shield');
@@ -9945,6 +10039,9 @@ function endTurn() {
     clearHighlights();
     gameState.selectedUnit = null;
     gameState.deployMode = false;
+    // 回合结束:关闭所有技能弹窗/清空选中(防对方回合残留误操作)
+    ['deepBlueSkillModal','lvbuSkillModal','yoggSkillModal','guySkillModal','shangboleSkillModal'].forEach(id => { const m = document.getElementById(id); if (m) m.classList.add('hidden'); });
+    gameState._deepBlueSelected = null; gameState._lvbuSelected = null; gameState._guySelected = null; gameState._yoggSelected = null; gameState._shangboleSelected = null;
     // 战车:结束回合重置锁定模式
     gameState.units.forEach(u => { u._targeting = false; u._witherTargeting = false; u._witherCharged = false; u._zetsuSkillUsed = false; u._zetsuTargeting = false; });
 
@@ -10890,6 +10987,26 @@ function startGame() {
     gameState.iceFields = [];
     gameState.spikeNets = [];
     gameState.shroomCount = { red: 0, blue: 0 };
+    gameState.spellsCastThisGame = 0;
+    // 全量清理残留状态(确保新局与上一局完全无关)
+    gameState.energySpent = { red: 0, blue: 0 };
+    gameState._fateWheelProgress = 0;
+    gameState._fateFreeSpells = false;
+    gameState._fateFreeUsed = 0;
+    gameState._spellCasting = null;
+    gameState.deployPosition = null;
+    gameState._stoneWallTargeting = false;
+    gameState._missileTargeting = false;
+    gameState._eagleActive = false;
+    gameState._guyUltTargeting = null;
+    gameState._shangboleSelected = null;
+    gameState._deepBlueSelected = null;
+    gameState._lvbuSelected = null;
+    gameState._yoggSelected = null;
+    gameState._guySelected = null;
+    gameState.abilityPhase = 0;
+    // 关闭所有弹窗(防残留)
+    ['deployModal','spellModal','deepBlueSkillModal','lvbuSkillModal','yoggSkillModal','guySkillModal','shangboleSkillModal'].forEach(id => { const m = document.getElementById(id); if (m) m.classList.add('hidden'); });
 
     // 更新显示
     updateEnergyDisplay();
@@ -10936,6 +11053,12 @@ function goToStartScreen() {
     cardPackScreen.classList.add('hidden');
     gameScreen.classList.add('hidden');
     gameOverModal.classList.add('hidden');
+    // 退出清理:关闭联机连接/重置模式/清空聊天(确保新局与上局无关)
+    if (typeof ws !== 'undefined' && ws) { try { ws.close(); } catch (e) {} }
+    gameState.onlineMode = false;
+    gameState.aiMode = false;
+    const cm = document.getElementById('chatMessages');
+    if (cm) cm.innerHTML = '';
 }
 
 // 重新开始
@@ -11067,18 +11190,21 @@ document.getElementById('closeSpellModal').addEventListener('click', () => {
 // 尤格萨隆技能框
 const yoggSkillModal = document.getElementById('yoggSkillModal');
 document.getElementById('yoggSkill1Btn').addEventListener('click', () => {
+    if (!canActNow()) return;
     const y = gameState._yoggSelected;
     if (!y) return;
     closeYoggSkillModalFunc();
     enterYoggChaosMode(y);
 });
 document.getElementById('yoggSkill2Btn').addEventListener('click', () => {
+    if (!canActNow()) return;
     const y = gameState._yoggSelected;
     if (!y) return;
     closeYoggSkillModalFunc();
     yoggFrenzy(y);
 });
 document.getElementById('yoggSkill3Btn').addEventListener('click', () => {
+    if (!canActNow()) return;
     const y = gameState._yoggSelected;
     if (!y) return;
     closeYoggSkillModalFunc();
@@ -11093,16 +11219,19 @@ yoggSkillModal.addEventListener('click', (e) => { if (e.target === yoggSkillModa
 // 吕布技能栏
 const lvbuSkillModal = document.getElementById('lvbuSkillModal');
 document.getElementById('lvbuSkill1Btn').addEventListener('click', () => {
+    if (!canActNow()) return;
     const lv = gameState._lvbuSelected;
     if (!lv) return;
     lvbuSkill1(lv);
 });
 document.getElementById('lvbuSkill2Btn').addEventListener('click', () => {
+    if (!canActNow()) return;
     const lv = gameState._lvbuSelected;
     if (!lv) return;
     lvbuSkill2(lv);
 });
 document.getElementById('lvbuSkill3Btn').addEventListener('click', () => {
+    if (!canActNow()) return;
     const lv = gameState._lvbuSelected;
     if (!lv) return;
     enterLvbuLanding(lv);
@@ -11111,12 +11240,14 @@ document.getElementById('closeLvbuSkillModal').addEventListener('click', closeLv
 lvbuSkillModal.addEventListener('click', (e) => { if (e.target === lvbuSkillModal) closeLvbuSkillModalFunc(); });
 // 死门凯技能框
 document.getElementById('guySkill1Btn').addEventListener('click', () => {
+    if (!canActNow()) return;
     const g = gameState._guySelected;
     if (!g) return;
     closeGuySkillModalFunc();
     enterGuyUltimateTarget(g, 'elephant');
 });
 document.getElementById('guySkill2Btn').addEventListener('click', () => {
+    if (!canActNow()) return;
     const g = gameState._guySelected;
     if (!g) return;
     closeGuySkillModalFunc();
