@@ -98,6 +98,21 @@ function tryConnect(cb) {
                 setTimeout(() => { if (msg.parentNode) msg.parentNode.removeChild(msg); }, 500);
             }, 1500);
         }
+        if (data.type === 'fx') {
+            // 播放对方同步来的特效(登场字/技能字/伤害字/攻击动画/技能动画)
+            const fx = data.fx;
+            window._fxSyncing = true;
+            if (fx.kind === 'deployText') {
+                showHeroDeployText({ row: fx.row, col: fx.col }, fx.msg, fx.color, fx.duration);
+            } else if (fx.kind === 'critText') {
+                showCritText(fx.row, fx.col, fx.msg);
+            } else if (fx.kind === 'attack') {
+                showOnlineAttackFx(fx.fromR, fx.fromC, fx.toR, fx.toC);
+            } else if (fx.kind === 'skill') {
+                playSkillFx(fx);
+            }
+            window._fxSyncing = false;
+        }
         if (data.type === 'roomCreated') {
             onlineRoomId = data.roomId;
             onlineTeam = data.team;
@@ -144,6 +159,7 @@ function tryConnect(cb) {
                 else { stopTimer(); document.getElementById('timer').textContent = '对方回合'; }
                 initBoard();
                 gameState.units.forEach(u => renderUnit(u));
+                if (typeof renderSpikeNets === 'function') renderSpikeNets();
             } else {
                 // 红方接收蓝方状态(蓝方回合结束后回合流转回红方)
                 gameState.units = gs.units.map(u => ({...u}));
@@ -161,6 +177,7 @@ function tryConnect(cb) {
                 else { stopTimer(); document.getElementById('timer').textContent = '对方回合'; }
                 initBoard();
                 gameState.units.forEach(u => renderUnit(u));
+                if (typeof renderSpikeNets === 'function') renderSpikeNets();
             }
         }
         if (data.type === 'opponentLeft') {
@@ -203,6 +220,78 @@ function startOnlineGame() {
     }
 }
 
+// 播放对方同步的技能动画:用真实单位对象调用原版动画函数(完整重放),缺失则用光效兜底
+function playSkillFx(fx) {
+    try {
+        const findU = (r, c) => gameState.units.find(x => x.row === r && x.col === c && !x._removing);
+        const u = findU(fx.row, fx.col) || { row: fx.row, col: fx.col, team: fx.team, currentHp: 1, maxHp: 1, attack: 1, armor: 0 };
+        const t = findU(fx.toR, fx.toC) || { row: fx.toR, col: fx.toC, team: fx.team === 'red' ? 'blue' : 'red', currentHp: 1, maxHp: 1, attack: 1, armor: 0 };
+        switch (fx.skill) {
+            case 'shinra': if (typeof showShinraVisual === 'function') showShinraVisual(u.row, u.col, u.shinraRange || 3); else showSkillFlashFx(fx.row, fx.col, '#9b59b6', 50); break;
+            case 'bansho': showSkillFlashFx(fx.row, fx.col, '#3498db', 40); break;
+            case 'chibaku': if (typeof showChibakuVisual === 'function') showChibakuVisual(u); else showSkillFlashFx(fx.row, fx.col, '#e74c3c', 60); break;
+            case 'woodDragon': showSkillFlashFx(fx.toR, fx.toC, '#27ae60', 50); break;
+            case 'godPalm': if (typeof showGodPalm === 'function') showGodPalm(u, false); else showSkillFlashFx(fx.row, fx.col, '#f1c40f', 60); break;
+            case 'susanoo': showSkillFlashFx(fx.row, fx.col, '#8e44ad', 55); break;
+            case 'elephant': showSkillFlashFx(fx.toR, fx.toC, '#e74c3c', 55); break;
+            case 'doom': if (typeof showDoomMushroom === 'function') showDoomMushroom(u); else showSkillFlashFx(fx.row, fx.col, '#c0392b', 55); break;
+            case 'pierce': showPierceSkillFX(fx.toR, fx.toC); break;
+            case 'spike': showSkillFlashFx(fx.row, fx.col, '#3498db', 50); break;
+            case 'lvbuSlash': if (typeof showLvbuSlash === 'function') showLvbuSlash(u); else showSkillFlashFx(fx.toR, fx.toC, '#f39c12', 45); break;
+            default: showOnlineAttackFx(fx.row, fx.col, fx.toR, fx.toC);
+        }
+    } catch (e) { /* 动画播放失败不影响游戏 */ }
+}
+
+// 联机通用技能光效(冲击波圈/光芒),动画函数不可用时兜底
+function showSkillFlashFx(row, col, color, size) {
+    const board = document.getElementById('gameBoard');
+    if (!board) return;
+    const p = typeof cellCenterPx === 'function' ? cellCenterPx(row, col) : { x: col * 30 + 15, y: row * 26 + 13 };
+    const ring = document.createElement('div');
+    ring.className = 'skill-flash-fx';
+    ring.style.left = (p.x - (size || 40)) + 'px';
+    ring.style.top = (p.y - (size || 40)) + 'px';
+    ring.style.width = (size || 40) * 2 + 'px';
+    ring.style.height = (size || 40) * 2 + 'px';
+    ring.style.borderColor = color || '#fff';
+    board.appendChild(ring);
+    setTimeout(() => { if (ring.parentNode) ring.parentNode.removeChild(ring); }, 600);
+}
+
+// 神罗天征冲击波(接收方视觉)
+function showShinraFx(u, t) {
+    showSkillFlashFx(u.row, u.col, '#9b59b6', 50);
+}
+function showBanshoFx(u) { showSkillFlashFx(u.row, u.col, '#3498db', 40); }
+function showChibakuFx(u) { showSkillFlashFx(u.row, u.col, '#e74c3c', 60); }
+function showWoodDragonFx(u, t) { showSkillFlashFx(t.row, t.col, '#27ae60', 50); }
+function showGodPalmFx(u) { showSkillFlashFx(u.row, u.col, '#f1c40f', 60); }
+function showSusanooFx(u) { showSkillFlashFx(u.row, u.col, '#8e44ad', 55); }
+function showGuyElephantFx(u, t) { showSkillFlashFx(t.row, t.col, '#e74c3c', 55); }
+function showDoomFx(u) { showSkillFlashFx(u.row, u.col, '#c0392b', 55); }
+function showSpikeNetFx(u) { showSkillFlashFx(u.row, u.col, '#3498db', 50); }
+function showLvbuSlashFx(u, t) { showSkillFlashFx(t.row, t.col, '#f39c12', 45); }
+
+// 播放对方同步的攻击动画:白色光点从攻击方飞向目标
+function showOnlineAttackFx(r1, c1, r2, c2) {
+    const board = document.getElementById('gameBoard');
+    if (!board) return;
+    const p1 = typeof cellCenterPx === 'function' ? cellCenterPx(r1, c1) : { x: c1 * 30 + 15, y: r1 * 26 + 13 };
+    const p2 = typeof cellCenterPx === 'function' ? cellCenterPx(r2, c2) : { x: c2 * 30 + 15, y: r2 * 26 + 13 };
+    const dot = document.createElement('div');
+    dot.className = 'online-attack-fx';
+    dot.style.left = p1.x + 'px';
+    dot.style.top = p1.y + 'px';
+    board.appendChild(dot);
+    setTimeout(() => {
+        dot.style.transition = 'all 0.25s linear';
+        dot.style.left = p2.x + 'px';
+        dot.style.top = p2.y + 'px';
+    }, 20);
+    setTimeout(() => { if (dot.parentNode) dot.parentNode.removeChild(dot); }, 500);
+}
+
 // 每次操作后同步状态(单位完整对象,含属性/技能字段,确保对方渲染正常)
 function syncGameState() {
     if (!gameState.onlineMode || !ws || ws.readyState !== 1) return;
@@ -214,7 +303,8 @@ function syncGameState() {
             blueBaseHp: gameState.blueBaseHp,
             redEnergy: gameState.redEnergy,
             blueEnergy: gameState.blueEnergy,
-            turnNumber: gameState.turnNumber
+            turnNumber: gameState.turnNumber,
+            spikeNets: gameState.spikeNets || []
         })
     }));
 }

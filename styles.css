@@ -1719,7 +1719,7 @@ h1 {
 .chat-option { background: #3a4149; color: #eee; border: none; border-radius: 6px; padding: 4px 8px; cursor: pointer; font-size: 12px; }
 .chat-option:hover { background: #57606f; }
 .chat-messages { position: absolute; right: auto; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: flex-start; gap: 6px; z-index: 40; pointer-events: none; max-width: 72px; }
-.chat-msg { background: rgba(28, 32, 38, 0.88); color: #ffd700; border: 1px solid rgba(255, 215, 0, 0.45); border-radius: 8px; padding: 4px 8px; font-size: 12px; white-space: nowrap; animation: chatIn 0.25s ease-out; opacity: 1; transition: opacity 0.5s; }
+.chat-msg { background: rgba(245, 245, 245, 0.92); color: #000; border: 1px solid rgba(255, 215, 0, 0.45); border-radius: 8px; padding: 4px 8px; font-size: 12px; white-space: nowrap; animation: chatIn 0.25s ease-out; opacity: 1; transition: opacity 0.5s; }
 .chat-msg-out { opacity: 0; }
 @keyframes chatIn { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
 .art-blowdart::after { content: '吹箭'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.3); color: #2ecc71; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 6px #9b59b6, 0 0 12px rgba(155,89,182,0.9); animation: dragonGlow 1.5s ease-in-out infinite; }
@@ -2298,7 +2298,7 @@ h1 {
 .inferno-laser { position: absolute; height: 3px; background: linear-gradient(90deg, rgba(231,76,60,0.2), #e74c3c); box-shadow: 0 0 10px 2px rgba(231,76,60,0.8); z-index: 60; pointer-events: none; }
 
 /* 联机对方聊天消息(蓝色区分) */
-.chat-msg-opp { background: rgba(52, 152, 219, 0.18); border: 1px solid rgba(52, 152, 219, 0.4); }
+.chat-msg-opp { background: rgba(52, 152, 219, 0.25); border: 1px solid rgba(52, 152, 219, 0.5); }
 
 /* 联机蓝方视角:棋盘上下翻转(蓝方在下、红方在上),单位与文字保持正立 */
 .blue-view #gameBoard { transform: scaleY(-1); }
@@ -2313,3 +2313,9 @@ h1 {
 /* 蓝方视角:大本营数字正立(朝向自己) */
 .blue-view #gameBoard .base-hp-overlay { transform: scaleY(-1); }
 
+/* 联机同步攻击动画光点 */
+.online-attack-fx { position: absolute; width: 8px; height: 8px; border-radius: 50%; background: #fff; box-shadow: 0 0 8px 2px rgba(255,255,255,0.9); z-index: 50; pointer-events: none; }
+
+/* 联机技能动画光效(冲击波圈) */
+.skill-flash-fx { position: absolute; border: 4px solid rgba(255,255,255,0.9); border-radius: 50%; z-index: 48; pointer-events: none; animation: skillFlash 0.6s ease-out forwards; }
+@keyframes skillFlash { 0% { opacity: 0.95; transform: scale(0.4); } 100% { opacity: 0; transform: scale(1.2); } }

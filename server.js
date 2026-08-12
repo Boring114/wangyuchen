@@ -61,6 +61,16 @@ wss.on('connection', (ws) => {
                     }
                 });
             }
+            else if (data.type === 'fx' && (userRoom || ws.userRoom)) {
+                // 转发特效事件给对方(对面播放同样动画)
+                const room = rooms[userRoom || ws.userRoom];
+                if (!room) return;
+                room.players.forEach(p => {
+                    if (p.ws !== ws && p.ws.readyState === 1) {
+                        p.ws.send(JSON.stringify({ type: 'fx', fx: data.fx }));
+                    }
+                });
+            }
             else if (data.type === 'gameState' && (userRoom || ws.userRoom)) {
                 // 转发游戏状态给对方
                 const room = rooms[userRoom || ws.userRoom];

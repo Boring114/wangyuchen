@@ -2083,6 +2083,7 @@ function handleCellClick(e) {
             return;
         }
         const targetUnit = gameState.units.find(u => u.row === row && u.col === col);
+        const atkFrom = gameState.selectedUnit ? { r: gameState.selectedUnit.row, c: gameState.selectedUnit.col } : null;
         if (targetUnit && targetUnit.team !== gameState.currentTurn) {
             attackUnit(targetUnit);
         } else if (gameState.selectedUnit.team === 'red' && isBlueBase(row, col)) {
@@ -2091,6 +2092,10 @@ function handleCellClick(e) {
         } else if (gameState.selectedUnit.team === 'blue' && isRedBase(row, col)) {
             // 蓝方攻击红方大本营
             attackBase(false);
+        }
+        // 联机:攻击特效事件(对面看到攻击动画)
+        if (gameState.onlineMode && atkFrom && targetUnit && typeof ws !== 'undefined' && ws && ws.readyState === 1) {
+            ws.send(JSON.stringify({ type: 'fx', fx: { kind: 'attack', fromR: atkFrom.r, fromC: atkFrom.c, toR: targetUnit.row, toC: targetUnit.col } }));
         }
         // 联机实时同步:攻击后立即同步(对面实时看到血量变化)
         syncOnlineNow();
@@ -4564,6 +4569,9 @@ function showGameOver() {
 
 // 毁灭菇:以自身为中心 7×7 爆炸(紫色蘑菇云),7伤,自身死亡并留下持续4回合的弹坑
 function doomShroomExplode(unit) {
+    // 联机:毁灭菇爆炸动画同步
+    sendSkillFx('doom', unit);
+
     if (unit._doomExploded) return;
     unit._doomExploded = true;
     showDoomMushroom(unit);
@@ -4583,6 +4591,8 @@ function doomShroomExplode(unit) {
     renderCraters();
     // 自身死亡(_doomExploded 已标记,防递归)
     removeUnit(unit);
+    // 联机实时同步:技能释放后立即同步(对面实时可见)
+    syncOnlineNow();
 }
 
 // 紫色蘑菇云特效(7×7)
@@ -4871,6 +4881,8 @@ function castSpell(card, row, col) {
         updateBaseHpDisplay();
         checkGameOver();
     }, 420);
+    // 联机实时同步:法术施放后同步
+    syncOnlineNow();
 }
 
 // 狂暴法术:5×5 范围内友军攻击+2(技能每段+2)、下次移动+2,持续一个回合(特效同步持续)
@@ -5274,6 +5286,9 @@ function showPierceBullet(from, to) {
 
 // 皮尔斯大招:以选点为中心5×5敌人受普攻,每命中1敌生成1弹壳
 function pierceSkill(unit, row, col) {
+    // 联机:皮尔斯大招动画同步
+    sendSkillFx('pierce', unit, row, col);
+
     unit._pierceTargeting = false;
     unit._pierceSkillCd = 2;
     clearHighlights();
@@ -5295,6 +5310,8 @@ function pierceSkill(unit, row, col) {
     showPierceSkillFX(row, col);
     gameState.attackedUnits.add(unit.id);
     gameState.selectedUnit = null;
+    // 联机实时同步:技能释放后立即同步(对面实时可见)
+    syncOnlineNow();
 }
 
 // 皮尔斯大招落点特效(金色冲击)
@@ -5380,6 +5397,8 @@ function hitSpikeNet(net, damage) {
         });
         showHeroDeployText({ row: net.row, col: net.col, team: net.team }, '钢刺网破碎', '#8e44ad', 1200);
     }
+    // 联机实时同步:技能释放后立即同步(对面实时可见)
+    syncOnlineNow();
 }
 
 // 深蓝钩锁:拉10格内敌人至身前
@@ -5475,16 +5494,23 @@ function deepBlueHook(unit, target) {
             document.querySelectorAll('.fisher-rope').forEach(r => r.remove());
         }, 500);
     }, 15 * 30 + 50);
+    // 联机实时同步:技能释放后立即同步(对面实时可见)
+    syncOnlineNow();
 }
 
 // 深蓝钢刺:选点(5格任意格)生成5×5钢刺网(网5血)
 function deepBlueSpike(unit, row, col) {
+    // 联机:钢刺网动画同步
+    sendSkillFx('spike', unit, row, col);
+
     unit._spikeTargeting = false;
     gameState.spikeNets.push({ row, col, hp: 5, team: unit.team });
     renderSpikeNets();
     showPierceSkillFX(row, col);
     clearHighlights();
     gameState.selectedUnit = null;
+    // 联机实时同步:技能释放后立即同步(对面实时可见)
+    syncOnlineNow();
 }
 
 // 深蓝技能框
@@ -5587,6 +5613,8 @@ function balloonSkeletonSkill(balloon) {
     }
     clearHighlights();
     gameState.selectedUnit = null;
+    // 联机实时同步:技能释放后立即同步(对面实时可见)
+    syncOnlineNow();
 }
 
 // 尚博勒技能框
@@ -6116,6 +6144,8 @@ function activateEliteKnightSkill(k) {
     if (el) el.classList.add('guard-shield');
     clearHighlights();
     gameState.selectedUnit = null;
+    // 联机实时同步:技能释放后立即同步(对面实时可见)
+    syncOnlineNow();
 }
 
 // 精英骑士法阵渲染(金色 7×7)
@@ -6168,6 +6198,8 @@ function yoggSkill3(yogg) {
     gameState.selectedUnit = null;
     // 技能用完后:随机释放两个法术
     setTimeout(() => yoggCastRandomSpells(yogg), 300);
+    // 联机实时同步:技能释放后立即同步(对面实时可见)
+    syncOnlineNow();
 }
 
 // 混沌统治:选敌模式(全图敌方单位标红)
@@ -6496,6 +6528,9 @@ function closeLvbuSkillModalFunc() {
 
 // 技能1 方天画斩:前方2×3(前两行×中间3列)敌人3伤 + 附魔(真伤,无视护甲护盾)
 function lvbuSkill1(lvbu) {
+    // 联机:方天画斩动画同步
+    sendSkillFx('lvbuSlash', lvbu);
+
     lvbu._lvbuS1Used = 1;
     closeLvbuSkillModalFunc();
     const dir = lvbu.team === 'red' ? -1 : 1;
@@ -6527,6 +6562,9 @@ function lvbuSkill1(lvbu) {
 
 // 技能2 贪狼之握:前方3×3汲取1伤 + 每吸1个+2护盾(最多6个)
 function lvbuSkill2(lvbu) {
+    // 联机:贪狼之握动画同步
+    sendSkillFx('lvbuSlash', lvbu);
+
     lvbu._lvbuS2Used = 1;
     closeLvbuSkillModalFunc();
     const dir = lvbu.team === 'red' ? -1 : 1;
@@ -6705,6 +6743,8 @@ function guyChargeAttack(guy, target) {
         if (target.currentHp <= 0) removeUnit(target);
         finishGuyCharge(guy);
     }
+    // 联机实时同步:技能释放后立即同步(对面实时可见)
+    syncOnlineNow();
 }
 
 // 冲撞结算:次数+能量(每撞2次+1能量,上限4)
@@ -6750,6 +6790,9 @@ function enterGuyUltimateTarget(guy, type) {
 
 // 夕象伍足:绕圈3圈每圈2伤 → 四道白光各1伤 → 米字形+粗白光3伤
 function guyElephantStomp(guy, target) {
+    // 联机:夕象伍足动画同步
+    sendSkillFx('elephant', guy, target.row, target.col);
+
     guy._guyUltTargeting = null;
     guy.guyEnergy = 0;
     clearHighlights();
@@ -7183,6 +7226,10 @@ function renderUnit(unit) {
 function showHeroDeployText(unit, message, color, duration) {
     if (!unit || unit.row === undefined || unit.col === undefined) return;
     if (!message) return;
+    // 联机:登场/技能文字同步(对面也显示;接收播放时不重复发送)
+    if (gameState.onlineMode && !window._fxSyncing && typeof ws !== 'undefined' && ws && ws.readyState === 1) {
+        ws.send(JSON.stringify({ type: 'fx', fx: { kind: 'deployText', row: unit.row, col: unit.col, msg: message, color: color || '#f1c40f', duration: duration || 3500 } }));
+    }
     const cell = gameState.board[unit.row][unit.col];
     const text = document.createElement('div');
     text.className = 'hero-deploy-text';
@@ -7393,6 +7440,9 @@ function enterSolveDragonSelect(m) {
 }
 // 木龙之术:木龙冲(路径3伤)→ 俯冲3×3四伤 → 树缠 → 解斑落地
 function solveWoodDragon(m, target) {
+    // 联机:木龙动画同步
+    sendSkillFx('woodDragon', m, target ? target.row : m.row, target ? target.col : m.col);
+
     m._solvePhase = null;
     document.querySelectorAll('.dragon-range').forEach(el => el.remove());
     clearHighlights();
@@ -7499,6 +7549,8 @@ function solveWoodDragon(m, target) {
         }
     };
     requestAnimationFrame(stepGrow);
+    // 联机实时同步:技能释放后立即同步(对面实时可见)
+    syncOnlineNow();
 }
 // 火遁·豪火灭却:前方3×3 3伤 + 后方3×3 2伤(3×6竖向),树缠额外2伤
 function solveFireBlast(m) {
@@ -8552,6 +8604,13 @@ function painSkillBonus(pain) {
     return b;
 }
 
+// 联机技能动画事件发送(对面播放同样技能动画)
+function sendSkillFx(kind, unit, targetRow, targetCol) {
+    if (gameState.onlineMode && !window._fxSyncing && typeof ws !== 'undefined' && ws && ws.readyState === 1) {
+        ws.send(JSON.stringify({ type: 'fx', fx: { kind: 'skill', skill: kind, row: unit ? unit.row : (targetRow || 0), col: unit ? unit.col : (targetCol || 0), fromR: unit ? unit.row : 0, fromC: unit ? unit.col : 0, toR: targetRow !== undefined ? targetRow : (unit ? unit.row : 0), toC: targetCol !== undefined ? targetCol : (unit ? unit.col : 0), team: unit ? unit.team : 'red' } }));
+    }
+}
+
 // Pain 技能激活
 function activatePainAbility(pain) {
     // 4格能量释放地爆天星(万象/神罗释放过程中也可触发;能量满即可,不受攻击标记限制--先技能后查克拉补满也能直接地爆)
@@ -8588,9 +8647,28 @@ function activatePainAbility(pain) {
     }
     clearHighlights();
     gameState.selectedUnit = null;
+    // 联机实时同步:技能释放后立即同步(对面实时可见)
+    syncOnlineNow();
+}
+
+// 神罗天征范围特效(纯视觉,联机重放用——对面看到原版动画)
+function showShinraVisual(row, col, radius) {
+    for (let r = row - radius; r <= row + radius; r++) {
+        for (let c = col - radius; c <= col + radius; c++) {
+            if (!isValidPosition(r, c)) continue;
+            if (Math.max(Math.abs(r - row), Math.abs(c - col)) <= radius) {
+                const cover = document.createElement('div');
+                cover.className = 'shinra-cover';
+                gameState.board[r][c].appendChild(cover);
+                setTimeout(() => { if (cover.parentNode) cover.remove(); }, 3000);
+            }
+        }
+    }
 }
 
 function shinraTensei(pain) {
+    // 联机:神罗天征动画同步
+    sendSkillFx('shinra', pain);
     // 清除旧特效
     if (pain.shinraCovers) {
         pain.shinraCovers.forEach(c => { if (c.parentNode) c.remove(); });
@@ -8598,19 +8676,8 @@ function shinraTensei(pain) {
     }
     const radius = pain.shinraRange;
     pain.shinraCovers = [];
-    // 范围特效(持续至技能结束)
-    for (let r = pain.row - radius; r <= pain.row + radius; r++) {
-        for (let c = pain.col - radius; c <= pain.col + radius; c++) {
-            if (!isValidPosition(r, c)) continue;
-            const dist = Math.max(Math.abs(r - pain.row), Math.abs(c - pain.col));
-            if (dist <= radius) {
-                const cover = document.createElement('div');
-                cover.className = 'shinra-cover';
-                gameState.board[r][c].appendChild(cover);
-                pain.shinraCovers.push(cover);
-            }
-        }
-    }
+    // 范围特效(原版抽取函数,持续至技能结束)
+    showShinraVisual(pain.row, pain.col, radius);
     // AoE 伤害
     pain._shinraHits = 0;
     gameState.units.forEach(u => {
@@ -8654,6 +8721,8 @@ function shinraTensei(pain) {
 }
 
 function banshoTenin(pain) {
+    // 联机:万象天引动画同步
+    sendSkillFx('bansho', pain);
     const team = pain.team;
     const forward = team === 'red' ? -1 : 1;
     // 拉扯前方 5x5
@@ -8967,8 +9036,46 @@ function showElectricBullet(unit, lineTargets, allChainTargets) {
     setTimeout(() => { bullet.remove(); }, 1000);
 }
 
+// 地爆天星动画(纯视觉,联机重放用——对面看到原版:黑球上升+敌人被吸走环绕)
+function showChibakuVisual(pain) {
+    const board = document.getElementById('gameBoard');
+    if (!board) return;
+    const ball = document.createElement('div');
+    ball.className = 'chibaku-ball';
+    ball.style.left = (pain.col * cellW) + 'px';
+    ball.style.top = (pain.row * cellH) + 'px';
+    board.appendChild(ball);
+    const bx = 11 * cellW, by = 13 * cellH;
+    setTimeout(() => { ball.style.left = bx + 'px'; ball.style.top = by + 'px'; }, 100);
+    const enemies = gameState.units.filter(e => e.team !== pain.team && !e._removing);
+    if (enemies.length === 0) { setTimeout(() => { if (ball.parentNode) ball.remove(); }, 4000); return; }
+    enemies.forEach((e, i) => {
+        const oldCell = gameState.board[e.row] && gameState.board[e.row][e.col];
+        const el = oldCell ? oldCell.querySelector('.unit') : null;
+        if (!el) return;
+        oldCell.removeChild(el);
+        el.style.position = 'absolute';
+        el.style.transform = 'none';
+        el.style.left = (e.col * cellW + cellW / 2 - 10) + 'px';
+        el.style.top = (e.row * cellH + cellH / 2 - 10) + 'px';
+        el.style.transition = 'all 3s ease-in';
+        el.style.zIndex = '30';
+        board.appendChild(el);
+        const angle = (i / enemies.length) * Math.PI * 2;
+        const rad = 0.9;
+        const bcx = bx + 25, bcy = by + 25;
+        const tx = bcx + Math.cos(angle) * rad * cellW - 10;
+        const ty = bcy + Math.sin(angle) * rad * cellH - 10;
+        const startDelay = 300 + i * 80;
+        setTimeout(() => { el.style.left = tx + 'px'; el.style.top = ty + 'px'; }, startDelay);
+    });
+    setTimeout(() => { if (ball.parentNode) ball.remove(); }, 6000);
+}
+
 // 地爆天星
 function chibakuTensei(pain) {
+    // 联机:地爆天星动画同步
+    sendSkillFx('chibaku', pain);
     pain.painEnergy = 0;
     renderEnergyBar(pain, gameState.board[pain.row][pain.col].querySelector('.unit'));
     const board = document.getElementById('gameBoard');
@@ -9253,6 +9360,10 @@ function showCritText(row, col, msg) {
     text.textContent = msg || '暴击!';
     cell.appendChild(text);
     setTimeout(() => { if (text.parentNode) text.remove(); }, 800);
+    // 联机:伤害/状态文字同步(对面也显示;接收播放时不重复发送)
+    if (gameState.onlineMode && !window._fxSyncing && typeof ws !== 'undefined' && ws && ws.readyState === 1) {
+        ws.send(JSON.stringify({ type: 'fx', fx: { kind: 'critText', row, col, msg: msg || '暴击!' } }));
+    }
 }
 
 // 火焰区域渲染
@@ -9549,7 +9660,9 @@ function startTimer() {
         updateTimerDisplay();
 
         if (gameState.timer <= 0) {
+            // 联机模式:倒计时到0自动跳过回合(无条件,含操作方超时)
             endTurn();
+            return;
         }
     }, 1000);
 }
