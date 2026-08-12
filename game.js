@@ -1669,7 +1669,7 @@ function handleCellClick(e) {
     // 导弹发射选敌模式:点击攻击力≥5的敌人直接消灭
     if (gameState._missileTargeting) {
         const tU = gameState.units.find(u => u.row === row && u.col === col);
-        if (tU && tU.team !== gameState.currentTurn && !tU.ghost && (tU.attack || 0) >= 5 && cell.classList.contains('tank-target')) {
+        if (tU && tU.team !== gameState.currentTurn && !tU.ghost && (tU.attack || 0) >= 5 && !isSkillOutputUnit(tU) && cell.classList.contains('tank-target')) {
             missileKill(tU);
         } else {
             gameState._missileTargeting = false;
@@ -1680,7 +1680,7 @@ function handleCellClick(e) {
     // 滚石选敌模式:点击攻击力≤2的敌人直接消灭
     if (gameState._rollingStoneTargeting) {
         const tU = gameState.units.find(u => u.row === row && u.col === col);
-        if (tU && tU.team !== gameState.currentTurn && !tU.ghost && (tU.attack || 0) <= 2 && cell.classList.contains('tank-target')) {
+        if (tU && tU.team !== gameState.currentTurn && !tU.ghost && (tU.attack || 0) <= 2 && !isSkillOutputUnit(tU) && cell.classList.contains('tank-target')) {
             rollingStoneKill(tU);
         } else {
             gameState._rollingStoneTargeting = false;
@@ -4863,7 +4863,7 @@ function castSpell(card, row, col) {
     if (card.missileLaunch) {
         // 单击:格子上的敌人若攻击力≥5 直接消灭;否则进入选敌模式
         const tU = gameState.units.find(u => u.row === row && u.col === col);
-        if (tU && tU.team !== gameState.currentTurn && !tU.ghost && (tU.attack || 0) >= (card.minAtk || 5)) {
+        if (tU && tU.team !== gameState.currentTurn && !tU.ghost && (tU.attack || 0) >= (card.minAtk || 5) && !isSkillOutputUnit(tU)) {
             missileKill(tU);
             return;
         }
@@ -4873,7 +4873,7 @@ function castSpell(card, row, col) {
     if (card.rollingStone) {
         // 单击:格子上的敌人若攻击力≤2 直接消灭;否则进入选敌模式
         const tU = gameState.units.find(u => u.row === row && u.col === col);
-        if (tU && tU.team !== gameState.currentTurn && !tU.ghost && (tU.attack || 0) <= (card.maxAtk || 2)) {
+        if (tU && tU.team !== gameState.currentTurn && !tU.ghost && (tU.attack || 0) <= (card.maxAtk || 2) && !isSkillOutputUnit(tU)) {
             rollingStoneKill(tU);
             return;
         }
@@ -5972,7 +5972,7 @@ function enterRollingStoneTargetMode(card) {
     const maxAtk = card.maxAtk || 2;
     gameState.units.forEach(u => {
         if (u.team === gameState.currentTurn || u.ghost || u._removing) return;
-        if ((u.attack || 0) <= maxAtk) {
+        if ((u.attack || 0) <= maxAtk && !isSkillOutputUnit(u)) {
             gameState.board[u.row][u.col].classList.add('tank-target');
         }
     });
@@ -6006,7 +6006,7 @@ function enterMissileTargetMode(card) {
     const minAtk = card.minAtk || 5;
     gameState.units.forEach(u => {
         if (u.team === gameState.currentTurn || u.ghost || u._removing) return;
-        if ((u.attack || 0) >= minAtk) {
+        if ((u.attack || 0) >= minAtk && !isSkillOutputUnit(u)) {
             gameState.board[u.row][u.col].classList.add('tank-target');
         }
     });
@@ -7246,6 +7246,9 @@ if (unit._stoneWallProtect) {
     unit.currentHp = unit._stoneWallHpBase;
     return;
 }
+// 防重复移除/递归死循环(导弹/爆炸/连锁移除时同一单位只处理一次)
+if (unit._removing) return;
+unit._removing = true;
 // 地狱之塔激光:塔死亡或激光目标死亡时移除对应激光线
 gameState.units.forEach(u => {
     if (u.infernoTower && u._infernoLaserEl && (u.id === unit.id || u._infernoLaserTarget === unit.id)) {
@@ -9014,6 +9017,8 @@ function showBanshoVisual(pain) {
             setTimeout(() => { if (el.parentNode) el.remove(); }, 500);
         }
     });
+    // 动画结束:重渲染所有单位(还原被移动的元素,避免对方视角卡住)
+    setTimeout(() => { gameState.units.forEach(u => { const c = gameState.board[u.row] && gameState.board[u.row][u.col]; if (c) renderUnit(u); }); }, 900);
 }
 
 function banshoTenin(pain) {
@@ -9375,6 +9380,8 @@ function showChibakuVisual(pain) {
         setTimeout(() => { el.style.left = tx + 'px'; el.style.top = ty + 'px'; }, startDelay);
     });
     setTimeout(() => { if (ball.parentNode) ball.remove(); }, 6000);
+    // 动画结束:重渲染所有单位(还原被移动的元素,避免对方视角卡在动画最后一刻)
+    setTimeout(() => { gameState.units.forEach(u => { const c = gameState.board[u.row] && gameState.board[u.row][u.col]; if (c) renderUnit(u); }); }, 6400);
 }
 
 // 木龙之术动画(纯视觉,联机重放用——原版:木龙从施法者长向目标+落地爆炸)
