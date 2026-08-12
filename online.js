@@ -150,6 +150,13 @@ function tryConnect(cb) {
                 gameState.redEnergy = gs.redEnergy;
                 gameState.blueEnergy = gs.blueEnergy;
                 gameState.turnNumber = gs.turnNumber;
+                gameState.spikeNets = gs.spikeNets || [];
+                gameState.craters = gs.craters || [];
+                gameState.rageZones = gs.rageZones || [];
+                gameState.knightZones = gs.knightZones || [];
+                gameState.iceFields = gs.iceFields || [];
+                gameState.windZones = gs.windZones || [];
+                gameState.fireZones = gs.fireZones || [];
                 gameState.currentTurn = 'blue';
                 updateEnergyDisplay();
                 updateBaseHpDisplay();
@@ -160,6 +167,15 @@ function tryConnect(cb) {
                 initBoard();
                 gameState.units.forEach(u => renderUnit(u));
                 if (typeof renderSpikeNets === 'function') renderSpikeNets();
+                if (typeof renderCraters === 'function') renderCraters();
+                if (typeof renderRageZones === 'function') renderRageZones();
+                if (typeof renderKnightZones === 'function') renderKnightZones();
+                if (typeof renderIceFields === 'function') renderIceFields();
+                if (typeof renderWindZones === 'function') renderWindZones();
+                if (typeof renderFireZones === 'function') renderFireZones();
+                gameState.units.forEach(u => { if (u._susanooActive && typeof renderSusanooVisual === 'function') renderSusanooVisual(u); });
+                gameState.units.forEach(u => { if (u._infernoLaserTarget && typeof showInfernoLaser === 'function') { const tar = gameState.units.find(x => x.id === u._infernoLaserTarget); if (tar) showInfernoLaser(u, tar); } });
+                gameState.units.forEach(u => { if (u.poisonTurns > 0 && typeof updatePoisonVisual === 'function') updatePoisonVisual(u); if (u.treeBound && typeof updateTreeVisual === 'function') updateTreeVisual(u); });
             } else {
                 // 红方接收蓝方状态(蓝方回合结束后回合流转回红方)
                 gameState.units = gs.units.map(u => ({...u}));
@@ -168,6 +184,13 @@ function tryConnect(cb) {
                 gameState.redEnergy = gs.redEnergy;
                 gameState.blueEnergy = gs.blueEnergy;
                 gameState.turnNumber = gs.turnNumber;
+                gameState.spikeNets = gs.spikeNets || [];
+                gameState.craters = gs.craters || [];
+                gameState.rageZones = gs.rageZones || [];
+                gameState.knightZones = gs.knightZones || [];
+                gameState.iceFields = gs.iceFields || [];
+                gameState.windZones = gs.windZones || [];
+                gameState.fireZones = gs.fireZones || [];
                 gameState.currentTurn = 'red';
                 updateEnergyDisplay();
                 updateBaseHpDisplay();
@@ -178,6 +201,15 @@ function tryConnect(cb) {
                 initBoard();
                 gameState.units.forEach(u => renderUnit(u));
                 if (typeof renderSpikeNets === 'function') renderSpikeNets();
+                if (typeof renderCraters === 'function') renderCraters();
+                if (typeof renderRageZones === 'function') renderRageZones();
+                if (typeof renderKnightZones === 'function') renderKnightZones();
+                if (typeof renderIceFields === 'function') renderIceFields();
+                if (typeof renderWindZones === 'function') renderWindZones();
+                if (typeof renderFireZones === 'function') renderFireZones();
+                gameState.units.forEach(u => { if (u._susanooActive && typeof renderSusanooVisual === 'function') renderSusanooVisual(u); });
+                gameState.units.forEach(u => { if (u._infernoLaserTarget && typeof showInfernoLaser === 'function') { const tar = gameState.units.find(x => x.id === u._infernoLaserTarget); if (tar) showInfernoLaser(u, tar); } });
+                gameState.units.forEach(u => { if (u.poisonTurns > 0 && typeof updatePoisonVisual === 'function') updatePoisonVisual(u); if (u.treeBound && typeof updateTreeVisual === 'function') updateTreeVisual(u); });
             }
         }
         if (data.type === 'opponentLeft') {
@@ -228,12 +260,32 @@ function playSkillFx(fx) {
         const t = findU(fx.toR, fx.toC) || { row: fx.toR, col: fx.toC, team: fx.team === 'red' ? 'blue' : 'red', currentHp: 1, maxHp: 1, attack: 1, armor: 0 };
         switch (fx.skill) {
             case 'shinra': if (typeof showShinraVisual === 'function') showShinraVisual(u.row, u.col, u.shinraRange || 3); else showSkillFlashFx(fx.row, fx.col, '#9b59b6', 50); break;
-            case 'bansho': showSkillFlashFx(fx.row, fx.col, '#3498db', 40); break;
+            case 'bansho': if (typeof showBanshoVisual === 'function') showBanshoVisual(u); else showSkillFlashFx(fx.row, fx.col, '#3498db', 40); break;
             case 'chibaku': if (typeof showChibakuVisual === 'function') showChibakuVisual(u); else showSkillFlashFx(fx.row, fx.col, '#e74c3c', 60); break;
-            case 'woodDragon': showSkillFlashFx(fx.toR, fx.toC, '#27ae60', 50); break;
+            case 'woodDragon': if (typeof showWoodDragonVisual === 'function') showWoodDragonVisual(u, t); else showSkillFlashFx(fx.toR, fx.toC, '#27ae60', 50); break;
             case 'godPalm': if (typeof showGodPalm === 'function') showGodPalm(u, false); else showSkillFlashFx(fx.row, fx.col, '#f1c40f', 60); break;
-            case 'susanoo': showSkillFlashFx(fx.row, fx.col, '#8e44ad', 55); break;
-            case 'elephant': showSkillFlashFx(fx.toR, fx.toC, '#e74c3c', 55); break;
+            case 'susanoo': if (typeof renderSusanooVisual === 'function') { if (u._susanooActive === undefined) u._susanooActive = true; renderSusanooVisual(u); } else showSkillFlashFx(fx.row, fx.col, '#8e44ad', 55); break;
+            case 'elephant': if (typeof showGuyElephantVisual === 'function') showGuyElephantVisual(u, t); else showSkillFlashFx(fx.toR, fx.toC, '#e74c3c', 55); break;
+            case 'night': if (typeof showNightGuyVisual === 'function') showNightGuyVisual(u, t); else showSkillFlashFx(fx.toR, fx.toC, '#c0392b', 55); break;
+            case 'hook': if (typeof showDeepBlueHookVisual === 'function') showDeepBlueHookVisual(u, t); else showSkillFlashFx(fx.row, fx.col, '#3498db', 45); break;
+            case 'fateWheel': if (typeof showFateWheelVisual === 'function') showFateWheelVisual(); else showSkillFlashFx(fx.row, fx.col, '#e67e22', 55); break;
+            case 'lvbuLanding': if (typeof showLvbuLandingVisual === 'function') showLvbuLandingVisual(fx.toR, fx.toC); else showSkillFlashFx(fx.toR, fx.toC, '#f39c12', 50); break;
+            case 'dodgeText': showDodgeText(fx.toR, fx.toC); break;
+            case 'halfHpText': if (typeof showHalfHpText === 'function') showHalfHpText(u); break;
+            case 'lightning': if (typeof showLightningStrike === 'function') showLightningStrike(t); else showSkillFlashFx(fx.toR, fx.toC, '#f1c40f', 45); break;
+            case 'firePillar': if (typeof showFirePillar === 'function') showFirePillar(fx.toR, fx.toC); else showSkillFlashFx(fx.toR, fx.toC, '#e74c3c', 45); break;
+            case 'missile': if (typeof showMissile === 'function') showMissile(u); else showSkillFlashFx(fx.toR, fx.toC, '#e67e22', 40); break;
+            case 'dragonChain': if (typeof showDragonChain === 'function') showDragonChain(u, t, [t]); else showOnlineAttackFx(fx.row, fx.col, fx.toR, fx.toC); break;
+            case 'madaraFx': if (typeof showMadaraAttackFX === 'function') showMadaraAttackFX(u, t); else showOnlineAttackFx(fx.row, fx.col, fx.toR, fx.toC); break;
+            case 'madaraCounter': if (typeof showCounterFX === 'function') showCounterFX(u); else showSkillFlashFx(fx.row, fx.col, '#8e44ad', 40); break;
+            case 'minerTunnel': if (typeof showMinerTunnel === 'function') showMinerTunnel(u); else showSkillFlashFx(fx.row, fx.col, '#7f8c8d', 40); break;
+            case 'sandstorm': if (typeof showSandstorm === 'function') showSandstorm(u); else showSkillFlashFx(fx.row, fx.col, '#d4ac0d', 45); break;
+            case 'goldPollen': if (typeof showGoldPollen === 'function') showGoldPollen(u); else showSkillFlashFx(fx.row, fx.col, '#f1c40f', 40); break;
+            case 'treeEffect': if (typeof showTreeEffect === 'function') showTreeEffect(u); else showSkillFlashFx(fx.row, fx.col, '#27ae60', 40); break;
+            case 'erinBullet': if (typeof showErinBullet === 'function') showErinBullet(u, t); else showOnlineAttackFx(fx.row, fx.col, fx.toR, fx.toC); break;
+            case 'infernoLaser': if (typeof showInfernoLaser === 'function') { const tar = gameState.units.find(x => x.id === u._infernoLaserTarget); if (tar) showInfernoLaser(u, tar); } else showOnlineAttackFx(fx.row, fx.col, fx.toR, fx.toC); break;
+            case 'goldenDragon': if (typeof showGoldenDragon === 'function') { const d = showGoldenDragon(u); setTimeout(() => { if (d && d.parentNode) d.remove(); }, 1500); } else showSkillFlashFx(fx.row, fx.col, '#f1c40f', 50); break;
+            case 'bluePillar': if (typeof showBluePillar === 'function') showBluePillar(u); else showSkillFlashFx(fx.row, fx.col, '#3498db', 45); break;
             case 'doom': if (typeof showDoomMushroom === 'function') showDoomMushroom(u); else showSkillFlashFx(fx.row, fx.col, '#c0392b', 55); break;
             case 'pierce': showPierceSkillFX(fx.toR, fx.toC); break;
             case 'spike': showSkillFlashFx(fx.row, fx.col, '#3498db', 50); break;
@@ -304,7 +356,13 @@ function syncGameState() {
             redEnergy: gameState.redEnergy,
             blueEnergy: gameState.blueEnergy,
             turnNumber: gameState.turnNumber,
-            spikeNets: gameState.spikeNets || []
+            spikeNets: gameState.spikeNets || [],
+            craters: gameState.craters || [],
+            rageZones: gameState.rageZones || [],
+            knightZones: gameState.knightZones || [],
+            iceFields: gameState.iceFields || [],
+            windZones: gameState.windZones || [],
+            fireZones: gameState.fireZones || []
         })
     }));
 }

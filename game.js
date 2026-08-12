@@ -2552,6 +2552,9 @@ function updatePoisonVisual(unit) {
 
 // 艾琳:黄子弹特效
 function showErinBullet(attacker, target) {
+    // 联机:艾琳子弹同步
+    sendSkillFx('erinBullet', attacker, target.row, target.col);
+
     const board = document.getElementById('gameBoard');
     const bullet = document.createElement('div');
     bullet.className = 'erin-bullet';
@@ -2777,6 +2780,9 @@ function activateHashiramaSkill(unit) {
 
 // 视觉特效
 function showGoldenDragon(unit) {
+    // 联机:金飞龙特效同步
+    sendSkillFx('goldenDragon', unit);
+
     const board = document.getElementById('gameBoard');
     const d = document.createElement('div');
     d.className = 'golden-dragon';
@@ -2813,6 +2819,9 @@ function flyGoldenDragon(unit, el) {
 }
 
 function showBluePillar(attacker) {
+    // 联机:蓝柱特效同步
+    sendSkillFx('bluePillar', attacker);
+
     for (let dr = -1; dr <= 1; dr++) {
         for (let dc = -1; dc <= 1; dc++) {
             const nr = attacker.row + dr, nc = attacker.col + dc;
@@ -2834,6 +2843,9 @@ function updateTreeVisual(unit) {
 
 // 金色花粉云雾:3×3范围金色光晕粒子
 function showGoldPollen(attacker) {
+    // 联机:金花粉动画同步
+    sendSkillFx('goldPollen', attacker);
+
     for (let dr = -1; dr <= 1; dr++) {
         for (let dc = -1; dc <= 1; dc++) {
             const nr = attacker.row + dr, nc = attacker.col + dc;
@@ -2847,6 +2859,9 @@ function showGoldPollen(attacker) {
 }
 
 function showTreeEffect(unit) {
+    // 联机:树缠特效同步
+    sendSkillFx('treeEffect', unit);
+
     const t = document.createElement('div');
     t.className = 'tree-effect';
     t.textContent = '🌳';
@@ -3039,6 +3054,9 @@ function renderMissileMarks() {
 
 // 导弹轰炸特效(红色长方体砸下)
 function showMissile(m) {
+    // 联机:导弹动画同步
+    sendSkillFx('missile', null, m.row, m.col);
+
     for (let dr = -1; dr <= 1; dr++) {
         for (let dc = -1; dc <= 1; dc++) {
             const nr = m.row + dr, nc = m.col + dc;
@@ -3172,7 +3190,24 @@ function runDeployEffects(unit) {
 }
 
 // ===== 尤格-萨隆命运之轮 =====
+// 命运之轮动画(纯视觉,联机重放用——原版:轮盘指针旋转)
+function showFateWheelVisual() {
+    const pointer = document.querySelector('.fate-pointer');
+    if (!pointer) return;
+    pointer.style.transition = 'none';
+    pointer.style.transform = 'rotate(0deg)';
+    requestAnimationFrame(() => {
+        pointer.style.transition = 'transform 3.2s cubic-bezier(0.15, 0.85, 0.25, 1)';
+        pointer.style.transform = 'rotate(' + (360 * 5 + 30) + 'deg)';
+    });
+    const modal = document.getElementById('fateWheelModal');
+    if (modal) modal.classList.remove('hidden');
+    setTimeout(() => { if (modal) modal.classList.add('hidden'); }, 3400);
+}
+
 function openFateWheel(unit) {
+    // 联机:命运之轮动画同步
+    sendSkillFx('fateWheel', unit);
     const pointer = document.querySelector('.fate-pointer');
     const idx = Math.floor(Math.random() * 6);
     pointer.style.transition = 'none';
@@ -5402,7 +5437,47 @@ function hitSpikeNet(net, damage) {
 }
 
 // 深蓝钩锁:拉10格内敌人至身前
+// 深蓝钩锁动画(纯视觉,联机重放用——原版:锚钩飞向目标+黑绳拉回)
+function showDeepBlueHookVisual(unit, target) {
+    const board = document.getElementById('gameBoard');
+    if (!board || !target) return;
+    const fx = unit.col * cellW + cellW / 2, fy = unit.row * cellH + cellH / 2;
+    const tx0 = target.col * cellW + cellW / 2, ty0 = target.row * cellH + cellH / 2;
+    const hook = document.createElement('div');
+    hook.className = 'fisher-hook';
+    hook.textContent = '?';
+    hook.style.position = 'absolute';
+    hook.style.fontSize = '14px';
+    hook.style.zIndex = '45';
+    hook.style.pointerEvents = 'none';
+    board.appendChild(hook);
+    for (let t = 0; t <= 10; t++) {
+        setTimeout(() => {
+            const hx = fx + (tx0 - fx) * (t / 10);
+            const hy = fy + (ty0 - fy) * (t / 10);
+            hook.style.left = (hx - 7) + 'px';
+            hook.style.top = (hy - 7) + 'px';
+        }, t * 30);
+    }
+    setTimeout(() => {
+        if (hook.parentNode) hook.remove();
+        const rope = document.createElement('div');
+        rope.className = 'fisher-rope';
+        rope.style.position = 'absolute';
+        rope.style.left = (tx0 - 1) + 'px';
+        rope.style.top = (ty0 - 1) + 'px';
+        rope.style.width = '3px';
+        rope.style.height = Math.max(10, Math.abs(ty0 - fy)) + 'px';
+        rope.style.transformOrigin = 'top left';
+        rope.style.transform = 'rotate(' + (Math.atan2(fy - ty0, fx - tx0) * 180 / Math.PI) + 'deg)';
+        board.appendChild(rope);
+        setTimeout(() => { if (rope.parentNode) rope.remove(); }, 500);
+    }, 330);
+}
+
 function deepBlueHook(unit, target) {
+    // 联机:钩锁动画同步
+    sendSkillFx('hook', unit, target.row, target.col);
     unit._hookUsedThisTurn = true;
     unit._hookTargeting = false;
     clearHighlights();
@@ -5794,6 +5869,8 @@ function cellCenterPx(row, col) {
 
 // 地狱之塔:红色激光线(塔→目标图标中心)——一直存在直到目标改变/目标死亡/塔死亡
 function showInfernoLaser(tower, target) {
+    // 联机:地狱塔激光同步
+    sendSkillFx('infernoLaser', tower, target.row, target.col);
     const board = document.getElementById('gameBoard');
     // 每塔一根激光:移除旧线再画新线
     if (tower._infernoLaserEl && tower._infernoLaserEl.parentNode) {
@@ -6052,6 +6129,9 @@ function castBigLightning(card, row, col) {
 
 // 降雷特效:蓝色闪电劈下
 function showLightningStrike(target) {
+    // 联机:落雷动画同步
+    sendSkillFx('lightning', null, target.row, target.col);
+
     const board = document.getElementById('gameBoard');
     const bolt = document.createElement('div');
     bolt.className = 'lightning-strike';
@@ -6608,7 +6688,28 @@ function enterLvbuLanding(lvbu) {
     }
 }
 
+// 神魔降世落地动画(纯视觉,联机重放用——原版:红色范围+白色旋转特效)
+function showLvbuLandingVisual(row, col) {
+    for (let dr = -2; dr <= 2; dr++) {
+        for (let dc = -2; dc <= 2; dc++) {
+            const nr = row + dr, nc = col + dc;
+            if (isValidPosition(nr, nc)) gameState.board[nr][nc].classList.add('lvbu-zone');
+        }
+    }
+    setTimeout(() => {
+        for (let dr = -2; dr <= 2; dr++) {
+            for (let dc = -2; dc <= 2; dc++) {
+                const nr = row + dr, nc = col + dc;
+                if (isValidPosition(nr, nc)) gameState.board[nr][nc].classList.remove('lvbu-zone');
+            }
+        }
+    }, 1500);
+    if (typeof showLvbuSlash === 'function') showLvbuSlash({ row: row, col: col });
+}
+
 function lvbuLanding(lvbu, row, col) {
+    // 联机:神魔降世动画同步
+    sendSkillFx('lvbuLanding', lvbu, row, col);
     lvbu._lvbuLanding = false;
     lvbu._lvbuS3Used = 1;
     clearHighlights();
@@ -6789,6 +6890,47 @@ function enterGuyUltimateTarget(guy, type) {
 }
 
 // 夕象伍足:绕圈3圈每圈2伤 → 四道白光各1伤 → 米字形+粗白光3伤
+// 夕象伍足动画(纯视觉,联机重放用——原版:绕圈红影+四道白光+米字+粗白光)
+function showGuyElephantVisual(guy, target) {
+    const board = document.getElementById('gameBoard');
+    if (!board || !target) return;
+    const oldCell = gameState.board[guy.row] && gameState.board[guy.row][guy.col];
+    const el = oldCell ? oldCell.querySelector('.unit') : null;
+    if (el && oldCell) { oldCell.removeChild(el); el.style.position = 'absolute'; el.style.zIndex = '40'; el.style.transform = 'none'; board.appendChild(el); }
+    const cx = target.col * cellW + cellW / 2, cy = target.row * cellH + cellH / 2;
+    const radius = 46;
+    const totalSteps = 3 * 20;
+    for (let i = 1; i <= totalSteps; i++) {
+        setTimeout(() => {
+            const ang = (i / 20) * Math.PI * 2;
+            const x = cx + Math.cos(ang) * radius - 10;
+            const y = cy + Math.sin(ang) * radius - 10;
+            if (el) { el.style.left = x + 'px'; el.style.top = y + 'px'; }
+            const trail = document.createElement('div');
+            trail.className = 'guy-trail';
+            trail.style.left = (x + 10 - 4) + 'px';
+            trail.style.top = (y + 10 - 4) + 'px';
+            board.appendChild(trail);
+            setTimeout(() => { if (trail.parentNode) trail.parentNode.removeChild(trail); }, 500);
+        }, i * 22);
+    }
+    const lastStep = totalSteps * 22 + 200;
+    setTimeout(() => {
+        for (let d = 1; d <= 4; d++) {
+            setTimeout(() => { if (typeof showGuyBeam === 'function') showGuyBeam(target, d, 'thin'); }, (d - 1) * 150);
+        }
+        setTimeout(() => {
+            if (typeof showGuyBeam === 'function') showGuyBeam(target, 0, 'cross');
+            setTimeout(() => { if (typeof showGuyBeam === 'function') showGuyBeam(target, 0, 'thick'); }, 600);
+        }, 700);
+        setTimeout(() => {
+            if (el && el.parentNode) el.remove();
+            const c2 = gameState.board[guy.row] && gameState.board[guy.row][guy.col];
+            if (c2 && typeof renderUnit === 'function') renderUnit(guy);
+        }, 2800);
+    }, lastStep);
+}
+
 function guyElephantStomp(guy, target) {
     // 联机:夕象伍足动画同步
     sendSkillFx('elephant', guy, target.row, target.col);
@@ -6906,7 +7048,36 @@ function showGuyBeam(target, dir, type) {
 }
 
 // 夜凯:冲上去踢一脚10伤,敌未死则死门凯死亡
+// 夜凯动画(纯视觉,联机重放用——原版:冲上去踢+粗白光)
+function showNightGuyVisual(guy, target) {
+    const board = document.getElementById('gameBoard');
+    if (!board || !target) return;
+    const oldCell = gameState.board[guy.row] && gameState.board[guy.row][guy.col];
+    const el = oldCell ? oldCell.querySelector('.unit') : null;
+    const dirR = Math.sign(target.row - guy.row), dirC = Math.sign(target.col - guy.col);
+    const nr = target.row - dirR, nc = target.col - dirC;
+    const landR = isValidPosition(nr, nc) ? nr : guy.row, landC = isValidPosition(nr, nc) ? nc : guy.col;
+    if (el && oldCell) {
+        oldCell.removeChild(el);
+        el.style.position = 'absolute'; el.style.zIndex = '45'; el.style.transform = 'none';
+        el.style.transition = 'left 0.35s ease-in, top 0.35s ease-in';
+        el.style.left = (guy.col * cellW + cellW / 2 - 10) + 'px';
+        el.style.top = (guy.row * cellH + cellH / 2 - 10) + 'px';
+        board.appendChild(el);
+        void el.offsetLeft;
+        requestAnimationFrame(() => { el.style.left = (landC * cellW + cellW / 2 - 10) + 'px'; el.style.top = (landR * cellH + cellH / 2 - 10) + 'px'; });
+    }
+    setTimeout(() => { if (typeof showGuyBeam === 'function') showGuyBeam(target, 0, 'thick'); }, 400);
+    setTimeout(() => {
+        if (el && el.parentNode) el.remove();
+        const c2 = gameState.board[guy.row] && gameState.board[guy.row][guy.col];
+        if (c2 && typeof renderUnit === 'function') renderUnit(guy);
+    }, 1200);
+}
+
 function guyNightGuy(guy, target) {
+    // 联机:夜凯动画同步
+    sendSkillFx('night', guy, target.row, target.col);
     guy._guyUltTargeting = null;
     guy.guyEnergy = 0;
     clearHighlights();
@@ -7324,6 +7495,9 @@ function summonWardenGuards(warden) {
 
 // 半血触发文字
 function showHalfHpText(unit) {
+    // 联机:半血提示同步
+    sendSkillFx('halfHpText', unit);
+
     if (!('halfHpTriggered' in unit)) return; // 仅典狱长有此属性
     if (unit.halfHpTriggered) return;
     unit.halfHpTriggered = true;
@@ -7636,6 +7810,8 @@ function dealSolveFire(m, offStart, offEnd, dir, dmg, hitAny) {
 // 开启须佐能乎
 function solveActivateSusanoo(m, special) {
     if (m._susanooActive) return;
+    // 联机:须佐能乎动画同步
+    sendSkillFx('susanoo', m);
     if (!special) {
         m.solveEnergy = Math.max(0, (m.solveEnergy || 0) - 4);
     } else {
@@ -8720,6 +8896,32 @@ function shinraTensei(pain) {
     checkGameOver();
 }
 
+// 万象天引动画(纯视觉,联机重放用——原版:文字+敌人被拉向佩恩)
+function showBanshoVisual(pain) {
+    const board = document.getElementById('gameBoard');
+    if (!board) return;
+    const team = pain.team;
+    const forward = team === 'red' ? -1 : 1;
+    const banshoText = document.createElement('div');
+    banshoText.className = 'hero-deploy-text';
+    banshoText.textContent = '万象天引';
+    banshoText.style.color = '#8b0000';
+    banshoText.style.animation = 'heroFloat 1.5s ease-out forwards';
+    gameState.board[pain.row][pain.col].appendChild(banshoText);
+    setTimeout(() => { if (banshoText.parentNode) banshoText.remove(); }, 1500);
+    gameState.units.filter(uu => uu.team !== team && !uu._removing).forEach(u => {
+        if (Math.abs(u.row - pain.row) <= 3 && Math.abs(u.col - pain.col) <= 3) {
+            const oldCell = gameState.board[u.row] && gameState.board[u.row][u.col];
+            const el = oldCell ? oldCell.querySelector('.unit') : null;
+            if (!el) return;
+            el.style.transition = 'left 0.4s ease-in, top 0.4s ease-in';
+            el.style.left = (pain.col * cellW + cellW / 2 - 10) + 'px';
+            el.style.top = (pain.row * cellH + cellH / 2 - 10) + 'px';
+            setTimeout(() => { if (el.parentNode) el.remove(); }, 500);
+        }
+    });
+}
+
 function banshoTenin(pain) {
     // 联机:万象天引动画同步
     sendSkillFx('bansho', pain);
@@ -8859,6 +9061,9 @@ function madaraJumpAndPillar(madara) {
 
 // 火柱特效
 function showFirePillar(row, col) {
+    // 联机:火柱动画同步
+    sendSkillFx('firePillar', null, row, col);
+
     const board = document.getElementById('gameBoard');
     const cellSize = cellW, cH = cellH, radius = 1;
     const pillar = document.createElement('div');
@@ -8914,6 +9119,9 @@ function animateShuriken(attacker, shurikenTargets) {
 
 // 雷诺沙尘暴特效
 function showSandstorm(unit) {
+    // 联机:沙暴动画同步
+    sendSkillFx('sandstorm', unit);
+
     const board = document.getElementById('gameBoard');
     const storm = document.createElement('div');
     storm.className = 'sandstorm';
@@ -8928,6 +9136,9 @@ function showSandstorm(unit) {
 
 // 矿工地道特效(弯曲土道)
 function showMinerTunnel(miner) {
+    // 联机:矿工隧道动画同步
+    sendSkillFx('minerTunnel', miner);
+
     const board = document.getElementById('gameBoard');
     const cs = cellW;
     const baseR = miner.team === 'red' ? 26 : 1;
@@ -9072,6 +9283,36 @@ function showChibakuVisual(pain) {
     setTimeout(() => { if (ball.parentNode) ball.remove(); }, 6000);
 }
 
+// 木龙之术动画(纯视觉,联机重放用——原版:木龙从施法者长向目标+落地爆炸)
+function showWoodDragonVisual(m, target) {
+    const board = document.getElementById('gameBoard');
+    if (!board || !target) return;
+    const dir = target.row < m.row ? 1 : -1;
+    const d = document.createElement('div');
+    d.className = 'wood-dragon' + (dir === 1 ? ' blue' : '');
+    d.style.position = 'absolute';
+    d.style.left = Math.max(0, (m.col * cellW + cellW / 2 - 9)) + 'px';
+    if (dir === 1) { d.style.bottom = (BOARD_ROWS * cellH - (m.row + 1) * cellH) + 'px'; d.style.top = 'auto'; }
+    else d.style.top = (m.row * cellH) + 'px';
+    d.style.height = '0px';
+    board.appendChild(d);
+    const dist = Math.abs(target.row - m.row);
+    const h = dist * cellH;
+    setTimeout(() => { d.style.height = h + 'px'; }, 50);
+    setTimeout(() => {
+        const boom = document.createElement('div');
+        boom.className = 'wood-boom';
+        boom.style.position = 'absolute';
+        boom.style.left = (target.col * cellW) + 'px';
+        boom.style.top = (target.row * cellH) + 'px';
+        boom.style.width = (3 * cellW) + 'px';
+        boom.style.height = (3 * cellH) + 'px';
+        board.appendChild(boom);
+        setTimeout(() => { if (boom.parentNode) boom.remove(); }, 500);
+    }, 700);
+    setTimeout(() => { if (d.parentNode) d.remove(); }, 1500);
+}
+
 // 地爆天星
 function chibakuTensei(pain) {
     // 联机:地爆天星动画同步
@@ -9200,6 +9441,9 @@ function chibakuTensei(pain) {
 }
 // 马斑攻击特效:红色>箭头
 function showMadaraAttackFX(attacker, target) {
+    // 联机:马斑攻击动画同步
+    sendSkillFx('madaraFx', attacker, target.row, target.col);
+
     const board = document.getElementById('gameBoard');
     const arrow = document.createElement('div');
     arrow.textContent = '>';
@@ -9230,6 +9474,9 @@ function showMadaraAttackFX(attacker, target) {
 
 // 马斑反击特效:红色环绕圈
 function showCounterFX(madara) {
+    // 联机:马斑反击动画同步
+    sendSkillFx('madaraCounter', madara);
+
     const board = document.getElementById('gameBoard');
     const ring = document.createElement('div');
     ring.className = 'counter-ring';
@@ -9432,6 +9679,9 @@ function applyChainAttack(attacker, target) {
 
 // 飞龙闪电链特效
 function showDragonChain(attacker, target, chainTargets) {
+    // 联机:雷龙链动画同步
+    sendSkillFx('dragonChain', attacker, target.row, target.col);
+
     const board = document.getElementById('gameBoard');
     const cs = cellW;
     chainTargets.forEach((ct, i) => {
@@ -9534,6 +9784,9 @@ function drawGaleRope(gale) {
 
 // 闪避文字特效
 function showDodgeText(row, col) {
+    // 联机:闪避字同步
+    sendSkillFx('dodgeText', null, row, col);
+
     const cell = gameState.board[row][col];
     const text = document.createElement('div');
     text.className = 'dodge-text';
