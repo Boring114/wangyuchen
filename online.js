@@ -138,6 +138,10 @@ function tryConnect(cb) {
                 gameState.currentTurn = 'blue';
                 updateEnergyDisplay();
                 updateBaseHpDisplay();
+                updateTurnIndicator();
+                // 操作方启动回合计时,等待方显示对方回合
+                if (gameState.currentTurn === onlineTeam) startTimer();
+                else { stopTimer(); document.getElementById('timer').textContent = '对方回合'; }
                 initBoard();
                 gameState.units.forEach(u => renderUnit(u));
             } else {
@@ -151,6 +155,10 @@ function tryConnect(cb) {
                 gameState.currentTurn = 'red';
                 updateEnergyDisplay();
                 updateBaseHpDisplay();
+                updateTurnIndicator();
+                // 操作方启动回合计时,等待方显示对方回合
+                if (gameState.currentTurn === onlineTeam) startTimer();
+                else { stopTimer(); document.getElementById('timer').textContent = '对方回合'; }
                 initBoard();
                 gameState.units.forEach(u => renderUnit(u));
             }
@@ -177,6 +185,17 @@ function startOnlineGame() {
     document.getElementById('lobbyScreen').classList.add('hidden');
     // 蓝方视角:棋盘上下翻转(蓝方在下、红方在上);红方保持默认视角
     document.getElementById('gameScreen').classList.toggle('blue-view', onlineTeam === 'blue');
+    if (onlineTeam === 'blue') {
+        // 蓝方视角:信息栏上下对调(红方信息在上方、蓝方信息在下方,与翻转后的棋盘一致)
+        const parent = document.getElementById('gameScreen');
+        const bp = document.querySelector('.blue-player');
+        const rp = document.querySelector('.red-player');
+        const board = document.querySelector('.game-board-container');
+        if (bp && rp && board) {
+            parent.insertBefore(rp, board);
+            parent.appendChild(bp);
+        }
+    }
     startGame();
     // 红方先手
     if (onlineTeam === 'blue') {

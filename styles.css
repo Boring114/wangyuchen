@@ -2312,3 +2312,4 @@ h1 {
 
 /* 蓝方视角:大本营数字正立(朝向自己) */
 .blue-view #gameBoard .base-hp-overlay { transform: scaleY(-1); }
+
