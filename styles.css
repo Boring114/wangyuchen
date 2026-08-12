@@ -2328,3 +2328,6 @@ h1 {
 .blue-view .red-player { order: 1; }
 .blue-view .game-board-container { order: 2; }
 .blue-view .blue-player { order: 3; }
+
+/* 蓝方视角:底部控制栏(跳过回合/法术/聊天)固定在屏幕最底部 */
+.blue-view .bottom-controls { order: 4; }

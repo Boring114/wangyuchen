@@ -99,19 +99,10 @@ function tryConnect(cb) {
             }, 1500);
         }
         if (data.type === 'fx') {
-            // 播放对方同步来的特效(登场字/技能字/伤害字/攻击动画/技能动画)
-            const fx = data.fx;
-            window._fxSyncing = true;
-            if (fx.kind === 'deployText') {
-                showHeroDeployText({ row: fx.row, col: fx.col }, fx.msg, fx.color, fx.duration);
-            } else if (fx.kind === 'critText') {
-                showCritText(fx.row, fx.col, fx.msg);
-            } else if (fx.kind === 'attack') {
-                showOnlineAttackFx(fx.fromR, fx.fromC, fx.toR, fx.toC);
-            } else if (fx.kind === 'skill') {
-                playSkillFx(fx);
-            }
-            window._fxSyncing = false;
+            // 所有特效统一暂存:等同步应用后再播放(避免被同步重建棋盘清除,保证对方完整看到)
+            _fxQueue.push(data.fx);
+            clearTimeout(_fxQueueTimer);
+            _fxQueueTimer = setTimeout(flushFxQueue, 900);
         }
         if (data.type === 'roomCreated') {
             onlineRoomId = data.roomId;
@@ -177,6 +168,7 @@ function tryConnect(cb) {
                 gameState.units.forEach(u => { if (u._infernoLaserTarget && typeof showInfernoLaser === 'function') { const tar = gameState.units.find(x => x.id === u._infernoLaserTarget); if (tar) showInfernoLaser(u, tar); } });
                 gameState.units.forEach(u => { if (u.poisonTurns > 0 && typeof updatePoisonVisual === 'function') updatePoisonVisual(u); if (u.treeBound && typeof updateTreeVisual === 'function') updateTreeVisual(u); });
                 gameState.units.forEach(u => { const uel = gameState.board[u.row] && gameState.board[u.row][u.col] && gameState.board[u.row][u.col].querySelector('.unit'); if (uel) { if (u._magicShield) uel.classList.add('magic-shield'); if ((u._shieldHp || 0) > 0) uel.classList.add('guard-shield'); if (u._stoneWall) uel.classList.add('stone-bubble'); } });
+                flushFxQueue();
             } else {
                 // 红方接收蓝方状态(蓝方回合结束后回合流转回红方)
                 gameState.units = gs.units.map(u => ({...u}));
@@ -212,6 +204,7 @@ function tryConnect(cb) {
                 gameState.units.forEach(u => { if (u._infernoLaserTarget && typeof showInfernoLaser === 'function') { const tar = gameState.units.find(x => x.id === u._infernoLaserTarget); if (tar) showInfernoLaser(u, tar); } });
                 gameState.units.forEach(u => { if (u.poisonTurns > 0 && typeof updatePoisonVisual === 'function') updatePoisonVisual(u); if (u.treeBound && typeof updateTreeVisual === 'function') updateTreeVisual(u); });
                 gameState.units.forEach(u => { const uel = gameState.board[u.row] && gameState.board[u.row][u.col] && gameState.board[u.row][u.col].querySelector('.unit'); if (uel) { if (u._magicShield) uel.classList.add('magic-shield'); if ((u._shieldHp || 0) > 0) uel.classList.add('guard-shield'); if (u._stoneWall) uel.classList.add('stone-bubble'); } });
+                flushFxQueue();
             }
         }
         if (data.type === 'opponentLeft') {
@@ -252,6 +245,25 @@ function startOnlineGame() {
     if (onlineTeam === 'blue') {
         // 蓝方等待红方操作
     }
+}
+
+// 技能/法术特效队列:等同步应用后再播放(避免被同步重建棋盘清除特效)
+let _fxQueue = [];
+let _fxQueueTimer = null;
+function flushFxQueue() {
+    if (_fxQueueTimer) { clearTimeout(_fxQueueTimer); _fxQueueTimer = null; }
+    if (_fxQueue.length === 0) return;
+    const q = _fxQueue; _fxQueue = [];
+    window._fxSyncing = true;
+    q.forEach(fx => {
+        try {
+            if (fx.kind === 'deployText') showHeroDeployText({ row: fx.row, col: fx.col }, fx.msg, fx.color, fx.duration);
+            else if (fx.kind === 'critText') showCritText(fx.row, fx.col, fx.msg);
+            else if (fx.kind === 'attack') showOnlineAttackFx(fx.fromR, fx.fromC, fx.toR, fx.toC);
+            else if (fx.kind === 'skill') playSkillFx(fx);
+        } catch (e) {}
+    });
+    window._fxSyncing = false;
 }
 
 // 播放对方同步的技能动画:用真实单位对象调用原版动画函数(完整重放),缺失则用光效兜底
