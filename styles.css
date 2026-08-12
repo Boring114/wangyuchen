@@ -2309,3 +2309,6 @@ h1 {
 .blue-view #gameBoard .shell-mark { transform: scaleY(-1) translate(-50%, -50%) !important; }
 .blue-view #gameBoard .energy-dot { transform: scaleY(-1) !important; }
 .blue-view #gameBoard .poison-badge { transform: scaleY(-1) !important; }
+
+/* 蓝方视角:大本营数字正立(朝向自己) */
+.blue-view #gameBoard .base-hp-overlay { transform: scaleY(-1); }

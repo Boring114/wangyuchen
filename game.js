@@ -10122,8 +10122,13 @@ function endTurn() {
     });
     clearExpiredSmoke();
 
-    // 开始新回合计时
-    startTimer();
+    // 开始新回合计时(联机模式:只有当前回合操作方计时,等待方不显示倒计时)
+    if (!gameState.onlineMode || gameState.currentTurn === onlineTeam) {
+        startTimer();
+    } else {
+        stopTimer();
+        timerDisplay.textContent = '对方回合';
+    }
 
     // AI模式:蓝色回合自动AI行动(联机模式绝无AI)
     if (gameState.aiMode && !gameState.onlineMode && gameState.currentTurn === 'blue') {
@@ -10535,8 +10540,13 @@ function startGame() {
     gameScreen.classList.remove('hidden');
     positionChatMessages();
 
-    // 开始计时
-    startTimer();
+    // 开始计时(联机模式:只有当前回合操作方计时,等待方不显示倒计时)
+    if (!gameState.onlineMode || gameState.currentTurn === onlineTeam) {
+        startTimer();
+    } else {
+        stopTimer();
+        timerDisplay.textContent = '对方回合';
+    }
 
     // 手机端适配:按视口宽度缩放游戏界面(棋盘+UI整体缩小,保证完整显示)
     fitGameScreen();
