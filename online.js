@@ -175,6 +175,8 @@ function startOnlineGame() {
     gameState.redMaxEnergy = 20;
     gameState.blueMaxEnergy = 20;
     document.getElementById('lobbyScreen').classList.add('hidden');
+    // 蓝方视角:棋盘上下翻转(蓝方在下、红方在上);红方保持默认视角
+    document.getElementById('gameScreen').classList.toggle('blue-view', onlineTeam === 'blue');
     startGame();
     // 红方先手
     if (onlineTeam === 'blue') {

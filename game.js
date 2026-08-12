@@ -10146,6 +10146,10 @@ function updateTurnIndicator() {
     } else {
         skipBtn.style.display = '';
     }
+    // 联机模式:不是自己的回合隐藏跳过按钮(只有自己回合能跳过)
+    if (gameState.onlineMode) {
+        skipBtn.style.display = gameState.currentTurn === onlineTeam ? '' : 'none';
+    }
 }
 
 // 打开部署弹窗

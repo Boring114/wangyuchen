@@ -2299,3 +2299,13 @@ h1 {
 
 /* 联机对方聊天消息(蓝色区分) */
 .chat-msg-opp { background: rgba(52, 152, 219, 0.18); border: 1px solid rgba(52, 152, 219, 0.4); }
+
+/* 联机蓝方视角:棋盘上下翻转(蓝方在下、红方在上),单位与文字保持正立 */
+.blue-view #gameBoard { transform: scaleY(-1); }
+.blue-view .unit { transform: scaleY(-1) translate(-50%, 50%) !important; }
+.blue-view #gameBoard .hero-deploy-text { transform: scaleY(-1) translateX(-50%) !important; }
+.blue-view #gameBoard .crit-text { transform: scaleY(-1) !important; }
+.blue-view #gameBoard .dummy-hp { transform: scaleY(-1) !important; }
+.blue-view #gameBoard .shell-mark { transform: scaleY(-1) translate(-50%, -50%) !important; }
+.blue-view #gameBoard .energy-dot { transform: scaleY(-1) !important; }
+.blue-view #gameBoard .poison-badge { transform: scaleY(-1) !important; }
