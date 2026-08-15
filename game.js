@@ -43,8 +43,8 @@ const cardLibrary = [
         name: '重甲骑士',
         attack: 2,
         hp: 2,
-        armor: 1,
-        moveRange: 1,
+        armor: 3,
+        moveRange: 3,
         attackRange: 1,
         cost: 3,
         artwork: 'heavy-knight',
@@ -60,8 +60,9 @@ const cardLibrary = [
         cost: 2,
         artwork: 'asala',
         description: "你丫完了,我说的!一个大飞踹给你李宁踹开线了,再一枪爆头。",
-        meleeAttack: 2,
+        meleeAttack: 3,
         meleeRange: 1,
+        armorPen: 1,
         rangedCrit: true
     },
     {
@@ -91,7 +92,7 @@ const cardLibrary = [
         armorPen: 1,
         moveRange: 5,
         attackRange: 5,
-        cost: 13,
+        cost: 12,
         artwork: 'warden',
         description: "自带亲卫队(攻2 血3 护甲1 移3 攻距4),自身降到半血以下暴击率由百分之50提升至百分之100。",
         hero: true,
@@ -109,7 +110,7 @@ const cardLibrary = [
         armor: 1,
         moveRange: 4,
         attackRange: 4,
-        cost: 15,
+        cost: 13,
         artwork: 'raven',
         description: "近距离可处决敌人,亲卫队(攻5 血4 穿甲1 移4 攻距2 护甲1),半血以下释放烟雾弹,略微阻挡对方视野。",
         hero: true,
@@ -155,7 +156,7 @@ const cardLibrary = [
         armor: 1,
         moveRange: 6,
         attackRange: 3,
-        cost: 17,
+        cost: 14,
         critChance: 0.25,
     artwork: 'madara',
         description: "普通攻击前方竖向三格,敌人近距离攻击时他自动反击3×3范围内敌军并跃起跳向敌军造成大范围伤害,每次攻击到敌人会积攒能量,能量≥4的时候双击释放技能进入无双状态,额外增加攻击次数和移动距离,5,6能量时无双状态结束后自动释放奥义,召唤陨石砸下伤害大范围敌军。",
@@ -230,7 +231,7 @@ const cardLibrary = [
         hp: 3,
         moveRange: 0,
         attackRange: 0,
-        cost: 3,
+        cost: 2,
         artwork: 'energy-collector',
         description: "作用一目了然。",
         building: true,
@@ -488,7 +489,7 @@ const cardLibrary = [
         armor: 1,
         moveRange: 4,
         attackRange: 3,
-        cost: 17,
+        cost: 15,
         artwork: 'hashirama',
         description: '木遁·木人之术+树界降临!格挡反击!火之意志!',
         hashirama: true,
@@ -595,7 +596,7 @@ const cardLibrary = [
         armor: 1,
         moveRange: 7,
         attackRange: 2,
-        cost: 11,
+        cost: 9,
         artwork: 'mirror',
         critChance: 0.6,
         mirror: true,
@@ -766,7 +767,7 @@ const cardLibrary = [
         heroDeployColor: '#000',
         heroDeployDuration: 2000,
         yogg: true,
-        description: '金卡。双击弹技能框:混沌统治(选一敌人变己方并拉至前方)/诱引狂乱(敌人互相攻击)/触须攒聚(获得混乱触须手牌)。三技能各一次,每回合限用1个,用完才能普攻。'
+        description: '金卡。本局每释放1个法术,本卡费用-1(最低0费)。双击弹技能框:混沌统治(选一敌人变己方并拉至前方)/诱引狂乱(敌人互相攻击)/触须攒聚(获得混乱触须手牌)。三技能各一次,每回合限用1个,用完才能普攻。'
     },
     {
         id: 'yogg_saron',
@@ -888,7 +889,7 @@ const cardLibrary = [
         armor: 0,
         moveRange: 5,
         attackRange: 4,
-        cost: 18,
+        cost: 17,
         artwork: 'reynolds_jackson',
         hero: true,
         heroDeployText: '我们要发财了!',
@@ -965,7 +966,7 @@ const cardLibrary = [
         armor: 0,
         moveRange: 0,
         attackRange: 99,
-        cost: 15,
+        cost: 14,
         artwork: 'eagle_artillery',
         building: true,
         eagleArtillery: true,
@@ -992,7 +993,7 @@ const cardLibrary = [
         armor: 0,
         moveRange: 3,
         attackRange: 2,
-        cost: 17,
+        cost: 13,
         artwork: 'crog',
         crog: true,
         description: '在场时己方回合结束:敌方所有在场卡牌攻击力/生命值变为1(不可逆转,克罗格死亡也不恢复)。克罗格死亡后新下的卡不受影响。被降攻敌人的技能每段伤害只能造成1点。'
@@ -1009,7 +1010,7 @@ const cardLibrary = [
         artwork: 'yogg_fate',
         hero: true,
         yoggFate: true,
-        description: '打出时若本局释放法术≥15次,转动命运之轮:随机获得1个命运技能(命运之手/血肉诅咒/夺心护目镜/神秘魔盒/吞噬之饥/燃烧权杖)。'
+        description: '打出时若本局释放法术≥10次,转动命运之轮:随机获得1个命运技能(命运之手/血肉诅咒/夺心护目镜/神秘魔盒/吞噬之饥/燃烧权杖)。'
     },
     {
         id: 'lvbu',
@@ -1019,7 +1020,7 @@ const cardLibrary = [
         armor: 2,
         moveRange: 4,
         attackRange: 3,
-        cost: 16,
+        cost: 13,
         artwork: 'lvbu',
         lvbu: true,
         critChance: 0.05,
@@ -1090,7 +1091,7 @@ const cardLibrary = [
         armor: 0,
         moveRange: 5,
         attackRange: 5,
-        cost: 17,
+        cost: 15,
         artwork: 'guy_death_gate',
         hero: true,
         heroDeployText: '第八死门...开!',
@@ -1122,7 +1123,7 @@ const cardLibrary = [
         armor: 0,
         moveRange: 1,
         attackRange: 1,
-        cost: 20,
+        cost: 16,
         artwork: 'guff',
         hero: true,
         heroDeployText: '成长，生命，幸福，还有朋友',
@@ -1213,7 +1214,7 @@ const cardLibrary = [
         armor: 1,
         moveRange: 5,
         attackRange: 0,
-        cost: 16,
+        cost: 14,
         artwork: 'madara_solve',
         critChance: 0.25,
         hero: true,
@@ -3279,9 +3280,9 @@ function runDeployEffects(unit) {
         showHeroDeployText(unit, '我不会说的!', '#000', 2000);
         if (!unit._dirtySummoned) dirtyRatSummon(unit);
     }
-    // 尤格-萨隆·命运主宰:打出时若命运之轮进度≥15次,转动命运之轮
+    // 尤格-萨隆·命运主宰:打出时若命运之轮进度≥10次,转动命运之轮
     if (unit.yoggFate) {
-        if ((gameState._fateWheelProgress || 0) >= 15) {
+        if ((gameState._fateWheelProgress || 0) >= 10) {
             setTimeout(() => openFateWheel(unit), 300);
         }
     }
@@ -3324,7 +3325,7 @@ function openFateWheel(unit) {
 }
 
 function executeFateSkill(unit, idx) {
-    // 转轮后重置进度:需重新释放15个法术才能再次转动
+    // 转轮后重置进度:需重新释放10个法术才能再次转动
     gameState._fateWheelProgress = 0;
     switch (idx) {
         case 0: fateHand(unit); break;
@@ -10967,7 +10968,7 @@ function showCardInfo(card) {
     if (card.eagleArtillery) features.push('建筑·天鹰:敌方耗40能量开启/全图3炮');
     if (card.dirtyRat) features.push('打出召唤敌方牌库随机卡');
     if (card.crog) features.push('己方回合末敌方攻/血变1永久');
-    if (card.yoggFate) features.push('释放15个法术转动命运之轮');
+    if (card.yoggFate) features.push('释放10个法术转动命运之轮');
     if (card.lvbu) features.push('三技能栏/真伤附魔/低血增伤30%');
     if (card.missileLaunch) features.push('法术·导弹:消灭攻≥5敌人');
     if (card.crazyCannon) features.push('每回合直击基地一次+普攻一次');
