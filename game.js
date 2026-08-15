@@ -3582,7 +3582,13 @@ function deployUnit(row, col) {
         const bends = Math.max(1, Math.min(6, Math.floor(dist / 5) + 1));
         const tunnelTime = bends * 300;
         showMinerTunnel(unit);
-        setTimeout(() => renderUnit(unit), tunnelTime);
+        setTimeout(() => {
+            renderUnit(unit);
+            // 联机实时同步:矿工出土后立即同步(对面看到矿工图标)
+            syncOnlineNow();
+        }, tunnelTime);
+        // 联机实时同步:部署后先同步一次(对面提前看到矿工隧道状态)
+        syncOnlineNow();
         return;
     }
 
