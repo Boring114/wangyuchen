@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>棋盘游戏</title>
+    <link rel="stylesheet" href="styles.css?v=7">
+</head>
+<body>
+    <!-- 初始界面 -->
+    <div id="startScreen" class="screen">
+        <div id="startDecor" class="start-decor"></div>
+        <h1>棋盘游戏</h1>
+        <div class="board-preview">
+            <div class="preview-board"></div>
+        </div>
+        <div class="buttons">
+            <button id="startBtn">开始游戏</button>
+            <button id="cardPackBtn">卡包</button>
+            <button id="howToBtn">玩法介绍</button>
+        </div>
+    </div>
+
+    <!-- 模式选择 -->
+    <div id="modeSelectScreen" class="screen hidden">
+        <h1>选择模式</h1>
+        <div class="buttons">
+            <button id="trainingBtn">训练营</button>
+            <button id="aiBattleBtn">人机对战</button>
+            <button id="onlineBtn">联机对战</button>
+                    </div>
+        <button id="modeBackBtn" class="back-btn-mode">返回</button>
+    </div>
+
+    <!-- 玩法介绍 -->
+    <div id="howToScreen" class="screen hidden">
+        <h1>游戏玩法介绍</h1>
+        <div class="howto-content">
+            <h3>🏰 基本规则</h3>
+            <p>红方在下方、蓝方在上方，摧毁对方大本营即可获胜。每回合自动获得能量，消耗能量部署卡牌作战。</p>
+            <h3>🃏 卡牌与部署</h3>
+            <p>点击己方半场的空白格，选择卡牌部署。普通单位攻击距离内可攻击；选中单位后可移动+攻击。</p>
+            <h3>⚡ 技能（双击）</h3>
+            <p>很多卡牌双击可释放技能：佩恩/马斑/植物人的大招、疾风的紧急回避、觉醒飞龙宝宝的风场、条子的包围、艾琳的黄圈、镜的镜像法阵、解斑的木龙/火遁/须佐等。部分单位有能量条（命中敌人攒能量，满能量开大招）。</p>
+            <h3>🔥 状态机制</h3>
+            <p>冰冻：下个回合无法行动（被灼烧立即解冻）。灼烧：每回合掉血。树缠：无法行动。定身：回合内无法行动。击退/击飞：强行位移（建筑免疫，霸体免疫）。</p>
+            <h3>✨ 卡牌类型</h3>
+            <p>金卡（英雄卡）：部署带台词与金色背景。觉醒卡：紫色光晕，能力更强。建筑：不可移动，免疫击退击飞。飞行单位：只有特定单位能攻击。一次性卡牌：使用后消失。</p>
+            <h3>💡 小技巧</h3>
+            <p>训练营（500能量）适合测试卡牌。卡牌库可自由搭配出战卡组（最多10张）。点右上角图标可查看卡牌详情。</p>
+        </div>
+        <button id="howToBackBtn">返回</button>
+    </div>
+
+    <!-- 联机房 -->
+    <div id="lobbyScreen" class="screen hidden">
+        <h1>联机对战</h1>
+        <div class="lobby-section">
+            <h3>创建房间</h3>
+            <input id="roomPassword" type="text" placeholder="设置房间密码" maxlength="10">
+            <button id="createRoomBtn">创建房间</button>
+            <p id="roomCodeDisplay" style="display:none">房间号: <strong id="roomCode"></strong></p>
+        </div>
+        <hr>
+        <div class="lobby-section">
+            <h3>随机匹配</h3>
+            <button id="matchBtn">随机匹配（自动匹配同时在匹配的玩家）</button>
+        </div>
+        <hr>
+        <div class="lobby-section">
+            <h3>加入房间</h3>
+            <input id="joinRoomId" type="text" placeholder="输入房间号" maxlength="6">
+            <input id="joinPassword" type="text" placeholder="输入密码" maxlength="10">
+            <button id="joinRoomBtn">加入房间</button>
+        </div>
+        <p id="lobbyStatus"></p>
+        <p id="lobbyTeam" style="display:none">你是: <strong id="lobbyTeamName"></strong></p>
+        <button id="lobbyBackBtn" class="back-btn-mode">返回</button>
+    </div>
+
+    <!-- 卡包界面 -->
+    <div id="cardPackScreen" class="screen hidden">
+        <h1>卡包</h1>
+        
+        <!-- 卡包标签页 -->
+        <div class="tab-bar">
+            <button id="cardCollectionTab" class="tab active">卡牌收藏</button>
+            <button id="battleDeckTab" class="tab">出战卡组</button>
+        </div>
+
+        <!-- 卡牌收藏 -->
+        <div id="cardCollection" class="tab-content">
+            <div class="card-grid" id="cardGrid">
+                <!-- 卡牌将动态生成 -->
+            </div>
+        </div>
+
+        <!-- 出战卡组 -->
+        <div id="battleDeck" class="tab-content hidden">
+            <div class="deck-info">
+                <h3>出战卡组</h3>
+                <p>当前卡组: <span id="deckCount">0</span> 张卡</p>
+            </div>
+            <div class="deck-list" id="deckList">
+                <p>点击左侧卡牌添加到出战卡组</p>
+            </div>
+        </div>
+
+        <!-- 卡牌信息面板 -->
+        <div id="cardInfoPanel" class="card-info-panel hidden">
+            <h3 id="cardName"></h3>
+            <div class="card-stats">
+                <div class="stat"><span class="label">攻击力:</span> <span id="cardAttack"></span></div>
+                <div class="stat"><span class="label">生命值:</span> <span id="cardHp"></span></div>
+                <div class="stat"><span class="label">移动距离:</span> <span id="cardMove"></span></div>
+                <div class="stat"><span class="label">攻击范围:</span> <span id="cardRange"></span></div>
+                <div class="stat"><span class="label">能量花费:</span> <span id="cardCost"></span></div>
+            </div>
+            <p id="cardDesc" class="card-desc" style="display:none"></p>
+        </div>
+
+        <button id="backBtn">返回</button>
+    </div>
+
+    <!-- 游戏界面 -->
+    <div id="gameScreen" class="screen hidden">
+        <!-- 右上角控制区 -->
+        <div class="top-right-controls">
+            <div id="timer" class="timer">45秒</div>
+            <button id="exitBtn" class="exit-btn">退出游戏</button>
+        </div>
+        
+        <!-- 蓝方信息栏 -->
+        <div class="player-info blue-player">
+            <div class="energy-bar-container">
+                <div class="energy-bar">
+                    <div id="blueEnergy" class="energy-fill"></div>
+                </div>
+                <span id="blueEnergyText">能量: 1/20</span>
+            </div>
+            <div class="base-hp">
+                <div class="hp-bar">
+                    <div id="blueBaseHp" class="hp-fill"></div>
+                </div>
+                <span>大本营血量: <span id="blueHpText">50</span>/50</span>
+            </div>
+            <div class="turn-indicator" id="blueTurnIndicator">蓝方回合</div>
+        </div>
+
+        <!-- 棋盘 -->
+        <div class="game-board-container">
+            <div id="gameBoard" class="game-board"></div>
+            <div id="chatMessages" class="chat-messages"></div>
+        </div>
+
+        <!-- 红方信息栏 -->
+        <div class="player-info red-player">
+            <div class="energy-bar-container">
+                <div class="energy-bar">
+                    <div id="redEnergy" class="energy-fill"></div>
+                </div>
+                <span id="redEnergyText">能量: 1/20</span>
+            </div>
+            <div class="base-hp">
+                <div class="hp-bar">
+                    <div id="redBaseHp" class="hp-fill"></div>
+                </div>
+                <span>大本营血量: <span id="redHpText">50</span>/50</span>
+            </div>
+            <div class="turn-indicator" id="redTurnIndicator">红方回合</div>
+        </div>
+
+        <!-- 底部控制栏 -->
+        <div class="bottom-controls">
+            <button id="unitInfoBtn" class="spell-btn">卡牌信息</button>
+            <button id="spellBtn" class="spell-btn">法术</button>
+            <div class="chat-wrap">
+                <button id="chatBtn" class="chat-btn" title="聊天">💬</button>
+                <div id="chatOptions" class="chat-options hidden">
+                    <button class="chat-option" data-text="打的真好">打的真好</button>
+                    <button class="chat-option" data-text="这不阴啊">这不阴啊</button>
+                    <button class="chat-option" data-text="扫码了">扫码了</button>
+                    <button class="chat-option" data-text="你们爸爸">你们爸爸</button>
+                    <button class="chat-option" data-text="难绷">难绷</button>
+                    <button class="chat-option" data-text="你好">你好</button>
+                    <button class="chat-option" data-text="再见">再见</button>
+                    <button class="chat-option" data-text="咪咪咪">咪咪咪</button>
+                    <button class="chat-option" data-text="嘿嘿嘿哈">嘿嘿嘿哈</button>
+                </div>
+            </div>
+            <button id="skipBtn" class="skip-btn">跳过回合</button>
+        </div>
+    </div>
+
+    <!-- 棋盘单位卡牌信息面板 -->
+    <div id="boardUnitModal" class="board-unit-modal hidden">
+        <div class="board-unit-modal-header">棋盘单位卡牌信息</div>
+        <div id="boardUnitList" class="board-unit-list"></div>
+        <button id="closeBoardUnitModal" class="board-unit-close">关闭</button>
+    </div>
+
+    <!-- 出战卡组弹窗 -->
+    <div id="deployModal" class="modal hidden">
+        <div class="modal-content">
+            <h2>选择卡牌部署</h2>
+            <div class="battle-deck-grid" id="battleDeckGrid">
+                <!-- 出战卡组卡牌 -->
+            </div>
+            <button id="closeDeployModal" class="close-btn">关闭</button>
+        </div>
+    </div>
+
+    <!-- 尤格萨隆技能选择框 -->
+    <div id="yoggSkillModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>尤格萨隆 · 技能</h3>
+            <button id="yoggSkill1Btn" class="skill-btn">混沌统治（选一敌人变己方）</button>
+            <button id="yoggSkill2Btn" class="skill-btn">诱引狂乱（敌人互相攻击）</button>
+            <button id="yoggSkill3Btn" class="skill-btn">触须攒聚（获得混乱触须手牌）</button>
+            <button id="closeYoggSkillModal" class="close-btn">关闭</button>
+        </div>
+    </div>
+
+    <!-- 法术部署栏 -->
+    <div id="spellModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>选择法术</h3>
+            <div class="battle-deck-grid" id="spellModalGrid"></div>
+            <button id="closeSpellModal" class="close-btn">关闭</button>
+        </div>
+    </div>
+
+    <!-- 尤格-萨隆命运之轮 -->
+    <div id="fateWheelModal" class="modal hidden">
+        <div class="fate-wheel-wrap">
+            <div class="fate-wheel" id="fateWheel">
+                <div class="fate-sector" style="--i:0">命运之手</div>
+                <div class="fate-sector" style="--i:1">血肉诅咒</div>
+                <div class="fate-sector" style="--i:2">夺心护目镜</div>
+                <div class="fate-sector" style="--i:3">神秘魔盒</div>
+                <div class="fate-sector" style="--i:4">吞噬之饥</div>
+                <div class="fate-sector" style="--i:5">燃烧权杖</div>
+            </div>
+            <div class="fate-pointer"></div>
+        </div>
+    </div>
+
+    <!-- 吕布技能栏 -->
+    <div id="lvbuSkillModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>吕布 · 技能</h3>
+            <button id="lvbuSkill1Btn" class="skill-btn">方天画斩（前方2×3范围3伤+附魔真伤）</button>
+            <button id="lvbuSkill2Btn" class="skill-btn">贪狼之握（前方3×3汲取+护盾）</button>
+            <button id="lvbuSkill3Btn" class="skill-btn">神魔降世（跳圆心5径圆4伤+护甲+1）</button>
+            <button id="closeLvbuSkillModal" class="close-btn">关闭</button>
+        </div>
+    </div>
+
+    <!-- 死门凯技能框 -->
+    <div id="guySkillModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>迈特凯 · 奥义</h3>
+            <button id="guySkill1Btn" class="skill-btn">夕象伍足（绕圈+白光冲击）</button>
+            <button id="guySkill2Btn" class="skill-btn">夜凯（一脚10伤，敌不死则自灭）</button>
+            <button id="closeGuySkillModal" class="close-btn">关闭</button>
+        </div>
+    </div>
+
+    <!-- 深蓝技能框 -->
+    <div id="deepBlueSkillModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>深蓝 · 技能</h3>
+            <button id="deepBlueSkill1Btn" class="skill-btn">钩锁（拉10格内敌人至身前）</button>
+            <button id="deepBlueSkill2Btn" class="skill-btn">钢刺（5格选点，5×5钢刺网，网内敌人每回合2真伤，网5血）</button>
+            <button id="closeDeepBlueSkillModal" class="close-btn">关闭</button>
+        </div>
+    </div>
+
+    <!-- 尚博勒技能框 -->
+    <div id="shangboleSkillModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>尚博勒 · 技能</h3>
+            <button id="shangboleSkill1Btn" class="skill-btn">猎头手枪（攻3穿2攻距5暴击30%翻倍）</button>
+            <button id="shangboleSkill2Btn" class="skill-btn">慢行特区（8格空格放视野精灵，视野攻击1伤后敌移-2）</button>
+            <button id="shangboleSkill3Btn" class="skill-btn">传送（6格放传送装置，双击装置传送到其前方）</button>
+            <button id="shangboleSkill4Btn" class="skill-btn">狙击枪（攻4无限穿甲射程14）</button>
+            <button id="closeShangboleSkillModal" class="close-btn">关闭</button>
+        </div>
+    </div>
+
+    <!-- 游戏结束弹窗 -->
+    <div id="gameOverModal" class="modal hidden">
+        <div class="modal-content">
+            <h2 id="winnerText"></h2>
+            <button id="restartBtn">重新开始</button>
+        </div>
+    </div>
+
+    <script src="game.js?v=7"></script>
+    <script src="online.js?v=4"></script>
+</body>
+</html>
