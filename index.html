@@ -9,6 +9,7 @@
 <body>
     <!-- 初始界面 -->
     <div id="startScreen" class="screen">
+        <div id="startDecor" class="start-decor"></div>
         <h1>棋盘游戏</h1>
         <div class="board-preview">
             <div class="preview-board"></div>
@@ -171,6 +172,7 @@
 
         <!-- 底部控制栏 -->
         <div class="bottom-controls">
+            <button id="unitInfoBtn" class="spell-btn">卡牌信息</button>
             <button id="spellBtn" class="spell-btn">法术</button>
             <div class="chat-wrap">
                 <button id="chatBtn" class="chat-btn" title="聊天">💬</button>
@@ -188,6 +190,13 @@
             </div>
             <button id="skipBtn" class="skip-btn">跳过回合</button>
         </div>
+    </div>
+
+    <!-- 棋盘单位卡牌信息面板 -->
+    <div id="boardUnitModal" class="board-unit-modal hidden">
+        <div class="board-unit-modal-header">棋盘单位卡牌信息</div>
+        <div id="boardUnitList" class="board-unit-list"></div>
+        <button id="closeBoardUnitModal" class="board-unit-close">关闭</button>
     </div>
 
     <!-- 出战卡组弹窗 -->

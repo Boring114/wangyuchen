@@ -666,7 +666,7 @@ const cardLibrary = [
         cost: 0,
         artwork: 'small_shroom',
         smallShroom: true,
-        description: '不可移动,攻击距离3。穿甲无限(真实伤害)。每回合最多部署2个。'
+        description: '不可移动,攻击距离3。穿甲无限(真实伤害)。每回合最多部署1个。'
     },
     {
         id: 'patroller',
@@ -2337,6 +2337,94 @@ function handleCellClick(e) {
     gameState.selectedUnit = null;
 }
 
+// 初始界面装饰图片:棋盘左右两侧错落排列,避开标题和按钮
+(function() {
+    const decor = document.getElementById('startDecor');
+    if (!decor) return;
+    const total = 18;
+    function placeImages() {
+        const bp = document.querySelector('.board-preview');
+        const h1 = document.querySelector('#startScreen h1');
+        const btns = document.querySelector('#startScreen .buttons');
+        if (!bp || !h1 || !btns) { setTimeout(placeImages, 100); return; }
+        const pr = decor.parentElement.getBoundingClientRect();
+        const br = bp.getBoundingClientRect();
+        const hr = h1.getBoundingClientRect();
+        const bur = btns.getBoundingClientRect();
+        const leftEdge = (br.left - pr.left) / pr.width * 100;
+        const rightEdge = (br.right - pr.left) / pr.width * 100;
+        const topSafe = (hr.bottom - pr.top) / pr.height * 100 + 7;
+        const botSafe = (bur.top - pr.top) / pr.height * 100 - 7;
+        const span = botSafe - topSafe;
+        const perSide = total / 2;
+        for (let i = 0; i < total; i++) {
+            const img = document.createElement('img');
+            img.src = 'images/img' + (i + 1) + '.png';
+            img.className = 'start-decor-img';
+            const isLeft = i < perSide;
+            const idx = isLeft ? i : i - perSide;
+            const cy = topSafe + (idx + 0.5) * span / perSide;
+            const layer = idx % 3;
+            const offX = layer * 2.5;
+            const cx = isLeft ? leftEdge - 2 - offX : rightEdge + 2 + offX;
+            img.style.left = Math.max(2, Math.min(98, cx)) + '%';
+            img.style.top = Math.max(2, Math.min(98, cy)) + '%';
+            img.style.transform = 'translate(' + (isLeft ? '-100%' : '0%') + ', -50%) rotate(' + ((i % 5 - 2) * 3) + 'deg)';
+            img.style.opacity = '0.92';
+            decor.appendChild(img);
+        }
+    }
+    setTimeout(placeImages, 200);
+})();
+
+// 卡牌信息按钮:打开棋盘单位卡牌信息面板(去重显示,点卡显示信息框)
+const unitInfoBtnEl = document.getElementById('unitInfoBtn');
+const boardUnitModalEl = document.getElementById('boardUnitModal');
+const boardUnitListEl = document.getElementById('boardUnitList');
+const closeBoardUnitModalEl = document.getElementById('closeBoardUnitModal');
+if (unitInfoBtnEl) unitInfoBtnEl.addEventListener('click', () => {
+    if (!boardUnitListEl) return;
+    boardUnitListEl.innerHTML = '';
+    const seen = new Set();
+    gameState.units.forEach(u => {
+        const cid = u.cardId || u.id;
+        if (seen.has(cid)) return;
+        seen.add(cid);
+        const card = (typeof cardLibrary !== 'undefined' && cardLibrary) ? cardLibrary.find(c => c.id === cid) : null;
+        const item = document.createElement('div');
+        item.className = 'board-unit-card';
+        const title = document.createElement('div');
+        title.textContent = (card ? card.name : u.name) + '  (攻击:' + (u.attack || 0) + ' 血:' + (u.currentHp || 0) + '/' + (u.maxHp || 0) + ' 移动:' + (u.moveRange || 0) + ' 攻距:' + (u.attackRange || 0) + ')'
+        item.appendChild(title);
+        const desc = document.createElement('div');
+        desc.className = 'board-unit-desc';
+        desc.textContent = (card && card.description) ? card.description : '';
+        item.appendChild(desc);
+        const feats = [];
+        if (u.armorPen) feats.push(u.armorPen >= 999 ? '穿甲无限' : '穿甲:' + u.armorPen);
+        if (u.splashRadius) feats.push('溅射:' + u.splashRadius + '格');
+        if (u.critChance) feats.push('暴击 ' + Math.round(u.critChance * 100) + '%');
+        if (u.chargeDamage) feats.push('冲锋≥' + (u.chargeMove || 0) + '格 伤' + u.chargeDamage);
+        if (u.rangedCrit) feats.push('远程首击暴击×2');
+        if (u.armor) feats.push('护甲:' + u.armor);
+        if (feats.length) {
+            const f = document.createElement('div');
+            f.className = 'board-unit-desc';
+            f.textContent = '特性: ' + feats.join(' | ');
+            item.appendChild(f);
+        }
+        item.addEventListener('click', () => {
+            showUnitInfo(u, true);
+            if (boardUnitModalEl) boardUnitModalEl.classList.add('hidden');
+        });
+        boardUnitListEl.appendChild(item);
+    });
+    if (boardUnitModalEl) boardUnitModalEl.classList.remove('hidden');
+});
+if (closeBoardUnitModalEl) closeBoardUnitModalEl.addEventListener('click', () => {
+    if (boardUnitModalEl) boardUnitModalEl.classList.add('hidden');
+});
+
 // 联机操作限制:非自己回合禁止操作(统一拦截)
 function canActNow() {
     return !(gameState.onlineMode && gameState.currentTurn !== onlineTeam);
@@ -2344,6 +2432,8 @@ function canActNow() {
 
 // 显示行动模式
 function showActionMode(unit) {
+    // 单击选中时:棋盘右侧显示卡牌信息框(统一兜底,覆盖所有选中路径)
+    showUnitInfo(unit, true);
     // 冰冻/定身无法行动
     if (unit.frozen || unit.stunned) return;
     // 被击倒:本回合无法行动(敌方回合结束才站起)
@@ -3222,7 +3312,7 @@ function openFateWheel(unit) {
     pointer.style.transform = 'rotate(0deg)';
     requestAnimationFrame(() => {
         pointer.style.transition = 'transform 3.2s cubic-bezier(0.15, 0.85, 0.25, 1)';
-        // 指针指向第 idx 扇区中心(每扇区60°,扇区0中心在30°)
+        // 指针指��第 idx 扇区中心(每扇区60°,扇区0中心在30°)
         const deg = 360 * 5 + (30 + idx * 60);
         pointer.style.transform = 'rotate(' + deg + 'deg)';
     });
@@ -3417,9 +3507,9 @@ function deployUnit(row, col) {
         return;
     }
 
-    // 小喷菇:每回合最多部署2个
-    if (card.smallShroom && (gameState.shroomCount[gameState.currentTurn] || 0) >= 2) {
-        alert('小喷菇每回合最多部署2个!');
+    // 小喷菇:每回合最多部署1个
+    if (card.smallShroom && (gameState.shroomCount[gameState.currentTurn] || 0) >= 1) {
+        alert('小喷菇每回合最多部署1个!');
         closeDeployModalFunc();
         return;
     }
@@ -4957,6 +5047,8 @@ function castSpell(card, row, col) {
         }
         updateBaseHpDisplay();
         checkGameOver();
+        // 联机实时同步:火球伤害/死亡结算后立即同步(对方不用等回合结束)
+        syncOnlineNow();
     }, 420);
     // 联机实时同步:法术施放后同步
     syncOnlineNow();
@@ -4998,6 +5090,8 @@ function castRageSpell(card, row, col) {
     });
     clearHighlights();
     gameState.selectedUnit = null;
+    // 联机实时同步:法术效果立即同步
+    syncOnlineNow();
 }
 
 // 狂暴持续光环渲染(5×5 紫红色,持续到己方回合结束)
@@ -5015,6 +5109,32 @@ function renderRageZones() {
 }
 
 // 复仇滚木:选中格为中间,向前滚动11格(竖向3×11),逐格命中敌人2伤穿甲1+击退1格,基地固定1伤
+// 滚木法术动画(纯视觉,联机重放用——原版:棕色滚木滚动穿过)
+function showLogVisual(row, col, dir) {
+    const board = document.getElementById('gameBoard');
+    if (!board) return;
+    const log = document.createElement('div');
+    log.className = 'log-spell';
+    log.style.position = 'absolute';
+    log.style.left = ((col - 1) * cellW) + 'px';
+    log.style.top = (row * cellH + (cellH - 10) / 2) + 'px';
+    log.style.width = (3 * cellW) + 'px';
+    log.style.height = '10px';
+    board.appendChild(log);
+    const dist = 11;
+    let r = row;
+    const step = () => {
+        r += dir;
+        log.style.top = (r * cellH + (cellH - 10) / 2) + 'px';
+        if ((dir === -1 && r >= row - dist + 1) || (dir === 1 && r <= row + dist - 1)) {
+            setTimeout(step, 120);
+        } else {
+            if (log.parentNode) log.parentNode.removeChild(log);
+        }
+    };
+    setTimeout(step, 50);
+}
+
 function castLogSpell(card, row, col) {
     // 联机:滚木法术特效同步
     sendSkillFx('spellLog', null, row, col);
@@ -5078,6 +5198,8 @@ function castLogSpell(card, row, col) {
     setTimeout(step, 50);
     clearHighlights();
     gameState.selectedUnit = null;
+    // 联机实时同步:法术效果立即同步
+    syncOnlineNow();
 }
 
 // 石墙守护:进入选友军模式
@@ -5994,8 +6116,12 @@ function rollingStoneKill(target) {
         if (stone.parentNode) stone.parentNode.removeChild(stone);
         showCritText(target.row, target.col, '碾压');
         if (!target._removing && !target.ghost) removeUnit(target);
+        // 联机实时同步:滚石秒杀结算后立即同步(对方立即看到死亡)
+        syncOnlineNow();
     }, 500);
     gameState.selectedUnit = null;
+    // 联机实时同步:法术效果立即同步
+    syncOnlineNow();
 }
 
 // 导弹发射:进入选敌模式(攻击力≥5的敌人标红)
@@ -6061,8 +6187,12 @@ function missileKill(target) {
         setTimeout(() => { if (boom.parentNode) boom.parentNode.removeChild(boom); }, 500);
         showCritText(target.row, target.col, '命中');
         if (!target._removing && !target.ghost) removeUnit(target);
+        // 联机实时同步:导弹消灭结算后立即同步(对方立即看到死亡)
+        syncOnlineNow();
     }, 450);
     gameState.selectedUnit = null;
+    // 联机实时同步:法术效果立即同步
+    syncOnlineNow();
 }
 
 // 邪月当空:随机挑8个队友,随机变成花费≥10的卡(带亲卫队的卡召唤亲卫队)
@@ -6081,6 +6211,8 @@ function castEvilMoon(card, row, col) {
     });
     clearHighlights();
     gameState.selectedUnit = null;
+    // 联机实时同步:法术效果立即同步
+    syncOnlineNow();
 }
 
 // 单位变身:保留位置/阵营/id,数值与技能标记换成新卡;带亲卫队的卡召唤亲卫队
@@ -6145,6 +6277,8 @@ function castHealSpell(card, row, col) {
     });
     clearHighlights();
     gameState.selectedUnit = null;
+    // 联机实时同步:法术效果立即同步
+    syncOnlineNow();
 }
 
 // 护盾法术:给友军添加可承受4点伤害的护盾(可叠加)
@@ -7026,6 +7160,8 @@ function showGuyElephantVisual(guy, target) {
 }
 
 function guyElephantStomp(guy, target) {
+    // 持续技能动画标记:回合结束前优先放完
+    gameState._skillAnimating = true;
     // 联机:夕象伍足动画同步
     sendSkillFx('elephant', guy, target.row, target.col);
 
@@ -7087,12 +7223,15 @@ function guyElephantStomp(guy, target) {
             setTimeout(() => {
                 // 最后一段白光后恢复死门凯图标
                 renderUnit(guy);
-                if (target._removing) return;
+                if (target._removing) { gameState._skillAnimating = false; syncOnlineNow(); return; }
                 showGuyBeam(target, 0, 'thick');
                 target.currentHp -= 3 + bonus;
                 updateUnitHp(target);
                 showCritText(target.row, target.col, '夕象伍足');
                 if (target.currentHp <= 0) removeUnit(target);
+                // 动画结束:清除标记并同步(对方立即看到死亡)
+                gameState._skillAnimating = false;
+                syncOnlineNow();
             }, 600);
         }, 4 * 350 + 300);
     }, lastStep);
@@ -9416,6 +9555,8 @@ function showWoodDragonVisual(m, target) {
 
 // 地爆天星
 function chibakuTensei(pain) {
+    // 持续技能动画标记:回合结束前优先放完(防动画中途跳回合导致单位异常)
+    gameState._chibakuAnimating = true;
     // 联机:地爆天星动画同步
     sendSkillFx('chibaku', pain);
     pain.painEnergy = 0;
@@ -9539,6 +9680,8 @@ function chibakuTensei(pain) {
     gameState.board[pain.row][pain.col].appendChild(text);
     setTimeout(() => { if (text.parentNode) text.remove(); }, landTime - 500);
     setTimeout(() => ball.remove(), landTime + 200);
+    // 动画结束:清除标记并同步(对方立即看到死亡,防复活)
+    setTimeout(() => { gameState._chibakuAnimating = false; if (gameState.onlineMode && typeof syncOnlineNow === 'function') syncOnlineNow(); }, landTime + 300);
 }
 // 马斑攻击特效:红色>箭头
 function showMadaraAttackFX(attacker, target) {
@@ -10014,6 +10157,12 @@ function startTimer() {
         updateTimerDisplay();
 
         if (gameState.timer <= 0) {
+            // 持续技能动画播放中:重置倒计时,优先放完技能再跳过回合
+            if (gameState._chibakuAnimating || gameState._skillAnimating) {
+                gameState.timer = 1;
+                updateTimerDisplay();
+                return;
+            }
             // 联机模式:倒计时到0自动跳过回合(无条件,含操作方超时)
             endTurn();
             return;
@@ -10843,9 +10992,9 @@ function showCardInfo(card) {
 }
 
 // 显示单位信息(双击棋盘上的单位)
-function showUnitInfo(unit) {
-    // 查看信息不残留选中(防止关闭信息框后再点击被误判为双击触发技能)
-    if (gameState.selectedUnit) {
+function showUnitInfo(unit, keepSelection) {
+    // 查看信息不残留选中(防止关闭信息框后再点击被误判为双击触发技能);单击卡牌时保留选中与高亮
+    if (!keepSelection && gameState.selectedUnit) {
         clearHighlights();
         gameState.selectedUnit = null;
     }
@@ -11100,6 +11249,11 @@ exitBtn.addEventListener('click', goToStartScreen);
 // 跳过回合按钮(联机模式只能跳过自己的回合,轮到对方时点击无效)
 skipBtn.addEventListener('click', () => {
     if (gameState.onlineMode && gameState.currentTurn !== onlineTeam) return;
+    // 持续技能动画播放中:等动画放完再跳回合
+    if (gameState._chibakuAnimating || gameState._skillAnimating) {
+        showHeroDeployText({ row: gameState.currentTurn === 'red' ? 20 : 5, col: 12 }, '技能播放中...', '#888888', 800);
+        return;
+    }
     endTurn();
 });
 restartBtn.addEventListener('click', restartGame);

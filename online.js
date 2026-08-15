@@ -1,5 +1,5 @@
 // 联机对战客户端
-const ONLINE_SERVER = 'wss://4cd42114.r17.cpolar.top';
+const ONLINE_SERVER = 'wss://3b9343b9.r17.cpolar.top';
 
 let ws = null;
 let onlineRoomId = null;
@@ -302,7 +302,7 @@ function playSkillFx(fx) {
             case 'bluePillar': if (typeof showBluePillar === 'function') showBluePillar(u); else showSkillFlashFx(fx.row, fx.col, '#3498db', 45); break;
             case 'spellFireball': if (typeof showFireballVisual === 'function') showFireballVisual(fx.toR, fx.toC, 1); else showSkillFlashFx(fx.toR, fx.toC, '#e74c3c', 50); break;
             case 'spellRage': showSkillFlashFx(fx.toR, fx.toC, '#e67e22', 45); break;
-            case 'spellLog': showSkillFlashFx(fx.toR, fx.toC, '#8b5a2b', 45); break;
+            case 'spellLog': if (typeof showLogVisual === 'function') showLogVisual(fx.toR, fx.toC, fx.team === 'red' ? -1 : 1); else showSkillFlashFx(fx.toR, fx.toC, '#8b5a2b', 45); break;
             case 'spellHeal': showSkillFlashFx(fx.toR, fx.toC, '#27ae60', 40); break;
             case 'spellMoon': showSkillFlashFx(fx.toR, fx.toC, '#8e44ad', 50); break;
             case 'spellMissile': if (typeof showMissileSpellVisual === 'function') showMissileSpellVisual(t); else showSkillFlashFx(fx.toR, fx.toC, '#e67e22', 40); break;

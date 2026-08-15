@@ -2075,7 +2075,7 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 110px;
+    width: 60px;
     height: 24px;
     margin-left: -55px;
     margin-top: -12px;
@@ -2331,3 +2331,24 @@ h1 {
 
 /* 蓝方视角:底部控制栏(跳过回合/法术/聊天)固定在屏幕最底部 */
 .blue-view .bottom-controls { order: 4; }
+
+/* 棋盘单位卡牌信息面板 */
+.board-unit-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; border-radius: 10px; padding: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); z-index: 300; width: 420px; max-width: 90vw; max-height: 70vh; overflow-y: auto; }
+.board-unit-modal.hidden { display: none; }
+.board-unit-modal-header { font-size: 16px; font-weight: bold; margin-bottom: 12px; text-align: center; color: #2c3e50; }
+.board-unit-card { padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; margin: 6px 0; cursor: pointer; background: #f8f9fa; font-size: 13px; }
+.board-unit-card:hover { background: #eef4fb; border-color: #3498db; }
+.board-unit-close { margin-top: 14px; padding: 6px 18px; border: none; background: #3498db; color: #fff; border-radius: 6px; cursor: pointer; display: block; margin-left: auto; margin-right: auto; }
+
+/* 棋盘单位卡牌信息:描述/特性行 */
+.board-unit-desc { font-size: 11px; color: #7f8c8d; margin-top: 4px; line-height: 1.4; }
+
+/* 初始界面装饰图片(棋盘两侧错落分布,不挡中央棋盘预览和按钮) */
+.start-decor { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 1; }
+.start-decor-img { position: absolute; width: 75px; height: auto; opacity: 0.92; z-index: 1; object-fit: contain; }
+#startScreen h1, #startScreen .board-preview, #startScreen .buttons { position: relative; z-index: 5; }
+
+/* 三栏启动布局 */
+
+
+
