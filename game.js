@@ -2359,7 +2359,7 @@ function handleCellClick(e) {
         const perSide = total / 2;
         for (let i = 0; i < total; i++) {
             const img = document.createElement('img');
-            img.src = 'images/img' + (i + 1) + '.png';
+            img.src = 'chessboard2.0/images/img' + (i + 1) + '.png';
             img.className = 'start-decor-img';
             const isLeft = i < perSide;
             const idx = isLeft ? i : i - perSide;
