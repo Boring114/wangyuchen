@@ -4628,8 +4628,8 @@ function attackUnit(target) {
 // 攻击大本营
 function attackBase(isBlueBase) {
     if (!gameState.selectedUnit) return;
-    // 马斑无双状态不能攻击大本营
-    if (gameState.selectedUnit.inMusou) return;
+    // 马斑无双状态攻击大本营每回合限1次(攻击完后只能另找目标攻击)
+    if (gameState.selectedUnit.inMusou && gameState.selectedUnit._musouBaseAttacked) return;
     // 巡视者无法咬大本营
     if (gameState.selectedUnit.patroller) return;
     // 被巡视者咬住:只能攻击敌人,不能攻击大本营
@@ -4676,6 +4676,12 @@ function attackBase(isBlueBase) {
     } else {
         gameState.redBaseHp -= damage;
         updateBaseHpDisplay();
+    }
+    // 马斑无双:攻击大本营后标记,本回合不能再打大本营
+    if (attacker.inMusou) attacker._musouBaseAttacked = true;
+    // 一次性兵种:攻击大本营后同样自毁(冰雪精灵等)
+    if (attacker.oneShot) {
+        removeUnit(attacker);
     }
 
     // 标记已攻击(多段攻击单位也消耗次数,防止无限打大本营)
@@ -5029,6 +5035,8 @@ if (card.rage) { castRageSpell(card, row, col); return; }
         return;
     }
     if (card.bigLightning) { castBigLightning(card, row, col); return; }
+    // 兜底:能量卡绝不能被当火球(即使前面分支漏判)
+    if (card.blueEnergyCard) { gameState.battleDeck = gameState.battleDeck.filter(c => c.id !== 'blue_energy_card'); clearHighlights(); gameState.selectedUnit = null; return; }
     // 火球法术
     const r = card.spellRadius || 1;
     // 联机:火球法术特效同步
@@ -10611,6 +10619,7 @@ function endTurn() {
     gameState.units.forEach(u => {
         if (u.inMusou && u.team === prevTurn) {
             u.inMusou = false;
+            u._musouBaseAttacked = false;
             u.moveRange -= u.musouMove;
             u.attack = Math.floor(u.attack / 2);
             const ue = gameState.board[u.row][u.col].querySelector('.unit');
@@ -10919,8 +10928,6 @@ function updateDeployModalCards() {
     const isEnemyHalf = (gameState.currentTurn === 'red' && targetRow <= 13) || (gameState.currentTurn === 'blue' && targetRow >= 14);
 
     gameState.battleDeck.forEach((card, index) => {
-        // 后手能量卡:仅蓝方(后手)回合显示
-        if (card.blueEnergyCard && gameState.currentTurn !== 'blue') return;
         // 目标格有友方单位:只显示法术卡(黑绝不再通过部署框附身)
         const targetHasUnit = gameState.units.some(u => u.row === targetRow && u.col === targetCol);
         if (targetHasUnit) {
@@ -10945,6 +10952,16 @@ function updateDeployModalCards() {
 
         battleDeckGrid.appendChild(cardElement);
     });
+
+    // 后手能量卡:仅蓝方回合且未使用时显示(独立于卡组,红方永远看不到)
+    if (gameState.currentTurn === 'blue' && gameState._blueEnergyCardLeft) {
+        const eCardEl = document.createElement('div');
+        eCardEl.className = 'battle-deck-card';
+        eCardEl.dataset.energyCard = '1';
+        eCardEl.dataset.cost = '0';
+        eCardEl.innerHTML = '<div class="card-artwork art-energy_card"></div><h4>能量卡</h4><div class="cost">0 能量</div>';
+        battleDeckGrid.appendChild(eCardEl);
+    }
 
     if (gameState.battleDeck.length === 0) {
         battleDeckGrid.innerHTML = '<p style="color: #7f8c8d;">出战卡组为空</p>';
@@ -11282,12 +11299,8 @@ function startGame() {
     // 关闭所有弹窗(防残留)
     ['deployModal','spellModal','deepBlueSkillModal','lvbuSkillModal','yoggSkillModal','guySkillModal','shangboleSkillModal'].forEach(id => { const m = document.getElementById(id); if (m) m.classList.add('hidden'); });
 
-    // 后手补偿:给蓝方(后手)开局加一张能量卡(0费,整局一次,+1能量)
-    if (gameState.maxEnergy < 500) {
-        if (!gameState.battleDeck.some(c => c.id === 'blue_energy_card')) {
-            gameState.battleDeck.push({ id: 'blue_energy_card', name: '能量卡', attack: 0, hp: 0, moveRange: 0, attackRange: 0, cost: 0, spell: true, blueEnergyCard: true, artwork: 'energy_card', description: '后手补偿:立即获得1点能量(本回合),整局仅用1次' });
-        }
-    }
+    // 后手补偿:蓝方(后手)拥有能量卡标记(0费,整局一次,+1能量)——不污染卡组,红方(先手)永远看不到
+    gameState._blueEnergyCardLeft = gameState.maxEnergy < 500;
 
 // 更新显示
     updateEnergyDisplay();
@@ -11890,6 +11903,17 @@ battleDeckGrid.addEventListener('click', (e) => {
     // 联机模式:只能在自己的回合部署(轮到对方时不能替对方部署)
     if (gameState.onlineMode && gameState.currentTurn !== onlineTeam) return;
 
+    // 后手能量卡:蓝方+1能量,整局一次用完消失
+    if (card.dataset.energyCard) {
+        if (gameState.currentTurn === 'blue') {
+            gameState.blueEnergy = Math.min(gameState.blueEnergy + 1, gameState.blueMaxEnergy || gameState.maxEnergy);
+            updateEnergyDisplay();
+            showHeroDeployText({ row: gameState.deployTargetRow, col: gameState.deployTargetCol, team: 'blue' }, '+1能量', '#3498db', 1000);
+        }
+        gameState._blueEnergyCardLeft = false;
+        closeDeployModalFunc();
+        return;
+    }
     const index = parseInt(card.dataset.index);
     const cost = parseInt(card.dataset.cost);
     const currentEnergy = gameState.currentTurn === 'red' ? gameState.redEnergy : gameState.blueEnergy;
