@@ -1617,6 +1617,11 @@ function handleCellClick(e) {
             const gsEl = document.getElementById('gameScreen');
             if (gsEl && gsEl.classList.contains('blue-view')) row = Math.min(BOARD_ROWS - 1, row + 1);
             const card = gameState._spellCasting;
+            // 防护:导弹/滚石目标是技能输出型(无普攻/柱间)时不施放不扣费
+            if ((card.missileLaunch || card.rollingStone)) {
+                const ttU = gameState.units.find(u => u.row === row && u.col === col);
+                if (ttU && !hasBasicAttack(ttU)) { gameState._spellCasting = null; clearHighlights(); gameState.selectedUnit = null; return; }
+            }
             // 友军目标法术(石墙/剩饭/魔法护盾):目标格必须是友军,否则不施放
             const friendlyTarget = !!(card.stoneWall || card.leftover || card.magicShield || card.shieldSpell || card.milk);
             const hasFriendly = friendlyTarget && gameState.units.some(u => u.row === row && u.col === col && u.team === gameState.currentTurn && !u._removing);
@@ -1670,7 +1675,7 @@ function handleCellClick(e) {
     // 导弹发射选敌模式:点击攻击力≥5的敌人直接消灭
     if (gameState._missileTargeting) {
         const tU = gameState.units.find(u => u.row === row && u.col === col);
-        if (tU && tU.team !== gameState.currentTurn && !tU.ghost && (tU.attack || 0) >= 5 && !isSkillOutputUnit(tU) && cell.classList.contains('tank-target')) {
+        if (tU && tU.team !== gameState.currentTurn && !tU.ghost && (tU.attack || 0) >= 5 && hasBasicAttack(tU) && cell.classList.contains('tank-target')) {
             missileKill(tU);
         } else {
             gameState._missileTargeting = false;
@@ -1681,7 +1686,7 @@ function handleCellClick(e) {
     // 滚石选敌模式:点击攻击力≤2的敌人直接消灭
     if (gameState._rollingStoneTargeting) {
         const tU = gameState.units.find(u => u.row === row && u.col === col);
-        if (tU && tU.team !== gameState.currentTurn && !tU.ghost && (tU.attack || 0) <= 2 && !isSkillOutputUnit(tU) && cell.classList.contains('tank-target')) {
+        if (tU && tU.team !== gameState.currentTurn && !tU.ghost && (tU.attack || 0) <= 2 && hasBasicAttack(tU) && cell.classList.contains('tank-target')) {
             rollingStoneKill(tU);
         } else {
             gameState._rollingStoneTargeting = false;
@@ -3484,6 +3489,18 @@ function deployUnit(row, col) {
 
     // 法术卡:全图任意格直接施放(不创建单位)
     if (card.spell) {
+        // 后手能量卡:蓝方专用,立即+1能量(本回合),整局一次用完消失
+        if (card.blueEnergyCard) {
+            if (gameState.currentTurn === 'blue') {
+                gameState.blueEnergy = Math.min(gameState.blueEnergy + 1, gameState.blueMaxEnergy || gameState.maxEnergy);
+                updateEnergyDisplay();
+                showHeroDeployText({ row: gameState.deployTargetRow, col: gameState.deployTargetCol, team: 'blue' }, '+1能量', '#3498db', 1000);
+            }
+            // 用后从卡组移除(整局一次)
+            gameState.battleDeck = gameState.battleDeck.filter(c => c.id !== 'blue_energy_card');
+            closeDeployModalFunc();
+            return;
+        }
         const curE = gameState.currentTurn === 'red' ? gameState.redEnergy : gameState.blueEnergy;
         if (curE < card.cost) { alert('能量不足!'); closeDeployModalFunc(); return; }
         if (gameState.currentTurn === 'red') gameState.redEnergy -= card.cost;
@@ -4960,7 +4977,7 @@ function castSpell(card, row, col) {
     if (card.missileLaunch) {
         // 单击:格子上的敌人若攻击力≥5 直接消灭;否则进入选敌模式
         const tU = gameState.units.find(u => u.row === row && u.col === col);
-        if (tU && tU.team !== gameState.currentTurn && !tU.ghost && (tU.attack || 0) >= (card.minAtk || 5) && !isSkillOutputUnit(tU)) {
+        if (tU && tU.team !== gameState.currentTurn && !tU.ghost && (tU.attack || 0) >= (card.minAtk || 5) && hasBasicAttack(tU)) {
             missileKill(tU);
             return;
         }
@@ -4970,7 +4987,7 @@ function castSpell(card, row, col) {
     if (card.rollingStone) {
         // 单击:格子上的敌人若攻击力≤2 直接消灭;否则进入选敌模式
         const tU = gameState.units.find(u => u.row === row && u.col === col);
-        if (tU && tU.team !== gameState.currentTurn && !tU.ghost && (tU.attack || 0) <= (card.maxAtk || 2) && !isSkillOutputUnit(tU)) {
+        if (tU && tU.team !== gameState.currentTurn && !tU.ghost && (tU.attack || 0) <= (card.maxAtk || 2) && hasBasicAttack(tU)) {
             rollingStoneKill(tU);
             return;
         }
@@ -5062,6 +5079,26 @@ function castSpell(card, row, col) {
 }
 
 // 狂暴法术:5×5 范围内友军攻击+2(技能每段+2)、下次移动+2,持续一个回合(特效同步持续)
+// 狂暴法术动画(纯视觉,联机重放用——原版:5×5橙色buff光效)
+function showRageVisual(row, col) {
+    const board = document.getElementById('gameBoard');
+    if (!board) return;
+    const r = 2;
+    for (let dr = -r; dr <= r; dr++) {
+        for (let dc = -r; dc <= r; dc++) {
+            const nr = row + dr, nc = col + dc;
+            if (!isValidPosition(nr, nc)) continue;
+            const fx = document.createElement('div');
+            fx.className = 'rage-buff';
+            fx.style.position = 'absolute';
+            fx.style.left = (nc * cellW) + 'px';
+            fx.style.top = (nr * cellH) + 'px';
+            board.appendChild(fx);
+            setTimeout(() => { if (fx.parentNode) fx.parentNode.removeChild(fx); }, 2500);
+        }
+    }
+}
+
 function castRageSpell(card, row, col) {
     // 联机:狂暴法术特效同步
     sendSkillFx('spellRage', null, row, col);
@@ -5251,9 +5288,16 @@ function applyMilk(unit) {
 
 // 技能输出型单位判定:以技能为输出手段的单位被攻击时不反击(佩恩/解斑/超骑/柱间/艾琳/镜/铠/疾风/马斑/电飞龙/导演/吕布等)
 function isSkillOutputUnit(u) {
-    return !!(u.painTendo || u.madaraSolve || u.superKnight || u.hashirama || u.erin || u.mirror ||
+    return !!(u.painTendo || u.shinraRange || u.madaraSolve || u.superKnight || u.hashirama || u.erin || u.mirror ||
         u.kaiShurikenRange || u.aoeAttack ||
         u.yogg || u.yoggSaron || u.yoggFate || u.lvbu);
+}
+
+// 是否有普通攻击能力(攻击力或近战攻击力>0)——导弹/滚石只排除无普攻单位
+function hasBasicAttack(u) {
+    // 柱间(植物人)靠技能输出,虽攻击力数值存在但无实际普攻,导弹/滚石不可选
+    if (u.hashirama) return false;
+    return !!((u.attack || 0) > 0 || (u.meleeAttack || 0) > 0);
 }
 
 // 通用反击:敌方单位被普通攻击命中后,若攻击者在敌方攻击范围内则反击一次
@@ -6101,7 +6145,7 @@ function enterRollingStoneTargetMode(card) {
     const maxAtk = card.maxAtk || 2;
     gameState.units.forEach(u => {
         if (u.team === gameState.currentTurn || u.ghost || u._removing) return;
-        if ((u.attack || 0) <= maxAtk && !isSkillOutputUnit(u)) {
+        if ((u.attack || 0) <= maxAtk && hasBasicAttack(u)) {
             gameState.board[u.row][u.col].classList.add('tank-target');
         }
     });
@@ -6109,6 +6153,8 @@ function enterRollingStoneTargetMode(card) {
 
 // 滚石消灭:滚石滚过消灭目标
 function rollingStoneKill(target) {
+    // 防护:技能输出型/无普攻目标不可被滚石选中(即使bug选中也不生效)
+    if (!target || !hasBasicAttack(target)) { gameState._rollingStoneTargeting = false; clearHighlights(); return; }
     gameState._rollingStoneTargeting = false;
     clearHighlights();
     const board = document.getElementById('gameBoard');
@@ -6139,7 +6185,7 @@ function enterMissileTargetMode(card) {
     const minAtk = card.minAtk || 5;
     gameState.units.forEach(u => {
         if (u.team === gameState.currentTurn || u.ghost || u._removing) return;
-        if ((u.attack || 0) >= minAtk && !isSkillOutputUnit(u)) {
+        if ((u.attack || 0) >= minAtk && hasBasicAttack(u)) {
             gameState.board[u.row][u.col].classList.add('tank-target');
         }
     });
@@ -6169,6 +6215,8 @@ function showMissileSpellVisual(target) {
 
 // 导弹消灭:导弹从天而降消灭目标
 function missileKill(target) {
+    // 防护:技能输出型/无普攻目标不可被导弹选中(即使bug选中也不生效)
+    if (!target || !hasBasicAttack(target)) { gameState._missileTargeting = false; clearHighlights(); return; }
     // 联机:导弹法术特效同步
     sendSkillFx('spellMissile', null, target.row, target.col);
 
@@ -6249,6 +6297,26 @@ function transformToCard(unit, newCard) {
 }
 
 // 治疗术:3×3 内友军回3血(不超上限)+ 本回合+1移动
+// 治疗法术动画(纯视觉,联机重放用——原版:3×3绿色光效)
+function showHealVisual(row, col) {
+    const board = document.getElementById('gameBoard');
+    if (!board) return;
+    const r = 1;
+    for (let dr = -r; dr <= r; dr++) {
+        for (let dc = -r; dc <= r; dc++) {
+            const nr = row + dr, nc = col + dc;
+            if (!isValidPosition(nr, nc)) continue;
+            const fx = document.createElement('div');
+            fx.className = 'heal-fx';
+            fx.style.position = 'absolute';
+            fx.style.left = (nc * cellW) + 'px';
+            fx.style.top = (nr * cellH) + 'px';
+            board.appendChild(fx);
+            setTimeout(() => { if (fx.parentNode) fx.parentNode.removeChild(fx); }, 2500);
+        }
+    }
+}
+
 function castHealSpell(card, row, col) {
     // 联机:治疗法术特效同步
     sendSkillFx('spellHeal', null, row, col);
@@ -10810,6 +10878,8 @@ function updateDeployModalCards() {
     const isEnemyHalf = (gameState.currentTurn === 'red' && targetRow <= 13) || (gameState.currentTurn === 'blue' && targetRow >= 14);
 
     gameState.battleDeck.forEach((card, index) => {
+        // 后手能量卡:仅蓝方(后手)回合显示
+        if (card.blueEnergyCard && gameState.currentTurn !== 'blue') return;
         // 目标格有友方单位:只显示法术卡(黑绝不再通过部署框附身)
         const targetHasUnit = gameState.units.some(u => u.row === targetRow && u.col === targetCol);
         if (targetHasUnit) {
@@ -11171,7 +11241,14 @@ function startGame() {
     // 关闭所有弹窗(防残留)
     ['deployModal','spellModal','deepBlueSkillModal','lvbuSkillModal','yoggSkillModal','guySkillModal','shangboleSkillModal'].forEach(id => { const m = document.getElementById(id); if (m) m.classList.add('hidden'); });
 
-    // 更新显示
+    // 后手补偿:给蓝方(后手)开局加一张能量卡(0费,整局一次,+1能量)
+    if (gameState.maxEnergy < 500) {
+        if (!gameState.battleDeck.some(c => c.id === 'blue_energy_card')) {
+            gameState.battleDeck.push({ id: 'blue_energy_card', name: '能量卡', attack: 0, hp: 0, moveRange: 0, attackRange: 0, cost: 0, spell: true, blueEnergyCard: true, description: '后手补偿:立即获得1点能量(本回合),整局仅用1次' });
+        }
+    }
+
+// 更新显示
     updateEnergyDisplay();
     updateBaseHpDisplay();
     updateTurnIndicator();
