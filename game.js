@@ -1639,6 +1639,13 @@ function handleCellClick(e) {
                     }
                     realCost = 0;
                 }
+                // 导弹/滚石:目标确认成功(kill)时才扣费
+                if (card.missileLaunch || card.rollingStone) {
+                    castSpell(card, row, col);
+                    gameState._spellCasting = null;
+                    gameState.selectedUnit = null;
+                    return;
+                }
                 if (curE >= realCost) {
                     if (gameState.currentTurn === 'red') gameState.redEnergy -= realCost;
                     else gameState.blueEnergy -= realCost;
@@ -3498,6 +3505,12 @@ function deployUnit(row, col) {
             }
             // 用后从卡组移除(整局一次)
             gameState.battleDeck = gameState.battleDeck.filter(c => c.id !== 'blue_energy_card');
+            closeDeployModalFunc();
+            return;
+        }
+        // 导弹/滚石:目标确认成功(kill)时才扣费,点技能型目标不扣费
+        if (card.missileLaunch || card.rollingStone) {
+            castSpell(card, row, col);
             closeDeployModalFunc();
             return;
         }
@@ -6155,6 +6168,13 @@ function enterRollingStoneTargetMode(card) {
 function rollingStoneKill(target) {
     // 防护:技能输出型/无普攻目标不可被滚石选中(即使bug选中也不生效)
     if (!target || !hasBasicAttack(target)) { gameState._rollingStoneTargeting = false; clearHighlights(); return; }
+    // 确认目标成功才扣费(点技能型目标不扣费)
+    const stoneCard = gameState.battleDeck.find(c => c.rollingStone);
+    const stoneCost = gameState._fateFreeSpells ? 0 : (stoneCard ? (stoneCard.cost || 0) : 0);
+    if (gameState.currentTurn === 'red') gameState.redEnergy -= stoneCost;
+    else gameState.blueEnergy -= stoneCost;
+    gameState.energySpent[gameState.currentTurn] = (gameState.energySpent[gameState.currentTurn] || 0) + stoneCost;
+    updateEnergyDisplay();
     gameState._rollingStoneTargeting = false;
     clearHighlights();
     const board = document.getElementById('gameBoard');
@@ -6217,6 +6237,13 @@ function showMissileSpellVisual(target) {
 function missileKill(target) {
     // 防护:技能输出型/无普攻目标不可被导弹选中(即使bug选中也不生效)
     if (!target || !hasBasicAttack(target)) { gameState._missileTargeting = false; clearHighlights(); return; }
+    // 确认目标成功才扣费(点技能型目标不扣费)
+    const missileCard = gameState.battleDeck.find(c => c.missileLaunch);
+    const missileCost = gameState._fateFreeSpells ? 0 : (missileCard ? (missileCard.cost || 0) : 0);
+    if (gameState.currentTurn === 'red') gameState.redEnergy -= missileCost;
+    else gameState.blueEnergy -= missileCost;
+    gameState.energySpent[gameState.currentTurn] = (gameState.energySpent[gameState.currentTurn] || 0) + missileCost;
+    updateEnergyDisplay();
     // 联机:导弹法术特效同步
     sendSkillFx('spellMissile', null, target.row, target.col);
 
