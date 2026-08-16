@@ -2350,5 +2350,19 @@ h1 {
 
 /* 三栏启动布局 */
 
-
-
+/* 后手能量卡图标 */
+.card-artwork.art-energy_card {
+    background: radial-gradient(circle, #3498db, #2980b9);
+    border-color: #1a5276;
+}
+.card-artwork.art-energy_card::after {
+    content: '能量';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 900;
+    line-height: 1;
+}
