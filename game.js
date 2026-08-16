@@ -4951,7 +4951,19 @@ function showFireballVisual(row, col, r) {
 function castSpell(card, row, col) {
     gameState.spellsCastThisGame = (gameState.spellsCastThisGame || 0) + 1;
     gameState._fateWheelProgress = (gameState._fateWheelProgress || 0) + 1; // 命运之轮进度(转轮后重置)
-    if (card.rage) { castRageSpell(card, row, col); return; }
+    // 后手能量卡:蓝方+1能量(本回合),整局一次用完消失(不造成任何伤害/特效)
+if (card.blueEnergyCard) {
+if (gameState.currentTurn === 'blue') {
+gameState.blueEnergy = Math.min(gameState.blueEnergy + 1, gameState.blueMaxEnergy || gameState.maxEnergy);
+updateEnergyDisplay();
+showHeroDeployText({ row: row, col: col, team: 'blue' }, '+1能量', '#3498db', 1000);
+}
+gameState.battleDeck = gameState.battleDeck.filter(c => c.id !== 'blue_energy_card');
+clearHighlights();
+gameState.selectedUnit = null;
+return;
+}
+if (card.rage) { castRageSpell(card, row, col); return; }
     if (card.log) { castLogSpell(card, row, col); return; }
     if (card.leftover) {
         // 剩饭:点击的格子上有友军则直接加成(友方增益可生效)
@@ -7574,6 +7586,8 @@ if (unit.eliteKnight) {
         } else {
             unit.ghost = true;
             unit.currentHp = unit.maxHp;
+            // 重置移除标记:阴兵仍存活在场上,大哥死亡级联时可正常移除
+            unit._removing = false;
             makeGhostVisual(unit);
             return;
         }
@@ -10925,7 +10939,7 @@ function updateDeployModalCards() {
         cardElement.innerHTML = `
             ${card.artwork ? `<div class="card-artwork art-${card.artwork}"></div>` : ''}
             <h4>${card.name}${card.yogg ? ` (${cardCost})` : (card.chaosTentacle && gameState._freeTentacles > 0 ? ' (免费)' : '')}</h4>
-            ${card.yoggFate ? `<div class="cost" style="color:#9b59b6;">${Math.max(0, 15 - (gameState._fateWheelProgress||0)) > 0 ? '还需 ' + Math.max(0, 15 - (gameState._fateWheelProgress||0)) + ' 个法术开启命运之轮' : '命运之轮已就绪!'}</div>` : ''}
+            ${card.yoggFate ? `<div class="cost" style="color:#9b59b6;">${Math.max(0, 10 - (gameState._fateWheelProgress||0)) > 0 ? '还需 ' + Math.max(0, 10 - (gameState._fateWheelProgress||0)) + ' 个法术开启命运之轮' : '命运之轮已就绪!'}</div>` : ''}
             <div class="cost">${cardCost} 能量</div>
         `;
 
@@ -11271,7 +11285,7 @@ function startGame() {
     // 后手补偿:给蓝方(后手)开局加一张能量卡(0费,整局一次,+1能量)
     if (gameState.maxEnergy < 500) {
         if (!gameState.battleDeck.some(c => c.id === 'blue_energy_card')) {
-            gameState.battleDeck.push({ id: 'blue_energy_card', name: '能量卡', attack: 0, hp: 0, moveRange: 0, attackRange: 0, cost: 0, spell: true, blueEnergyCard: true, description: '后手补偿:立即获得1点能量(本回合),整局仅用1次' });
+            gameState.battleDeck.push({ id: 'blue_energy_card', name: '能量卡', attack: 0, hp: 0, moveRange: 0, attackRange: 0, cost: 0, spell: true, blueEnergyCard: true, artwork: 'energy_card', description: '后手补偿:立即获得1点能量(本回合),整局仅用1次' });
         }
     }
 
