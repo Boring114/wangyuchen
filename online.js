@@ -1,5 +1,5 @@
 // 联机对战客户端
-const ONLINE_SERVER = 'wss://d517990.r17.cpolar.top';
+const ONLINE_SERVER = 'wss://28544e4e.r17.cpolar.top';
 
 let ws = null;
 let onlineRoomId = null;
