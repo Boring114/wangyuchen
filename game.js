@@ -81,7 +81,8 @@ const cardLibrary = [
         meleeRange: 1,
         dodge: true,
         critChance: 0.5,
-        counterAttack: 2
+        counterAttack: 2,
+        counterBurn: true
     },
     {
         id: 'warden_gherros',
@@ -1081,7 +1082,7 @@ const cardLibrary = [
         artwork: 'viral_spread',
         spell: true,
         viralSpread: true,
-        description: '法术卡·增益。所有己方单位获得狂热:一次攻击击杀敌人后可再攻击一次,连环击杀可连续攻击。'
+        description: '法术卡·增益。选择一个友军获得狂热:一次攻击击杀敌人后可再攻击一次,连环击杀可连续攻击。'
     },
     {
         id: 'guy_death_gate',
@@ -1422,6 +1423,7 @@ function createUnitFromCard(card, team, row, col) {
         dodge: card.dodge || false,
         dodgeUsed: false,
         counterAttack: card.counterAttack || 0,
+counterBurn: card.counterBurn || false,
         counterUsed: false,
         burnTurns: 0,
         critChance: card.critChance || 0,
@@ -1825,6 +1827,8 @@ function handleCellClick(e) {
                 break;
             }
             renderUnit(tU);
+            // 联机实时同步:夺心变己方后对方可见
+            syncOnlineNow();
             gameState._fatePick.picked++;
             if (gameState._fatePick.picked >= gameState._fatePick.count) {
                 gameState._fatePick = null;
@@ -1880,7 +1884,20 @@ function handleCellClick(e) {
         gameState.selectedUnit = null;
         return;
     }
-    // 凋零冲撞模式:选择12格内敌人,点其他处取消
+    // 病毒式传播:选友军模式(给1个单位狂热)
+if (gameState._viralTargeting) {
+    const tU = gameState.units.find(u => u.row === row && u.col === col);
+    if (tU && tU.team === gameState.currentTurn && !tU._removing) {
+        tU._frenzy = true;
+        showCritText(tU.row, tU.col, '狂热');
+    }
+    gameState._viralTargeting = false;
+    gameState._viralCard = null;
+    clearHighlights();
+    gameState.selectedUnit = null;
+    return;
+}
+// 凋零冲撞模式:选择12格内敌人,点其他处取消
     if (gameState.selectedUnit && gameState.selectedUnit.wither && gameState.selectedUnit._witherTargeting) {
         const tCellUnit = gameState.units.find(u => u.row === row && u.col === col);
         if (tCellUnit && tCellUnit.team !== gameState.selectedUnit.team && !tCellUnit.ghost) {
@@ -2805,6 +2822,8 @@ function goldenDragonAttack(attacker) {
 
 // 千手柱间:第一次格挡反击(木人+蓝色光柱)
 function counterGolem(target, attacker) {
+    // 联机:木人反击视觉同步
+    sendSkillFx('counterGolem', target, attacker.row, attacker.col);
     // 木人现身(攻击者身后)
     const dir = target.team === 'red' ? 1 : -1;
     const gr = attacker.row + dir;
@@ -2815,7 +2834,19 @@ function counterGolem(target, attacker) {
         gameState.board[gr][attacker.col].appendChild(golem);
         setTimeout(() => { if (golem.parentNode) golem.parentNode.removeChild(golem); }, 1200);
     }
-    // 木人打一下:1伤(可暴击)
+    // 木人纯视觉(联机接收方重放,不含伤害)
+function showGolemVisual(target, attacker) {
+    if (!attacker || attacker.row === undefined) return;
+    const dir = target.team === 'red' ? 1 : -1;
+    const gr = attacker.row + dir;
+    if (!isValidPosition(gr, attacker.col)) return;
+    const golem = document.createElement('div');
+    golem.className = 'wood-golem';
+    golem.textContent = '木';
+    gameState.board[gr][attacker.col].appendChild(golem);
+    setTimeout(() => { if (golem.parentNode) golem.parentNode.removeChild(golem); }, 1200);
+}
+// 木人打一下:1伤(可暴击)
     attacker.currentHp -= rollCrit(target, 1);
     updateUnitHp(attacker);
     if (attacker.currentHp <= 0) removeUnit(attacker);
@@ -3374,6 +3405,8 @@ function fateFlesh(unit) {
             break;
         }
     }
+    // 联机实时同步:召唤的3个单位对方可见
+    syncOnlineNow();
 }
 
 // 3. 夺心护目镜:选择3个敌方单位变己方,移回己方半场随机位置
@@ -3420,6 +3453,8 @@ function fateDevour(unit) {
     updateUnitHp(unit);
     renderUnit(unit);
     showHeroDeployText(unit, '吞噬之饥', '#c0392b', 2000);
+    // 联机实时同步:吞噬后对方看到单位消失和属性变化
+    syncOnlineNow();
 }
 
 // 6. 燃烧权杖:随机目标(任意单位/大本营)10伤,一次一次直到一方大本营归零
@@ -3443,6 +3478,8 @@ function fateScepter(unit) {
             updateBaseHpDisplay();
             showCritText(1, 15, '权杖');
         }
+        // 联机实时同步:每次伤害后同步(对方看到血量变化/死亡)
+        syncOnlineNow();
         if (gameState.redBaseHp <= 0 || gameState.blueBaseHp <= 0) {
             stop = true;
             checkGameOver();
@@ -3501,7 +3538,9 @@ function deployUnit(row, col) {
             if (gameState.currentTurn === 'blue') {
                 gameState.blueEnergy = Math.min(gameState.blueEnergy + 1, gameState.blueMaxEnergy || gameState.maxEnergy);
                 updateEnergyDisplay();
-                showHeroDeployText({ row: gameState.deployTargetRow, col: gameState.deployTargetCol, team: 'blue' }, '+1能量', '#3498db', 1000);
+                // 联机:+1能量显示在蓝方大本营,并实时同步能量条
+                showHeroDeployText({ row: 1, col: 12, team: 'blue' }, '+1能量', '#3498db', 1000);
+                if (gameState.onlineMode && typeof syncOnlineNow === 'function') syncOnlineNow();
             }
             // 用后从卡组移除(整局一次)
             gameState.battleDeck = gameState.battleDeck.filter(c => c.id !== 'blue_energy_card');
@@ -4962,7 +5001,9 @@ if (card.blueEnergyCard) {
 if (gameState.currentTurn === 'blue') {
 gameState.blueEnergy = Math.min(gameState.blueEnergy + 1, gameState.blueMaxEnergy || gameState.maxEnergy);
 updateEnergyDisplay();
-showHeroDeployText({ row: row, col: col, team: 'blue' }, '+1能量', '#3498db', 1000);
+// 联机:+1能量显示在蓝方大本营,并实时同步能量条
+showHeroDeployText({ row: 1, col: 12, team: 'blue' }, '+1能量', '#3498db', 1000);
+if (gameState.onlineMode && typeof syncOnlineNow === 'function') syncOnlineNow();
 }
 gameState.battleDeck = gameState.battleDeck.filter(c => c.id !== 'blue_energy_card');
 clearHighlights();
@@ -5025,7 +5066,7 @@ if (card.rage) { castRageSpell(card, row, col); return; }
         enterRollingStoneTargetMode(card);
         return;
     }
-    if (card.viralSpread) { castViralSpread(card, row, col); return; }
+    if (card.viralSpread) { enterViralSpreadTargetMode(card); return; }
     if (card.milk) {
         // 牛奶：点击的格子上有友军则清除负面效果
         const tU = gameState.units.find(u => u.row === row && u.col === col);
@@ -6159,14 +6200,15 @@ function showInfernoLaser(tower, target) {
 }
 
 // 病毒式传播：全体己方单位获得狂热（击杀后可再攻击，连环击杀连续攻击）
-function castViralSpread(card, row, col) {
-    const team = gameState.currentTurn;
-    gameState.units.forEach(u => {
-        if (u.team !== team || u._removing) return;
-        u._frenzy = true;
-        showCritText(u.row, u.col, '狂热');
-    });
+// 病毒式传播:进入选友军模式(只给1个单位狂热)
+function enterViralSpreadTargetMode(card) {
+    gameState._viralTargeting = true;
+    gameState._viralCard = card;
     clearHighlights();
+    gameState.units.forEach(u => {
+        if (u.team !== gameState.currentTurn || u._removing) return;
+        gameState.board[u.row][u.col].classList.add('tank-target');
+    });
     gameState.selectedUnit = null;
 }
 
@@ -9189,6 +9231,17 @@ function activatePainAbility(pain) {
 
 // 神罗天征范围特效(纯视觉,联机重放用——对面看到原版动画)
 function showShinraVisual(row, col, radius) {
+    // 神罗文字(接收方重放时也显示)
+    const cell = gameState.board[row] && gameState.board[row][col];
+    if (cell && !cell.querySelector('.hero-deploy-text')) {
+        const t = document.createElement('div');
+        t.className = 'hero-deploy-text';
+        t.textContent = '神罗天征';
+        t.style.color = '#7ec8f8';
+        t.style.animation = 'heroFloat 2.5s ease-out forwards';
+        cell.appendChild(t);
+        setTimeout(() => { if (t.parentNode) t.remove(); }, 2500);
+    }
     for (let r = row - radius; r <= row + radius; r++) {
         for (let c = col - radius; c <= col + radius; c++) {
             if (!isValidPosition(r, c)) continue;
@@ -9351,6 +9404,10 @@ function activateMusou(madara) {
     if (unitEl) {
         unitEl.classList.add('kai-ult');
         unitEl.classList.add('musou-form');
+    }
+    // 联机:无双文字同步
+    if (gameState.onlineMode && !window._fxSyncing && typeof ws !== 'undefined' && ws.readyState === 1) {
+        ws.send(JSON.stringify({ type: 'fx', fx: { kind: 'deployText', row: madara.row, col: madara.col, msg: '天下无双', color: '#f1c40f' } }));
     }
     const text = document.createElement('div');
     text.className = 'musou-text';
@@ -9797,12 +9854,7 @@ function chibakuTensei(pain) {
         });
     }, landTime);
 
-    const text = document.createElement('div');
-    text.className = 'hero-deploy-text';
-    text.textContent = '地爆天星';
-    text.style.color = '#1a1a2e';
-    gameState.board[pain.row][pain.col].appendChild(text);
-    setTimeout(() => { if (text.parentNode) text.remove(); }, landTime - 500);
+    showHeroDeployText(pain, '地爆天星', '#1a1a2e', landTime - 500);
     setTimeout(() => ball.remove(), landTime + 200);
     // 动画结束:清除标记并同步(对方立即看到死亡,防复活)
     setTimeout(() => { gameState._chibakuAnimating = false; if (gameState.onlineMode && typeof syncOnlineNow === 'function') syncOnlineNow(); }, landTime + 300);
@@ -9903,12 +9955,7 @@ function activateKaiUlt(kai) {
     kai.maxHp += kai.kaiUltHp;
     kai.critChance = 1.0;
     const cell = gameState.board[kai.row][kai.col];
-    const text = document.createElement('div');
-    text.className = 'hero-deploy-text';
-    text.textContent = '不灭魔躯';
-    text.style.color = '#e74c3c';
-    cell.appendChild(text);
-    setTimeout(() => { if (text.parentNode) text.remove(); }, 2000);
+    showHeroDeployText(kai, '不灭魔躯', '#e74c3c', 2000);
     const unitEl = cell.querySelector('.unit');
     if (unitEl) unitEl.classList.add('kai-ult');
     gameState.attackedUnits.delete(kai.id);
@@ -10117,12 +10164,7 @@ function activateGaleSkill(gale) {
         gale._galeAttacks = 0;
     }
     const cell = gameState.board[gale.row][gale.col];
-    const text = document.createElement('div');
-    text.className = 'hero-deploy-text';
-    text.textContent = '紧急回避装置';
-    text.style.color = '#e74c3c';
-    cell.appendChild(text);
-    setTimeout(() => { if (text.parentNode) text.remove(); }, 2000);
+    showHeroDeployText(gale, '紧急回避装置', '#e74c3c', 2000);
     // 弹力绳特效
     drawGaleRope(gale);
     clearHighlights();

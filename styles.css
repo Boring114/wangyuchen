@@ -2077,7 +2077,7 @@ h1 {
     justify-content: center;
     width: 60px;
     height: 24px;
-    margin-left: -55px;
+    margin-left: -30px;
     margin-top: -12px;
     transform: rotate(calc(var(--i) * 60deg + 30deg)) translateY(-78px) rotate(calc(-1 * var(--i) * 60deg - 30deg));
     font-size: 12px;

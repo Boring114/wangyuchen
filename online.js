@@ -140,6 +140,8 @@ function tryConnect(cb) {
                 gameState.blueBaseHp = gs.blueBaseHp;
                 gameState.redEnergy = gs.redEnergy;
                 gameState.blueEnergy = gs.blueEnergy;
+                gameState.maxEnergy = gs.maxEnergy || gameState.maxEnergy;
+                gameState.blueMaxEnergy = gs.blueMaxEnergy || gs.maxEnergy || gameState.blueMaxEnergy || gameState.maxEnergy;
                 gameState.turnNumber = gs.turnNumber;
                 gameState.spikeNets = gs.spikeNets || [];
                 gameState.craters = gs.craters || [];
@@ -176,6 +178,8 @@ function tryConnect(cb) {
                 gameState.blueBaseHp = gs.blueBaseHp;
                 gameState.redEnergy = gs.redEnergy;
                 gameState.blueEnergy = gs.blueEnergy;
+                gameState.maxEnergy = gs.maxEnergy || gameState.maxEnergy;
+                gameState.blueMaxEnergy = gs.blueMaxEnergy || gs.maxEnergy || gameState.blueMaxEnergy || gameState.maxEnergy;
                 gameState.turnNumber = gs.turnNumber;
                 gameState.spikeNets = gs.spikeNets || [];
                 gameState.craters = gs.craters || [];
@@ -299,7 +303,8 @@ function playSkillFx(fx) {
             case 'erinBullet': if (typeof showErinBullet === 'function') showErinBullet(u, t); else showOnlineAttackFx(fx.row, fx.col, fx.toR, fx.toC); break;
             case 'infernoLaser': if (typeof showInfernoLaser === 'function') { const tar = gameState.units.find(x => x.id === u._infernoLaserTarget); if (tar) showInfernoLaser(u, tar); } else showOnlineAttackFx(fx.row, fx.col, fx.toR, fx.toC); break;
             case 'goldenDragon': if (typeof showGoldenDragon === 'function') { const d = showGoldenDragon(u); setTimeout(() => { if (d && d.parentNode) d.remove(); }, 1500); } else showSkillFlashFx(fx.row, fx.col, '#f1c40f', 50); break;
-            case 'bluePillar': if (typeof showBluePillar === 'function') showBluePillar(u); else showSkillFlashFx(fx.row, fx.col, '#3498db', 45); break;
+            case 'counterGolem': if (typeof showGolemVisual === 'function') showGolemVisual(u, t); else showSkillFlashFx(fx.toR, fx.toC, '#27ae60', 40); break;
+case 'bluePillar': if (typeof showBluePillar === 'function') showBluePillar(u); else showSkillFlashFx(fx.row, fx.col, '#3498db', 45); break;
             case 'spellFireball': if (typeof showFireballVisual === 'function') showFireballVisual(fx.toR, fx.toC, 1); else showSkillFlashFx(fx.toR, fx.toC, '#e74c3c', 50); break;
             case 'spellRage': if (typeof showRageVisual === 'function') showRageVisual(fx.toR, fx.toC); else showSkillFlashFx(fx.toR, fx.toC, '#e67e22', 45); break;
             case 'spellLog': if (typeof showLogVisual === 'function') showLogVisual(fx.toR, fx.toC, fx.team === 'red' ? -1 : 1); else showSkillFlashFx(fx.toR, fx.toC, '#8b5a2b', 45); break;
@@ -378,6 +383,8 @@ function syncGameState() {
             blueBaseHp: gameState.blueBaseHp,
             redEnergy: gameState.redEnergy,
             blueEnergy: gameState.blueEnergy,
+            maxEnergy: gameState.maxEnergy,
+            blueMaxEnergy: gameState.blueMaxEnergy || gameState.maxEnergy,
             turnNumber: gameState.turnNumber,
             currentTurn: gameState.currentTurn,
             spikeNets: gameState.spikeNets || [],
