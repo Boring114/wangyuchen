@@ -710,6 +710,19 @@ const cardLibrary = [
         description: '机动性高。只能攻击建筑单位(加农炮/特斯拉/能量收集器等)和大本营。'
     },
     {
+        id: 'royal_giant',
+        name: '觉醒皇家巨人',
+        attack: 2,
+        hp: 6,
+        armor: 0,
+        moveRange: 4,
+        attackRange: 5,
+        cost: 5,
+        artwork: 'royal_giant',
+        royalGiant: true,
+        description: '觉醒的皇家巨人!只能以建筑单位为目标。攻击时会爆发以自身为中心5×5的冲击波:范围内的敌人被向远离皇家巨人的方向击退1格并受到1点伤害。'
+    },
+    {
         id: 'elite_knight',
         name: '精英骑士',
         attack: 2,
@@ -1208,6 +1221,20 @@ const cardLibrary = [
         description: '建筑·可对空。攻击1点真实伤害(无视护甲),攻距6,不可移动。攻击特效:红色激光线连着塔和敌人;激光连住的单位在敌方回合结束还会受到当前倍率灼烧伤害。若攻击目标未改变,下一次伤害翻倍(1→2→4…);切换目标伤害重置为1。'
     },
     {
+        id: 'sasuke_susanoo',
+        name: '宇智波佐助[须佐能乎]',
+        attack: 2,
+        hp: 5,
+        armor: 0,
+        moveRange: 6,
+        attackRange: 2,
+        cost: 8,
+        artwork: 'sasuke',
+        sasuke: true,
+        sasukeMaxEnergy: 4,
+        description: '近战攻击2(不可对空),攻击距离2,移动6,头顶4格能量条。双击显示3个技能:①须佐能乎(紫色骨架环绕,全程霸体不可被冰冻/击退,并+2护甲,持续到敌方回合结束;期间普攻改为突进斩:向目标方向移动3格,造成3伤穿甲1,随后须佐消失)。②炎遁·加具土命(5×5内选点放3×3黑炎2伤,随后以其中心2格内再选点放5×5黑炎3伤;命中敌人+1能量,一次技能最多+1)。③须佐能乎·贯(需4能量):紫巨人射箭,前方竖向3×5路径敌人被推至路径末端并受到3次2伤,末端生成3×3黑炎并爆炸3伤。黑炎持续到敌方回合结束,敌人进入受1点燃烧伤害(无视护甲)。'
+    },
+    {
         id: 'madara_solve',
         name: '宇智波斑·秽土转生·解',
         attack: 0,
@@ -1260,6 +1287,7 @@ const gameState = {
     moveUsed: {},
     attackedUnits: new Set(),
     fireZones: [],
+    sasukeFlames: [],
     smokeZones: [],
     windZones: [],
     iceFields: [],
@@ -1497,6 +1525,7 @@ counterBurn: card.counterBurn || false,
         patroller: card.patroller || false,
         royalGuard: card.royalGuard || false,
         hogRider: card.hogRider || false,
+        royalGiant: card.royalGiant || false,
         eliteKnight: card.eliteKnight || false,
         fisherman: card.fisherman || false,
         spell: card.spell || false,
@@ -1552,6 +1581,9 @@ counterBurn: card.counterBurn || false,
         shangbole: card.shangbole || false,
         infernoTower: card.infernoTower || false,
         solveEnergy: card.solveEnergy || 0,
+        sasuke: card.sasuke || false,
+        sasukeMaxEnergy: card.sasukeMaxEnergy || 0,
+        sasukeEnergy: card.sasukeEnergy || 0,
         solveMaxEnergy: card.solveMaxEnergy || 0,
         miner: card.miner || false,
         deployEffect: card.deployEffect || false,
@@ -1596,7 +1628,7 @@ function handleCellClick(e) {
     if (gameState.aiMode && gameState.currentTurn === 'blue') return;
 
     // 技能框打开时点击棋盘:关闭技能框并忽略本次点击(避免误触部署弹窗)
-    const skillModals = ['deepBlueSkillModal', 'lvbuSkillModal', 'yoggSkillModal', 'guySkillModal', 'shangboleSkillModal'];
+    const skillModals = ['deepBlueSkillModal', 'lvbuSkillModal', 'yoggSkillModal', 'guySkillModal', 'shangboleSkillModal', 'sasukeSkillModal'];
     for (const id of skillModals) {
         const m = document.getElementById(id);
         if (m && !m.classList.contains('hidden')) {
@@ -1605,6 +1637,7 @@ function handleCellClick(e) {
             else if (id === 'yoggSkillModal') closeYoggSkillModalFunc();
             else if (id === 'guySkillModal') closeGuySkillModalFunc();
             else if (id === 'shangboleSkillModal') closeShangboleSkillModalFunc();
+            else if (id === 'sasukeSkillModal') closeSasukeSkillModalFunc();
             return;
         }
     }
@@ -1803,6 +1836,32 @@ function handleCellClick(e) {
             lvbuLanding(gameState.selectedUnit, row, col);
         } else {
             gameState.selectedUnit._lvbuLanding = false;
+            clearHighlights();
+            gameState.selectedUnit = null;
+        }
+        return;
+    }
+    // 宇智波佐助:炎遁·加具土命选点(两段黑炎)
+    if (gameState.selectedUnit && gameState.selectedUnit.sasuke && gameState.selectedUnit._sasukeFlameStage) {
+        const su = gameState.selectedUnit;
+        const stage = su._sasukeFlameStage;
+        if (cell.classList.contains('pierce-target')) {
+            sasukeFlameCast(su, row, col, stage);
+        } else {
+            su._sasukeFlameStage = 0;
+            clearHighlights();
+            gameState.selectedUnit = null;
+        }
+        return;
+    }
+    // 宇智波佐助:大招选择敌人释放
+    if (gameState.selectedUnit && gameState.selectedUnit.sasuke && gameState.selectedUnit._sasukeUltTargeting) {
+        const su = gameState.selectedUnit;
+        const tU = gameState.units.find(u => u.row === row && u.col === col && u.team !== su.team && !u.ghost && !u._removing);
+        su._sasukeUltTargeting = false;
+        if (tU && cell.classList.contains('sasuke-ult-target')) {
+            sasukeUltimateAt(su, tU);
+        } else {
             clearHighlights();
             gameState.selectedUnit = null;
         }
@@ -2237,6 +2296,11 @@ if (gameState._viralTargeting) {
             openLvbuSkillModal(clickedUnit);
             return;
         }
+        // 宇智波佐助[须佐能乎]:双击弹技能栏
+        if (clickedUnit.sasuke && clickedUnit === gameState.selectedUnit) {
+            openSasukeSkillModal(clickedUnit);
+            return;
+        }
         // 迈特凯·死门:双击释放奥义(3格内有敌人;爆衣+4能量弹技能框)
         if (clickedUnit.guyDeathGate && clickedUnit === gameState.selectedUnit) {
             if (guyDoubleClick(clickedUnit)) return;
@@ -2628,6 +2692,8 @@ function showAttackableTargets(unit) {
                     if (targetUnit && targetUnit.patroller && targetUnit._grabbing) continue;
                     // 野猪骑士:只能攻击建筑单位
                     if (unit.hogRider && targetUnit && !targetUnit.building) continue;
+                    // 觉醒皇家巨人:只能攻击建筑单位
+                    if (unit.royalGiant && targetUnit && !targetUnit.building) continue;
                     // 气球兵:只能攻击建筑单位
                     if (unit.balloon && targetUnit && !targetUnit.building) continue;
                     if (targetUnit && targetUnit.team !== unit.team && !targetUnit.ghost && !targetUnit.teslaHidden) {
@@ -3883,6 +3949,18 @@ function attackUnit(target) {
         gameState.selectedUnit = null;
         return;
     }
+    // 觉醒皇家巨人:只能攻击建筑单位(大本营走 attackBase)
+    if (attacker.royalGiant && !target.building) {
+        clearHighlights();
+        gameState.selectedUnit = null;
+        return;
+    }
+    // 宇智波佐助:普通攻击不可对空(技能可对空)
+    if (attacker.sasuke && target.flying) {
+        clearHighlights();
+        gameState.selectedUnit = null;
+        return;
+    }
     // 气球兵:只能攻击建筑单位(大本营走 attackBase)
     if (attacker.balloon && !target.building) {
         clearHighlights();
@@ -3908,6 +3986,11 @@ function attackUnit(target) {
         clearHighlights();
         gameState.selectedUnit = null;
         return;
+    }
+
+    // 觉醒皇家巨人:攻击时爆发以自身为中心5×5冲击波(敌人远离自身击退1格+1伤)
+    if (attacker.royalGiant) {
+        royalGiantShockwave(attacker);
     }
 
     // 巡视者:咬住敌人(不造成伤害,持续3回合无法移动)
@@ -4037,6 +4120,12 @@ function attackUnit(target) {
             superKnightLeap(attacker, target);
             damage = 0;
         }
+    } else
+    // 宇智波佐助[须佐能乎]:须佐期间普攻改为突进斩(位移3格+3伤穿甲1,随后须佐消失)
+    if (attacker.sasuke && attacker._sasukeSusanoo) {
+        skillAttack = true;
+        sasukeDashSlash(attacker, target);
+        damage = 0;
     } else
     // 百分比攻击
     if (attacker.percentAttack) {
@@ -4708,6 +4797,11 @@ function attackBase(isBlueBase) {
         damage = attacker.chargeDamage;
     }
     attacker.lastMoveDist = 0;
+
+    // 觉醒皇家巨人:攻击大本营时同样爆发以自身为中心5×5冲击波
+    if (attacker.royalGiant) {
+        royalGiantShockwave(attacker);
+    }
 
     if (isBlueBase) {
         gameState.blueBaseHp -= damage;
@@ -5384,6 +5478,8 @@ function triggerCounter(attacker, target) {
     if (attacker.flying && !target.flying && !canHitAirUnit(target)) return;
     // 野猪骑士:只能攻击建筑,所以只反击建筑的攻击(普通兵种攻击无法反击)
     if (target.hogRider && !attacker.building) return;
+    // 觉醒皇家巨人:只能攻击建筑,所以只反击建筑的攻击(普通兵种攻击无法反击)
+    if (target.royalGiant && !attacker.building) return;
     // 气球兵:只能攻击建筑,所以只反击建筑的攻击(普通兵种攻击无法反击)
     if (target.balloon && !attacker.building) return;
     // 天鹰火炮:未开启时不能攻击,也不反击
@@ -7761,7 +7857,7 @@ function renderUnit(unit) {
     cell.appendChild(unitElement);
 
     // 马斑/佩恩能量条(嵌在单位内部,跟随移动)
-    if (unit.madaraMaxEnergy || unit.painMaxEnergy || unit.hashiMaxEnergy || unit.solveMaxEnergy || unit.guyMaxEnergy) renderEnergyBar(unit, unitElement);
+    if (unit.madaraMaxEnergy || unit.painMaxEnergy || unit.hashiMaxEnergy || unit.solveMaxEnergy || unit.guyMaxEnergy || unit.sasukeMaxEnergy) renderEnergyBar(unit, unitElement);
 
     // 铠大招紫色特效
     if (unit.kaiUltActive) unitElement.classList.add('kai-ult');
@@ -7929,7 +8025,7 @@ function updateFrozenVisual(unit) {
 // 更新燃烧视觉效果
 // 霸体:免疫冰冻(马斑无双状态等)
 function isImmuneToFreeze(unit) {
-    return !!unit.inMusou || (unit.madaraSolve && unit._susanooActive);
+    return !!unit.inMusou || (unit.madaraSolve && unit._susanooActive) || (unit.sasuke && unit._sasukeSusanoo);
 }
 
 function updateBurnVisual(unit) {
@@ -8489,7 +8585,7 @@ function healFairyJump(attacker, target) {
 // ===== 觉醒超级骑士机制 =====
 // 霸体免疫击退
 function isImmuneToKnockback(unit) {
-    return !!unit.inMusou || (unit.madaraSolve && unit._susanooActive);
+    return !!unit.inMusou || (unit.madaraSolve && unit._susanooActive) || (unit.sasuke && unit._sasukeSusanoo);
 }
 // 须佐连锁推:推 unit 沿 (dr,dc) 1格,挡路单位连锁推开(霸体/建筑免疫)
 function susanooPush(unit, dr, dc) {
@@ -8549,6 +8645,326 @@ function knockbackUnit(unit, dr, dc, dist) {
     }
     return false;
 }
+// 觉醒皇家巨人:攻击时爆发以自身为中心5×5冲击波(范围内敌人远离自身击退1格并受1伤,建筑/霸体免疫击退)
+function royalGiantShockwave(attacker) {
+    if (!attacker || attacker._removing || attacker.ghost) return;
+    const targets = gameState.units.filter(u =>
+        u && !u._removing && !u.ghost && u.team !== attacker.team &&
+        Math.abs(u.row - attacker.row) <= 2 && Math.abs(u.col - attacker.col) <= 2
+    );
+    targets.forEach(u => {
+        u.currentHp -= 1;
+        updateUnitHp(u);
+        if (u.currentHp <= 0) { removeUnit(u); return; }
+        const dr = Math.sign(u.row - attacker.row);
+        const dc = Math.sign(u.col - attacker.col);
+        if (dr !== 0 || dc !== 0) knockbackUnit(u, dr, dc, 1);
+    });
+}
+
+// ===== 宇智波佐助[须佐能乎]机制 =====
+function openSasukeSkillModal(unit) {
+    gameState._sasukeSelected = unit;
+    const s1 = document.getElementById('sasukeSkill1Btn');
+    const s2 = document.getElementById('sasukeSkill2Btn');
+    const s3 = document.getElementById('sasukeSkill3Btn');
+    if (s1) s1.disabled = (unit._sasukeS1Cd || 0) > 0 || !!unit._sasukeSusanoo;
+    if (s2) s2.disabled = (unit._sasukeS2Cd || 0) > 0;
+    if (s3) s3.disabled = (unit.sasukeEnergy || 0) < 4;
+    document.getElementById('sasukeSkillModal').classList.remove('hidden');
+}
+function closeSasukeSkillModalFunc() {
+    const m = document.getElementById('sasukeSkillModal');
+    if (m) m.classList.add('hidden');
+    gameState._sasukeSelected = null;
+}
+
+// 技能1:须佐能乎——霸体(+2护甲,免疫冰冻/击退),紫色呼吸特效,持续到敌方回合结束
+function sasukeSkillArmor(unit) {
+    closeSasukeSkillModalFunc();
+    if (!unit || unit._sasukeSusanoo) return;
+    unit._sasukeSusanoo = true;
+    unit._sasukeS1Cd = 2;
+    unit._sasukeArmorBase = unit.armor || 0;
+    unit.armor = (unit.armor || 0) + 2;
+    if (unit.frozen) { unit.frozen = false; updateFrozenVisual(unit); }
+    if (unit.treeBound) { unit.treeBound = false; if (typeof updateTreeVisual === 'function') updateTreeVisual(unit); }
+    const el = (gameState.board[unit.row] && gameState.board[unit.row][unit.col]) ? gameState.board[unit.row][unit.col].querySelector('.unit') : null;
+    if (el) el.classList.add('sasuke-susanoo');
+    showHeroDeployText(unit, '须佐能乎', '#000000', 1500);
+    renderEnergyBar(unit, el);
+    clearHighlights();
+    gameState.selectedUnit = null;
+}
+function sasukeEndSusanoo(unit) {
+    if (!unit || !unit._sasukeSusanoo) return;
+    unit._sasukeSusanoo = false;
+    unit.armor = Math.max(0, (unit.armor || 0) - 2);
+    const el = (gameState.board[unit.row] && gameState.board[unit.row][unit.col]) ? gameState.board[unit.row][unit.col].querySelector('.unit') : null;
+    if (el) el.classList.remove('sasuke-susanoo');
+}
+
+// 须佐期间普攻:向目标方向突进最多3格 + 3伤穿甲1,随后须佐消失
+function sasukeDashSlash(attacker, target) {
+    const dr = Math.sign(target.row - attacker.row);
+    const dc = Math.sign(target.col - attacker.col);
+    // 朝目标方向突进最多3格,可穿过目标(落点为路径上最后一个空格)
+    let r = attacker.row, c = attacker.col, lastFree = null;
+    for (let i = 0; i < 3; i++) {
+        const nr = r + dr, nc = c + dc;
+        if (!isValidPosition(nr, nc)) break;
+        if (isBlueBase(nr, nc) || isRedBase(nr, nc)) break;
+        const occ = gameState.units.find(u => u.id !== attacker.id && u.row === nr && u.col === nc);
+        if (occ && occ.id !== target.id) break;
+        r = nr; c = nc;
+        if (!occ) lastFree = { row: nr, col: nc };
+    }
+    if (lastFree) {
+        const oldCell = gameState.board[attacker.row][attacker.col];
+        const el = oldCell.querySelector('.unit');
+        if (el) { oldCell.removeChild(el); gameState.board[lastFree.row][lastFree.col].appendChild(el); }
+        attacker.row = lastFree.row;
+        attacker.col = lastFree.col;
+    }
+    if (target && !target._removing) {
+        const effArmor = Math.max(0, (target.armor || 0) - 1);
+        const dmg = Math.max(0, 3 - effArmor);
+        target.currentHp -= dmg;
+        updateUnitHp(target);
+        showCritText(target.row, target.col, '突进斩');
+        if (target.currentHp <= 0) removeUnit(target);
+        // 技能命中敌人:+1能量
+        attacker.sasukeEnergy = Math.min(attacker.sasukeMaxEnergy || 4, (attacker.sasukeEnergy || 0) + 1);
+        renderEnergyBar(attacker, gameState.board[attacker.row][attacker.col].querySelector('.unit'));
+    }
+    sasukeEndSusanoo(attacker);
+}
+
+// 技能2:炎遁·加具土命——第一段(5×5内选点,3×3黑炎2伤)
+function enterSasukeFlame1(unit) {
+    closeSasukeSkillModalFunc();
+    clearHighlights();
+    gameState.selectedUnit = unit;
+    unit._sasukeFlameStage = 1;
+    for (let r = unit.row - 2; r <= unit.row + 2; r++) {
+        for (let c = unit.col - 2; c <= unit.col + 2; c++) {
+            if (isValidPosition(r, c)) gameState.board[r][c].classList.add('pierce-target');
+        }
+    }
+}
+// 黑炎落点(两段)
+function sasukeFlameCast(unit, row, col, stage) {
+    clearHighlights();
+    if (stage === 1) {
+        unit._sasukeS2Cd = 2;
+        const hits = sasukeFlameHit(unit, row, col, 1, 2);
+        sasukeAddFlame(unit, row, col, 1);
+        unit._sasukeFlameHit = (unit._sasukeFlameHit || false) || hits > 0;
+        showHeroDeployText(unit, '加具土命', '#000000', 1000);
+        unit._sasukeFlameStage = 2;
+        for (let r = row - 2; r <= row + 2; r++) {
+            for (let c = col - 2; c <= col + 2; c++) {
+                if (isValidPosition(r, c)) gameState.board[r][c].classList.add('pierce-target');
+            }
+        }
+        return;
+    }
+    // 第二段:5×5黑炎3伤
+    const hits2 = sasukeFlameHit(unit, row, col, 2, 3);
+    sasukeAddFlame(unit, row, col, 2);
+    unit._sasukeFlameHit = (unit._sasukeFlameHit || false) || hits2 > 0;
+    unit._sasukeFlameStage = 0;
+    if (unit._sasukeFlameHit) {
+        unit.sasukeEnergy = Math.min(unit.sasukeMaxEnergy || 4, (unit.sasukeEnergy || 0) + 1);
+        renderEnergyBar(unit, gameState.board[unit.row][unit.col].querySelector('.unit'));
+    }
+    unit._sasukeFlameHit = false;
+    gameState.selectedUnit = null;
+}
+// 黑炎伤害(无视护甲)
+function sasukeFlameHit(unit, row, col, radius, dmg) {
+    let hits = 0;
+    gameState.units.slice().forEach(u => {
+        if (u.team === unit.team || u.ghost || u._removing) return;
+        if (Math.max(Math.abs(u.row - row), Math.abs(u.col - col)) <= radius) {
+            u.currentHp -= dmg;
+            updateUnitHp(u);
+            showCritText(u.row, u.col, '黑炎');
+            if (u.currentHp <= 0) removeUnit(u);
+            hits++;
+        }
+    });
+    return hits;
+}
+// 登记黑炎区域(持续到敌方回合结束)
+function sasukeAddFlame(unit, row, col, radius) {
+    if (!gameState.sasukeFlames) gameState.sasukeFlames = [];
+    gameState.sasukeFlames.push({ row, col, r: radius, team: unit.team, owner: unit.id });
+    renderSasukeFlames();
+}
+function renderSasukeFlames() {
+    document.querySelectorAll('.black-flame').forEach(el => el.remove());
+    if (!gameState.sasukeFlames) return;
+    gameState.sasukeFlames.forEach(fz => {
+        for (let r = fz.row - fz.r; r <= fz.row + fz.r; r++) {
+            for (let c = fz.col - fz.r; c <= fz.col + fz.r; c++) {
+                if (!isValidPosition(r, c)) continue;
+                const cover = document.createElement('div');
+                cover.className = 'black-flame';
+                if (r === fz.row && c === fz.col) cover.classList.add('black-flame-core');
+                gameState.board[r][c].appendChild(cover);
+            }
+        }
+    });
+}
+
+// 技能3(大招):须佐能乎·贯——先进入选敌模式
+function enterSasukeUltTargetMode(unit) {
+    closeSasukeSkillModalFunc();
+    clearHighlights();
+    gameState.selectedUnit = unit;
+    unit._sasukeUltTargeting = true;
+    gameState.units.forEach(u => {
+        if (u.team !== unit.team && !u.ghost && !u._removing) {
+            gameState.board[u.row][u.col].classList.add('sasuke-ult-target');
+        }
+    });
+}
+// 选定敌人后释放:朝所选敌人的主轴方向,路径3×4,箭矢飞行后推人+伤害,爆炸后才生成黑炎
+function sasukeUltimateAt(unit, target) {
+    if ((unit.sasukeEnergy || 0) < 4) return;
+    unit.sasukeEnergy -= 4;
+    renderEnergyBar(unit, gameState.board[unit.row][unit.col].querySelector('.unit'));
+    let dirR = unit.team === 'red' ? -1 : 1, dirC = 0;
+    const dr = target.row - unit.row, dc = target.col - unit.col;
+    if (Math.abs(dr) >= Math.abs(dc)) {
+        dirR = Math.sign(dr) || (unit.team === 'red' ? -1 : 1);
+        dirC = 0;
+    } else {
+        dirR = 0;
+        dirC = Math.sign(dc);
+    }
+    // 3(宽)×4(长)路径
+    const perpR = dirC, perpC = -dirR;
+    const pathSet = new Set();
+    for (let k = 1; k <= 4; k++) {
+        for (let m = -1; m <= 1; m++) {
+            const r = unit.row + dirR * k + perpR * m;
+            const c = unit.col + dirC * k + perpC * m;
+            if (isValidPosition(r, c)) pathSet.add(r + ',' + c);
+        }
+    }
+    const inPath = u => pathSet.has(u.row + ',' + u.col);
+    const norm = dirR * dirR + dirC * dirC;
+    const proj = (r, c) => ((r - unit.row) * dirR + (c - unit.col) * dirC) / norm;
+    const endRow = unit.row + dirR * 4, endCol = unit.col + dirC * 4;
+    const FLIGHT = 1500;
+    showSasukeArrow(unit, dirR, dirC, FLIGHT);
+    showHeroDeployText(unit, '须佐能乎·贯', '#000000', 1800);
+    clearHighlights();
+    gameState.selectedUnit = null;
+    // 箭矢抵达:推送路径敌人 + 路径上敌人受3次2伤
+    setTimeout(() => {
+        if (gameState.gameOver) return;
+        let enemies = gameState.units.filter(u => u.team !== unit.team && !u.ghost && !u._removing && inPath(u));
+        enemies.sort((a, b) => proj(b.row, b.col) - proj(a.row, a.col));
+        enemies.forEach(e => {
+            for (let step = 0; step < 8; step++) {
+                if (proj(e.row, e.col) >= 4) break;
+                const nr = e.row + dirR, nc = e.col + dirC;
+                if (!isValidPosition(nr, nc)) break;
+                if (isBlueBase(nr, nc) || isRedBase(nr, nc)) break;
+                if (proj(nr, nc) > 4) break;
+                if (gameState.units.some(u => u !== e && u.row === nr && u.col === nc)) break;
+                const oldCell = gameState.board[e.row][e.col];
+                const el = oldCell.querySelector('.unit');
+                if (el) { oldCell.removeChild(el); gameState.board[nr][nc].appendChild(el); }
+                e.row = nr; e.col = nc;
+            }
+        });
+        gameState.units.slice().forEach(e => {
+            if (e.team === unit.team || e.ghost || e._removing) return;
+            if (inPath(e)) {
+                for (let i = 0; i < 3 && !e._removing; i++) {
+                    e.currentHp -= 2;
+                    updateUnitHp(e);
+                    if (e.currentHp <= 0) removeUnit(e);
+                }
+                showCritText(e.row, e.col, '贯');
+            }
+        });
+        // 箭矢爆炸
+        showSasukeBoom(unit, dirR, dirC);
+    }, FLIGHT);
+    // 爆炸后才生成3×3黑炎(含爆炸3伤)
+    setTimeout(() => {
+        if (gameState.gameOver) return;
+        sasukeFlameHit(unit, endRow, endCol, 1, 3);
+        sasukeAddFlame(unit, endRow, endCol, 1);
+    }, FLIGHT + 650);
+}
+// 大招箭矢/紫巨人视觉(箭矢飞向朝向,速度可调)
+function showSasukeArrow(unit, dirR, dirC, duration) {
+    const board = document.getElementById('gameBoard');
+    if (!board) return;
+    const cx = unit.col * cellW + cellW / 2;
+    const cy = unit.row * cellH + cellH / 2;
+    const L = 4 * cellH;
+    const h = 2 * cellH;
+    // 紫色人形须佐(立于骨架身后,即朝向相反侧)
+    const human = document.createElement('div');
+    human.className = 'sasuke-humanoid';
+    human.innerHTML = '<div class="sh-head"></div><div class="sh-body"></div><div class="sh-arms"></div>';
+    human.style.position = 'absolute';
+    human.style.left = (cx - 16 - dirC * cellW * 0.55) + 'px';
+    human.style.top = (cy - 20 - dirR * cellH * 0.55) + 'px';
+    board.appendChild(human);
+    // 紫色箭矢(绕骨架中心旋转到朝向,并缓慢飞向路径末端)
+    const wrap = document.createElement('div');
+    wrap.className = 'sasuke-arrow-wrap';
+    wrap.style.left = cx + 'px';
+    wrap.style.top = cy + 'px';
+    wrap.style.transform = 'rotate(' + (Math.atan2(dirC, -dirR) * 180 / Math.PI) + 'deg)';
+    const arrow = document.createElement('div');
+    arrow.className = 'sasuke-arrow';
+    arrow.style.height = h + 'px';
+    arrow.style.top = (-0.3 * cellH) + 'px';
+    arrow.style.transition = 'top ' + (duration || 1400) + 'ms linear';
+    wrap.appendChild(arrow);
+    board.appendChild(wrap);
+    requestAnimationFrame(() => { arrow.style.top = (-L) + 'px'; });
+    setTimeout(() => { human.remove(); wrap.remove(); }, (duration || 1400) + 300);
+}
+// 箭矢抵达末端的爆炸
+function showSasukeBoom(unit, dirR, dirC) {
+    const board = document.getElementById('gameBoard');
+    if (!board) return;
+    const ex = unit.col * cellW + cellW / 2 + dirC * 4 * cellW;
+    const ey = unit.row * cellH + cellH / 2 + dirR * 4 * cellH;
+    const boom = document.createElement('div');
+    boom.className = 'sasuke-boom';
+    boom.style.position = 'absolute';
+    boom.style.left = (ex - 8) + 'px';
+    boom.style.top = (ey - 8) + 'px';
+    board.appendChild(boom);
+    setTimeout(() => boom.remove(), 700);
+}
+
+// 技能框按钮绑定
+(function wireSasukeSkillModal() {
+    const m = document.getElementById('sasukeSkillModal');
+    if (!m) return;
+    const b1 = document.getElementById('sasukeSkill1Btn');
+    const b2 = document.getElementById('sasukeSkill2Btn');
+    const b3 = document.getElementById('sasukeSkill3Btn');
+    const bc = document.getElementById('closeSasukeSkillModal');
+    if (b1) b1.addEventListener('click', () => { const u = gameState._sasukeSelected; if (u) sasukeSkillArmor(u); });
+    if (b2) b2.addEventListener('click', () => { const u = gameState._sasukeSelected; if (u) enterSasukeFlame1(u); });
+    if (b3) b3.addEventListener('click', () => { const u = gameState._sasukeSelected; if (u) enterSasukeUltTargetMode(u); });
+    if (bc) bc.addEventListener('click', closeSasukeSkillModalFunc);
+    m.addEventListener('click', (e) => { if (e.target === m) closeSasukeSkillModalFunc(); });
+})();
+
 // 跃击:跳向敌人砸4伤,前方2×3敌人击退1格(霸体免疫)
 function superKnightLeap(attacker, target) {
     const board = document.getElementById('gameBoard');
@@ -8731,6 +9147,8 @@ function enterMirrorSkillMode(mirror) {
 }
 // 技能开始:冲撞2伤+定身,创造圆形法阵
 function mirrorSkillStart(mirror, target) {
+    // 联机:镜大招动画同步
+    sendSkillFx('mirrorSkill', mirror, target.row, target.col);
     // 开启法阵台词(黄色,2秒渐隐)
     showHeroDeployText(mirror, '怀八荒,入九重', '#f1c40f', 2000);
     mirror._mirrorSkillMode = false;
@@ -8778,6 +9196,8 @@ function mirrorSkillStart(mirror, target) {
             if (target.currentHp <= 0) removeUnit(target);
         }
         buildShards();
+        // 联机:兜底路径同步(伤害/定身/位移)
+        if (gameState.onlineMode && typeof syncOnlineNow === 'function') syncOnlineNow();
         return;
     }
     cell.removeChild(el);
@@ -8834,8 +9254,41 @@ function mirrorSkillStart(mirror, target) {
             renderUnit(mirror);
             renderMirrorClone(mirror);
             buildShards();
+            // 联机:动画完成后同步(伤害/定身/位移/法阵)
+            if (gameState.onlineMode && typeof syncOnlineNow === 'function') syncOnlineNow();
         }, 470);
     }, 450);
+}
+// 镜大招纯视觉(联机接收方重放,无伤害结算)
+function showMirrorSkillVisual(mirror, target) {
+    if (!mirror || !target || target.row === undefined) return;
+    const er = target.row, ec = target.col;
+    const mr = mirror.row, mc = mirror.col;
+    const radius = Math.max(1, Math.abs(mr - er) + Math.abs(mc - ec));
+    const shards = [];
+    for (let dr = -radius; dr <= radius; dr++) {
+        for (let dc = -radius; dc <= radius; dc++) {
+            const dist = Math.sqrt(dr * dr + dc * dc);
+            if (Math.abs(dist - radius) > 0.5) continue;
+            const nr = er + dr, nc = ec + dc;
+            if (!isValidPosition(nr, nc)) continue;
+            if (isBlueBase(nr, nc) || isRedBase(nr, nc)) continue;
+            shards.push({ row: nr, col: nc });
+        }
+    }
+    mirror._mirrorShards = shards;
+    renderMirrorShards(mirror);
+    // 冲撞视觉:单位向敌人闪一下(0.35s后复位)
+    const board = document.getElementById('gameBoard');
+    const cell = gameState.board[mr] && gameState.board[mr][mc];
+    const el = cell ? cell.querySelector('.unit') : null;
+    if (el && board) {
+        el.style.transition = 'left 0.3s ease-in, top 0.3s ease-in';
+        el.style.zIndex = '40';
+        el.style.left = (ec * cellW + cellW / 2 - 10) + 'px';
+        el.style.top = (er * cellH + cellH / 2 - 10) + 'px';
+        setTimeout(() => { el.style.cssText = ''; renderUnit(mirror); }, 350);
+    }
 }
 // 渲染镜片
 function renderMirrorShards(mirror) {
@@ -9161,13 +9614,14 @@ function updateWitherVisual(unit) {
 
 // 查克拉:立即获得2格能量(蓝色字,1.5秒渐隐)
 function activateChakra(unit) {
-    // 只有佩恩/马斑/植物人/解斑可获得查克拉,其他角色无效
-    if (!unit.shinraRange && !unit.madaraMaxEnergy && !unit.hashiMaxEnergy && !unit.solveMaxEnergy && !unit.guyMaxEnergy) return;
-    const maxE = unit.hashiMaxEnergy || unit.madaraMaxEnergy || unit.painMaxEnergy || unit.solveMaxEnergy || unit.guyMaxEnergy || 4;
+    // 头顶有能量条的单位均可获得查克拉(佩恩/马斑/植物人/解斑/死门凯/佐助)
+    if (!unit.shinraRange && !unit.madaraMaxEnergy && !unit.hashiMaxEnergy && !unit.solveMaxEnergy && !unit.guyMaxEnergy && !unit.sasukeMaxEnergy) return;
+    const maxE = unit.hashiMaxEnergy || unit.madaraMaxEnergy || unit.painMaxEnergy || unit.solveMaxEnergy || unit.guyMaxEnergy || unit.sasukeMaxEnergy || 4;
     if (unit.hashirama) unit.hashiEnergy = Math.min(maxE, (unit.hashiEnergy || 0) + 2);
     else if (unit.madaraMaxEnergy) unit.madaraEnergy = Math.min(maxE, (unit.madaraEnergy || 0) + 2);
     else if (unit.solveMaxEnergy) unit.solveEnergy = Math.min(maxE, (unit.solveEnergy || 0) + 2);
     else if (unit.guyMaxEnergy) unit.guyEnergy = Math.min(maxE, (unit.guyEnergy || 0) + 2);
+    else if (unit.sasukeMaxEnergy) unit.sasukeEnergy = Math.min(maxE, (unit.sasukeEnergy || 0) + 2);
     else unit.painEnergy = Math.min(maxE, (unit.painEnergy || 0) + 2);
     const el = gameState.board[unit.row][unit.col].querySelector('.unit');
     if (el) renderEnergyBar(unit, el);
@@ -10227,6 +10681,7 @@ function clearExpiredSmoke() {
 
 // 马斑/佩恩能量条
 function renderEnergyBar(unit, container) {
+    if (!container) return;
     let bar = container.querySelector('.madara-energy-bar');
     if (!bar) {
         bar = document.createElement('div');
@@ -10234,8 +10689,8 @@ function renderEnergyBar(unit, container) {
         container.appendChild(bar);
     }
     bar.innerHTML = '';
-    const maxE = unit.madaraMaxEnergy || unit.painMaxEnergy || unit.hashiMaxEnergy || unit.solveMaxEnergy || unit.guyMaxEnergy || 0;
-    const curE = unit.madaraEnergy || unit.painEnergy || unit.hashiEnergy || unit.solveEnergy || unit.guyEnergy || 0;
+    const maxE = unit.madaraMaxEnergy || unit.painMaxEnergy || unit.hashiMaxEnergy || unit.solveMaxEnergy || unit.guyMaxEnergy || unit.sasukeMaxEnergy || 0;
+    const curE = unit.madaraEnergy || unit.painEnergy || unit.hashiEnergy || unit.solveEnergy || unit.guyEnergy || unit.sasukeEnergy || 0;
     for (let i = 0; i < maxE; i++) {
         const dot = document.createElement('div');
         dot.className = i < curE ? 'energy-dot filled' : 'energy-dot';
@@ -10246,7 +10701,7 @@ function renderEnergyBar(unit, container) {
 // 清除高亮
 function clearHighlights() {
     document.querySelectorAll('.cell').forEach(cell => {
-        cell.classList.remove('movable', 'attackable', 'selected', 'tank-target', 'chakra-target', 'pierce-target');
+        cell.classList.remove('movable', 'attackable', 'selected', 'tank-target', 'chakra-target', 'pierce-target', 'sasuke-ult-target');
     });
 }
 
@@ -10362,10 +10817,10 @@ function endTurn() {
     gameState.selectedUnit = null;
     gameState.deployMode = false;
     // 回合结束:关闭所有技能弹窗/清空选中(防对方回合残留误操作)
-    ['deepBlueSkillModal','lvbuSkillModal','yoggSkillModal','guySkillModal','shangboleSkillModal'].forEach(id => { const m = document.getElementById(id); if (m) m.classList.add('hidden'); });
-    gameState._deepBlueSelected = null; gameState._lvbuSelected = null; gameState._guySelected = null; gameState._yoggSelected = null; gameState._shangboleSelected = null;
+    ['deepBlueSkillModal','lvbuSkillModal','yoggSkillModal','guySkillModal','shangboleSkillModal','sasukeSkillModal'].forEach(id => { const m = document.getElementById(id); if (m) m.classList.add('hidden'); });
+    gameState._deepBlueSelected = null; gameState._lvbuSelected = null; gameState._guySelected = null; gameState._yoggSelected = null; gameState._shangboleSelected = null; gameState._sasukeSelected = null;
     // 战车:结束回合重置锁定模式
-    gameState.units.forEach(u => { u._targeting = false; u._witherTargeting = false; u._witherCharged = false; u._zetsuSkillUsed = false; u._zetsuTargeting = false; });
+    gameState.units.forEach(u => { u._targeting = false; u._witherTargeting = false; u._witherCharged = false; u._zetsuSkillUsed = false; u._zetsuTargeting = false; u._sasukeUltTargeting = false; u._sasukeFlameStage = 0; });
 
     const prevTurn = gameState.currentTurn;
 
@@ -10540,6 +10995,23 @@ function endTurn() {
             }
         }
     });
+    // 宇智波佐助[须佐能乎]:技能次数重置 + 须佐能乎结束
+    gameState.units.forEach(u => {
+        if (!u.sasuke) return;
+        if (u.team === prevTurn) {
+            if (u._sasukeS1Cd > 0) u._sasukeS1Cd--;
+            if (u._sasukeS2Cd > 0) u._sasukeS2Cd--;
+            u._sasukeFlameStage = 0;
+        } else if (u._sasukeSusanoo) {
+            sasukeEndSusanoo(u);
+        }
+    });
+    // 黑炎:持续到敌方回合结束(敌方回合结束时清除)
+    if (gameState.sasukeFlames && gameState.sasukeFlames.length) {
+        const before = gameState.sasukeFlames.length;
+        gameState.sasukeFlames = gameState.sasukeFlames.filter(fz => fz.team === prevTurn);
+        if (gameState.sasukeFlames.length !== before) renderSasukeFlames();
+    }
     // 精英骑士技能冷却递减(按己方回合计:用后第1个己方回合不可用,第2个可用)
     gameState.units.forEach(u => {
         if (u.eliteKnight && u.team === prevTurn && u._tauntSkillCd > 0) u._tauntSkillCd--;
@@ -10747,6 +11219,20 @@ function endTurn() {
             if (u.currentHp <= 0) removeUnit(u);
         }
     });
+
+    // 黑炎:范围内敌人每回合受1点燃烧伤害(无视护甲)
+    if (gameState.sasukeFlames && gameState.sasukeFlames.length) {
+        gameState.sasukeFlames.forEach(fz => {
+            gameState.units.slice().forEach(u => {
+                if (u.team === fz.team || u.ghost || u._removing) return;
+                if (Math.max(Math.abs(u.row - fz.row), Math.abs(u.col - fz.col)) <= fz.r) {
+                    u.currentHp -= 1;
+                    updateUnitHp(u);
+                    if (u.currentHp <= 0) removeUnit(u);
+                }
+            });
+        });
+    }
 
     // 中毒结算:每回合扣血(无视护甲),连续计数未命中则重置
     gameState.units.slice().forEach(u => {
@@ -11117,6 +11603,7 @@ function showCardInfo(card) {
     if (card.patroller) features.push('咬住敌人3回合不能移动');
     if (card.royalGuard) features.push('部署6卫兵/3伤护盾/移动≥3冲锋翻倍');
     if (card.hogRider) features.push('只能攻击建筑/大本营');
+    if (card.royalGiant) features.push('只能攻击建筑/大本营,攻击时5×5冲击波:击退1格+1伤');
     if (card.eliteKnight) features.push('7×7法阵嘲讽+3伤护盾');
     if (card.fisherman) features.push('双击拉敌人到身前+可再普攻');
     if (card.spell) {
@@ -11317,6 +11804,7 @@ function startGame() {
     gameState.knightZones = [];
     gameState.rageZones = [];
     gameState.fireZones = [];
+    gameState.sasukeFlames = [];
     gameState.iceFields = [];
     gameState.spikeNets = [];
     gameState.shroomCount = { red: 0, blue: 0 };
@@ -11445,10 +11933,10 @@ function enterChakraTargetMode() {
     gameState._chakraTargeting = true;
     gameState.selectedUnit = null;
     gameState.units.forEach(u => {
-        const isChakraChar = !!(u.madaraMaxEnergy || u.hashiMaxEnergy || u.painMaxEnergy || u.solveMaxEnergy || u.guyMaxEnergy);
+        const isChakraChar = !!(u.madaraMaxEnergy || u.hashiMaxEnergy || u.painMaxEnergy || u.solveMaxEnergy || u.guyMaxEnergy || u.sasukeMaxEnergy);
         if (!isChakraChar || u.team !== gameState.currentTurn || u._removing) return;
-        const maxE = u.hashiMaxEnergy || u.madaraMaxEnergy || u.painMaxEnergy || u.solveMaxEnergy || u.guyMaxEnergy || 4;
-        const curE = (u.hashiEnergy !== undefined ? u.hashiEnergy : (u.madaraEnergy !== undefined ? u.madaraEnergy : (u.painEnergy !== undefined ? u.painEnergy : (u.solveEnergy !== undefined ? u.solveEnergy : (u.guyEnergy || 0)))));
+        const maxE = u.hashiMaxEnergy || u.madaraMaxEnergy || u.painMaxEnergy || u.solveMaxEnergy || u.guyMaxEnergy || u.sasukeMaxEnergy || 4;
+        const curE = (u.hashiEnergy !== undefined ? u.hashiEnergy : (u.madaraEnergy !== undefined ? u.madaraEnergy : (u.painEnergy !== undefined ? u.painEnergy : (u.solveEnergy !== undefined ? u.solveEnergy : (u.guyEnergy !== undefined ? u.guyEnergy : (u.sasukeEnergy || 0))))));
         if (curE >= maxE) return; // 能量已满不可用
         if (u.chakraCd) return; // 冷却中不可用
         gameState.board[u.row][u.col].classList.add('chakra-target');
@@ -11461,7 +11949,7 @@ function openSpellModal() {
     grid.innerHTML = '';
     const curE = gameState.currentTurn === 'red' ? gameState.redEnergy : gameState.blueEnergy;
     // 查克拉牌:手牌有查克拉角色时显示(0费,不占卡牌库)
-    const hasChakraChar = gameState.battleDeck.some(c => c.madaraMaxEnergy || c.hashiMaxEnergy || c.painMaxEnergy || c.solveMaxEnergy || c.guyMaxEnergy);
+    const hasChakraChar = gameState.battleDeck.some(c => c.madaraMaxEnergy || c.hashiMaxEnergy || c.painMaxEnergy || c.solveMaxEnergy || c.guyMaxEnergy || c.sasukeMaxEnergy);
     if (hasChakraChar) {
         const el = document.createElement('div');
         el.className = 'battle-deck-card';
@@ -11763,6 +12251,7 @@ function aiMoveAndAttack() {
         gameState.units.forEach(e => {
             if (e.team === 'red' && (!tk || e.id === tk.id) && !e.ghost) {
                 if (u.hogRider && !e.building) return;
+                if (u.royalGiant && !e.building) return;
                 if (u.balloon && !e.building) return;
                 if (e.flying && !canHitAirUnit(u)) return;
                 if (e.teslaHidden) return;
@@ -11792,6 +12281,7 @@ function aiMoveAndAttack() {
             let nearest = null, minD = Infinity;
             gameState.units.filter(e => e.team === 'red' && (!tk || e.id === tk.id)).forEach(e => {
                 if (u.hogRider && !e.building) return;
+                if (u.royalGiant && !e.building) return;
                 if (u.balloon && !e.building) return;
                 if (e.flying && !canHitAirUnit(u)) return;
                 if (e.teslaHidden) return;
@@ -11831,6 +12321,7 @@ function aiMoveUnit(u, tk) {
     let closestEnemy = null, cDist = Infinity;
     gameState.units.filter(e => e.team === 'red' && (!tk || e.id === tk.id)).forEach(e => {
         if (u.hogRider && !e.building) return;
+                if (u.royalGiant && !e.building) return;
                 if (u.balloon && !e.building) return;
         if (e.flying && !canHitAirUnit(u)) return;
         if (e.teslaHidden) return;

@@ -585,6 +585,120 @@ h1 {
 .knight-zone { background: rgba(241, 196, 15, 0.13); box-shadow: inset 0 0 6px rgba(241, 196, 15, 0.55); }
 .art-royal_guard::after { content: '卫队'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #f1c40f; font-size: 16px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 6px #9b59b6, 0 0 12px rgba(155,89,182,0.9); animation: dragonGlow 1.5s ease-in-out infinite; }
 .guard-shield { box-shadow: 0 0 5px 1px rgba(241, 196, 15, 0.95) inset, 0 0 4px 1px rgba(241, 196, 15, 0.6); }
+.art-royal_giant::after { content: '皇家巨'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #3498db; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 6px #9b59b6, 0 0 12px rgba(155,89,182,0.9); animation: dragonGlow 1.5s ease-in-out infinite; }
+.card-artwork.art-royal_giant::after { content: '皇家巨'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #3498db; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 6px #9b59b6, 0 0 12px rgba(155,89,182,0.9); animation: dragonGlow 1.5s ease-in-out infinite; }
+/* 宇智波佐助[须佐能乎]:图标"骨架"(紫色,横向) */
+.art-sasuke::after { content: '骨架'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #9b59b6; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; letter-spacing: 1px; text-shadow: 0 0 4px rgba(155,89,182,0.6); }
+.card-artwork.art-sasuke::after { content: '骨架'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #9b59b6; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; letter-spacing: 1px; text-shadow: 0 0 4px rgba(155,89,182,0.6); }
+/* 须佐能乎:紫色循环呼吸特效 */
+.unit.sasuke-susanoo { animation: sasukeBreath 1.5s ease-in-out infinite; border-radius: 4px; }
+@keyframes sasukeBreath {
+    0%, 100% { box-shadow: 0 0 6px 2px rgba(155,89,182,0.85), inset 0 0 6px rgba(155,89,182,0.6); }
+    50% { box-shadow: 0 0 14px 5px rgba(155,89,182,1), inset 0 0 12px rgba(155,89,182,0.9); }
+}
+.unit.sasuke-susanoo::after { text-shadow: 0 0 6px #9b59b6, 0 0 12px rgba(155,89,182,0.9); animation: dragonGlow 1.5s ease-in-out infinite; }
+/* 黑炎(炎遁·加具土命/须佐能乎·贯) */
+.black-flame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(130,70,180,0.30), rgba(55,18,85,0.18));
+    border-radius: 4px;
+    z-index: 3;
+    pointer-events: none;
+    box-shadow: inset 0 0 5px rgba(155,89,182,0.35);
+    animation: blackFlameFlicker 0.7s ease-in-out infinite;
+}
+.black-flame.black-flame-core {
+    background: radial-gradient(circle, rgba(150,80,200,0.42), rgba(70,25,105,0.26));
+}
+@keyframes blackFlameFlicker { 0%, 100% { opacity: 0.8; } 50% { opacity: 1; } }
+/* 须佐能乎·贯:紫色人形须佐 + 箭矢 + 爆炸 */
+.sasuke-ult-target { box-shadow: inset 0 0 0 2px rgba(155,89,182,0.95); cursor: crosshair; }
+.sasuke-humanoid {
+    width: 32px;
+    height: 40px;
+    z-index: 39;
+    pointer-events: none;
+    filter: drop-shadow(0 0 8px rgba(155,89,182,0.95));
+    animation: sasukeFig 1s ease-out forwards;
+}
+.sasuke-humanoid .sh-head {
+    position: absolute;
+    left: 11px;
+    top: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #c39bd3, #7d3c98);
+}
+.sasuke-humanoid .sh-body {
+    position: absolute;
+    left: 8px;
+    top: 10px;
+    width: 16px;
+    height: 26px;
+    border-radius: 6px 6px 4px 4px;
+    background: linear-gradient(180deg, rgba(155,89,182,0.95), rgba(110,40,160,0.6));
+}
+.sasuke-humanoid .sh-arms {
+    position: absolute;
+    left: 0;
+    top: 14px;
+    width: 32px;
+    height: 5px;
+    border-radius: 3px;
+    background: rgba(155,89,182,0.85);
+}
+@keyframes sasukeFig {
+    0% { opacity: 0; transform: scale(0.6); }
+    30% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1.08); }
+}
+.sasuke-arrow-wrap {
+    position: absolute;
+    z-index: 40;
+    pointer-events: none;
+}
+.sasuke-arrow {
+    position: absolute;
+    left: -6px;
+    width: 12px;
+    background: linear-gradient(180deg, rgba(155,89,182,1), rgba(120,50,175,0.95));
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(155,89,182,0.95);
+    animation: sasukeArrowFly 0.5s ease-out;
+}
+.sasuke-arrow::after {
+    content: '';
+    position: absolute;
+    left: -6px;
+    top: -16px;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-bottom: 16px solid rgba(155,89,182,1);
+}
+@keyframes sasukeArrowFly {
+    0% { opacity: 0.2; }
+    100% { opacity: 1; }
+}
+.sasuke-boom {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    z-index: 41;
+    pointer-events: none;
+    background: radial-gradient(circle, rgba(200,140,240,0.95), rgba(155,89,182,0.2));
+    box-shadow: 0 0 16px rgba(155,89,182,1);
+    animation: sasukeBoom 0.7s ease-out forwards;
+}
+@keyframes sasukeBoom {
+    0% { transform: scale(0.3); opacity: 1; }
+    100% { transform: scale(4); opacity: 0; }
+}
+.unit.red.art-sasuke::after, .unit.blue.art-sasuke::after { color: #9b59b6; }
 .art-heal_fairy::after { content: '奶豆'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #f1c40f; font-size: 14px; font-weight: 900; line-height: 1; white-space: nowrap; }
 .art-super_knight::after { content: '超骑'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #000; font-size: 14px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 5px rgba(155,89,182,0.95), 0 0 10px rgba(155,89,182,0.75); }
 

@@ -150,6 +150,8 @@ function tryConnect(cb) {
                 gameState.iceFields = gs.iceFields || [];
                 gameState.windZones = gs.windZones || [];
                 gameState.fireZones = gs.fireZones || [];
+                gameState.erinRings = gs.erinRings || [];
+                if (typeof renderErinRings === "function") renderErinRings();
                 gameState.currentTurn = gs.currentTurn || 'blue';
                 updateEnergyDisplay();
                 updateBaseHpDisplay();
@@ -188,6 +190,8 @@ function tryConnect(cb) {
                 gameState.iceFields = gs.iceFields || [];
                 gameState.windZones = gs.windZones || [];
                 gameState.fireZones = gs.fireZones || [];
+                gameState.erinRings = gs.erinRings || [];
+                if (typeof renderErinRings === "function") renderErinRings();
                 gameState.currentTurn = gs.currentTurn || 'red';
                 updateEnergyDisplay();
                 updateBaseHpDisplay();
@@ -303,7 +307,8 @@ function playSkillFx(fx) {
             case 'erinBullet': if (typeof showErinBullet === 'function') showErinBullet(u, t); else showOnlineAttackFx(fx.row, fx.col, fx.toR, fx.toC); break;
             case 'infernoLaser': if (typeof showInfernoLaser === 'function') { const tar = gameState.units.find(x => x.id === u._infernoLaserTarget); if (tar) showInfernoLaser(u, tar); } else showOnlineAttackFx(fx.row, fx.col, fx.toR, fx.toC); break;
             case 'goldenDragon': if (typeof showGoldenDragon === 'function') { const d = showGoldenDragon(u); setTimeout(() => { if (d && d.parentNode) d.remove(); }, 1500); } else showSkillFlashFx(fx.row, fx.col, '#f1c40f', 50); break;
-            case 'counterGolem': if (typeof showGolemVisual === 'function') showGolemVisual(u, t); else showSkillFlashFx(fx.toR, fx.toC, '#27ae60', 40); break;
+            case 'mirrorSkill': if (typeof showMirrorSkillVisual === 'function') showMirrorSkillVisual(u, t); else showSkillFlashFx(fx.toR, fx.toC, '#f1c40f', 50); break;
+case 'counterGolem': if (typeof showGolemVisual === 'function') showGolemVisual(u, t); else showSkillFlashFx(fx.toR, fx.toC, '#27ae60', 40); break;
 case 'bluePillar': if (typeof showBluePillar === 'function') showBluePillar(u); else showSkillFlashFx(fx.row, fx.col, '#3498db', 45); break;
             case 'spellFireball': if (typeof showFireballVisual === 'function') showFireballVisual(fx.toR, fx.toC, 1); else showSkillFlashFx(fx.toR, fx.toC, '#e74c3c', 50); break;
             case 'spellRage': if (typeof showRageVisual === 'function') showRageVisual(fx.toR, fx.toC); else showSkillFlashFx(fx.toR, fx.toC, '#e67e22', 45); break;
@@ -393,7 +398,8 @@ function syncGameState() {
             knightZones: gameState.knightZones || [],
             iceFields: gameState.iceFields || [],
             windZones: gameState.windZones || [],
-            fireZones: gameState.fireZones || []
+            fireZones: gameState.fireZones || [],
+            erinRings: gameState.erinRings || []
         })
     }));
 }
