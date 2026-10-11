@@ -8859,6 +8859,23 @@ function knockbackUnit(unit, dr, dc, dist) {
     }
     return false;
 }
+// 连锁击退1格:落点被占用时推着挡路单位一起走(不能推则整条失败)
+function chainPush(unit, dr, dc, movedSet) {
+    if (!unit || unit._removing || unit.ghost || isImmuneToKnockback(unit) || unit.building) return false;
+    const tr = unit.row + dr, tc = unit.col + dc;
+    if (!isValidPosition(tr, tc)) return false;
+    if (isBlueBase(tr, tc) || isRedBase(tr, tc)) return false;
+    const blocker = gameState.units.find(u => u.id !== unit.id && u.row === tr && u.col === tc);
+    if (blocker) {
+        if (!chainPush(blocker, dr, dc, movedSet)) return false;
+    }
+    const oldCell = gameState.board[unit.row][unit.col];
+    const el = oldCell.querySelector('.unit');
+    if (el) { oldCell.removeChild(el); gameState.board[tr][tc].appendChild(el); }
+    unit.row = tr; unit.col = tc;
+    if (movedSet) movedSet.add(unit.id);
+    return true;
+}
 // 觉醒皇家巨人:攻击时爆发以自身为中心5×5冲击波(范围内敌人远离自身击退1格并受1伤,建筑/霸体免疫击退)
 function royalGiantShockwave(attacker) {
     if (!attacker || attacker._removing || attacker.ghost) return;
@@ -8866,13 +8883,15 @@ function royalGiantShockwave(attacker) {
         u && !u._removing && !u.ghost && u.team !== attacker.team &&
         Math.abs(u.row - attacker.row) <= 2 && Math.abs(u.col - attacker.col) <= 2
     );
+    const moved = new Set();
     targets.forEach(u => {
         u.currentHp -= 1;
         updateUnitHp(u);
         if (u.currentHp <= 0) { removeUnit(u); return; }
+        if (moved.has(u.id)) return; // 已被连锁推走,不重复推
         const dr = Math.sign(u.row - attacker.row);
         const dc = Math.sign(u.col - attacker.col);
-        if (dr !== 0 || dc !== 0) knockbackUnit(u, dr, dc, 1);
+        if (dr !== 0 || dc !== 0) chainPush(u, dr, dc, moved);
     });
 }
 
