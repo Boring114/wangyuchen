@@ -697,6 +697,19 @@ const cardLibrary = [
         description: '部署6个皇家卫兵(横向排列,每两个间隔1格)。每个卫兵4血/2攻/移动5/攻击距离2,自带抵御3伤的护盾(破盾前本体不受伤害)。一回合内移动≥3格进入冲锋状态,伤害翻倍。'
     },
     {
+        id: 'prince',
+        name: '小王子',
+        attack: 2,
+        hp: 4,
+        armor: 0,
+        moveRange: 5,
+        attackRange: 6,
+        cost: 4,
+        artwork: 'prince',
+        prince: true,
+        description: '攻击上限每回合最多+1(移动≤2格触发),永久叠加:1→2→3→4→5次,最高5次。双击召唤皇家护卫向前冲锋:将竖向3×6内所有敌人推向范围终点并造成3伤,护卫留在场上(攻2/血6/攻距2/移3/护甲1)。技能有冷却:用后下个己方回合不可用,再下一个己方回合恢复。'
+    },
+    {
         id: 'hog_rider',
         name: '野猪骑士',
         attack: 2,
@@ -1526,6 +1539,7 @@ counterBurn: card.counterBurn || false,
         royalGuard: card.royalGuard || false,
         hogRider: card.hogRider || false,
         royalGiant: card.royalGiant || false,
+        prince: card.prince || false,
         eliteKnight: card.eliteKnight || false,
         fisherman: card.fisherman || false,
         spell: card.spell || false,
@@ -2301,6 +2315,11 @@ if (gameState._viralTargeting) {
             openSasukeSkillModal(clickedUnit);
             return;
         }
+        // 小王子:双击召唤皇家护卫冲锋
+        if (clickedUnit.prince && clickedUnit === gameState.selectedUnit) {
+            princeSkill(clickedUnit);
+            return;
+        }
         // 迈特凯·死门:双击释放奥义(3格内有敌人;爆衣+4能量弹技能框)
         if (clickedUnit.guyDeathGate && clickedUnit === gameState.selectedUnit) {
             if (guyDoubleClick(clickedUnit)) return;
@@ -2573,7 +2592,7 @@ function showActionMode(unit) {
     // 显示可攻击目标(尤格萨隆:三个技能用完才能普攻)
     if (unit.yogg && ((unit._yoggSkill1Used||0) + (unit._yoggSkill2Used||0) + (unit._yoggSkill3Used||0) < 3)) {
         // 技能未用完:不显示攻击
-    } else if (!gameState.attackedUnits.has(unit.id) || (unit.tankSpawn && (unit.demuAttacksUsed||0) < (unit.demuBonusAttacks||0)) || (unit.erin && (unit.erinSkillActive ? (unit.erinSkillAttacks||0) > 0 : (unit.erinAttacksUsed||0) < 2)) || (unit.blowdart && (unit.blowdartAttacksUsed||0) < 2) || (unit.hashirama && (unit.hashiAttacksUsed||0) < 2)) {
+    } else if (!gameState.attackedUnits.has(unit.id) || (unit.tankSpawn && (unit.demuAttacksUsed||0) < (unit.demuBonusAttacks||0)) || (unit.erin && (unit.erinSkillActive ? (unit.erinSkillAttacks||0) > 0 : (unit.erinAttacksUsed||0) < 2)) || (unit.blowdart && (unit.blowdartAttacksUsed||0) < 2) || (unit.hashirama && (unit.hashiAttacksUsed||0) < 2) || (unit.prince && (unit._princeAttacks||0) < princeMaxAttacks(unit))) {
         // 铠飞镖攻击时使用飞镖射程
         if (unit.kaiShurikenRange && unit.kaiAttacks >= 1) {
             const orig = unit.attackRange;
@@ -4514,6 +4533,10 @@ function attackUnit(target) {
         // 尚博勒:手枪/狙击枪各每回合一次(不标记普通攻击)
         if (attacker._form === 'pistol') attacker._pistolAttacked = true;
         else attacker._sniperAttacked = true;
+    } else if (attacker.prince) {
+        // 小王子:移动≤2格可叠加的攻击次数,达到上限才标记已攻击
+        attacker._princeAttacks = (attacker._princeAttacks || 0) + 1;
+        if (attacker._princeAttacks >= princeMaxAttacks(attacker)) gameState.attackedUnits.add(attacker.id);
     } else {
         gameState.attackedUnits.add(attacker.id);
     }
@@ -6682,6 +6705,197 @@ function spawnRoyalGuards(unit) {
         gameState.units.push(g);
         renderUnit(g);
     });
+}
+
+// 小王子:本回合移动>2格时攻击次数归为1;否则用永久叠加值(1→2→3→4→5)
+function princeMaxAttacks(unit) {
+    if ((gameState.moveUsed[unit.id] || 0) > 2) return 1;
+    return unit._princeMax || 1;
+}
+
+// 小王子技能:召唤皇家护卫向前冲锋(竖向3×6推敌至终点+3伤),护卫留在场上
+function princeSkill(unit) {
+    if ((unit._princeSkillCd || 0) > 0) {
+        showHeroDeployText(unit, '技能冷却中', '#888888', 1000);
+        return;
+    }
+    unit._princeSkillCd = 2;
+    const dir = unit.team === 'red' ? -1 : 1;
+    const cols = [unit.col - 1, unit.col, unit.col + 1];
+    const proj = r => (r - unit.row) * dir;
+    const inPath = u => cols.includes(u.col) && proj(u.row) >= 1 && proj(u.row) <= 6;
+    clearHighlights();
+    gameState.selectedUnit = null;
+    // 造成3点伤害(路径内敌人)
+    gameState.units.slice().forEach(e => {
+        if (e.team === unit.team || e.ghost || e._removing) return;
+        if (inPath(e)) {
+            e.currentHp -= 3;
+            updateUnitHp(e);
+            showCritText(e.row, e.col, '护卫冲锋');
+            if (e.currentHp <= 0) removeUnit(e);
+        }
+    });
+    // 幸存敌人 → 计算推挤终点
+    const enemies = gameState.units.filter(u => u.team !== unit.team && !u.ghost && !u._removing && inPath(u));
+    const STEP = 240; // 每格耗时(越大越慢)
+    const res = princeComputePushTargets(unit, dir, enemies, STEP);
+    const land = princeGuardLanding(unit, dir, cols, res.occ);
+    let maxMs = 0;
+    // 护卫冲锋动画(速度=1格/STEP)
+    if (land) {
+        const gd = (proj(land.row) + 1) * STEP;
+        showGuardCharge(unit, dir, land.row, land.col, gd);
+        maxMs = Math.max(maxMs, gd);
+    }
+    // 敌人被推动画:接触即推,速度与护卫一致
+    enemies.forEach(e => {
+        const t = res.targets.get(e);
+        if (!t) return;
+        if (t.row === e.row && t.col === e.col) return;
+        const delay = (res.starts && res.starts.get(e)) || (proj(e.row) + 1) * STEP;
+        const dur = Math.abs(proj(t.row) - proj(e.row)) * STEP;
+        animateUnitPush(e, t, delay, dur);
+        maxMs = Math.max(maxMs, delay + dur);
+    });
+    if (land) {
+        setTimeout(() => { if (!gameState.gameOver) createPrinceGuard(unit, land.row, land.col); }, (proj(land.row) + 1) * STEP + 80);
+    }
+    // 动画期间锁定回合切换(避免动画中被强制结束回合导致位置错乱)
+    gameState._skillAnimating = true;
+    setTimeout(() => { gameState._skillAnimating = false; }, maxMs + 250);
+    showHeroDeployText(unit, '皇家护卫!', '#f1c40f', 1500);
+}
+
+// 计算皇家护卫推送路径敌人的终点(整列刚性前推:最近者到终点k=6,其余相应推到终点更后方)
+function princeComputePushTargets(unit, dir, enemies, stepMs) {
+    const proj = r => (r - unit.row) * dir;
+    const targets = new Map();
+    const starts = new Map();
+    const baseOcc = new Set(gameState.units.filter(u => enemies.indexOf(u) < 0).map(u => u.row + ',' + u.col));
+    const cellFree = (r, c) => isValidPosition(r, c) && !isBlueBase(r, c) && !isRedBase(r, c) && !baseOcc.has(r + ',' + c);
+    const groups = {};
+    enemies.forEach(e => { (groups[e.col] = groups[e.col] || []).push(e); });
+    Object.keys(groups).forEach(colStr => {
+        const col = parseInt(colStr, 10);
+        const group = groups[colStr].slice().sort((a, b) => proj(a.row) - proj(b.row)); // 近→远
+        const minK = proj(group[0].row);
+        const delta = 6 - minK; // 最近者推到终点(k=6)
+        group.forEach(e => {
+            let tk = proj(e.row) + delta;
+            while (tk > minK && !cellFree(unit.row + dir * tk, col)) tk--;
+            targets.set(e, { row: unit.row + dir * tk, col: col });
+        });
+        // 同列同时启动(护卫抵达最近者时),同速同delta移动→保持间距不重叠
+        const startMs = (minK + 1) * stepMs;
+        group.forEach(e => starts.set(e, startMs));
+    });
+    const occ = new Set(baseOcc);
+    targets.forEach(t => occ.add(t.row + ',' + t.col));
+    return { targets, starts, occ };
+}
+
+// 逐帧移动补间(避免CSS过渡在某些环境下不触发)
+function tweenEl(el, fromLeft, fromTop, toLeft, toTop, delayMs, durMs, onDone) {
+    const start = performance.now() + (delayMs || 0);
+    const dur = durMs || 1;
+    function frame(now) {
+        const t = now - start;
+        if (t < 0) { requestAnimationFrame(frame); return; }
+        const p = Math.min(1, t / dur);
+        el.style.left = (fromLeft + (toLeft - fromLeft) * p) + 'px';
+        el.style.top = (fromTop + (toTop - fromTop) * p) + 'px';
+        if (p < 1) requestAnimationFrame(frame);
+        else if (onDone) onDone();
+    }
+    requestAnimationFrame(frame);
+}
+
+// 单位被推挤的位移动画(与护卫冲锋同速滑行)
+function animateUnitPush(e, target, delay, dur) {
+    const board = document.getElementById('gameBoard');
+    const cell = gameState.board[e.row] ? gameState.board[e.row][e.col] : null;
+    const el = cell ? cell.querySelector('.unit') : null;
+    if (!board || !el) {
+        setTimeout(() => { if (!e._removing) { e.row = target.row; e.col = target.col; } }, delay + dur);
+        return;
+    }
+    const fromL = e.col * cellW + cellW / 2, fromT = e.row * cellH + cellH / 2;
+    const toL = target.col * cellW + cellW / 2, toT = target.row * cellH + cellH / 2;
+    el.style.left = fromL + 'px';
+    el.style.top = fromT + 'px';
+    el.style.zIndex = '45';
+    el.style.transition = 'none';
+    board.appendChild(el);
+    tweenEl(el, fromL, fromT, toL, toT, delay, dur, () => {
+        if (el.parentNode) el.parentNode.removeChild(el);
+        if (e._removing) return;
+        e.row = target.row;
+        e.col = target.col;
+        renderUnit(e);
+    });
+}
+
+// 皇家护卫落点:范围终点最近的可站立格(occ=不可占用格集合)
+function princeGuardLanding(unit, dir, cols, occ) {
+    occ = occ || new Set();
+    for (let k = 6; k >= 1; k--) {
+        const r = unit.row + dir * k, c = unit.col;
+        if (!isValidPosition(r, c)) continue;
+        if (isBlueBase(r, c) || isRedBase(r, c)) continue;
+        if (occ.has(r + ',' + c)) continue;
+        return { row: r, col: c };
+    }
+    for (let k = 1; k <= 6; k++) {
+        for (const c of cols) {
+            const r = unit.row + dir * k;
+            if (!isValidPosition(r, c)) continue;
+            if (isBlueBase(r, c) || isRedBase(r, c)) continue;
+            if (occ.has(r + ',' + c)) continue;
+            return { row: r, col: c };
+        }
+    }
+    return null;
+}
+// 生成皇家护卫单位(留在场上)
+function createPrinceGuard(unit, row, col) {
+    const g = {
+        id: 'prince_guard_' + Date.now() + '_' + Math.random(),
+        cardId: 'prince_guard',
+        name: '皇家护卫',
+        attack: 2,
+        maxHp: 6,
+        currentHp: 6,
+        armor: 1,
+        armorPen: 0,
+        moveRange: 3,
+        attackRange: 2,
+        artwork: 'prince_guard',
+        team: unit.team,
+        row: row,
+        col: col
+    };
+    gameState.units.push(g);
+    renderUnit(g);
+}
+// 皇家护卫冲锋特效:从王子身后1格处冲到落点(有移动过程)
+function showGuardCharge(unit, dir, landRow, landCol, duration) {
+    const board = document.getElementById('gameBoard');
+    if (!board) return;
+    const el = document.createElement('div');
+    el.className = 'guard-charge';
+    el.textContent = '护卫';
+    el.style.position = 'absolute';
+    el.style.width = cellW + 'px';
+    el.style.height = cellH + 'px';
+    el.style.zIndex = '42';
+    const startR = unit.row - dir, startC = unit.col;
+    const fromL = startC * cellW, fromT = startR * cellH;
+    const toL = landCol * cellW, toT = landRow * cellH;
+    el.style.left = fromL + 'px';
+    el.style.top = fromT + 'px';
+    board.appendChild(el);
+    tweenEl(el, fromL, fromT, toL, toT, 0, duration, () => { el.remove(); });
 }
 
 // 皇家卫兵护盾视觉
@@ -11008,6 +11222,16 @@ function endTurn() {
             sasukeEndSusanoo(u);
         }
     });
+    // 小王子:移动计数/攻击数重置 + 技能冷却递减
+    gameState.units.forEach(u => {
+        if (u.prince && u.team === prevTurn) {
+            const moved = gameState.moveUsed[u.id] || 0;
+            if (moved <= 2) u._princeMax = Math.min(5, (u._princeMax || 1) + 1);
+            else u._princeMax = 1;
+            u._princeAttacks = 0;
+            if (u._princeSkillCd > 0) u._princeSkillCd--;
+        }
+    });
     // 黑炎:持续到敌方回合结束(敌方回合结束时清除)
     if (gameState.sasukeFlames && gameState.sasukeFlames.length) {
         const before = gameState.sasukeFlames.length;
@@ -11604,6 +11828,7 @@ function showCardInfo(card) {
     if (card.smallShroom) features.push('每回合限2个/不可移动');
     if (card.patroller) features.push('咬住敌人3回合不能移动');
     if (card.royalGuard) features.push('部署6卫兵/3伤护盾/移动≥3冲锋翻倍');
+    if (card.prince) features.push('攻击上限每回合最多+1(移动≤2格触发,永久叠加至5)/双击召唤皇家护卫冲锋(3×6推敌+3伤)');
     if (card.hogRider) features.push('只能攻击建筑/大本营');
     if (card.royalGiant) features.push('只能攻击建筑/大本营,攻击时5×5冲击波:击退1格+1伤');
     if (card.eliteKnight) features.push('7×7法阵嘲讽+3伤护盾');
