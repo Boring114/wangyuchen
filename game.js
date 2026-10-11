@@ -18,7 +18,7 @@ const cardLibrary = [
         id: 'cavalry',
         name: '骑兵',
         attack: 1,
-        hp: 2,
+        hp: 3,
         moveRange: 8,
         attackRange: 2,
         cost: 2,
@@ -217,7 +217,7 @@ const cardLibrary = [
         hp: 3,
         moveRange: 0,
         attackRange: 99,
-        cost: 13,
+        cost: 11,
         artwork: 'electric-pea',
         description: "至尊平a,闪电连锁!",
         lineAttack: true,
@@ -403,10 +403,10 @@ const cardLibrary = [
         hp: 7,
         armor: 0,
         armorPen: 1,
-        meleeAttack: 6,
+        meleeAttack: 7,
         meleeRange: 1,
         moveRange: 4,
-        attackRange: 3,
+        attackRange: 4,
         cost: 10,
         artwork: 'leisi',
         description: '小心他的雷霆肘击!',
@@ -464,7 +464,7 @@ const cardLibrary = [
         armorPen: 2,
         moveRange: 5,
         attackRange: 5,
-        cost: 4,
+        cost: 3,
         artwork: 'blowdart',
         description: '吹箭带毒!连续命中3次毒伤提升为2,5次提升为5!',
         blowdart: true
@@ -521,7 +521,7 @@ const cardLibrary = [
         armor: 0,
         moveRange: 5,
         attackRange: 4,
-        cost: 14,
+        cost: 12,
         artwork: 'wither',
         flying: true,
         splashRadius: 1,
@@ -550,7 +550,7 @@ const cardLibrary = [
         armor: 0,
         moveRange: 10,
         attackRange: 2,
-        cost: 14,
+        cost: 12,
         artwork: 'black_zetsu',
         hero: true,
         heroDeployText: '嘿嘿嘿嘿',
@@ -651,7 +651,7 @@ const cardLibrary = [
         armor: 0,
         moveRange: 0,
         attackRange: 0,
-        cost: 13,
+        cost: 9,
         artwork: 'doom_shroom',
         doomShroom: true,
         description: '一次性·不可移动。己方回合双击引爆:以自身为中心7×7爆炸(7伤)后死亡,留下持续4回合的弹坑(仅掘地矿工可部署)。敌方回合被攻击致死也会爆炸。'
@@ -843,7 +843,7 @@ const cardLibrary = [
         armor: 0,
         moveRange: 0,
         attackRange: 0,
-        cost: 3,
+        cost: 2,
         artwork: 'leftover',
         spell: true,
         leftover: true,
@@ -976,7 +976,7 @@ const cardLibrary = [
         id: 'eagle_artillery',
         name: '天鹰火炮',
         attack: 0,
-        hp: 10,
+        hp: 13,
         armor: 0,
         moveRange: 0,
         attackRange: 99,
@@ -1030,7 +1030,7 @@ const cardLibrary = [
         id: 'lvbu',
         name: '吕布',
         attack: 2,
-        hp: 6,
+        hp: 8,
         armor: 2,
         moveRange: 4,
         attackRange: 3,
@@ -1164,7 +1164,7 @@ const cardLibrary = [
         id: 'deep_blue',
         name: '深蓝',
         attack: 3,
-        hp: 6,
+        hp: 7,
         armor: 2,
         armorPen: 1,
         moveRange: 3,
@@ -2604,7 +2604,7 @@ function showMovableRange(unit) {
     if (unit.copSpawn && unit.copsSpawned) return;
     const { row, col, moveRange } = unit;
     const used = gameState.moveUsed[unit.id] || 0;
-    let remaining = moveRange - used + getWindMoveMod(unit) + (unit.erinMoveBonus||0) + (unit._rageMove||0) + (unit._healMove||0);
+    let remaining = moveRange - used + getWindMoveMod(unit) + (unit.erinMoveBonus||0) + (unit._rageMove||0) + (unit._healMove||0) + (unit._sasukeMoveBonus||0);
     if (remaining <= 0) return;
     // 循环边界用最大可达距离(防止加成后的移动范围被基础值截断)
     const maxReach = Math.max(moveRange, remaining);
@@ -8685,6 +8685,7 @@ function sasukeSkillArmor(unit) {
     if (!unit || unit._sasukeSusanoo) return;
     unit._sasukeSusanoo = true;
     unit._sasukeS1Cd = 2;
+    unit._sasukeMoveBonus = (unit._sasukeMoveBonus || 0) + 3;
     unit._sasukeArmorBase = unit.armor || 0;
     unit.armor = (unit.armor || 0) + 2;
     if (unit.frozen) { unit.frozen = false; updateFrozenVisual(unit); }
@@ -8746,8 +8747,8 @@ function enterSasukeFlame1(unit) {
     clearHighlights();
     gameState.selectedUnit = unit;
     unit._sasukeFlameStage = 1;
-    for (let r = unit.row - 2; r <= unit.row + 2; r++) {
-        for (let c = unit.col - 2; c <= unit.col + 2; c++) {
+    for (let r = unit.row - 3; r <= unit.row + 3; r++) {
+        for (let c = unit.col - 3; c <= unit.col + 3; c++) {
             if (isValidPosition(r, c)) gameState.board[r][c].classList.add('pierce-target');
         }
     }
@@ -11001,6 +11002,7 @@ function endTurn() {
         if (u.team === prevTurn) {
             if (u._sasukeS1Cd > 0) u._sasukeS1Cd--;
             if (u._sasukeS2Cd > 0) u._sasukeS2Cd--;
+            u._sasukeMoveBonus = 0;
             u._sasukeFlameStage = 0;
         } else if (u._sasukeSusanoo) {
             sasukeEndSusanoo(u);
