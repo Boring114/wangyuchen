@@ -77,6 +77,9 @@ const cardLibrary = [
         artwork: 'saeed',
         description: "你掉进陷阱了!拥有百分之50的暴击率,每回合受到第一次攻击时闪避该攻击,闪避每回合只有一次,当其受到伤害后,发射火焰弩反击敌人并留下燃烧弹。",
         hero: true,
+        heroDeployText: '你掉进陷阱了!',
+        heroDeployColor: '#e74c3c',
+        heroDeployDuration: 2000,
         meleeAttack: 2,
         meleeRange: 1,
         dodge: true,
@@ -160,13 +163,12 @@ const cardLibrary = [
         cost: 14,
         critChance: 0.25,
     artwork: 'madara',
-        description: "普通攻击前方竖向三格,敌人近距离攻击时他自动反击3×3范围内敌军并跃起跳向敌军造成大范围伤害,每次攻击到敌人会积攒能量,能量≥4的时候双击释放技能进入无双状态,额外增加攻击次数和移动距离,5,6能量时无双状态结束后自动释放奥义,召唤陨石砸下伤害大范围敌军。",
+        description: "普通攻击3格内单体2伤,命中积攒能量。双击显示技能栏(可手动释放):一技能·破军(选方向,3格内3伤)/乱舞(本回合先普攻则变为乱舞:5×5内3次2伤,随后可选4格内敌人跃击火柱3伤);二技能·绝空(跳起变空中单位可自由移动;二段可选3格内敌人落下践踏3×3造成2伤);三技能·天下无双(需4能量)。5/6能量无双结束后自动奥义陨石。",
         hero: true,
         heroDeployText: '吾不可阻挡!',
         heroDeployColor: '#e74c3c',
         heroDeployDuration: 2000,
-        aoeAttack: true,
-        madaraBurn: 3,
+        madaraBurn: 1,
         madaraEnergy: 0,
         madaraMaxEnergy: 6,
         musouAttacks: 0,
@@ -285,14 +287,14 @@ const cardLibrary = [
     {
         id: 'pain_tendo',
         name: '佩恩·天道',
-        attack: 0,
+        attack: 2,
         hp: 5,
         moveRange: 5,
-        attackRange: 0,
+        attackRange: 2,
         cost: 10,
         critChance: 0.3,
     artwork: 'pain',
-        description: "一回合内可同时释放万象天引和神罗天征 拿到四颗豆的时候双击释放地爆天星",
+        description: "普通攻击2伤/2格。双击显示技能栏,可自选释放万象天引/神罗天征(每回合各一次)或地爆天星(需4能量)",
         hero: true,
         heroDeployText: '让世界感受痛苦!',
         heroDeployColor: '#e74c3c',
@@ -1642,7 +1644,7 @@ function handleCellClick(e) {
     if (gameState.aiMode && gameState.currentTurn === 'blue') return;
 
     // 技能框打开时点击棋盘:关闭技能框并忽略本次点击(避免误触部署弹窗)
-    const skillModals = ['deepBlueSkillModal', 'lvbuSkillModal', 'yoggSkillModal', 'guySkillModal', 'shangboleSkillModal', 'sasukeSkillModal'];
+    const skillModals = ['deepBlueSkillModal', 'lvbuSkillModal', 'yoggSkillModal', 'guySkillModal', 'shangboleSkillModal', 'sasukeSkillModal', 'painSkillModal', 'madaraSkillModal'];
     for (const id of skillModals) {
         const m = document.getElementById(id);
         if (m && !m.classList.contains('hidden')) {
@@ -1652,6 +1654,8 @@ function handleCellClick(e) {
             else if (id === 'guySkillModal') closeGuySkillModalFunc();
             else if (id === 'shangboleSkillModal') closeShangboleSkillModalFunc();
             else if (id === 'sasukeSkillModal') closeSasukeSkillModalFunc();
+            else if (id === 'painSkillModal') closePainSkillModalFunc();
+            else if (id === 'madaraSkillModal') closeMadaraSkillModalFunc();
             return;
         }
     }
@@ -1879,6 +1883,39 @@ function handleCellClick(e) {
             clearHighlights();
             gameState.selectedUnit = null;
         }
+        return;
+    }
+    // 马斑 破军:选择方向
+    if (gameState.selectedUnit && gameState.selectedUnit.madaraMaxEnergy && gameState.selectedUnit._madaraDirMode) {
+        const md = gameState.selectedUnit;
+        const dr = row - md.row, dc = col - md.col;
+        let dirR = 0, dirC = 0;
+        if (dr !== 0 && Math.abs(dr) >= Math.abs(dc)) dirR = Math.sign(dr);
+        else if (dc !== 0) dirC = Math.sign(dc);
+        if ((dirR !== 0 || dirC !== 0) && cell.classList.contains('pierce-target')) {
+            madaraPoJunCast(md, dirR, dirC);
+        } else {
+            md._madaraDirMode = false;
+            clearHighlights();
+            gameState.selectedUnit = null;
+        }
+        return;
+    }
+    // 马斑 乱舞第二段:选4格内敌人
+    if (gameState.selectedUnit && gameState.selectedUnit.madaraMaxEnergy && gameState.selectedUnit._madaraStage2Mode) {
+        const md = gameState.selectedUnit;
+        const tU = gameState.units.find(u => u.row === row && u.col === col && u.team !== md.team && !u.ghost && !u._removing);
+        md._madaraStage2Mode = false;
+        if (tU && cell.classList.contains('sasuke-ult-target')) madaraLeapPillar(md, tU);
+        else { clearHighlights(); gameState.selectedUnit = null; }
+        return;
+    }
+    // 马斑 绝空第二段:选3格内任意格(空格/敌人)为落点
+    if (gameState.selectedUnit && gameState.selectedUnit.madaraMaxEnergy && gameState.selectedUnit._madaraStompMode) {
+        const md = gameState.selectedUnit;
+        md._madaraStompMode = false;
+        if (cell.classList.contains('pierce-target')) madaraStomp(md, { row: row, col: col });
+        else { clearHighlights(); gameState.selectedUnit = null; }
         return;
     }
     // 夺心护目镜:选3个敌方单位变己方(移到 row/col 定义后)
@@ -2269,9 +2306,9 @@ if (gameState._viralTargeting) {
             activateSolveAbility(clickedUnit);
             return;
         }
-        // 马斑天下无双:4格能量+再次点击
-        if (clickedUnit.madaraMaxEnergy && clickedUnit === gameState.selectedUnit && (clickedUnit.madaraEnergy||0) >= 4) {
-            activateMusou(clickedUnit);
+        // 马斑:双击显示技能栏(含天下无双,需手动点击释放)
+        if (clickedUnit.madaraMaxEnergy && clickedUnit === gameState.selectedUnit) {
+            openMadaraSkillModal(clickedUnit);
             return;
         }
         // 铠大招:双击激活不灭魔躯(冷却结束且未激活时可用)
@@ -4391,35 +4428,7 @@ function attackUnit(target) {
         if (attacker.currentHp <= 0) removeUnit(attacker);
     }
 
-    // 马斑反击:被1格距离攻击时3×3 AoE反伤+燃烧
-    if (target.aoeAttack && !target.madaraCounted) {
-        const atkDist = Math.max(Math.abs(attacker.row - target.row), Math.abs(attacker.col - target.col));
-        if (atkDist <= 3) {
-            // 红色环绕特效
-            showCounterFX(target);
-            gameState.units.forEach(e => {
-                if (e.team === target.team || e.ghost) return;
-                const d = Math.max(Math.abs(e.row - target.row), Math.abs(e.col - target.col));
-                if (d <= 1) {
-                    e.currentHp -= 2;
-                    updateUnitHp(e);
-                    if (e.burnTurns <= 0) e.burnTurns = 3;
-                    updateBurnVisual(e);
-                    if (e.currentHp <= 0) removeUnit(e);
-                }
-            });
-            target.madaraEnergy = Math.min(target.madaraMaxEnergy, (target.madaraEnergy || 0) + 1);
-            renderEnergyBar(target, gameState.board[target.row][target.col].querySelector('.unit'));
-            // 跳向最近敌人 + 重击 + 火柱
-            madaraJumpAndPillar(target);
-        }
-    }
     target.madaraCounted = false;
-
-    // 半血触发(仅典狱长/渡鸦等有此特效的单位)
-    if (target.maxHp && target.currentHp > 0 && target.currentHp <= target.maxHp / 2 && (target.halfHpText || target.halfHpSmoke)) {
-        showHalfHpText(target);
-    }
 
     // 铠双次攻击处理(if 块结束:跳过正常伤害后直接进入)
     }
@@ -4445,29 +4454,11 @@ function attackUnit(target) {
         }
     }
 
-    // 马斑 AoE:攻击范围内所有敌军 + 施加燃烧 + 能量
-    if (attacker.aoeAttack) {
-        skillAttack = true;
-        const aoeR = attacker.attackRange;
-        const forward = attacker.team === 'red' ? -1 : 1;
+    // 马斑:普通攻击为3格内单体;命中敌人积攒能量并施加燃烧
+    if (attacker.madaraMaxEnergy) {
         // 攻击特效:红色箭头
         showMadaraAttackFX(attacker, target);
-        gameState.units.forEach(e => {
-            if (e.id === target.id || e.team === attacker.team) return;
-            if (e.ghost) return;
-            // 前方竖向3格
-            const colSame = e.col === attacker.col;
-            const rowDiff = (e.row - attacker.row) * forward;
-            if (colSame && rowDiff > 0 && rowDiff <= aoeR) {
-                e.currentHp -= Math.max(0, attacker.attack - ((e.armor || 0) - (attacker.armorPen || 0)));
-                updateUnitHp(e);
-                if (e.burnTurns <= 0) e.burnTurns = attacker.madaraBurn;
-                updateBurnVisual(e);
-                if (e.currentHp <= 0) removeUnit(e);
-            }
-        });
-        if (target.burnTurns <= 0) target.burnTurns = attacker.madaraBurn;
-        updateBurnVisual(target);
+        applyMadaraBurn(target);
         if (!attacker.inMusou) {
             attacker.madaraEnergy = Math.min(attacker.madaraMaxEnergy, (attacker.madaraEnergy || 0) + 1);
             renderEnergyBar(attacker, gameState.board[attacker.row][attacker.col].querySelector('.unit'));
@@ -5480,7 +5471,7 @@ function applyMilk(unit) {
 // 技能输出型单位判定:以技能为输出手段的单位被攻击时不反击(佩恩/解斑/超骑/柱间/艾琳/镜/铠/疾风/马斑/电飞龙/导演/吕布等)
 function isSkillOutputUnit(u) {
     return !!(u.painTendo || u.shinraRange || u.madaraSolve || u.superKnight || u.hashirama || u.erin || u.mirror ||
-        u.kaiShurikenRange || u.aoeAttack ||
+        u.kaiShurikenRange || u.aoeAttack || u.madaraMaxEnergy ||
         u.yogg || u.yoggSaron || u.yoggFate || u.lvbu);
 }
 
@@ -7670,7 +7661,6 @@ function guyElephantStomp(guy, target) {
                 if (!target._removing) {
                     target.currentHp -= 2 + bonus;
                     updateUnitHp(target);
-                    showCritText(target.row, target.col, '夕象');
                     if (target.currentHp <= 0) { removeUnit(target); }
                 }
             }
@@ -7687,7 +7677,6 @@ function guyElephantStomp(guy, target) {
                 showGuyBeam(target, d, 'thin');
                 target.currentHp -= 1 + bonus;
                 updateUnitHp(target);
-                showCritText(target.row, target.col, '白光');
                 if (target.currentHp <= 0) removeUnit(target);
             }, d * 350);
         }
@@ -8007,6 +7996,11 @@ function updateUnitHp(unit) {
     if (unit.wither && unit.currentHp <= (unit.maxHp || 8) / 2 && unit.flying) {
         unit.flying = false;
     }
+    // 半血触发(渡鸦/典狱长等):无论普通攻击/技能/法术/秒杀,只要血量越过半血即触发一次
+    if (!unit._halfHpChecked && (unit.halfHpText || unit.halfHpSmoke) && unit.maxHp && unit.currentHp <= unit.maxHp / 2) {
+        unit._halfHpChecked = true;
+        showHalfHpText(unit);
+    }
 }
 
 // 渲染单位
@@ -8102,6 +8096,8 @@ function renderUnit(unit) {
         unitElement.classList.add('zetsu-possessed');
         if (unit.zetsu && unit.zetsu.revealed) unitElement.classList.add('zetsu-revealed');
     }
+    // 陨石包裹期间:该单位对双方都不可见(重渲染时也保持)
+    unitElement.style.visibility = unit._meteorHidden ? 'hidden' : '';
     updateSmokeVisibility();
 }
 
@@ -9101,31 +9097,23 @@ function sasukeUltimateAt(unit, target) {
     setTimeout(() => {
         if (gameState.gameOver) return;
         let enemies = gameState.units.filter(u => u.team !== unit.team && !u.ghost && !u._removing && inPath(u));
+        // 连锁推开:沿途挡路的敌人被一起推到路径末端(建筑/霸体免疫)
         enemies.sort((a, b) => proj(b.row, b.col) - proj(a.row, a.col));
+        const movedSet = new Set();
         enemies.forEach(e => {
-            for (let step = 0; step < 8; step++) {
-                if (proj(e.row, e.col) >= 4) break;
-                const nr = e.row + dirR, nc = e.col + dirC;
-                if (!isValidPosition(nr, nc)) break;
-                if (isBlueBase(nr, nc) || isRedBase(nr, nc)) break;
-                if (proj(nr, nc) > 4) break;
-                if (gameState.units.some(u => u !== e && u.row === nr && u.col === nc)) break;
-                const oldCell = gameState.board[e.row][e.col];
-                const el = oldCell.querySelector('.unit');
-                if (el) { oldCell.removeChild(el); gameState.board[nr][nc].appendChild(el); }
-                e.row = nr; e.col = nc;
+            for (let step = 0; step < 6 && proj(e.row, e.col) < 4; step++) {
+                if (!chainPush(e, dirR, dirC, movedSet)) break;
             }
         });
-        gameState.units.slice().forEach(e => {
-            if (e.team === unit.team || e.ghost || e._removing) return;
-            if (inPath(e)) {
-                for (let i = 0; i < 3 && !e._removing; i++) {
-                    e.currentHp -= 2;
-                    updateUnitHp(e);
-                    if (e.currentHp <= 0) removeUnit(e);
-                }
-                showCritText(e.row, e.col, '贯');
+        // 路径上敌人受3次2伤(以推之前的快照为准)
+        enemies.forEach(e => {
+            if (e._removing || e.ghost) return;
+            for (let i = 0; i < 3 && !e._removing; i++) {
+                e.currentHp -= 2;
+                updateUnitHp(e);
+                if (e.currentHp <= 0) removeUnit(e);
             }
+            showCritText(e.row, e.col, '贯');
         });
         // 箭矢爆炸
         showSasukeBoom(unit, dirR, dirC);
@@ -9877,45 +9865,83 @@ function sendSkillFx(kind, unit, targetRow, targetCol) {
     }
 }
 
-// Pain 技能激活
+// Pain 技能激活(双击 → 弹出技能栏,三个技能可自选释放)
 function activatePainAbility(pain) {
-    // 4格能量释放地爆天星(万象/神罗释放过程中也可触发;能量满即可,不受攻击标记限制--先技能后查克拉补满也能直接地爆)
-    if ((pain.painEnergy || 0) >= (pain.painMaxEnergy || 4)) {
-        chibakuTensei(pain);
-        pain._chibakuBonus = 2;
+    const canChibaku = (pain.painEnergy || 0) >= (pain.painMaxEnergy || 4);
+    const canBansho = !pain._banshoUsed;
+    const canShinra = !pain._shinraUsed && pain.abilityTimer <= 0;
+    if (!canChibaku && !canBansho && !canShinra) {
         clearHighlights();
         gameState.selectedUnit = null;
         return;
     }
-    if (gameState.attackedUnits.has(pain.id) && !pain._chibakuBonus) {
-        clearHighlights();
-        gameState.selectedUnit = null;
-        return;
-    }
+    openPainSkillModal(pain);
+}
 
-    // 一回合两次技能:先万象天引,后神罗天征(地爆天星后同样可再用两次)
-    if (!pain._banshoUsed) {
-        banshoTenin(pain);
-        pain._banshoUsed = true;
-        if (pain._chibakuBonus) pain._chibakuBonus--;
-    } else if (!pain._shinraUsed && pain.abilityTimer <= 0) {
-        shinraTensei(pain);
-        pain._shinraUsed = true;
-        if (pain._chibakuBonus) pain._chibakuBonus--;
-    } else {
-        clearHighlights();
-        gameState.selectedUnit = null;
-        return;
-    }
-    // 万象+神罗都用了且能量不足4(无地爆机会)才标记已攻击
-    if (pain._banshoUsed && pain._shinraUsed && !pain._chibakuBonus && (pain.painEnergy || 0) < 4) {
+function openPainSkillModal(pain) {
+    gameState._painSelected = pain;
+    const b1 = document.getElementById('painSkill1Btn');
+    const b2 = document.getElementById('painSkill2Btn');
+    const b3 = document.getElementById('painSkill3Btn');
+    if (b1) b1.disabled = !!pain._banshoUsed;
+    if (b2) b2.disabled = !!pain._shinraUsed || pain.abilityTimer > 0;
+    if (b3) b3.disabled = (pain.painEnergy || 0) < (pain.painMaxEnergy || 4);
+    const m = document.getElementById('painSkillModal');
+    if (m) m.classList.remove('hidden');
+}
+function closePainSkillModalFunc() {
+    const m = document.getElementById('painSkillModal');
+    if (m) m.classList.add('hidden');
+    gameState._painSelected = null;
+}
+// 使用技能后的收尾(标记已攻击/清高亮/同步)
+function painAfterSkill(pain) {
+    if (pain._banshoUsed && pain._shinraUsed && !pain._chibakuBonus && (pain.painEnergy || 0) < (pain.painMaxEnergy || 4)) {
         gameState.attackedUnits.add(pain.id);
     }
     clearHighlights();
     gameState.selectedUnit = null;
-    // 联机实时同步:技能释放后立即同步(对面实时可见)
     syncOnlineNow();
 }
+function painUseBansho(pain) {
+    closePainSkillModalFunc();
+    if (!pain || pain._banshoUsed) return;
+    banshoTenin(pain);
+    pain._banshoUsed = true;
+    if (pain._chibakuBonus) pain._chibakuBonus--;
+    painAfterSkill(pain);
+}
+function painUseShinra(pain) {
+    closePainSkillModalFunc();
+    if (!pain || pain._shinraUsed || pain.abilityTimer > 0) return;
+    shinraTensei(pain);
+    pain._shinraUsed = true;
+    if (pain._chibakuBonus) pain._chibakuBonus--;
+    painAfterSkill(pain);
+}
+function painUseChibaku(pain) {
+    closePainSkillModalFunc();
+    if (!pain || (pain.painEnergy || 0) < (pain.painMaxEnergy || 4)) return;
+    chibakuTensei(pain);
+    pain._chibakuBonus = 2;
+    clearHighlights();
+    gameState.selectedUnit = null;
+    syncOnlineNow();
+}
+// 技能框按钮绑定
+(function wirePainSkillModal() {
+    const m = document.getElementById('painSkillModal');
+    if (!m) return;
+    const b1 = document.getElementById('painSkill1Btn');
+    const b2 = document.getElementById('painSkill2Btn');
+    const b3 = document.getElementById('painSkill3Btn');
+    const bc = document.getElementById('closePainSkillModal');
+    if (b1) b1.addEventListener('click', () => { const u = gameState._painSelected; if (u) painUseBansho(u); });
+    if (b2) b2.addEventListener('click', () => { const u = gameState._painSelected; if (u) painUseShinra(u); });
+    if (b3) b3.addEventListener('click', () => { const u = gameState._painSelected; if (u) painUseChibaku(u); });
+    if (bc) bc.addEventListener('click', closePainSkillModalFunc);
+    m.addEventListener('click', (e) => { if (e.target === m) closePainSkillModalFunc(); });
+})();
 
 // 神罗天征范围特效(纯视觉,联机重放用——对面看到原版动画)
 function showShinraVisual(row, col, radius) {
@@ -10076,6 +10102,331 @@ function banshoTenin(pain) {
     if (pain._banshoHits > 0) { pain.painEnergy = Math.min(pain.painMaxEnergy, (pain.painEnergy || 0) + 1); renderEnergyBar(pain, gameState.board[pain.row][pain.col].querySelector(".unit")); }
     pain._banshoHits = 0;
 }
+
+// ===== 马斑技能(重做) =====
+// 马斑命中施加燃烧:持续2回合(一己方一敌方),每回合1点真实伤害
+function applyMadaraBurn(u) {
+    if (!u || u._removing || u.ghost) return;
+    u.burnTurns = 2;
+    u.burnDamage = 1;
+    updateBurnVisual(u);
+}
+function openMadaraSkillModal(madara) {
+    gameState._madaraSelected = madara;
+    const attacked = gameState.attackedUnits.has(madara.id);
+    const b1 = document.getElementById('madaraSkill1Btn');
+    const b2 = document.getElementById('madaraSkill2Btn');
+    const b3 = document.getElementById('madaraSkill3Btn');
+    const b4 = document.getElementById('madaraSkill4Btn');
+    const b5 = document.getElementById('madaraSkill5Btn');
+    if (b1) { b1.textContent = attacked ? '乱舞' : '破军'; b1.disabled = !!madara._madaraS1Used; }
+    if (b2) b2.disabled = !(madara._madaraS1Stage2Ready && !madara._madaraS1Stage2Used);
+    if (b3) b3.disabled = !!madara._madaraS2Used;
+    if (b4) b4.disabled = !(madara._madaraAirborne && !madara._madaraStompUsed);
+    if (b5) b5.disabled = (madara.madaraEnergy || 0) < 4 || !!madara.inMusou;
+    const m = document.getElementById('madaraSkillModal');
+    if (m) m.classList.remove('hidden');
+}
+function closeMadaraSkillModalFunc() {
+    const m = document.getElementById('madaraSkillModal');
+    if (m) m.classList.add('hidden');
+    gameState._madaraSelected = null;
+}
+// 一技能:破军(未普攻)/乱舞(本回合先普攻)
+function madaraUseS1(madara) {
+    closeMadaraSkillModalFunc();
+    if (!madara || madara._madaraS1Used) return;
+    if (gameState.attackedUnits.has(madara.id)) {
+        madaraRanbu(madara);
+    } else {
+        madara._madaraDirMode = true;
+        enterMadaraDirMode(madara);
+    }
+}
+function enterMadaraDirMode(madara) {
+    clearHighlights();
+    gameState.selectedUnit = madara;
+    [[-1,0],[1,0],[0,-1],[0,1]].forEach(([dr,dc]) => {
+        for (let k = 1; k <= 3; k++) {
+            const r = madara.row + dr*k, c = madara.col + dc*k;
+            if (isValidPosition(r,c)) gameState.board[r][c].classList.add('pierce-target');
+        }
+    });
+}
+function madaraPoJunCast(madara, dirR, dirC) {
+    madara._madaraDirMode = false;
+    madara._madaraS1Used = true;
+    let hit = false;
+    for (let k = 1; k <= 3; k++) {
+        const r = madara.row + dirR*k, c = madara.col + dirC*k;
+        if (!isValidPosition(r,c)) continue;
+        const u = gameState.units.find(x => x.row === r && x.col === c && x.team !== madara.team && !x.ghost && !x._removing);
+        if (u) {
+            u.currentHp -= 3;
+            updateUnitHp(u);
+            showCritText(u.row, u.col, '破军');
+            applyMadaraBurn(u);
+            if (u.currentHp <= 0) removeUnit(u);
+            hit = true;
+        }
+    }
+    showMadaraPoJunFX(madara, dirR, dirC);
+    if (hit && !madara.inMusou) {
+        madara.madaraEnergy = Math.min(madara.madaraMaxEnergy, (madara.madaraEnergy||0) + 1);
+        renderEnergyBar(madara, gameState.board[madara.row][madara.col].querySelector('.unit'));
+    }
+    clearHighlights();
+    gameState.selectedUnit = null;
+    syncOnlineNow();
+}
+// 乱舞:5×5内每圈对敌人各造成2伤(戟转到目标时才结算,转3圈=3次)
+function madaraRanbu(madara) {
+    madara._madaraS1Used = true;
+    madara._madaraS1Stage2Ready = true;
+    showMadaraRanbuFX(madara);
+    const PERIOD = 700;   // 与CSS每圈时长一致
+    const ROUNDS = 3;
+    let hit = false;
+    const inRange = e => !e._removing && !e.ghost && Math.max(Math.abs(e.row - madara.row), Math.abs(e.col - madara.col)) <= 2;
+    const angleOf = e => {
+        // 角度:0=正上,顺时针;戟是一条线,取 mod 180 即首次掠过的时刻
+        let a = Math.atan2(e.col - madara.col, -(e.row - madara.row)) * 180 / Math.PI;
+        a = ((a % 180) + 180) % 180;
+        return a;
+    };
+    for (let r = 0; r < ROUNDS; r++) {
+        gameState.units.filter(e => e.team !== madara.team && !e.ghost && !e._removing && Math.max(Math.abs(e.row - madara.row), Math.abs(e.col - madara.col)) <= 2)
+            .forEach(e => {
+                const delay = r * PERIOD + (angleOf(e) / 360) * PERIOD;
+                setTimeout(() => {
+                    if (!inRange(e)) return;
+                    e.currentHp -= 2;
+                    updateUnitHp(e);
+                    applyMadaraBurn(e);
+                    showCritText(e.row, e.col, '乱舞');
+                    if (e.currentHp <= 0) removeUnit(e);
+                    hit = true;
+                }, delay);
+            });
+    }
+    setTimeout(() => {
+        if (hit && !madara.inMusou) {
+            madara.madaraEnergy = Math.min(madara.madaraMaxEnergy, (madara.madaraEnergy||0) + 1);
+            renderEnergyBar(madara, gameState.board[madara.row][madara.col].querySelector('.unit'));
+        }
+        clearHighlights();
+        gameState.selectedUnit = null;
+        syncOnlineNow();
+    }, ROUNDS * PERIOD + 120);
+}
+// 乱舞第二段:选4格内敌人 → 跃到其前方 → 火柱3×3 3伤
+function madaraUseStage2(madara) {
+    closeMadaraSkillModalFunc();
+    if (!madara || !madara._madaraS1Stage2Ready || madara._madaraS1Stage2Used) return;
+    madara._madaraStage2Mode = true;
+    gameState.selectedUnit = madara;
+    clearHighlights();
+    gameState.units.forEach(u => {
+        if (u.team === madara.team || u.ghost || u._removing) return;
+        if (Math.max(Math.abs(u.row - madara.row), Math.abs(u.col - madara.col)) <= 4) {
+            gameState.board[u.row][u.col].classList.add('sasuke-ult-target');
+        }
+    });
+}
+function madaraLeapPillar(madara, target) {
+    madara._madaraStage2Mode = false;
+    madara._madaraS1Stage2Used = true;
+    clearHighlights();
+    gameState.selectedUnit = null;
+    const oldCell = gameState.board[madara.row][madara.col];
+    const unitEl = oldCell.querySelector('.unit');
+    for (const [dr,dc] of [[-1,0],[1,0],[0,-1],[0,1]]) {
+        const nr = target.row + dr, nc = target.col + dc;
+        if (!isValidPosition(nr,nc)) continue;
+        if (isBlueBase(nr,nc) || isRedBase(nr,nc)) continue;
+        if (gameState.units.some(u => u.id !== madara.id && u.row === nr && u.col === nc)) continue;
+        madara.row = nr; madara.col = nc;
+        if (unitEl) { oldCell.removeChild(unitEl); gameState.board[nr][nc].appendChild(unitEl); }
+        break;
+    }
+    showFirePillar(target.row, target.col);
+    setTimeout(() => {
+        let hit = false;
+        gameState.units.slice().forEach(e => {
+            if (e.team === madara.team || e.ghost || e._removing) return;
+            if (Math.max(Math.abs(e.row - target.row), Math.abs(e.col - target.col)) <= 1) {
+                e.currentHp -= 3;
+                updateUnitHp(e);
+                applyMadaraBurn(e);
+                if (e.currentHp <= 0) removeUnit(e);
+                hit = true;
+            }
+        });
+        if (hit && !madara.inMusou) {
+            madara.madaraEnergy = Math.min(madara.madaraMaxEnergy, (madara.madaraEnergy||0) + 1);
+            renderEnergyBar(madara, gameState.board[madara.row][madara.col].querySelector('.unit'));
+        }
+        syncOnlineNow();
+    }, 800);
+    syncOnlineNow();
+}
+// 二技能·绝空(第一段):跳起变空中单位
+function madaraJueKong(madara) {
+    closeMadaraSkillModalFunc();
+    if (!madara || madara._madaraS2Used) return;
+    madara._madaraS2Used = true;
+    madara._madaraAirborne = true;
+    madara.flying = true;
+    showMadaraJumpFX(madara);
+    clearHighlights();
+    gameState.selectedUnit = madara;
+    showActionMode(madara);
+    syncOnlineNow();
+}
+// 绝空第二段:选3格内任意格(空格/敌人)为落点 → 落下践踏3×3 2伤
+function madaraUseStomp(madara) {
+    closeMadaraSkillModalFunc();
+    if (!madara || !madara._madaraAirborne || madara._madaraStompUsed) return;
+    madara._madaraStompMode = true;
+    gameState.selectedUnit = madara;
+    clearHighlights();
+    for (let r = madara.row - 3; r <= madara.row + 3; r++) {
+        for (let c = madara.col - 3; c <= madara.col + 3; c++) {
+            if (!isValidPosition(r, c)) continue;
+            if (isBlueBase(r, c) || isRedBase(r, c)) continue;
+            if (Math.max(Math.abs(r - madara.row), Math.abs(c - madara.col)) > 3) continue;
+            gameState.board[r][c].classList.add('pierce-target');
+        }
+    }
+}
+function madaraStomp(madara, land) {
+    madara._madaraStompMode = false;
+    madara._madaraStompUsed = true;
+    madara._madaraAirborne = false;
+    madara.flying = false;
+    clearHighlights();
+    gameState.selectedUnit = null;
+    showMadaraStompFX(land.row, land.col);
+    setTimeout(() => {
+        let hit = false;
+        gameState.units.slice().forEach(e => {
+            if (e.team === madara.team || e.ghost || e._removing) return;
+            if (Math.max(Math.abs(e.row - land.row), Math.abs(e.col - land.col)) <= 1) {
+                e.currentHp -= 2;
+                updateUnitHp(e);
+                if (e.currentHp <= 0) removeUnit(e);
+                hit = true;
+            }
+        });
+        const oldCell = gameState.board[madara.row][madara.col];
+        const unitEl = oldCell.querySelector('.unit');
+        let dest = null;
+        if (!gameState.units.some(u => u.row === land.row && u.col === land.col)) dest = { row: land.row, col: land.col };
+        else {
+            for (const [dr,dc] of [[-1,0],[1,0],[0,-1],[0,1]]) {
+                const nr = land.row+dr, nc = land.col+dc;
+                if (!isValidPosition(nr,nc)) continue;
+                if (isBlueBase(nr,nc) || isRedBase(nr,nc)) continue;
+                if (gameState.units.some(u => u.id !== madara.id && u.row === nr && u.col === nc)) continue;
+                dest = { row: nr, col: nc }; break;
+            }
+        }
+        if (dest && unitEl) {
+            oldCell.removeChild(unitEl);
+            gameState.board[dest.row][dest.col].appendChild(unitEl);
+            madara.row = dest.row; madara.col = dest.col;
+        }
+        if (hit && !madara.inMusou) {
+            madara.madaraEnergy = Math.min(madara.madaraMaxEnergy, (madara.madaraEnergy||0) + 1);
+            renderEnergyBar(madara, gameState.board[madara.row][madara.col].querySelector('.unit'));
+        }
+        syncOnlineNow();
+    }, 500);
+    syncOnlineNow();
+}
+// 视觉:破军戟击
+function showMadaraPoJunFX(madara, dirR, dirC) {
+    const board = document.getElementById('gameBoard');
+    if (!board) return;
+    const el = document.createElement('div');
+    el.className = 'madara-halberd';
+    el.style.position = 'absolute';
+    el.style.zIndex = '44';
+    if (dirR !== 0) {
+        el.style.width = (cellW*0.9) + 'px';
+        el.style.height = (3*cellH) + 'px';
+        el.style.left = (madara.col*cellW + cellW/2 - cellW*0.45) + 'px';
+        el.style.top = ((dirR < 0 ? madara.row-3 : madara.row+1)*cellH) + 'px';
+    } else if (dirC !== 0) {
+        el.style.height = (cellH*0.9) + 'px';
+        el.style.width = (3*cellW) + 'px';
+        el.style.top = (madara.row*cellH + cellH/2 - cellH*0.45) + 'px';
+        el.style.left = ((dirC < 0 ? madara.col-3 : madara.col+1)*cellW) + 'px';
+    }
+    board.appendChild(el);
+    setTimeout(() => el.remove(), 500);
+}
+// 视觉:乱舞红戟环绕三圈
+function showMadaraRanbuFX(madara) {
+    const board = document.getElementById('gameBoard');
+    if (!board) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'madara-ranbu';
+    wrap.style.position = 'absolute';
+    wrap.style.left = (madara.col*cellW + cellW/2) + 'px';
+    wrap.style.top = (madara.row*cellH + cellH/2) + 'px';
+    wrap.style.zIndex = '44';
+    const spin = document.createElement('div');
+    spin.className = 'madara-ranbu-blade';
+    wrap.appendChild(spin);
+    board.appendChild(wrap);
+    setTimeout(() => wrap.remove(), 2300);
+}
+// 视觉:绝空起跳
+function showMadaraJumpFX(madara) {
+    const board = document.getElementById('gameBoard');
+    if (!board) return;
+    const el = document.createElement('div');
+    el.className = 'madara-jump';
+    el.textContent = '绝空';
+    el.style.position = 'absolute';
+    el.style.left = (madara.col*cellW) + 'px';
+    el.style.top = (madara.row*cellH) + 'px';
+    el.style.width = cellW + 'px';
+    el.style.height = cellH + 'px';
+    el.style.zIndex = '45';
+    board.appendChild(el);
+    setTimeout(() => el.remove(), 900);
+}
+// 视觉:践踏
+function showMadaraStompFX(row, col) {
+    const board = document.getElementById('gameBoard');
+    if (!board) return;
+    const el = document.createElement('div');
+    el.className = 'madara-stomp';
+    el.style.position = 'absolute';
+    el.style.left = ((col-1)*cellW) + 'px';
+    el.style.top = ((row-1)*cellH) + 'px';
+    el.style.width = (cellW*3) + 'px';
+    el.style.height = (cellH*3) + 'px';
+    el.style.zIndex = '44';
+    board.appendChild(el);
+    setTimeout(() => el.remove(), 700);
+}
+// 技能框按钮绑定
+(function wireMadaraSkillModal() {
+    const m = document.getElementById('madaraSkillModal');
+    if (!m) return;
+    const g = id => document.getElementById(id);
+    const s = () => gameState._madaraSelected;
+    if (g('madaraSkill1Btn')) g('madaraSkill1Btn').addEventListener('click', () => { const u=s(); if(u) madaraUseS1(u); });
+    if (g('madaraSkill2Btn')) g('madaraSkill2Btn').addEventListener('click', () => { const u=s(); if(u) madaraUseStage2(u); });
+    if (g('madaraSkill3Btn')) g('madaraSkill3Btn').addEventListener('click', () => { const u=s(); if(u) madaraJueKong(u); });
+    if (g('madaraSkill4Btn')) g('madaraSkill4Btn').addEventListener('click', () => { const u=s(); if(u) madaraUseStomp(u); });
+    if (g('madaraSkill5Btn')) g('madaraSkill5Btn').addEventListener('click', () => { const u=s(); closeMadaraSkillModalFunc(); if (u && (u.madaraEnergy||0) >= 4 && !u.inMusou) activateMusou(u); });
+    if (g('closeMadaraSkillModal')) g('closeMadaraSkillModal').addEventListener('click', closeMadaraSkillModalFunc);
+    m.addEventListener('click', (e) => { if (e.target === m) closeMadaraSkillModalFunc(); });
+})();
 
 // 马斑天下无双
 function activateMusou(madara) {
@@ -10597,39 +10948,121 @@ function showCounterFX(madara) {
 
 // 陨石
 function showMeteorButton(u) {
-    // 找最近敌人
-    const enemies = gameState.units.filter(e => e.team !== u.team);
-    let target = u, minDist = Infinity;
-    enemies.forEach(e => {
-        const d = Math.max(Math.abs(e.row - u.row), Math.abs(e.col - u.col));
-        if (d < minDist) { target = e; minDist = d; }
-    });
-
-    showCritText(target.row, target.col, '陨石');
     const board = document.getElementById('gameBoard');
-    const cellSize = cellW, radius = 2;
-    const meteor = document.createElement('div');
-    meteor.className = 'meteor';
-    meteor.style.left = ((target.col - radius) * cellSize) + 'px';
-    meteor.style.top = '-120px';
-    meteor.style.width = ((radius * 2 + 1) * cellSize) + 'px';
-    meteor.style.height = ((radius * 2 + 1) * cellSize) + 'px';
-    board.appendChild(meteor);
-    setTimeout(() => {
-        meteor.style.top = ((target.row - radius) * cellSize) + 'px';
-    }, 50);
-    setTimeout(() => { meteor.remove(); }, 900);
-    setTimeout(() => {
-        gameState.units.forEach(e => {
-            if (e.team === u.team) return;
-            const d = Math.max(Math.abs(e.row - target.row), Math.abs(e.col - target.col));
-            if (d <= 2) {
-                e.currentHp -= 4;
-                updateUnitHp(e);
-                if (e.currentHp <= 0) removeUnit(e);
-            }
+    if (!board) return;
+    const centerRow = u.row, centerCol = u.col, radius = 2;
+    const RISE = 110;
+    const RISE_MS = 2000;
+    const wrapSet = gameState.units.filter(e => e.team !== u.team && !e.ghost && !e._removing &&
+        Math.max(Math.abs(e.row - centerRow), Math.abs(e.col - centerCol)) <= radius);
+    const elOf = it => {
+        const cell = gameState.board[it.row] ? gameState.board[it.row][it.col] : null;
+        return cell ? cell.querySelector(`.unit[data-unit-id="${it.id}"]`) : null;
+    };
+    const lift = (on, durMs) => {
+        [u, ...wrapSet].forEach(it => {
+            const el = elOf(it);
+            if (el) { el.style.transition = `transform ${durMs}ms ease-in-out`; el.style.transform = on ? `translate(-50%, calc(-50% - ${RISE}px))` : ''; }
         });
-    }, 1000);
+    };
+    // 陨石包裹罩
+    const wrapEl = document.createElement('div');
+    wrapEl.className = 'meteor-wrap';
+    wrapEl.style.position = 'absolute';
+    wrapEl.style.left = ((centerCol - radius) * cellW) + 'px';
+    wrapEl.style.top = ((centerRow - radius) * cellH) + 'px';
+    wrapEl.style.width = (5 * cellW) + 'px';
+    wrapEl.style.height = (5 * cellH) + 'px';
+    board.appendChild(wrapEl);
+    // ① 包裹:1伤 + 双方都看不到被包裹的单位(标记,重渲染也保持)
+    wrapSet.forEach(e => { e._meteorHidden = true; const el = elOf(e); if (el) el.style.visibility = 'hidden'; });
+    wrapSet.forEach(e => { e.currentHp -= 1; updateUnitHp(e); if (e.currentHp <= 0) removeUnit(e); });
+    // ② 上升到空中(2秒):2伤
+    setTimeout(() => {
+        lift(true, RISE_MS);
+        wrapEl.style.transition = `top ${RISE_MS}ms ease-out`;
+        wrapEl.style.top = ((centerRow - radius) * cellH - RISE) + 'px';
+        wrapSet.forEach(e => { if (e._removing) return; e.currentHp -= 2; updateUnitHp(e); if (e.currentHp <= 0) removeUnit(e); });
+    }, 700);
+    // ③ 蓝色循环呼吸特效(浅、范围大,上升过程中)
+    setTimeout(() => {
+        const aura = document.createElement('div');
+        aura.className = 'madara-blue-aura';
+        aura.style.position = 'absolute';
+        aura.style.left = (centerCol * cellW + cellW / 2 - 4.5 * cellW) + 'px';
+        aura.style.top = (centerRow * cellH + cellH / 2 - 4.5 * cellH) + 'px';
+        aura.style.width = (9 * cellW) + 'px';
+        aura.style.height = (9 * cellH) + 'px';
+        board.appendChild(aura);
+        setTimeout(() => aura.remove(), 2400);
+    }, 1800);
+    // ④ 蓝色大戟(头朝下)插入陨石:插进去的部分被裁掉,2伤
+    setTimeout(() => {
+        const meteorTopY = (centerRow - radius) * cellH - RISE;
+        const clipWin = document.createElement('div');
+        clipWin.style.position = 'absolute';
+        clipWin.style.left = (centerCol * cellW + cellW / 2 - 10) + 'px';
+        clipWin.style.top = '0px';
+        clipWin.style.width = '20px';
+        clipWin.style.height = Math.max(0, meteorTopY) + 'px';
+        clipWin.style.overflow = 'hidden';
+        clipWin.style.zIndex = '46';
+        clipWin.style.pointerEvents = 'none';
+        board.appendChild(clipWin);
+        const hal = document.createElement('div');
+        hal.className = 'madara-blue-halberd';
+        hal.style.position = 'absolute';
+        hal.style.left = '5px';
+        hal.style.width = '10px';
+        hal.style.height = '260px';
+        hal.style.top = (meteorTopY - 40 - 260) + 'px'; // 戟尖在陨石上方 40px
+        hal.style.transition = 'top 0.6s ease-in';
+        clipWin.appendChild(hal);
+        void hal.offsetWidth;
+        hal.style.top = (meteorTopY + 70 - 260) + 'px'; // 戟尖没入陨石 70px(被裁掉)
+        setTimeout(() => clipWin.remove(), 1300);
+        // 戟插入时给陨石添加裂痕(从插入点向下发散)
+        const crackEl = document.createElement('div');
+        crackEl.className = 'meteor-crack';
+        for (let i = 0; i < 6; i++) {
+            const line = document.createElement('div');
+            line.className = 'meteor-crack-line';
+            line.style.height = (26 + i * 5) + '%';
+            line.style.transform = 'rotate(' + (-70 + i * 28) + 'deg)';
+            crackEl.appendChild(line);
+        }
+        wrapEl.appendChild(crackEl);
+        wrapSet.forEach(e => { if (e._removing) return; e.currentHp -= 2; updateUnitHp(e); if (e.currentHp <= 0) removeUnit(e); });
+    }, 2900);
+    // ⑤ 一起坠落
+    setTimeout(() => {
+        lift(false, 900);
+        wrapEl.style.transition = 'top 0.9s ease-in';
+        wrapEl.style.top = ((centerRow - radius) * cellH) + 'px';
+    }, 3900);
+    // ⑥ 坠地:3次×2伤 + 恢复可见
+    setTimeout(() => {
+        wrapEl.classList.add('meteor-boom');
+        setTimeout(() => wrapEl.remove(), 700);
+        for (let i = 0; i < 3; i++) {
+            setTimeout(() => {
+                wrapSet.forEach(e => {
+                    if (e._removing || e.ghost) return;
+                    e.currentHp -= 2;
+                    updateUnitHp(e);
+                    if (e.currentHp <= 0) removeUnit(e);
+                });
+            }, i * 260);
+        }
+        wrapSet.forEach(e => {
+            e._meteorHidden = false;
+            if (e._removing) return;
+            const el = elOf(e);
+            if (el) { el.style.visibility = ''; el.style.transition = ''; el.style.transform = ''; }
+        });
+        const uel = elOf(u);
+        if (uel) { uel.style.transition = ''; uel.style.transform = ''; }
+    }, 4800);
 }
 
 // 铠大招:不灭魔躯
@@ -10669,19 +11102,20 @@ function deploySmoke(centerRow, centerCol, radius, team) {
     gameState.smokeZones.push({ row: centerRow, col: centerCol, radius: radius, team: team, turns: 3 });
 }
 
-// 更新烟雾中单位的可见性
+// 更新烟雾中单位的可见性(烟幕归属方可见全部单位,对方看不到任何单位)
 function updateSmokeVisibility() {
+    const viewTeam = (gameState.onlineMode && typeof onlineTeam !== 'undefined' && onlineTeam) ? onlineTeam : gameState.currentTurn;
     gameState.units.forEach(unit => {
-        const cell = gameState.board[unit.row][unit.col];
+        const cell = gameState.board[unit.row] ? gameState.board[unit.row][unit.col] : null;
+        if (!cell) return;
         const covers = cell.querySelectorAll('.smoke-cover');
         const unitEl = cell.querySelector(`.unit[data-unit-id="${unit.id}"]`);
         if (!unitEl) return;
-        // 如果烟雾是敌方放的,自己的兵应可见(z-index > cover)
-        let hidden = false;
-        covers.forEach(cv => {
-            if (cv.dataset.smokeTeam === unit.team) hidden = true;
-        });
-        unitEl.style.zIndex = hidden ? '10' : '20';
+        if (covers.length === 0) { unitEl.style.zIndex = '10'; return; }
+        // 当前视角能看到:自身(或所属队)放的烟幕内的单位;敌方烟幕内的单位看不到
+        let visible = false;
+        covers.forEach(cv => { if (cv.dataset.smokeTeam === viewTeam) visible = true; });
+        unitEl.style.zIndex = visible ? '20' : '10';
     });
 }
 
@@ -11051,8 +11485,8 @@ function endTurn() {
     gameState.selectedUnit = null;
     gameState.deployMode = false;
     // 回合结束:关闭所有技能弹窗/清空选中(防对方回合残留误操作)
-    ['deepBlueSkillModal','lvbuSkillModal','yoggSkillModal','guySkillModal','shangboleSkillModal','sasukeSkillModal'].forEach(id => { const m = document.getElementById(id); if (m) m.classList.add('hidden'); });
-    gameState._deepBlueSelected = null; gameState._lvbuSelected = null; gameState._guySelected = null; gameState._yoggSelected = null; gameState._shangboleSelected = null; gameState._sasukeSelected = null;
+    ['deepBlueSkillModal','lvbuSkillModal','yoggSkillModal','guySkillModal','shangboleSkillModal','sasukeSkillModal','painSkillModal','madaraSkillModal'].forEach(id => { const m = document.getElementById(id); if (m) m.classList.add('hidden'); });
+    gameState._deepBlueSelected = null; gameState._lvbuSelected = null; gameState._guySelected = null; gameState._yoggSelected = null; gameState._shangboleSelected = null; gameState._sasukeSelected = null; gameState._painSelected = null; gameState._madaraSelected = null;
     // 战车:结束回合重置锁定模式
     gameState.units.forEach(u => { u._targeting = false; u._witherTargeting = false; u._witherCharged = false; u._zetsuSkillUsed = false; u._zetsuTargeting = false; u._sasukeUltTargeting = false; u._sasukeFlameStage = 0; });
 
@@ -11419,6 +11853,17 @@ function endTurn() {
     });
 
     gameState.units.forEach(u => { u.kaiAttacks = 0; u.kaiShurikenDone = false; u.electricHit = []; u._banshoUsed = false; u._shinraUsed = false; u._chibakuBonus = 0; });
+    // 马斑:技能次数重置 / 空中落地
+    gameState.units.forEach(u => {
+        if (!u.madaraMaxEnergy) return;
+        if (u.team === prevTurn) {
+            u._madaraS1Used = false; u._madaraS1Stage2Ready = false; u._madaraS1Stage2Used = false;
+            u._madaraS2Used = false; u._madaraStompUsed = false;
+            u._madaraDirMode = false; u._madaraStage2Mode = false; u._madaraStompMode = false;
+        } else if (u._madaraAirborne) {
+            u._madaraAirborne = false; u.flying = false;
+        }
+    });
     gameState.units.forEach(u => { if (u.tankSpawn) { u.demuBonusAttacks = 0; u.demuAttacksUsed = 0; u._demuDamaged = false; u._demuTankBonus = false; } });
 
     // 铠大招冷却递减
@@ -12073,7 +12518,7 @@ function startGame() {
     gameState._guySelected = null;
     gameState.abilityPhase = 0;
     // 关闭所有弹窗(防残留)
-    ['deployModal','spellModal','deepBlueSkillModal','lvbuSkillModal','yoggSkillModal','guySkillModal','shangboleSkillModal'].forEach(id => { const m = document.getElementById(id); if (m) m.classList.add('hidden'); });
+    ['deployModal','spellModal','deepBlueSkillModal','lvbuSkillModal','yoggSkillModal','guySkillModal','shangboleSkillModal','sasukeSkillModal','painSkillModal','madaraSkillModal'].forEach(id => { const m = document.getElementById(id); if (m) m.classList.add('hidden'); });
 
     // 后手补偿:蓝方(后手)拥有能量卡标记(0费,整局一次,+1能量)——不污染卡组,红方(先手)永远看不到
     gameState._blueEnergyCardLeft = gameState.maxEnergy < 500;

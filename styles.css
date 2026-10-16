@@ -707,6 +707,27 @@ h1 {
 .card-artwork.art-prince_guard::after { content: '护卫'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #f1c40f; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 3px rgba(0,0,0,0.55); }
 /* 皇家护卫冲锋特效(从王子身后1格冲到落点) */
 .guard-charge { z-index: 42; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; color: #f1c40f; background: rgba(241,196,15,0.18); border: 1px solid rgba(241,196,15,0.75); border-radius: 4px; box-shadow: 0 0 8px rgba(241,196,15,0.85); pointer-events: none; }
+/* 马斑技能特效 */
+.madara-halberd { background: linear-gradient(90deg, rgba(231,76,60,0.95), rgba(192,57,43,0.9)); border-radius: 6px; box-shadow: 0 0 12px rgba(231,76,60,0.9); pointer-events: none; animation: madaraHalberdFade 0.5s ease-out; }
+@keyframes madaraHalberdFade { 0% { opacity: 0.3; } 100% { opacity: 1; } }
+.madara-ranbu { width: 0; height: 0; pointer-events: none; }
+.madara-ranbu-blade { position: absolute; left: -3px; top: -62px; width: 6px; height: 124px; background: linear-gradient(180deg, rgba(231,76,60,1), rgba(150,20,20,0.9)); border-radius: 4px; box-shadow: 0 0 12px rgba(231,76,60,0.95); transform-origin: 50% 50%; animation: madaraSpin 0.7s linear 3; }
+@keyframes madaraSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.madara-jump { display: flex; align-items: center; justify-content: center; color: #e74c3c; font-size: 12px; font-weight: 900; background: rgba(231,76,60,0.25); border-radius: 50%; border: 1px solid rgba(231,76,60,0.8); box-shadow: 0 0 12px rgba(231,76,60,0.8); pointer-events: none; animation: madaraHalberdFade 0.3s ease-out; }
+.madara-stomp { background: radial-gradient(circle, rgba(231,76,60,0.5), rgba(231,76,60,0.05)); border-radius: 50%; pointer-events: none; animation: madaraStompAnim 0.7s ease-out forwards; }
+@keyframes madaraStompAnim { 0% { transform: scale(0.4); opacity: 1; } 100% { transform: scale(1.1); opacity: 0; } }
+/* 马斑奥义陨石 */
+.meteor-wrap { z-index: 5; pointer-events: none; border-radius: 50%; background: radial-gradient(circle, rgba(90,70,50,0.5), rgba(40,28,22,0.72)); box-shadow: inset 0 0 40px rgba(0,0,0,0.6), 0 0 30px rgba(70,50,35,0.85); border: 2px solid rgba(130,100,70,0.85); animation: meteorWrapIn 0.4s ease-out; }
+@keyframes meteorWrapIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.meteor-boom { animation: meteorBoom 0.7s ease-out forwards; }
+@keyframes meteorBoom { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.25); opacity: 0; } }
+.meteor-crack { position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; border-radius: 50%; animation: crackIn 0.3s ease-out; }
+@keyframes crackIn { from { opacity: 0; } to { opacity: 1; } }
+.meteor-crack-line { position: absolute; left: 50%; top: 0; width: 2px; background: linear-gradient(180deg, rgba(255,80,80,0.98), rgba(200,20,20,0.15)); transform-origin: top center; box-shadow: 0 0 6px rgba(255,60,60,0.95); }
+.madara-blue-aura { z-index: 29; pointer-events: none; border-radius: 50%; background: radial-gradient(circle, rgba(80,160,255,0.18), rgba(80,160,255,0.04)); box-shadow: 0 0 30px rgba(80,160,255,0.5), inset 0 0 30px rgba(80,160,255,0.3); animation: blueBreath 1.5s ease-in-out infinite; }
+@keyframes blueBreath { 0%,100% { opacity: 0.45; transform: scale(0.96); } 50% { opacity: 0.75; transform: scale(1.04); } }
+.madara-blue-halberd { z-index: 46; pointer-events: none; background: linear-gradient(180deg, rgba(90,170,255,1), rgba(40,90,200,0.95)); border-radius: 5px; box-shadow: 0 0 16px rgba(90,170,255,0.95); }
+.madara-blue-halberd::after { content: ''; position: absolute; left: -6px; bottom: -16px; border-left: 11px solid transparent; border-right: 11px solid transparent; border-top: 16px solid rgba(90,170,255,1); }
 .art-heal_fairy::after { content: '奶豆'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #f1c40f; font-size: 14px; font-weight: 900; line-height: 1; white-space: nowrap; }
 .art-super_knight::after { content: '超骑'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #000; font-size: 14px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 5px rgba(155,89,182,0.95), 0 0 10px rgba(155,89,182,0.75); }
 
