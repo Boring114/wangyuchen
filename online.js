@@ -1,4 +1,4 @@
-// 联机对战客户端
+﻿// 联机对战客户端
 // 服务器地址自动推导：页面和 WebSocket 由同一个服务器/隧道提供
 const ONLINE_SERVER = (() => {
     const qs = new URLSearchParams(location.search);
@@ -143,6 +143,7 @@ function tryConnect(cb) {
             if (onlineTeam === 'blue') {
                 // 蓝方接收红方状态并合并
                 gameState.units = gs.units.map(u => ({...u, team: u.team === 'red' ? 'red' : 'blue'}));
+                applyMirrorFromSync(gs);
                 gameState.redBaseHp = gs.redBaseHp;
                 gameState.blueBaseHp = gs.blueBaseHp;
                 gameState.redEnergy = gs.redEnergy;
@@ -157,6 +158,7 @@ function tryConnect(cb) {
                 gameState.iceFields = gs.iceFields || [];
                 gameState.windZones = gs.windZones || [];
                 gameState.fireZones = gs.fireZones || [];
+                gameState.stormDomains = gs.stormDomains || [];
                 gameState.erinRings = gs.erinRings || [];
                 if (typeof renderErinRings === "function") renderErinRings();
                 gameState.sasukeFlames = gs.sasukeFlames || [];
@@ -179,6 +181,7 @@ function tryConnect(cb) {
                 if (typeof renderIceFields === 'function') renderIceFields();
                 if (typeof renderWindZones === 'function') renderWindZones();
                 if (typeof renderFireZones === 'function') renderFireZones();
+                if (typeof renderStormDomains === 'function') renderStormDomains();
                 gameState.units.forEach(u => { if (u._susanooActive && typeof renderSusanooVisual === 'function') renderSusanooVisual(u); });
                 gameState.units.forEach(u => { if (u._infernoLaserTarget && typeof showInfernoLaser === 'function') { const tar = gameState.units.find(x => x.id === u._infernoLaserTarget); if (tar) showInfernoLaser(u, tar); } });
                 gameState.units.forEach(u => { if (u.poisonTurns > 0 && typeof updatePoisonVisual === 'function') updatePoisonVisual(u); if (u.treeBound && typeof updateTreeVisual === 'function') updateTreeVisual(u); });
@@ -187,6 +190,7 @@ function tryConnect(cb) {
             } else {
                 // 红方接收蓝方状态(蓝方回合结束后回合流转回红方)
                 gameState.units = gs.units.map(u => ({...u}));
+                applyMirrorFromSync(gs);
                 gameState.redBaseHp = gs.redBaseHp;
                 gameState.blueBaseHp = gs.blueBaseHp;
                 gameState.redEnergy = gs.redEnergy;
@@ -201,6 +205,7 @@ function tryConnect(cb) {
                 gameState.iceFields = gs.iceFields || [];
                 gameState.windZones = gs.windZones || [];
                 gameState.fireZones = gs.fireZones || [];
+                gameState.stormDomains = gs.stormDomains || [];
                 gameState.erinRings = gs.erinRings || [];
                 if (typeof renderErinRings === "function") renderErinRings();
                 gameState.sasukeFlames = gs.sasukeFlames || [];
@@ -223,6 +228,7 @@ function tryConnect(cb) {
                 if (typeof renderIceFields === 'function') renderIceFields();
                 if (typeof renderWindZones === 'function') renderWindZones();
                 if (typeof renderFireZones === 'function') renderFireZones();
+                if (typeof renderStormDomains === 'function') renderStormDomains();
                 gameState.units.forEach(u => { if (u._susanooActive && typeof renderSusanooVisual === 'function') renderSusanooVisual(u); });
                 gameState.units.forEach(u => { if (u._infernoLaserTarget && typeof showInfernoLaser === 'function') { const tar = gameState.units.find(x => x.id === u._infernoLaserTarget); if (tar) showInfernoLaser(u, tar); } });
                 gameState.units.forEach(u => { if (u.poisonTurns > 0 && typeof updatePoisonVisual === 'function') updatePoisonVisual(u); if (u.treeBound && typeof updateTreeVisual === 'function') updateTreeVisual(u); });
@@ -311,6 +317,9 @@ function playSkillFx(fx) {
             case 'halfHpText': if (typeof showHalfHpText === 'function') showHalfHpText(u); break;
             case 'lightning': if (typeof showLightningStrike === 'function') showLightningStrike(t); else showSkillFlashFx(fx.toR, fx.toC, '#f1c40f', 45); break;
             case 'firePillar': if (typeof showFirePillar === 'function') showFirePillar(fx.toR, fx.toC); else showSkillFlashFx(fx.toR, fx.toC, '#e74c3c', 45); break;
+            case 'stormClaw': if (typeof showStormCracks === 'function') showStormCracks(fx.row, fx.col); else showSkillFlashFx(fx.row, fx.col, '#5aa9ff', 55); break;
+            case 'stormBreath': if (typeof showStormDomain === 'function') showStormDomain({ id: 'rx_' + Date.now(), row: fx.row, col: fx.col, team: fx.team }); else showSkillFlashFx(fx.row, fx.col, '#5aa9ff', 60); break;
+            case 'hurricane': if (typeof showHurricaneFx === 'function') showHurricaneFx(fx.toR, fx.toC); else showSkillFlashFx(fx.toR, fx.toC, '#7ec8ff', 60); break;
             case 'zepBomb': if (typeof showZepBombFx === 'function') showZepBombFx(fx.toR, fx.toC); else showSkillFlashFx(fx.toR, fx.toC, '#ff9800', 45); break;
             case 'zepFire': if (typeof showZepFireFx === 'function') showZepFireFx(fx.toR, fx.toC); else showSkillFlashFx(fx.toR, fx.toC, '#ff5722', 55); break;
             case 'zepDarts': if (typeof showZepDartsFx === 'function') showZepDartsFx(fx.row, fx.col); else showSkillFlashFx(fx.row, fx.col, '#cfd8dc', 45); break;
@@ -414,12 +423,48 @@ function showOnlineAttackFx(r1, c1, r2, c2) {
 }
 
 // 每次操作后同步状态(单位完整对象,含属性/技能字段,确保对方渲染正常)
+function applyMirrorFromSync(gs) {
+    if (gs.mirror && gs.mirror.active) {
+        const prevLocal = gameState.mirror && gameState.mirror.localView;
+        gameState.mirror = Object.assign({}, gs.mirror, { localView: prevLocal || gs.mirror.view || 'mirror' });
+        const lv = gameState.mirror.localView;
+        const src = lv === 'mirror' ? gs.mirror.mirrorUnits : gs.mirror.realUnits;
+        if (src) gameState.units = src.map(u => ({...u}));
+        document.body.classList.toggle('mirror-view', lv === 'mirror');
+        const tb = document.getElementById('mirrorToggleBtn');
+        if (tb) { tb.classList.remove('hidden'); tb.textContent = lv === 'mirror' ? '切换到现实世界' : '切换到镜像世界'; }
+    } else {
+        gameState.mirror = null;
+        document.body.classList.remove('mirror-view');
+        const tb = document.getElementById('mirrorToggleBtn');
+        if (tb) tb.classList.add('hidden');
+    }
+}
+
 function syncGameState() {
     if (!gameState.onlineMode || !ws || ws.readyState !== 1) return;
+    // 镜像期间只有发起方负责同步,观战方不回传
+    if (gameState.mirror && gameState.mirror.active && typeof onlineTeam !== 'undefined' && onlineTeam !== gameState.mirror.team) return;
+    // 镜像世界:同时同步镜像/现实两套单位,供对方切换查看
+    let unitsForSend = gameState.units.map(u => ({...u}));
+    let mirrorPayload = null;
+    if (gameState.mirror && gameState.mirror.active) {
+        const m = gameState.mirror;
+        if ((m.localView || m.view) === 'mirror') m.mirrorUnits = JSON.parse(JSON.stringify(gameState.units));
+        else m.realUnits = JSON.parse(JSON.stringify(gameState.units));
+        const lv = m.localView || m.view;
+        unitsForSend = (lv === 'mirror' ? m.mirrorUnits : m.realUnits).map(u => ({...u}));
+        mirrorPayload = {
+            active: true, ownerId: m.ownerId, team: m.team, cameraId: m.cameraId,
+            view: m.view, turnsLeft: m.turnsLeft, savedBaseHp: m.savedBaseHp,
+            mirrorUnits: m.mirrorUnits, realUnits: m.realUnits
+        };
+    }
     ws.send(JSON.stringify({
         type: 'gameState',
         state: JSON.stringify({
-            units: gameState.units.map(u => ({...u})),
+            units: unitsForSend,
+            mirror: mirrorPayload,
             redBaseHp: gameState.redBaseHp,
             blueBaseHp: gameState.blueBaseHp,
             redEnergy: gameState.redEnergy,
@@ -435,6 +480,7 @@ function syncGameState() {
             iceFields: gameState.iceFields || [],
             windZones: gameState.windZones || [],
             fireZones: gameState.fireZones || [],
+            stormDomains: gameState.stormDomains || [],
             erinRings: gameState.erinRings || [],
             sasukeFlames: gameState.sasukeFlames || [],
             beeSmokes: gameState.beeSmokes || []

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>棋盘游戏</title>
-    <link rel="stylesheet" href="styles.css?v=28">
+    <link rel="stylesheet" href="styles.css?v=42">
 </head>
 <body>
     <!-- 初始界面 -->
@@ -362,6 +362,23 @@
         </div>
     </div>
 
+    <div id="stormDragonModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>风暴龙王 · 技能</h3>
+            <button id="stormSkill1Btn" class="skill-btn">怒爪</button>
+            <button id="stormSkill2Btn" class="skill-btn">风暴吐息</button>
+            <button id="closeStormDragonModal" class="close-btn">关闭</button>
+        </div>
+    </div>
+
+    <div id="josephModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>约瑟夫 · 技能</h3>
+            <button id="josephMirrorBtn" class="skill-btn">进入镜像世界</button>
+            <button id="closeJosephModal" class="close-btn">关闭</button>
+        </div>
+    </div>
+
     <!-- 游戏结束弹窗 -->
     <div id="gameOverModal" class="modal hidden">
         <div class="modal-content">
@@ -370,9 +387,10 @@
         </div>
     </div>
 
-    <script src="game.js?v=35"></script>
-    <script src="online.js?v=10"></script>
-    <script src="music.js?v=12"></script>
+        <button id="mirrorToggleBtn" class="mirror-toggle-btn hidden">切换到现实世界</button>
+<script src="game.js?v=74"></script>
+    <script src="online.js?v=13"></script>
+    <script src="music.js?v=15"></script>
     <script src="sfx.js?v=4"></script>
 </body>
 </html>

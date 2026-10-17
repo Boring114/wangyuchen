@@ -1,7 +1,7 @@
 ﻿// 背景音乐:主界面/卡包 与 对局内 双轨切换(平滑交叉淡入淡出,旧曲必定停止)
 (function () {
     const tracks = {
-        menu: new Audio('audio/bgm_menu3.wav'),
+        menu: new Audio('audio/bgm_menu6.wav'),
         battle: new Audio('audio/bgm_battle2.wav')
     };
     const volumes = { menu: 0.30, battle: 0.35 };

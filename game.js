@@ -2,6 +2,7 @@
 const BOARD_COLS = 24;
 
 // 卡牌数据
+const CORDELIUS_SHADOW_TAG = true;
 const cardLibrary = [
     {
         id: 'normal_person',
@@ -875,7 +876,7 @@ const cardLibrary = [
         armor: 0,
         moveRange: 4,
         attackRange: 2,
-        cost: 4,
+        cost: 3,
         artwork: 'fisherman',
         fisherman: true,
         description: '双击使用技能:用船锚把11格内一个敌方单位拉到自己前方一格(不能拉建筑/飞行单位),使用后还能普通攻击一次。'
@@ -1421,6 +1422,93 @@ const cardLibrary = [
         witch: true,
         splashRadius: 1,
         description: '攻击附带3×3溅射。每个己方回合开始时,在上下左右各召唤1个骷髅(攻1/血1/攻距1/移动9)。召唤的骷髅死亡时,女巫回复2点生命,可超过上限最多6点。'
+    },
+    {
+        id: 'princess',
+        name: '觉醒公主',
+        attack: 2,
+        hp: 3,
+        armor: 0,
+        moveRange: 2,
+        attackRange: 12,
+        cost: 3,
+        artwork: 'princess',
+        rarity: 'purple',
+        princess: true,
+        splashRadius: 1,
+        description: '攻击附带3×3溅射,并冰冻范围内敌人1个敌方回合。每隔一个己方回合才能攻击一次。'
+    },
+    {
+        id: 'hurricane',
+        name: '飓风法术',
+        attack: 0,
+        hp: 0,
+        armor: 0,
+        moveRange: 0,
+        attackRange: 0,
+        cost: 5,
+        artwork: 'hurricane',
+        rarity: 'green',
+        spell: true,
+        hurricane: true,
+        description: '法术卡·全图释放。以选中格为中心7×7,敌人受1伤并被吸向中心(1.5秒)。冰冻敌人可被吸引;霸体与被树缠绕的敌人免疫吸引。可对空。'
+    },
+    {
+        id: 'storm_dragon',
+        name: '风暴龙王',
+        attack: 2,
+        hp: 30,
+        armor: 1,
+        moveRange: 2,
+        attackRange: 2,
+        cost: 20,
+        artwork: 'storm_dragon',
+        rarity: 'rainbow',
+        rainbow: true,
+        stormDragon: true,
+        description: '彩卡。双击技能栏:怒爪(5×5三伤)/风暴吐息(5×5三波2伤,领域持续到敌方回合结束再劈两轮,技能冷却1回合)。被攻击时使攻击者禁疗50%。阵亡时全体友军获得25%最大生命护盾与雷电之力(4格内敌人每回合1点雷伤)。'
+    },
+    {
+        id: 'joseph',
+        name: '约瑟夫',
+        attack: 0,
+        hp: 6,
+        armor: 0,
+        moveRange: 3,
+        attackRange: 2,
+        cost: 14,
+        artwork: 'joseph',
+        rarity: 'gold',
+        joseph: true,
+        description: '金卡。普通攻击造成目标最大生命值75%的真实伤害,不可对空。登场时在前方3格生成1个摄像机(最多4个,不可摧毁/移动)。双击摄像机拍照;双击约瑟夫可进入照片中的镜像世界。镜像内只有约瑟夫能动,其他单位不能行动/反击;镜像内击杀的敌人在现实世界损失50%最大生命。镜像持续4个半回合,结束后照片消失。'
+    },
+    {
+        id: 'cordelius',
+        name: '科迪琉斯',
+        attack: 4,
+        hp: 6,
+        armor: 0,
+        armorPen: 1,
+        moveRange: 4,
+        attackRange: 5,
+        cost: 8,
+        artwork: 'cordelius',
+        rarity: 'purple',
+        cordelius: true,
+        description: '可对空。双击技能:选6格内一个敌方单位(建筑除外)一起进入暗影世界。暗影中蘑菇+3血/+2攻/+4移动;敌人-2血/-1攻/-2移动(最低1血不致死)。暗影持续4个半回合,任一方死亡或时间到即结束。'
+    },
+    {
+        id: 'little_seed',
+        name: '小种子',
+        attack: 0,
+        hp: 3,
+        armor: 0,
+        moveRange: 0,
+        attackRange: 0,
+        cost: 2,
+        artwork: 'seed',
+        seed: true,
+        description: '不可移动。部署后的下一个己方回合,随机变成卡包中的任意一张非法术卡牌(不会变成小种子)。'
     }
 ];
 
@@ -1706,6 +1794,11 @@ counterBurn: card.counterBurn || false,
         supernovaGiant: card.supernovaGiant || false,
         zeppelin: card.zeppelin || false,
         witch: card.witch || false,
+        princess: card.princess || false,
+        joseph: card.joseph || false,
+        cordelius: card.cordelius || false,
+        seed: card.seed || false,
+        stormDragon: card.stormDragon || false,
         eliteKnight: card.eliteKnight || false,
         fisherman: card.fisherman || false,
         spell: card.spell || false,
@@ -1808,7 +1901,7 @@ function handleCellClick(e) {
     if (gameState.aiMode && gameState.currentTurn === 'blue') return;
 
     // 技能框打开时点击棋盘:关闭技能框并忽略本次点击(避免误触部署弹窗)
-    const skillModals = ['deepBlueSkillModal', 'lvbuSkillModal', 'yoggSkillModal', 'guySkillModal', 'shangboleSkillModal', 'sasukeSkillModal', 'painSkillModal', 'madaraSkillModal', 'beeMedicModal', 'zeppelinModal', 'hashiramaModal'];
+    const skillModals = ['deepBlueSkillModal', 'lvbuSkillModal', 'yoggSkillModal', 'guySkillModal', 'shangboleSkillModal', 'sasukeSkillModal', 'painSkillModal', 'madaraSkillModal', 'beeMedicModal', 'zeppelinModal', 'hashiramaModal', 'stormDragonModal', 'josephModal'];
     for (const id of skillModals) {
         const m = document.getElementById(id);
         if (m && !m.classList.contains('hidden')) {
@@ -1822,6 +1915,7 @@ function handleCellClick(e) {
             else if (id === 'madaraSkillModal') closeMadaraSkillModalFunc();
             else if (id === 'beeMedicModal') closeBeeMedicSkillModalFunc();
             else if (id === 'zeppelinModal') closeZeppelinSkillModalFunc();
+            else if (id === 'josephModal') closeJosephModal();
             return;
         }
     }
@@ -2087,7 +2181,7 @@ function handleCellClick(e) {
     // 蜂医 激素枪:选4格内单位(敌我均可)
     if (gameState.selectedUnit && gameState.selectedUnit.beeMedic && gameState.selectedUnit._beeHormoneMode) {
         const md = gameState.selectedUnit;
-        const tu = gameState.units.find(u => u.row === row && u.col === col && u.id !== md.id && !u.ghost && !u._removing);
+        const tu = gameState.units.find(u => u.row === row && u.col === col && !u.ghost && !u._removing);
         md._beeHormoneMode = false;
         if (tu && cell.classList.contains('sasuke-ult-target')) beeHormoneShoot(md, tu);
         else { clearHighlights(); gameState.selectedUnit = null; }
@@ -2120,6 +2214,15 @@ function handleCellClick(e) {
         }
         zp._zepFireMode = false;
         if (cell.classList.contains('pierce-target')) zepDropFire(zp, row, col);
+        else { clearHighlights(); gameState.selectedUnit = null; }
+        return;
+    }
+    // 科迪琉斯 暗影世界:选6格内敌人
+    if (gameState.selectedUnit && gameState.selectedUnit.cordelius && gameState.selectedUnit._shadowMode) {
+        const cu = gameState.selectedUnit;
+        const te = gameState.units.find(u => u.row === row && u.col === col && u.team !== cu.team && !u.ghost && !u._removing && !u.building);
+        cu._shadowMode = false;
+        if (te && cell.classList.contains('sasuke-ult-target')) startShadowWorld(cu, te);
         else { clearHighlights(); gameState.selectedUnit = null; }
         return;
     }
@@ -2456,7 +2559,16 @@ if (gameState._viralTargeting) {
         // 联机实时同步:攻击后立即同步(对面实时看到血量变化)
         syncOnlineNow();
         clearHighlights();
-        gameState.selectedUnit = null;
+        // 攻击后若还有移动力,保留选中,方便直接点地板移动(击杀单位后也不会卡住)
+        const atkUnit = gameState.selectedUnit;
+        const moveLeft = atkUnit ? ((atkUnit.moveRange || 0) - (gameState.moveUsed[atkUnit.id] || 0) - (atkUnit._hashiSlow || 0)) : 0;
+        if (atkUnit && gameState.units.includes(atkUnit) && !atkUnit._removing && atkUnit.currentHp > 0 &&
+            moveLeft > 0 && !atkUnit.frozen && !atkUnit.stunned && !atkUnit.treeBound) {
+            gameState.selectedUnit = atkUnit;
+            showActionMode(atkUnit);
+        } else {
+            gameState.selectedUnit = null;
+        }
         return;
     }
 
@@ -2608,6 +2720,21 @@ if (gameState._viralTargeting) {
         // 千手柱间:双击打开技能栏(木人/树界/火之意志)
         if (clickedUnit.hashirama && clickedUnit === gameState.selectedUnit) {
             openHashiramaSkillModal(clickedUnit);
+            return;
+        }
+        // 风暴龙王:双击打开技能栏
+        if (clickedUnit.stormDragon && clickedUnit === gameState.selectedUnit) {
+            openStormDragonModal(clickedUnit);
+            return;
+        }
+        // 约瑟夫:双击打开技能栏(进入镜像)
+        if (clickedUnit.joseph && clickedUnit === gameState.selectedUnit) {
+            openJosephModal(clickedUnit);
+            return;
+        }
+        // 科迪琉斯:双击进入暗影选敌
+        if (clickedUnit.cordelius && clickedUnit === gameState.selectedUnit) {
+            cordeliusShadowMode(clickedUnit);
             return;
         }
         // 镜:双击开启镜像法阵(4格内有敌人)
@@ -2814,6 +2941,15 @@ function canActNow() {
 function showActionMode(unit) {
     // 单击选中时:棋盘右侧显示卡牌信息框(统一兜底,覆盖所有选中路径)
     showUnitInfo(unit, true);
+    if (gameState.mirror && gameState.mirror.active && (gameState.mirror.localView || gameState.mirror.view) === 'mirror') {
+        if (gameState.currentTurn !== gameState.mirror.team) return;
+        if (gameState.onlineMode && typeof onlineTeam !== 'undefined' && onlineTeam !== gameState.mirror.team) return;
+        if (!unit.joseph) return;
+    }
+    if (gameState.shadow && gameState.shadow.active && (gameState.shadow.localView || gameState.shadow.view) === 'shadow') {
+        if (gameState.currentTurn !== gameState.shadow.team) return;
+        if (!unit.cordelius) return;
+    }
     // 冰冻/定身无法行动
     if (unit.frozen || unit.stunned) return;
     // 被击倒:本回合无法行动(敌方回合结束才站起)
@@ -2859,6 +2995,8 @@ function showActionMode(unit) {
     // 显示可攻击目标(尤格萨隆:三个技能用完才能普攻)
     if (unit.yogg && ((unit._yoggSkill1Used||0) + (unit._yoggSkill2Used||0) + (unit._yoggSkill3Used||0) < 3)) {
         // 技能未用完:不显示攻击
+    } else if (unit.princess && (unit._princessCd || 0) > 0) {
+        // 觉醒公主:蓄力回合不显示攻击范围
     } else if (!gameState.attackedUnits.has(unit.id) || (unit.tankSpawn && (unit.demuAttacksUsed||0) < (unit.demuBonusAttacks||0)) || (unit.erin && (unit.erinSkillActive ? (unit.erinSkillAttacks||0) > 0 : (unit.erinAttacksUsed||0) < 2)) || (unit.blowdart && (unit.blowdartAttacksUsed||0) < 2) || (unit.prince && (unit._princeAttacks||0) < princeMaxAttacks(unit))) {
         // 铠飞镖攻击时使用飞镖射程
         if (unit.kaiShurikenRange && unit.kaiAttacks >= 1) {
@@ -2921,7 +3059,7 @@ function showMovableRange(unit) {
 // 对空判定:飞行单位恒可对空;白名单含植物人(骷髅军团不在白名单,不能对空)
 function canHitAirUnit(unit) {
     if (unit.flying) return true;
-    return ['musketeer','saeed','warden_gherros','cattail','electric_pea','reynolds','reynolds_jackson','pain_tendo','lightning_dragon','asala_flamer','gale','demulan','hashirama','doom_shroom','crazy_cannon','yogg','yogg_saron','yogg_fate','guy_death_gate','pierce','deep_blue','shangbole','inferno_tower','ice_sprite','leisi','erin','blowdart_goblin','tesla','heal_fairy','prince','little_snowflake','ice_shooter','bee_medic','eagle_artillery'].includes(unit.cardId);
+    return ['musketeer','saeed','warden_gherros','cattail','electric_pea','reynolds','reynolds_jackson','pain_tendo','lightning_dragon','asala_flamer','gale','demulan','hashirama','doom_shroom','crazy_cannon','yogg','yogg_saron','yogg_fate','guy_death_gate','pierce','deep_blue','shangbole','inferno_tower','ice_sprite','leisi','erin','blowdart_goblin','tesla','heal_fairy','prince','little_snowflake','ice_shooter','bee_medic','eagle_artillery','cordelius'].includes(unit.cardId);
 }
 
 // 显示可攻击目标
@@ -2984,7 +3122,7 @@ function showAttackableTargets(unit) {
                     if (unit.royalGiant && targetUnit && !targetUnit.building) continue;
                     // 气球兵:只能攻击建筑单位
                     if (unit.balloon && targetUnit && !targetUnit.building) continue;
-                    if (targetUnit && targetUnit.team !== unit.team && !targetUnit.ghost && !targetUnit.teslaHidden) {
+                    if (targetUnit && targetUnit.team !== unit.team && !targetUnit.ghost && !targetUnit.teslaHidden && !targetUnit.camera) {
                         // 空军只能被特定兵种攻击
                         if (targetUnit.flying) {
                             if (!canHitAirUnit(unit)) continue;
@@ -3910,12 +4048,11 @@ function deployUnit(row, col) {
 
     if (!card) return;
 
-    // 齐柏林飞艇:打出后进入3回合冷却(下两个己方回合不可再下)
-    if (card.zeppelin) {
-        if (!gameState._zepCd) gameState._zepCd = { red: 0, blue: 0 };
-        const zepCd = gameState._zepCd[gameState.currentTurn] || 0;
-        if (zepCd > 0) {
-            alert('齐柏林飞艇冷却中，还需 ' + zepCd + ' 个己方回合');
+    // 彩卡冷却:每张卡独立计算(齐柏林3回合 / 风暴龙王4回合)
+    if (card.zeppelin || card.stormDragon) {
+        const cdLeft = card._cd || 0;
+        if (cdLeft > 0) {
+            alert((card.name || '彩卡') + '冷却中，还需 ' + cdLeft + ' 个己方回合');
             closeDeployModalFunc();
             return;
         }
@@ -4009,6 +4146,8 @@ function deployUnit(row, col) {
     // 混乱触须:消耗一次免费次数
     if (card.chaosTentacle && gameState._freeTentacles > 0) gameState._freeTentacles--;
     gameState.units.push(unit);
+    if (unit.joseph) { unit.armorPen = 999; spawnJosephCamera(unit); }
+    if (unit.seed) unit._seedArmed = true;
     // 部署到火场:立即附着燃烧(齐柏林亡语火场只烧敌方)
     if (typeof checkFireZoneBurn === 'function') checkFireZoneBurn(unit);
 
@@ -4022,10 +4161,8 @@ function deployUnit(row, col) {
     }
     // 累计能量消耗:天鹰火炮开启条件(敌方花费40能量)
     gameState.energySpent[gameState.currentTurn] = (gameState.energySpent[gameState.currentTurn] || 0) + cardCost;
-    if (card.zeppelin) {
-        if (!gameState._zepCd) gameState._zepCd = { red: 0, blue: 0 };
-        gameState._zepCd[gameState.currentTurn] = 3;
-    }
+    if (card.zeppelin) card._cd = 3;
+    if (card.stormDragon) card._cd = 4;
     checkEagleArtillery();
     // 导演部署后:法术减费机制回归原价(重新从20起算)
     if (card.yogg) gameState.spellsCastThisGame = 0;
@@ -4070,8 +4207,17 @@ function deployUnit(row, col) {
 // 移动单位
 function moveUnit(row, col) {
     if (!gameState.selectedUnit) return;
+    if (gameState.mirror && gameState.mirror.active && (gameState.mirror.localView || gameState.mirror.view) === 'mirror') {
+        if (gameState.currentTurn !== gameState.mirror.team) return;
+        if (gameState.onlineMode && typeof onlineTeam !== 'undefined' && onlineTeam !== gameState.mirror.team) return;
+        if (!gameState.selectedUnit.joseph) return;
+    }
 
     const unit = gameState.selectedUnit;
+    if (gameState.shadow && gameState.shadow.active && (gameState.shadow.localView || gameState.shadow.view) === 'shadow') {
+        if (gameState.currentTurn !== gameState.shadow.team) return;
+        if (!unit.cordelius) return;
+    }
     // 被巡视者咬住:无法移动
     if (unit.grabbed) {
         clearHighlights();
@@ -4217,6 +4363,24 @@ function attackUnit(target) {
 
     const attacker = gameState.selectedUnit;
     let lastDamage = 0;
+    // 摄像机不可被攻击;镜像世界只有约瑟夫能行动
+    if (!target || target.camera) return;
+    if (gameState.shadow && gameState.shadow.active && (gameState.shadow.localView || gameState.shadow.view) === 'shadow') {
+        if (gameState.currentTurn !== gameState.shadow.team) return;
+        if (!attacker.cordelius) return;
+    }
+    if (gameState.mirror && gameState.mirror.active && (gameState.mirror.localView || gameState.mirror.view) === 'mirror') {
+        if (gameState.currentTurn !== gameState.mirror.team) return;
+        if (gameState.onlineMode && typeof onlineTeam !== 'undefined' && onlineTeam !== gameState.mirror.team) return;
+        if (!attacker.joseph) return;
+    }
+    // 觉醒公主:每隔一个己方回合才能攻击
+    if (attacker.princess && (attacker._princessCd || 0) > 0) {
+        showHeroDeployText(attacker, '蓄力中', '#a55bff', 900);
+        clearHighlights();
+        gameState.selectedUnit = null;
+        return;
+    }
     // 建筑失效(齐柏林高爆炸弹):本回合无法攻击
     if ((attacker._disabledTurns || 0) > 0) {
         showHeroDeployText(attacker, '失效中', '#888888', 900);
@@ -4452,6 +4616,10 @@ function attackUnit(target) {
         sasukeDashSlash(attacker, target);
         damage = 0;
     } else
+    // 约瑟夫:目标最大生命 75% 真实伤害
+    if (attacker.joseph) {
+        damage = Math.round((target.maxHp || 1) * 0.75);
+    } else
     // 百分比攻击
     if (attacker.percentAttack) {
         // 第一击扣一半(向上取整),确保两击必杀
@@ -4596,6 +4764,11 @@ function attackUnit(target) {
         }
     }
     // 骷髅大哥护盾:抵挡一次攻击(任何伤害,抵挡后护盾消失)
+    // 风暴龙王:攻击者禁疗50%(2个己方回合)
+    if (target.stormDragon && actualDamage > 0) {
+        attacker._healReduceTurns = Math.max(attacker._healReduceTurns || 0, 2);
+        showCritText(attacker.row, attacker.col, '禁疗');
+    }
     if (target.skullBoss && target.skullShield && actualDamage > 0) {
         target.skullShield = false;
         actualDamage = 0;
@@ -4796,6 +4969,10 @@ function attackUnit(target) {
     } else if (attacker.hashirama) {
         // 柱间:每回合一次普通攻击
         gameState.attackedUnits.add(attacker.id);
+    } else if (attacker.princess) {
+        // 觉醒公主:攻击后进入蓄力,下个己方回合不能攻击
+        attacker._princessCd = 2;
+        gameState.attackedUnits.add(attacker.id);
     } else if (attacker.galeSkillActive) {
         // 疾风紧急回避装置:期间每回合可攻击2次(第一次不标记)
         skillAttack = true;
@@ -4920,9 +5097,7 @@ function attackUnit(target) {
 
     // 觉醒大皮卡:击杀敌人回复3生命(可超上限,最多超过6点)
     if (target.currentHp <= 0 && attacker.pekkaHeal && !target.galeSkillActive && !target.galeAnchor) {
-        attacker.currentHp = Math.min((attacker.maxHp || 8) + 6, (attacker.currentHp || 0) + 3);
-        updateUnitHp(attacker);
-        showCritText(attacker.row, attacker.col, '回复');
+        healUnit(attacker, 3, 6, true);
     }
 
     // 大雪怪:每受1伤召唤冰雪精灵
@@ -5028,6 +5203,17 @@ function attackUnit(target) {
     if (attacker.splashRadius) {
         applySplashDamage(target, attacker);
     }
+    // 觉醒公主:3×3 范围内敌人冰冻1个敌方回合
+    if (attacker.princess) {
+        gameState.units.forEach(u => {
+            if (u.team === attacker.team || u.ghost || u._removing || u.frozen) return;
+            if (Math.max(Math.abs(u.row - target.row), Math.abs(u.col - target.col)) > 1) return;
+            if (isImmuneToFreeze(u)) return;
+            u.frozen = true;
+            updateFrozenVisual(u);
+            showCritText(u.row, u.col, '冰冻');
+        });
+    }
 
     // 凋零:命中附加黑色毒(每回合1伤,不可叠加)
     if (attacker.wither) {
@@ -5047,6 +5233,11 @@ function attackUnit(target) {
         showCritText(target.row, target.col, '火焰');
     }
 
+    // 攻击者被反击致死/移除时,清掉残留选中,避免选中已死单位导致操作卡住
+    if (gameState.selectedUnit && (gameState.selectedUnit._removing || gameState.selectedUnit.currentHp <= 0 || !gameState.units.includes(gameState.selectedUnit))) {
+        gameState.selectedUnit = null;
+        clearHighlights();
+    }
     // 检查游戏结束
     checkGameOver();
 }
@@ -5408,6 +5599,7 @@ clearHighlights();
 gameState.selectedUnit = null;
 return;
 }
+if (card.hurricane) { castHurricane(card, row, col); return; }
 if (card.rage) { castRageSpell(card, row, col); return; }
     if (card.log) { castLogSpell(card, row, col); return; }
     if (card.leftover) {
@@ -5476,6 +5668,8 @@ if (card.rage) { castRageSpell(card, row, col); return; }
     if (card.bigLightning) { castBigLightning(card, row, col); return; }
     // 兜底:能量卡绝不能被当火球(即使前面分支漏判)
     if (card.blueEnergyCard) { gameState.battleDeck = gameState.battleDeck.filter(c => c.id !== 'blue_energy_card'); clearHighlights(); gameState.selectedUnit = null; return; }
+    // 兜底安全检查:只有大火球走火球逻辑,其它未识别法术不再误放火球
+    if (card.id !== 'fireball') { clearHighlights(); gameState.selectedUnit = null; return; }
     // 火球法术
     const r = card.spellRadius || 1;
     // 联机:火球法术特效同步
@@ -5775,6 +5969,7 @@ function hasBasicAttack(u) {
 // 通用反击:敌方单位被普通攻击命中后,若攻击者在敌方攻击范围内则反击一次
 // 规则:被攻击方为技能输出型/阴兵不反击;敌方一回合最多反击同一攻击者1次;即使致命伤害也先反击再死亡
 function triggerCounter(attacker, target) {
+    if (gameState.mirror && gameState.mirror.active) return;
     if (target._removing) return;
     if (attacker._removing || attacker.currentHp <= 0) return;
     if (target.ghost || isSkillOutputUnit(target)) return;
@@ -5848,9 +6043,7 @@ function triggerCounter(attacker, target) {
             if (attacker.currentHp <= 0) {
                 // 反击击杀:觉醒大皮卡也能回血(可超上限,最多超过6点)
                 if (target.pekkaHeal) {
-                    target.currentHp = Math.min((target.maxHp || 8) + 6, (target.currentHp || 0) + 3);
-                    updateUnitHp(target);
-                    showCritText(target.row, target.col, '回复');
+                    healUnit(target, 3, 6, true);
                 }
                 removeUnit(attacker);
             }
@@ -6832,7 +7025,7 @@ function castHealSpell(card, row, col) {
     gameState.units.forEach(u => {
         if (u.team !== team || u._removing) return; // 友方增益可生效(魔法护盾只免疫敌方法术)
         if (Math.max(Math.abs(u.row - row), Math.abs(u.col - col)) <= r) {
-            const healed = Math.min(card.healAmount || 3, Math.max(0, u.maxHp - u.currentHp));
+            const healed = healUnit(u, card.healAmount || 3, 0, false);
             if (healed > 0) {
                 u.currentHp += healed;
                 updateUnitHp(u);
@@ -8143,7 +8336,29 @@ if (unit._stoneWallProtect) {
 }
 // 防重复移除/递归死循环(导弹/爆炸/连锁移除时同一单位只处理一次)
 if (unit._removing) return;
+// 摄像机不可被摧毁
+if (unit.camera) return;
 unit._removing = true;
+// 暗影世界单位死亡:立即结束暗影世界
+if (gameState.shadow && gameState.shadow.active && unit._shadowClone) {
+    const sh = gameState.shadow;
+    sh.result = (unit.id === sh.ownerId) ? 'enemy' : 'mushroom';
+    const sc = gameState.board[unit.row] && gameState.board[unit.row][unit.col];
+    const sel = sc ? sc.querySelector('.unit') : null;
+    if (sel) sel.remove();
+    gameState.units = gameState.units.filter(x => x !== unit);
+    setTimeout(() => exitShadowWorld(), 500);
+    return;
+}
+// 镜像世界单位死亡:现实世界对应单位损失50%最大生命
+if (gameState.mirror && gameState.mirror.active && unit._mirrorClone) {
+    mirrorRealDamage(unit);
+    const mc = gameState.board[unit.row] && gameState.board[unit.row][unit.col];
+    const mel = mc ? mc.querySelector('.unit') : null;
+    if (mel) mel.remove();
+    gameState.units = gameState.units.filter(x => x !== unit);
+    return;
+}
 // 冰川菇:死亡时冰冻全屏敌方1回合并造成1点伤害(双击自毁时已标记不重复)
 if (unit.glacierShroom && !unit._glacierBurst) {
     unit._glacierBurst = true;
@@ -8153,9 +8368,7 @@ if (unit.glacierShroom && !unit._glacierBurst) {
 if (unit.skeleton && unit.summonerId) {
     const w = gameState.units.find(x => x.id === unit.summonerId && !x._removing && x.currentHp > 0);
     if (w) {
-        w.currentHp = Math.min(w.maxHp + 6, w.currentHp + 2);
-        updateUnitHp(w);
-        showCritText(w.row, w.col, '回复');
+        healUnit(w, 2, 6, true);
     }
 }
 // 记录阵亡单位(供蜂医"专业救援"复活)
@@ -8183,6 +8396,10 @@ if (unit.balloon && !unit._balloonExploded) {
             if (e.currentHp <= 0) removeUnit(e);
         }
     });
+}
+// 风暴龙王:亡语为全体友军提供护盾与雷电之力
+if (unit.stormDragon) {
+    stormDragonDeath(unit);
 }
 // 齐柏林飞艇:亡语大爆炸(5×5单位10伤+火场3回合)
 if (unit.zeppelin) {
@@ -8379,18 +8596,20 @@ function renderUnit(unit) {
         unitElement.appendChild(cntEl);
     }
 
-    // 添加血量条(使用独立类名,避免被通用 .hp-bar 的 150px 宽样式影响)
-    const hpBar = document.createElement('div');
-    hpBar.className = 'unit-hp-bar';
-    const hpFill = document.createElement('div');
-    hpFill.className = 'unit-hp-fill';
-    hpFill.style.width = `${Math.max(0, (unit.currentHp / unit.maxHp) * 100)}%`;
-    const hpPct = (unit.currentHp / unit.maxHp) * 100;
-    if (hpPct < 25) hpFill.style.background = '#e74c3c';
-    else if (hpPct < 50) hpFill.style.background = '#f39c12';
-    else hpFill.style.background = '#27ae60';
-    hpBar.appendChild(hpFill);
-    unitElement.appendChild(hpBar);
+    // 摄像机没有血量显示;其他单位正常显示血条
+    if (!unit.camera) {
+        const hpBar = document.createElement('div');
+        hpBar.className = 'unit-hp-bar';
+        const hpFill = document.createElement('div');
+        hpFill.className = 'unit-hp-fill';
+        hpFill.style.width = `${Math.max(0, (unit.currentHp / unit.maxHp) * 100)}%`;
+        const hpPct = (unit.currentHp / unit.maxHp) * 100;
+        if (hpPct < 25) hpFill.style.background = '#e74c3c';
+        else if (hpPct < 50) hpFill.style.background = '#f39c12';
+        else hpFill.style.background = '#27ae60';
+        hpBar.appendChild(hpFill);
+        unitElement.appendChild(hpBar);
+    }
 
     // 标记已攻击的单位
     if (gameState.attackedUnits.has(unit.id)) {
@@ -8429,6 +8648,7 @@ function renderUnit(unit) {
     if (unit._magicShield) unitElement.classList.add('magic-shield');
     if (unit.teslaHidden) unitElement.classList.add('tesla-hidden');
     if (unit.skeleton) unitElement.classList.add('skeleton-glow');
+    if (unit.stormPower) unitElement.classList.add('storm-power');
     if (unit.superKnight) unitElement.classList.add('awakened');
     if (unit.madaraSolve && unit._susanooActive) renderSusanooVisual(unit);
     if (unit.sasuke && unit._sasukeSusanoo) unitElement.classList.add('sasuke-susanoo');
@@ -11578,14 +11798,14 @@ function beeHormoneMode(medic) {
     gameState.selectedUnit = medic;
     clearHighlights();
     gameState.units.forEach(u => {
-        if (u.id === medic.id || u.ghost || u._removing) return;
+        if (u.ghost || u._removing) return;
         if (Math.max(Math.abs(u.row - medic.row), Math.abs(u.col - medic.col)) <= 4) {
             gameState.board[u.row][u.col].classList.add('sasuke-ult-target');
         }
     });
 }
 function beeApplyHormone(u) {
-    u.currentHp = Math.min(u.maxHp, u.currentHp + 3);
+    healUnit(u, 3, 0, false);
     u._regenTurns = 3;
     u._regenAmount = 1;
     updateUnitHp(u);
@@ -11896,7 +12116,7 @@ function openZeppelinSkillModal(zep) {
 function closeZeppelinSkillModalFunc() {
     const m = document.getElementById('zeppelinModal');
     if (m) m.classList.add('hidden');
-    gameState._zepSelected = null; gameState._hashiSelected = null;
+    gameState._zepSelected = null; gameState._hashiSelected = null; gameState._stormSelected = null;
 }
 
 function zepHighlightBuildings(zep) {
@@ -12169,7 +12389,7 @@ function openHashiramaSkillModal(u) {
 function closeHashiramaSkillModalFunc() {
     const m = document.getElementById('hashiramaModal');
     if (m) m.classList.add('hidden');
-    gameState._hashiSelected = null;
+    gameState._hashiSelected = null; gameState._stormSelected = null;
 }
 
 // 柱间技能命中回能(每次技能最多+1)
@@ -12454,6 +12674,695 @@ function witchSummonSkeletons(witch) {
     }
 }
 
+// ===== 飓风法术 =====
+function showHurricaneFx(row, col) {
+    const board = document.getElementById('gameBoard');
+    if (!board) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'hurricane-fx';
+    wrap.style.left = ((col - 3) * cellW) + 'px';
+    wrap.style.top = ((row - 3) * cellH) + 'px';
+    wrap.style.width = (7 * cellW) + 'px';
+    wrap.style.height = (7 * cellH) + 'px';
+    for (let i = 0; i < 4; i++) {
+        const ring = document.createElement('div');
+        ring.className = 'hurricane-ring';
+        ring.style.animationDelay = (i * 0.18) + 's';
+        wrap.appendChild(ring);
+    }
+    board.appendChild(wrap);
+    setTimeout(() => wrap.remove(), 1700);
+}
+
+function castHurricane(card, row, col) {
+    sendSkillFx('hurricane', null, row, col);
+    showHurricaneFx(row, col);
+    const enemies = gameState.units.filter(u => {
+        if (u.team === gameState.currentTurn || u.ghost || u._removing) return false;
+        return Math.max(Math.abs(u.row - row), Math.abs(u.col - col)) <= 3;
+    });
+    // 范围伤害 1 点(可对空)
+    enemies.slice().forEach(u => {
+        u.currentHp -= 1;
+        updateUnitHp(u);
+        if (u.currentHp <= 0) removeUnit(u);
+    });
+    // 吸引:冰冻可被吸,霸体/树缠免疫
+    const movable = enemies.filter(u => !u._removing && u.currentHp > 0 && !isImmuneToKnockback(u) && !u.treeBound);
+    const occupied = new Set();
+    gameState.units.forEach(u => {
+        if (u._removing) return;
+        if (movable.includes(u)) return;
+        occupied.add(u.row + ',' + u.col);
+    });
+    movable.sort((a, b) => {
+        const da = Math.max(Math.abs(a.row - row), Math.abs(a.col - col));
+        const db = Math.max(Math.abs(b.row - row), Math.abs(b.col - col));
+        return da - db;
+    });
+    movable.forEach(u => {
+        let r = u.row, c = u.col, guard = 0;
+        while ((r !== row || c !== col) && guard++ < 12) {
+            const dr = Math.sign(row - r), dc = Math.sign(col - c);
+            const cands = [];
+            if (dr && dc) cands.push([r + dr, c + dc]);
+            if (dr) cands.push([r + dr, c]);
+            if (dc) cands.push([r, c + dc]);
+            let moved = false;
+            for (const [nr, nc] of cands) {
+                if (!isValidPosition(nr, nc)) continue;
+                if (isBlueBase(nr, nc) || isRedBase(nr, nc)) continue;
+                if (occupied.has(nr + ',' + nc)) continue;
+                r = nr; c = nc; moved = true;
+                break;
+            }
+            if (!moved) break;
+        }
+        if (r !== u.row || c !== u.col) {
+            occupied.add(r + ',' + c);
+            animateUnitPush(u, { row: r, col: c }, 0, 1500);
+        } else {
+            occupied.add(r + ',' + c);
+        }
+    });
+    clearHighlights();
+    gameState.selectedUnit = null;
+    setTimeout(() => { if (typeof syncOnlineNow === 'function') syncOnlineNow(); }, 1600);
+}
+
+// ===== 风暴龙王 =====
+function healUnit(unit, amount, maxExtra, showText) {
+    if (!unit || unit._removing || unit.currentHp <= 0) return 0;
+    let amt = amount;
+    if ((unit._healReduceTurns || 0) > 0) amt = Math.floor(amount * 0.5);
+    const cap = (unit.maxHp || 1) + (maxExtra || 0);
+    const before = unit.currentHp;
+    unit.currentHp = Math.min(cap, unit.currentHp + amt);
+    const healed = unit.currentHp - before;
+    if (healed > 0) {
+        updateUnitHp(unit);
+        if (showText) showCritText(unit.row, unit.col, '回复');
+    }
+    return healed;
+}
+
+function openStormDragonModal(u) {
+    gameState._stormSelected = u;
+    const b1 = document.getElementById('stormSkill1Btn');
+    const b2 = document.getElementById('stormSkill2Btn');
+    if (b1) b1.disabled = !!u._stormS1Used;
+    if (b2) {
+        b2.disabled = !!u._stormS2Used || (u._stormS2Cd || 0) > 0;
+        b2.textContent = (u._stormS2Cd || 0) > 0 ? '风暴吐息（冷却中）' : '风暴吐息';
+    }
+    const m = document.getElementById('stormDragonModal');
+    if (m) m.classList.remove('hidden');
+}
+function closeStormDragonModalFunc() {
+    const m = document.getElementById('stormDragonModal');
+    if (m) m.classList.add('hidden');
+    gameState._stormSelected = null;
+}
+
+function showStormCracks(row, col) {
+    const board = document.getElementById('gameBoard');
+    if (!board) return;
+    const w = 5 * cellW, h = 5 * cellH;
+    const wrap = document.createElement('div');
+    wrap.className = 'storm-crack-wrap';
+    wrap.style.left = ((col - 2) * cellW) + 'px';
+    wrap.style.top = ((row - 2) * cellH) + 'px';
+    wrap.style.width = w + 'px';
+    wrap.style.height = h + 'px';
+    const cx = w / 2, cy = h / 2;
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(svgNS, 'svg');
+    svg.setAttribute('class', 'storm-crack-svg');
+    svg.setAttribute('width', w);
+    svg.setAttribute('height', h);
+    svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+    const rand = (a, b) => a + Math.random() * (b - a);
+    for (let i = 0; i < 9; i++) {
+        const ang = (i * 40 + rand(-7, 7)) * Math.PI / 180;
+        const len = rand(cellW * 1.6, cellW * 2.6);
+        let d = 'M' + cx.toFixed(1) + ',' + cy.toFixed(1);
+        const segs = 4;
+        for (let s2 = 1; s2 <= segs; s2++) {
+            const px = cx + Math.cos(ang) * len * (s2 / segs);
+            const py = cy + Math.sin(ang) * len * (s2 / segs);
+            const perp = ang + Math.PI / 2;
+            const jitter = rand(-4.5, 4.5);
+            const x = px + Math.cos(perp) * jitter;
+            const y = py + Math.sin(perp) * jitter;
+            d += ' L' + x.toFixed(1) + ',' + y.toFixed(1);
+        }
+        const path = document.createElementNS(svgNS, 'path');
+        path.setAttribute('d', d);
+        path.setAttribute('class', 'storm-crack-path');
+        path.dataset.i = i;
+        svg.appendChild(path);
+        // 分叉:从裂缝中段再裂出一小段
+        const midX = cx + Math.cos(ang) * len * 0.55;
+        const midY = cy + Math.sin(ang) * len * 0.55;
+        const bang = ang + (Math.random() > 0.5 ? rand(0.35, 0.7) : rand(-0.7, -0.35));
+        const blen = len * rand(0.25, 0.45);
+        const bd = 'M' + midX.toFixed(1) + ',' + midY.toFixed(1) + ' L' + (midX + Math.cos(bang) * blen).toFixed(1) + ',' + (midY + Math.sin(bang) * blen).toFixed(1);
+        const bp = document.createElementNS(svgNS, 'path');
+        bp.setAttribute('d', bd);
+        bp.setAttribute('class', 'storm-crack-path storm-crack-branch');
+        bp.dataset.i = i;
+        svg.appendChild(bp);
+    }
+    wrap.appendChild(svg);
+    board.appendChild(wrap);
+    // 从龙王处一节一节向外延伸:按虚线偏移逐段画出
+    [...svg.querySelectorAll('path')].forEach(p => {
+        const idx = parseInt(p.dataset.i || '0', 10);
+        const isBranch = p.classList.contains('storm-crack-branch');
+        let len = 0;
+        try { len = p.getTotalLength(); } catch (e) { len = 80; }
+        p.style.strokeDasharray = len;
+        p.style.strokeDashoffset = len;
+        p.style.setProperty('--len', len);
+        const delay = idx * 0.018 + (isBranch ? 0.09 : 0);
+        p.style.animation = 'stormCrackDraw ' + (isBranch ? 0.1 : 0.18) + 's linear ' + delay + 's forwards';
+    });
+    setTimeout(() => wrap.remove(), 2100);
+}
+
+function stormClaw(u) {
+    closeStormDragonModalFunc();
+    if (!u || u._stormS1Used) return;
+    u._stormS1Used = true;
+    sendSkillFx('stormClaw', u);
+    showStormCracks(u.row, u.col);
+    gameState.units.slice().forEach(e => {
+        if (e.team === u.team || e.ghost || e._removing) return;
+        if (Math.max(Math.abs(e.row - u.row), Math.abs(e.col - u.col)) <= 2) {
+            let dmg = 3;
+            if (e._shieldHp > 0) {
+                const absorbed = Math.min(e._shieldHp, dmg);
+                e._shieldHp -= absorbed;
+                dmg -= absorbed;
+                if (e._shieldHp <= 0) { const el = gameState.board[e.row][e.col].querySelector('.unit'); if (el) el.classList.remove('guard-shield'); }
+            }
+            e.currentHp -= dmg;
+            updateUnitHp(e);
+            if (e.currentHp <= 0) removeUnit(e);
+        }
+    });
+    clearHighlights();
+    gameState.selectedUnit = null;
+    if (typeof syncOnlineNow === 'function') syncOnlineNow();
+}
+
+function showStormDomain(domain) {
+    const board = document.getElementById('gameBoard');
+    if (!board) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'storm-domain';
+    wrap.dataset.domainId = domain.id;
+    wrap.style.left = ((domain.col - 2) * cellW) + 'px';
+    wrap.style.top = ((domain.row - 2) * cellH) + 'px';
+    wrap.style.width = (5 * cellW) + 'px';
+    wrap.style.height = (5 * cellH) + 'px';
+    for (let i = 0; i < 12; i++) {
+        const b = document.createElement('div');
+        b.className = 'storm-bolt';
+        b.style.left = (Math.random() * 92) + '%';
+        b.style.top = (Math.random() * 70) + '%';
+        b.style.height = (30 + Math.random() * 70) + 'px';
+        b.style.animationDelay = (Math.random() * 0.6) + 's';
+        b.style.animationDuration = (0.5 + Math.random() * 0.6) + 's';
+        wrap.appendChild(b);
+    }
+    board.appendChild(wrap);
+}
+function renderStormDomains() {
+    document.querySelectorAll('.storm-domain').forEach(el => el.remove());
+    (gameState.stormDomains || []).forEach(d => showStormDomain(d));
+}
+function removeStormDomainFx(domain) {
+    document.querySelectorAll('.storm-domain').forEach(el => {
+        if (el.dataset.domainId === domain.id) el.remove();
+    });
+}
+function stormDomainDamage(domain, dmg) {
+    gameState.units.slice().forEach(e => {
+        if (e.team === domain.team || e.ghost || e._removing) return;
+        if (Math.max(Math.abs(e.row - domain.row), Math.abs(e.col - domain.col)) <= 2) {
+            e.currentHp -= dmg;
+            updateUnitHp(e);
+            if (typeof showLightningStrike === 'function') showLightningStrike(e);
+            if (e.currentHp <= 0) removeUnit(e);
+        }
+    });
+}
+function stormBreath(u) {
+    closeStormDragonModalFunc();
+    if (!u || u._stormS2Used || (u._stormS2Cd || 0) > 0) return;
+    u._stormS2Used = true;
+    u._stormS2Cd = 2;
+    sendSkillFx('stormBreath', u);
+    const domain = { id: 'storm_' + u.id + '_' + Date.now(), row: u.row, col: u.col, team: u.team, ownerId: u.id };
+    if (!gameState.stormDomains) gameState.stormDomains = [];
+    gameState.stormDomains.push(domain);
+    showStormDomain(domain);
+    for (let wave = 0; wave < 3; wave++) {
+        setTimeout(() => {
+            if (domain.removed) return;
+            stormDomainDamage(domain, 2);
+        }, wave * 300);
+    }
+    clearHighlights();
+    gameState.selectedUnit = null;
+    if (typeof syncOnlineNow === 'function') syncOnlineNow();
+}
+
+function stormDragonDeath(unit) {
+    const shield = Math.round((unit.maxHp || 30) * 0.25);
+    gameState.units.forEach(u => {
+        if (u.team !== unit.team || u._removing) return;
+        u._shieldHp = (u._shieldHp || 0) + shield;
+        u.stormPower = true;
+        const el = gameState.board[u.row] && gameState.board[u.row][u.col] ? gameState.board[u.row][u.col].querySelector('.unit') : null;
+        if (el) el.classList.add('guard-shield');
+        showCritText(u.row, u.col, '+' + shield + '盾');
+    });
+}
+
+(function wireStormDragonModal() {
+    const m = document.getElementById('stormDragonModal');
+    if (!m) return;
+    const g = id => document.getElementById(id);
+    const sel = () => gameState._stormSelected;
+    if (g('stormSkill1Btn')) g('stormSkill1Btn').addEventListener('click', () => { const u = sel(); if (u) stormClaw(u); });
+    if (g('stormSkill2Btn')) g('stormSkill2Btn').addEventListener('click', () => { const u = sel(); if (u) stormBreath(u); });
+    if (g('closeStormDragonModal')) g('closeStormDragonModal').addEventListener('click', closeStormDragonModalFunc);
+    m.addEventListener('click', (e) => { if (e.target === m) closeStormDragonModalFunc(); });
+})();
+
+// ===== 约瑟夫 / 摄像机 / 镜像世界 =====
+const CAMERA_TOKEN_CARD = { id: 'camera_token', name: '摄像机', attack: 0, hp: 1, moveRange: 0, attackRange: 0, artwork: 'camera', camera: true };
+
+function spawnJosephCamera(j) {
+    if (!j || j._removing) return;
+    const count = gameState.units.filter(u => u.camera && u.cameraOwnerTeam === j.team && !u._removing).length;
+    if (count >= 4) return;
+    if (!j._cameraSpawned) j._cameraSpawned = 0;
+    const dir = j.team === 'red' ? -1 : 1;
+    const targetRow = j.row + dir * 3;
+    let best = null, bestD = Infinity;
+    for (let r = 0; r < BOARD_ROWS; r++) {
+        for (let c = 0; c < BOARD_COLS; c++) {
+            if (isBlueBase(r, c) || isRedBase(r, c)) continue;
+            if (gameState.units.some(u => u.row === r && u.col === c && !u._removing)) continue;
+            const d = Math.abs(r - targetRow) + Math.abs(c - j.col);
+            if (d < bestD) { bestD = d; best = { row: r, col: c }; }
+        }
+    }
+    if (!best) return;
+    const cam = createUnitFromCard(CAMERA_TOKEN_CARD, j.team, best.row, best.col);
+    cam.id = 'cam_' + j.id + '_' + Date.now() + '_' + (j._cameraSpawned++);
+    cam.camera = true;
+    cam.cameraOwnerTeam = j.team;
+    cam.cameraOwnerId = j.id;
+    cam.photo = null;
+    gameState.units.push(cam);
+    renderUnit(cam);
+    if (typeof syncOnlineNow === 'function') syncOnlineNow();
+}
+
+function takeCameraPhoto(cam) {
+    if (!cam || cam.camera === undefined) return;
+    if (gameState.mirror && gameState.mirror.active) {
+        showHeroDeployText(cam, '镜像中无法拍照', '#888888', 900);
+        return;
+    }
+    if (cam.photo) {
+        showHeroDeployText(cam, '已有照片', '#f1c40f', 900);
+        return;
+    }
+    cam.photo = {
+        units: JSON.parse(JSON.stringify(gameState.units)),
+        redBaseHp: gameState.redBaseHp,
+        blueBaseHp: gameState.blueBaseHp
+    };
+    const el = gameState.board[cam.row] && gameState.board[cam.row][cam.col] ? gameState.board[cam.row][cam.col].querySelector('.unit') : null;
+    if (el) el.classList.add('camera-photo');
+    showHeroDeployText(cam, '咔嚓!', '#f1c40f', 900);
+}
+
+function openJosephModal(j) {
+    gameState._josephSelected = j;
+    const hasPhoto = gameState.units.some(u => u.camera && u.cameraOwnerTeam === j.team && u.photo);
+    const b = document.getElementById('josephMirrorBtn');
+    if (b) {
+        b.disabled = !hasPhoto;
+        b.textContent = hasPhoto ? '进入镜像世界' : '进入镜像世界（无照片）';
+    }
+    const m = document.getElementById('josephModal');
+    if (m) m.classList.remove('hidden');
+}
+function closeJosephModal() {
+    const m = document.getElementById('josephModal');
+    if (m) m.classList.add('hidden');
+    gameState._josephSelected = null;
+}
+
+function enterMirrorWorld(j) {
+    closeJosephModal();
+    if (!j || gameState.mirror) return;
+    const cam = gameState.units.find(u => u.camera && u.cameraOwnerTeam === j.team && u.photo);
+    if (!cam) return;
+    const snap = cam.photo;
+    const realAll = JSON.parse(JSON.stringify(gameState.units));
+    const realJoseph = realAll.find(u => u.id === j.id) || JSON.parse(JSON.stringify(j));
+    const realUnits = realAll.filter(u => u.id !== j.id);
+    const mirrorUnits = snap.units.map(u => Object.assign({}, u, { _mirrorClone: true }));
+    gameState.mirror = {
+        active: true,
+        ownerId: j.id,
+        team: j.team,
+        cameraId: cam.id,
+        realUnits: realUnits,
+        realJoseph: realJoseph,
+        mirrorUnits: mirrorUnits,
+        savedBaseHp: { red: gameState.redBaseHp, blue: gameState.blueBaseHp },
+        turnsLeft: 4,
+        view: 'mirror',
+        savedMoveUsed: gameState.moveUsed[j.id] || 0
+    };
+    gameState.units = JSON.parse(JSON.stringify(mirrorUnits));
+    gameState.units.forEach(u => { if (!u.joseph) u._mirrorFrozen = true; });
+    // 镜像中的约瑟夫:刷新移动状态并获得额外8格移动(仅镜像)
+    let mjIn = gameState.units.find(u => u.id === j.id);
+    if (!mjIn) {
+        mjIn = Object.assign({}, j, { _mirrorClone: true });
+        gameState.units.push(mjIn);
+    }
+    mjIn._baseMoveRange = mjIn._baseMoveRange || (j.moveRange || 3);
+    mjIn.moveRange = mjIn._baseMoveRange + 8;
+    gameState.moveUsed[mjIn.id] = 0;
+    gameState.redBaseHp = snap.redBaseHp;
+    gameState.blueBaseHp = snap.blueBaseHp;
+    document.body.classList.add('mirror-view');
+    const t = document.getElementById('mirrorToggleBtn');
+    if (t) { t.classList.remove('hidden'); t.textContent = '切换到现实世界'; }
+    const sb = document.getElementById('skipBtn');
+    if (sb) sb.style.display = 'none';
+    refreshBoard();
+    updateBaseHpDisplay();
+    if (typeof syncOnlineNow === 'function') syncOnlineNow();
+}
+
+function mirrorRealDamage(u) {
+    const m = gameState.mirror;
+    if (!m || !m.realUnits) return;
+    const real = m.realUnits.find(x => x.id === u.id);
+    if (!real) return;
+    real.currentHp -= Math.round((u.maxHp || real.maxHp || 1) * 0.5);
+    showCritText(u.row, u.col, '现实受创');
+    if (real.currentHp <= 0) real._realDead = true;
+}
+
+function refreshBoard() {
+    initBoard();
+    (gameState.units || []).forEach(u => renderUnit(u));
+    if (typeof renderFireZones === 'function') renderFireZones();
+    if (typeof renderBeeSmokes === 'function') renderBeeSmokes();
+    if (typeof renderSasukeFlames === 'function') renderSasukeFlames();
+}
+
+function toggleMirrorView() {
+    const m = gameState.mirror;
+    if (!m || !m.active) return;
+    const cur = m.localView || m.view;
+    if (cur === 'mirror') {
+        m.mirrorUnits = JSON.parse(JSON.stringify(gameState.units));
+        m.localView = 'real';
+        gameState.units = JSON.parse(JSON.stringify(m.realUnits));
+        gameState.redBaseHp = m.savedBaseHp.red;
+        gameState.blueBaseHp = m.savedBaseHp.blue;
+        document.body.classList.remove('mirror-view');
+        const t = document.getElementById('mirrorToggleBtn');
+        if (t) t.textContent = '切换到镜像世界';
+    } else {
+        m.realUnits = JSON.parse(JSON.stringify(gameState.units));
+        m.localView = 'mirror';
+        gameState.units = JSON.parse(JSON.stringify(m.mirrorUnits));
+        document.body.classList.add('mirror-view');
+        const t = document.getElementById('mirrorToggleBtn');
+        if (t) t.textContent = '切换到现实世界';
+    }
+    // 只有房主(镜像发起方)的视图会随同步发送
+    if (!gameState.onlineMode || (typeof onlineTeam !== 'undefined' && onlineTeam === m.team)) {
+        m.view = m.localView;
+    }
+    const sb = document.getElementById('skipBtn');
+    if (sb) {
+        const lv = m.localView || m.view;
+        if (lv === 'mirror') sb.style.display = 'none';
+        else sb.style.display = (!gameState.onlineMode || gameState.currentTurn === onlineTeam) ? '' : 'none';
+    }
+    refreshBoard();
+    updateBaseHpDisplay();
+    if (!gameState.onlineMode || (typeof onlineTeam !== 'undefined' && onlineTeam === m.team)) {
+        if (typeof syncOnlineNow === 'function') syncOnlineNow();
+    }
+}
+
+function exitMirrorWorld() {
+    const m = gameState.mirror;
+    if (!m || !m.active) return;
+    // 如果当前在现实视图,先把现实世界的最新状态存起来
+    if ((m.localView || m.view) === 'real') {
+        m.realUnits = JSON.parse(JSON.stringify(gameState.units));
+    }
+    // 记录镜像中约瑟夫的位置(现实视图下从镜像数组里找)
+    let jPos = null;
+    const mj = (gameState.units || []).find(u => u.id === m.ownerId) || (m.mirrorUnits || []).find(u => u.id === m.ownerId);
+    if (mj) jPos = { row: mj.row, col: mj.col };
+    // 还原现实单位并结算镜像击杀
+    const real = (m.realUnits || []).map(u => Object.assign({}, u));
+    gameState.units = real.filter(u => !u._realDead && u.currentHp > 0);
+    // 照片消失
+    const cam = gameState.units.find(u => u.id === m.cameraId);
+    if (cam) { cam.photo = null; const el = gameState.board[cam.row] && gameState.board[cam.row][cam.col] ? gameState.board[cam.row][cam.col].querySelector('.unit') : null; if (el) el.classList.remove('camera-photo'); }
+    // 约瑟夫回到现实,位置=镜像位置(找不到就就近)
+    let jReal = gameState.units.find(u => u.id === m.ownerId);
+    if (!jReal && m.realJoseph) {
+        jReal = Object.assign({}, m.realJoseph);
+        gameState.units.push(jReal);
+    }
+    if (jReal && jPos) {
+        let r = jPos.row, c = jPos.col;
+        if (!isValidPosition(r, c) || gameState.units.some(u => u.id !== jReal.id && u.row === r && u.col === c)) {
+            let best = null, bd = Infinity;
+            for (let rr = 0; rr < BOARD_ROWS; rr++) for (let cc = 0; cc < BOARD_COLS; cc++) {
+                if (isBlueBase(rr, cc) || isRedBase(rr, cc)) continue;
+                if (gameState.units.some(u => u.id !== jReal.id && u.row === rr && u.col === cc)) continue;
+                const d = Math.abs(rr - r) + Math.abs(cc - c);
+                if (d < bd) { bd = d; best = { row: rr, col: cc }; }
+            }
+            if (best) { r = best.row; c = best.col; }
+        }
+        jReal.row = r; jReal.col = c;
+    }
+    gameState.redBaseHp = m.savedBaseHp.red;
+    gameState.blueBaseHp = m.savedBaseHp.blue;
+    // 恢复现实世界中约瑟夫原本的移动消耗
+    const rjMove = gameState.units.find(u => u.id === m.ownerId);
+    if (rjMove) gameState.moveUsed[rjMove.id] = m.savedMoveUsed || 0;
+    gameState.mirror = null;
+    gameState.shadow = null;
+    document.body.classList.remove('mirror-view');
+    document.body.classList.remove('shadow-view');
+    const t = document.getElementById('mirrorToggleBtn');
+    if (t) t.classList.add('hidden');
+    const sb = document.getElementById('skipBtn');
+    if (sb) sb.style.display = (!gameState.onlineMode || gameState.currentTurn === onlineTeam) ? '' : 'none';
+    refreshBoard();
+    updateBaseHpDisplay();
+    if (typeof syncOnlineNow === 'function') syncOnlineNow();
+}
+
+(function wireJoseph() {
+    const mb = document.getElementById('josephMirrorBtn');
+    if (mb) mb.addEventListener('click', () => { const j = gameState._josephSelected; if (j) enterMirrorWorld(j); });
+    const cb = document.getElementById('closeJosephModal');
+    if (cb) cb.addEventListener('click', closeJosephModal);
+    const tb = document.getElementById('mirrorToggleBtn');
+    if (tb) tb.addEventListener('click', (e) => { e.stopPropagation(); if (gameState.shadow && gameState.shadow.active) toggleShadowView(); else toggleMirrorView(); });
+    const jm = document.getElementById('josephModal');
+    if (jm) jm.addEventListener('click', (e) => { if (e.target === jm) closeJosephModal(); });
+})();
+
+// ===== 科迪琉斯 / 暗影世界 =====
+function cordeliusShadowMode(u) {
+    if (!u || u._shadowUsed || gameState.shadow) return;
+    u._shadowMode = true;
+    gameState.selectedUnit = u;
+    clearHighlights();
+    gameState.units.forEach(e => {
+        if (e.team === u.team || e.ghost || e._removing || e.building) return;
+        if (Math.max(Math.abs(e.row - u.row), Math.abs(e.col - u.col)) <= 6) {
+            gameState.board[e.row][e.col].classList.add('sasuke-ult-target');
+        }
+    });
+}
+
+function startShadowWorld(u, enemy) {
+    if (!u || !enemy) return;
+    u._shadowUsed = true;
+    u._shadowMode = false;
+    const realAll = JSON.parse(JSON.stringify(gameState.units));
+    const m0 = realAll.find(x => x.id === u.id) || u;
+    const e0 = realAll.find(x => x.id === enemy.id) || enemy;
+    const realUnits = realAll.filter(x => x.id !== u.id && x.id !== enemy.id);
+    const mushroom = Object.assign({}, m0, {
+        _shadowClone: true,
+        maxHp: (m0.maxHp || 6) + 3,
+        currentHp: (m0.currentHp || 6) + 3,
+        attack: (m0.attack || 4) + 2,
+        moveRange: (m0.moveRange || 4) + 4
+    });
+    const foe = Object.assign({}, e0, {
+        _shadowClone: true,
+        attack: Math.max(0, (e0.attack || 1) - 1),
+        maxHp: Math.max(1, (e0.maxHp || 1) - 2),
+        currentHp: Math.max(1, (e0.currentHp || 1) - 2),
+        moveRange: Math.max(1, (e0.moveRange || 1) - 2)
+    });
+    gameState.shadow = {
+        active: true,
+        ownerId: u.id,
+        enemyId: enemy.id,
+        team: u.team,
+        realUnits: realUnits,
+        realMushroom: m0,
+        realEnemy: e0,
+        shadowUnits: [mushroom, foe],
+        turnsLeft: 4,
+        view: 'shadow',
+        localView: 'shadow',
+        result: null
+    };
+    gameState.units = JSON.parse(JSON.stringify([mushroom, foe]));
+    document.body.classList.add('shadow-view');
+    const t = document.getElementById('mirrorToggleBtn');
+    if (t) { t.classList.remove('hidden'); t.textContent = '切换到现实世界'; }
+    const sb = document.getElementById('skipBtn');
+    if (sb) sb.style.display = 'none';
+    refreshBoard();
+    updateBaseHpDisplay();
+}
+
+function exitShadowWorld() {
+    const sh = gameState.shadow;
+    if (!sh || !sh.active) return;
+    if ((sh.localView || sh.view) === 'real') sh.realUnits = JSON.parse(JSON.stringify(gameState.units));
+    let mPos = null, ePos = null;
+    const sm = (sh.shadowUnits || []).find(x => x.id === sh.ownerId);
+    const se = (sh.shadowUnits || []).find(x => x.id === sh.enemyId);
+    const curM = (gameState.units || []).find(x => x.id === sh.ownerId);
+    const curE = (gameState.units || []).find(x => x.id === sh.enemyId);
+    if (curM || sm) mPos = { row: (curM || sm).row, col: (curM || sm).col };
+    if (curE || se) ePos = { row: (curE || se).row, col: (curE || se).col };
+    let units = (sh.realUnits || []).map(x => Object.assign({}, x));
+    if (sh.result !== 'enemy' && sh.realMushroom) units.push(Object.assign({}, sh.realMushroom));
+    if (sh.result !== 'mushroom' && sh.realEnemy) units.push(Object.assign({}, sh.realEnemy));
+    const place = (id, pos) => {
+        const u = units.find(x => x.id === id);
+        if (!u || !pos) return;
+        let r = pos.row, c = pos.col;
+        if (!isValidPosition(r, c) || units.some(x => x.id !== id && x.row === r && x.col === c)) {
+            let best = null, bd = Infinity;
+            for (let rr = 0; rr < BOARD_ROWS; rr++) for (let cc = 0; cc < BOARD_COLS; cc++) {
+                if (isBlueBase(rr, cc) || isRedBase(rr, cc)) continue;
+                if (units.some(x => x.id !== id && x.row === rr && x.col === cc)) continue;
+                const d = Math.abs(rr - r) + Math.abs(cc - c);
+                if (d < bd) { bd = d; best = { row: rr, col: cc }; }
+            }
+            if (best) { r = best.row; c = best.col; }
+        }
+        u.row = r; u.col = c;
+    };
+    place(sh.ownerId, mPos);
+    place(sh.enemyId, ePos);
+    gameState.units = units;
+    gameState.shadow = null;
+    document.body.classList.remove('shadow-view');
+    const t = document.getElementById('mirrorToggleBtn');
+    if (t) t.classList.add('hidden');
+    const sb = document.getElementById('skipBtn');
+    if (sb) sb.style.display = (!gameState.onlineMode || gameState.currentTurn === onlineTeam) ? '' : 'none';
+    refreshBoard();
+    updateBaseHpDisplay();
+    if (typeof syncOnlineNow === 'function') syncOnlineNow();
+}
+
+function toggleShadowView() {
+    const sh = gameState.shadow;
+    if (!sh || !sh.active) return;
+    const cur = sh.localView || sh.view;
+    if (cur === 'shadow') {
+        sh.shadowUnits = JSON.parse(JSON.stringify(gameState.units));
+        sh.localView = 'real';
+        gameState.units = JSON.parse(JSON.stringify(sh.realUnits));
+        document.body.classList.remove('shadow-view');
+        const t = document.getElementById('mirrorToggleBtn');
+        if (t) t.textContent = '切换到暗影世界';
+    } else {
+        sh.realUnits = JSON.parse(JSON.stringify(gameState.units));
+        sh.localView = 'shadow';
+        gameState.units = JSON.parse(JSON.stringify(sh.shadowUnits));
+        document.body.classList.add('shadow-view');
+        const t = document.getElementById('mirrorToggleBtn');
+        if (t) t.textContent = '切换到现实世界';
+    }
+    // 跳过回合按钮:暗影视图隐藏,现实视图恢复
+    const sb = document.getElementById('skipBtn');
+    if (sb) {
+        const lv = sh.localView || sh.view;
+        if (lv === 'shadow') sb.style.display = 'none';
+        else sb.style.display = (!gameState.onlineMode || gameState.currentTurn === onlineTeam) ? '' : 'none';
+    }
+    refreshBoard();
+    updateBaseHpDisplay();
+}
+
+// ===== 小种子 =====
+function seedTransform(unit) {
+    if (!unit || unit._removing) return;
+    const pool = (gameState.cardCollection || []).filter(c => c.id !== 'little_seed' && !c.spell && !c.trainingOnly);
+    if (!pool.length) return;
+    const card = pool[Math.floor(Math.random() * pool.length)];
+    const nu = createUnitFromCard(card, unit.team, unit.row, unit.col);
+    nu.id = unit.id;
+    // 换掉旧单位
+    const cell = gameState.board[unit.row] && gameState.board[unit.row][unit.col];
+    const oldEl = cell ? cell.querySelector('.unit') : null;
+    if (oldEl) oldEl.remove();
+    const idx = gameState.units.indexOf(unit);
+    if (idx >= 0) gameState.units[idx] = nu; else gameState.units.push(nu);
+    renderUnit(nu);
+    // 继承原卡的全部能力:登场效果、护卫队、摄像机、穿甲等
+    if (nu.joseph) { nu.armorPen = 999; }
+    if (typeof runDeployEffects === 'function') runDeployEffects(nu);
+    if (nu.joseph) spawnJosephCamera(nu);
+    // 觉醒皇家卫队:变身时同样召唤6名卫兵,本体消失
+    if (nu.royalGuard) {
+        spawnRoyalGuards(nu);
+        const gcell = gameState.board[nu.row] && gameState.board[nu.row][nu.col];
+        const gel = gcell ? gcell.querySelector('.unit') : null;
+        if (gel) gel.remove();
+        gameState.units = gameState.units.filter(x => x.id !== nu.id);
+    }
+    showHeroDeployText(nu, '变身:' + card.name, '#27ae60', 1500);
+    if (typeof syncOnlineNow === 'function') syncOnlineNow();
+}
+
 function deploySmoke(centerRow, centerCol, radius, team) {
     for (let r = centerRow - radius; r <= centerRow + radius; r++) {
         for (let c = centerCol - radius; c <= centerCol + radius; c++) {
@@ -12494,6 +13403,8 @@ function applySplashDamage(target, attacker) {
     gameState.units.forEach(u => {
         if (u.id === target.id) return;
         if (u.team === attacker.team || u.ghost) return;
+        // 风暴龙王:普通攻击的溅射不打空中单位(技能可以)
+        if (attacker.stormDragon && u.flying) return;
         const dist = Math.max(Math.abs(u.row - target.row), Math.abs(u.col - target.col));
         if (dist <= radius) {
             if (attacker.wither) applyWitherEffect(u, attacker);
@@ -12888,8 +13799,8 @@ function endTurn() {
     gameState.selectedUnit = null;
     gameState.deployMode = false;
     // 回合结束:关闭所有技能弹窗/清空选中(防对方回合残留误操作)
-    ['deepBlueSkillModal','lvbuSkillModal','yoggSkillModal','guySkillModal','shangboleSkillModal','sasukeSkillModal','painSkillModal','madaraSkillModal','beeMedicModal','zeppelinModal','hashiramaModal'].forEach(id => { const m = document.getElementById(id); if (m) m.classList.add('hidden'); });
-    gameState._deepBlueSelected = null; gameState._lvbuSelected = null; gameState._guySelected = null; gameState._yoggSelected = null; gameState._shangboleSelected = null; gameState._sasukeSelected = null; gameState._painSelected = null; gameState._madaraSelected = null; gameState._beeMedicSelected = null; gameState._zepSelected = null; gameState._hashiSelected = null;
+    ['deepBlueSkillModal','lvbuSkillModal','yoggSkillModal','guySkillModal','shangboleSkillModal','sasukeSkillModal','painSkillModal','madaraSkillModal','beeMedicModal','zeppelinModal','hashiramaModal','stormDragonModal','josephModal'].forEach(id => { const m = document.getElementById(id); if (m) m.classList.add('hidden'); });
+    gameState._deepBlueSelected = null; gameState._lvbuSelected = null; gameState._guySelected = null; gameState._yoggSelected = null; gameState._shangboleSelected = null; gameState._sasukeSelected = null; gameState._painSelected = null; gameState._madaraSelected = null; gameState._beeMedicSelected = null; gameState._zepSelected = null; gameState._hashiSelected = null; gameState._stormSelected = null;
     // 战车:结束回合重置锁定模式
     gameState.units.forEach(u => { u._targeting = false; u._witherTargeting = false; u._witherCharged = false; u._zetsuSkillUsed = false; u._zetsuTargeting = false; u._sasukeUltTargeting = false; u._sasukeFlameStage = 0; });
 
@@ -12923,6 +13834,8 @@ function endTurn() {
     gameState.units.forEach(u => {
         if (u._knockedDown && u.team === gameState.currentTurn) gameState.attackedUnits.add(u.id);
     });
+    // 小种子:下一个己方回合随机变身
+    gameState.units.filter(u => u.seed && u.team === gameState.currentTurn && u._seedArmed).forEach(u => seedTransform(u));
     // 觉醒女巫:己方回合开始,上下左右各召唤1个骷髅
     gameState.units.filter(u => u.witch && u.team === gameState.currentTurn && !u._removing).forEach(w => witchSummonSkeletons(w));
     // 钢刺网:网方回合开始时,网内敌人受2真伤(无视护甲)
@@ -13100,8 +14013,21 @@ function endTurn() {
         }
         if ((u._disabledTurns || 0) > 0 && u.team === prevTurn) u._disabledTurns--;
     });
-    if (!gameState._zepCd) gameState._zepCd = { red: 0, blue: 0 };
-    if (gameState._zepCd[prevTurn] > 0) gameState._zepCd[prevTurn]--;
+    // 彩卡冷却按卡递减(只减自己的卡组)
+    const myTeamForCd = (gameState.onlineMode && typeof onlineTeam !== 'undefined' && onlineTeam) ? onlineTeam : 'red';
+    if (prevTurn === myTeamForCd) {
+        gameState.battleDeck.forEach(c => { if ((c._cd || 0) > 0) c._cd--; });
+    }
+    // 镜像世界:持续4个半回合(己方1+敌方1+己方1+敌方1)
+    if (gameState.mirror && gameState.mirror.active) {
+        gameState.mirror.turnsLeft--;
+        if (gameState.mirror.turnsLeft <= 0) setTimeout(() => exitMirrorWorld(), 60);
+    }
+    // 暗影世界:同样4个半回合
+    if (gameState.shadow && gameState.shadow.active) {
+        gameState.shadow.turnsLeft--;
+        if (gameState.shadow.turnsLeft <= 0) setTimeout(() => exitShadowWorld(), 60);
+    }
     // 小王子:移动计数/攻击数重置 + 技能冷却递减
     gameState.units.forEach(u => {
         if (u.prince && u.team === prevTurn) {
@@ -13375,6 +14301,30 @@ function endTurn() {
         u.goblinHitThisTurn = false;
     });
 
+    // 风暴吐息领域:持续到敌方回合结束,结束时再劈两轮
+    if (gameState.stormDomains && gameState.stormDomains.length) {
+        gameState.stormDomains = gameState.stormDomains.filter(d => {
+            if (d.team === prevTurn) return true; // 自己回合结束保留
+            d.removed = true;
+            for (let wave = 0; wave < 2; wave++) {
+                setTimeout(() => stormDomainDamage(d, 2), wave * 320);
+            }
+            removeStormDomainFx(d);
+            return false;
+        });
+    }
+    // 雷电之力:雷电单位4格内的敌人每回合受1点真伤
+    gameState.units.slice().forEach(e => {
+        if (e.ghost || e._removing || e.currentHp <= 0) return;
+        const near = gameState.units.some(a => a.stormPower && a.team !== e.team && !a._removing && a.currentHp > 0 &&
+            Math.max(Math.abs(a.row - e.row), Math.abs(a.col - e.col)) <= 4);
+        if (near) {
+            e.currentHp -= 1;
+            updateUnitHp(e);
+            if (typeof showLightningStrike === 'function') showLightningStrike(e);
+            if (e.currentHp <= 0) removeUnit(e);
+        }
+    });
     // 定身清除(轮到该方回合结束时解除,下回合可行动)
     gameState.units.forEach(u => { if (u.stunned && u.team === prevTurn) { u.stunnedTurns--; if (u.stunnedTurns <= 0) u.stunned = false; } });
     // 大树缠绕特效:固定2回合计时,到点消失
@@ -13497,6 +14447,14 @@ function endTurn() {
     gameState.units.forEach(u => {
         if (u.blowdart) u.blowdartAttacksUsed = 0;
         if (u.hashirama) { u.hashiAttacksUsed = 0; u.hashiBlocksUsed = 0; }
+        if (u.princess && u.team === prevTurn && (u._princessCd || 0) > 0) u._princessCd--;
+        if (u.cordelius && u.team === prevTurn) { u._shadowUsed = false; u._shadowMode = false; }
+        if (u.stormDragon && u.team === prevTurn) {
+            u._stormS1Used = false;
+            u._stormS2Used = false;
+            if (u._stormS2Cd > 0) u._stormS2Cd--;
+        }
+        if (u._healReduceTurns > 0 && u.team === prevTurn) u._healReduceTurns--;
         if (u.hashirama && u.team === prevTurn) {
             u._hashiS1Used = false;
             u._hashiS2Used = false;
@@ -13627,7 +14585,7 @@ function updateDeployModalCards() {
         let cardCost = card.cost;
         if (card.yogg) cardCost = getYoggCost();
         if (card.chaosTentacle && gameState._freeTentacles > 0) cardCost = 0;
-        const zepCdLeft = card.zeppelin ? ((gameState._zepCd && gameState._zepCd[gameState.currentTurn]) || 0) : 0;
+        const zepCdLeft = (card.zeppelin || card.stormDragon) ? (card._cd || 0) : 0;
         cardElement.className = `battle-deck-card ${currentEnergy < cardCost || zepCdLeft > 0 ? 'disabled' : ''}${card.rainbow ? ' rainbow' : ''}${(card.hero || card.rarity === 'gold') ? ' hero' : ''}${(card.rarity && card.rarity !== 'gold') ? ' rarity-' + card.rarity : ''}`;
         cardElement.dataset.index = index;
         cardElement.dataset.cost = cardCost;
@@ -13884,14 +14842,14 @@ function addToBattleDeck(card) {
         return;
     }
 
-    // 每种卡只能带一张
+    // 每种卡只能带一张(彩卡可以带多张不同的,但同一张不能重复)
     const alreadyHasCard = gameState.battleDeck.some(c => c.id === card.id);
     if (alreadyHasCard) {
         alert('每种卡只能带一张!');
         return;
     }
 
-    gameState.battleDeck.push({ ...card });
+    gameState.battleDeck.push({ ...card, _cd: 0 });
     gameState.battleDeck.sort((a, b) => (a.cost || 0) - (b.cost || 0));
     updateBattleDeckDisplay();
 
@@ -13979,6 +14937,14 @@ function startGame() {
     gameState.knightZones = [];
     gameState.rageZones = [];
     gameState.fireZones = [];
+    gameState.stormDomains = [];
+    // 重开一局:清理上一局残留的镜像世界/按钮状态
+    gameState.mirror = null;
+    document.body.classList.remove('mirror-view');
+    const _resetMirrorBtn = document.getElementById('mirrorToggleBtn');
+    if (_resetMirrorBtn) _resetMirrorBtn.classList.add('hidden');
+    const _resetSkipBtn = document.getElementById('skipBtn');
+    if (_resetSkipBtn) _resetSkipBtn.style.display = '';
     gameState.sasukeFlames = [];
     gameState.beeSmokes = [];
     gameState.graveyard = [];
@@ -13986,6 +14952,7 @@ function startGame() {
     gameState.spikeNets = [];
     gameState.shroomCount = { red: 0, blue: 0 };
     gameState._zepCd = { red: 0, blue: 0 };
+    gameState.battleDeck.forEach(c => { c._cd = 0; });
     gameState.spellsCastThisGame = 0;
     // 全量清理残留状态(确保新局与上一局完全无关)
     gameState.energySpent = { red: 0, blue: 0 };
@@ -14005,7 +14972,7 @@ function startGame() {
     gameState._guySelected = null;
     gameState.abilityPhase = 0;
     // 关闭所有弹窗(防残留)
-    ['deployModal','spellModal','deepBlueSkillModal','lvbuSkillModal','yoggSkillModal','guySkillModal','shangboleSkillModal','sasukeSkillModal','painSkillModal','madaraSkillModal','beeMedicModal','zeppelinModal','hashiramaModal'].forEach(id => { const m = document.getElementById(id); if (m) m.classList.add('hidden'); });
+    ['deployModal','spellModal','deepBlueSkillModal','lvbuSkillModal','yoggSkillModal','guySkillModal','shangboleSkillModal','sasukeSkillModal','painSkillModal','madaraSkillModal','beeMedicModal','zeppelinModal','hashiramaModal','stormDragonModal','josephModal'].forEach(id => { const m = document.getElementById(id); if (m) m.classList.add('hidden'); });
 
     // 后手补偿:蓝方(后手)拥有能量卡标记(0费,整局一次,+1能量)——不污染卡组,红方(先手)永远看不到
     gameState._blueEnergyCardLeft = gameState.maxEnergy < 500;
@@ -14565,6 +15532,7 @@ function handleCellDblClick(e) {
     const col = parseInt(cell.dataset.col);
     const unit = gameState.units.find(u => u.row === row && u.col === col);
     if (unit) {
+        if (unit.camera) { takeCameraPhoto(unit); return; }
         showUnitInfo(unit);
     }
 }

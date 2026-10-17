@@ -3270,3 +3270,239 @@ h1 {
 }
 .sort-btn:hover { background: #4a5568; }
 .sort-btn.active { background: #f39c12; border-color: #e67e22; color: #fff; font-weight: 700; }
+
+/* ===== 觉醒公主 ===== */
+.art-princess::after, .card-artwork.art-princess::after {
+    content: '公主'; position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%); color: #000000; font-size: 15px;
+    font-weight: 900; line-height: 1; white-space: nowrap;
+    animation: witchBreath 2.2s ease-in-out infinite;
+}
+
+/* ===== 飓风法术 ===== */
+.art-hurricane::after, .card-artwork.art-hurricane::after {
+    content: '飓风'; position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%); color: #3498db; font-size: 15px;
+    font-weight: 900; line-height: 1; white-space: nowrap;
+    text-shadow: 0 0 6px rgba(120, 200, 255, 0.7);
+}
+.hurricane-fx { position: absolute; pointer-events: none; z-index: 34; }
+.hurricane-ring {
+    position: absolute; left: 50%; top: 50%; width: 88%; height: 88%;
+    margin: -44% 0 0 -44%; border-radius: 50%;
+    border: 3px solid rgba(130, 205, 255, 0.45);
+    box-shadow: 0 0 20px rgba(80, 170, 255, 0.4), inset 0 0 20px rgba(130, 205, 255, 0.25);
+    animation: hurricaneSpin 1.4s linear infinite, hurricaneFade 1.6s ease-out forwards;
+}
+.hurricane-ring:nth-child(2) { width: 66%; height: 66%; margin: -33% 0 0 -33%; animation-duration: 1.05s, 1.6s; border-color: rgba(160, 220, 255, 0.5); }
+.hurricane-ring:nth-child(3) { width: 44%; height: 44%; margin: -22% 0 0 -22%; animation-duration: 0.8s, 1.6s; border-color: rgba(190, 235, 255, 0.55); }
+.hurricane-ring:nth-child(4) { width: 24%; height: 24%; margin: -12% 0 0 -12%; animation-duration: 0.6s, 1.6s; border-color: rgba(220, 245, 255, 0.6); }
+@keyframes hurricaneSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes hurricaneFade { 0% { opacity: 0; } 12% { opacity: 1; } 100% { opacity: 0; } }
+
+/* ===== 风暴龙王 ===== */
+.art-storm_dragon::after, .card-artwork.art-storm_dragon::after {
+    content: '龙王'; position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%); color: #3498db; font-size: 15px;
+    font-weight: 900; line-height: 1; white-space: nowrap;
+    text-shadow: 0 0 7px rgba(90, 180, 255, 0.75);
+}
+.storm-crack-wrap { position: absolute; pointer-events: none; z-index: 33; }
+.storm-crack {
+    position: absolute; background: linear-gradient(90deg, rgba(210,245,255,0.95), rgba(90,170,255,0.6), rgba(210,245,255,0.2));
+    box-shadow: 0 0 8px rgba(120,200,255,0.9);
+    transform-origin: left center;
+    animation: stormCrackFade 1s ease-out forwards;
+}
+@keyframes stormCrackFade {
+    0% { opacity: 0; transform: scaleX(0.2) rotate(var(--r, 0deg)); }
+    20% { opacity: 1; transform: scaleX(1) rotate(var(--r, 0deg)); }
+    100% { opacity: 0; }
+}
+.storm-domain {
+    position: absolute; pointer-events: none; z-index: 32;
+    background: radial-gradient(circle, rgba(70,150,255,0.16), rgba(30,80,200,0.08) 60%, rgba(20,50,150,0) 85%);
+    border-radius: 16px;
+    animation: stormDomainPulse 0.9s ease-in-out infinite;
+}
+.storm-bolt {
+    position: absolute; width: 2px;
+    background: linear-gradient(180deg, rgba(235,250,255,0.95), rgba(120,200,255,0.85) 45%, rgba(90,160,255,0));
+    box-shadow: 0 0 8px rgba(140,210,255,0.95), 0 0 16px rgba(70,150,255,0.7);
+    transform: rotate(10deg);
+    animation: stormBoltFlicker 0.7s linear infinite;
+}
+@keyframes stormDomainPulse {
+    0%, 100% { opacity: 0.75; }
+    50% { opacity: 1; }
+}
+@keyframes stormBoltFlicker {
+    0%, 100% { opacity: 0; }
+    10% { opacity: 1; }
+    18% { opacity: 0.2; }
+    30% { opacity: 0.95; }
+    45% { opacity: 0; }
+    70% { opacity: 0.85; }
+    82% { opacity: 0; }
+}
+.unit.storm-power {
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(90, 180, 255, 0.75), inset 0 0 10px rgba(120, 200, 255, 0.35);
+    animation: stormPowerGlow 1.4s ease-in-out infinite;
+}
+@keyframes stormPowerGlow {
+    0%, 100% { box-shadow: 0 0 8px rgba(90,180,255,0.6); }
+    50% { box-shadow: 0 0 18px rgba(110,200,255,1), 0 0 28px rgba(60,140,255,0.55); }
+}
+
+/* 怒爪裂痕:泥土棕色 */
+.storm-crack {
+    background: linear-gradient(90deg, rgba(150,105,60,0.95), rgba(105,70,35,0.9) 45%, rgba(70,45,20,0.25));
+    box-shadow: 0 0 6px rgba(110,75,40,0.8), inset 0 1px 0 rgba(210,175,125,0.55);
+}
+
+/* 怒爪裂痕:静态分叉裂缝(SVG),只淡入淡出,不位移 */
+.storm-crack-svg {
+    position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none;
+    animation: stormCrackFade 1.3s ease-out forwards;
+}
+.storm-crack-path {
+    fill: none;
+    stroke: rgba(116, 78, 44, 0.96);
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 0 3px rgba(80, 52, 26, 0.75));
+}
+.storm-crack-branch { stroke-width: 1.5; opacity: 0.85; }
+@keyframes stormCrackFade {
+    0% { opacity: 0; }
+    8% { opacity: 1; }
+    72% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* 怒爪裂痕:更浅的土色 + 从中心逐段延伸 */
+.storm-crack-path {
+    stroke: rgba(168, 134, 100, 0.92);
+    filter: drop-shadow(0 0 3px rgba(120, 92, 62, 0.6));
+}
+.storm-crack-branch { stroke: rgba(186, 154, 118, 0.82); }
+@keyframes stormCrackDraw {
+    from { stroke-dashoffset: var(--len); }
+    to { stroke-dashoffset: 0; }
+}
+.storm-crack-svg {
+    animation: stormCrackFade 2.05s ease-out forwards;
+}
+@keyframes stormCrackFade {
+    0% { opacity: 0; }
+    5% { opacity: 1; }
+    78% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* 怒爪裂痕:更浅更快 */
+.storm-crack-path { stroke: rgba(196, 166, 134, 0.88); filter: drop-shadow(0 0 3px rgba(150, 120, 90, 0.45)); }
+.storm-crack-branch { stroke: rgba(212, 186, 156, 0.78); }
+
+/* 怒爪裂痕:浅蓝色 */
+.storm-crack-path { stroke: rgba(170, 216, 255, 0.92); filter: drop-shadow(0 0 4px rgba(110, 175, 255, 0.55)); }
+.storm-crack-branch { stroke: rgba(198, 230, 255, 0.82); }
+
+/* ===== 约瑟夫 / 摄像机 / 镜像世界 ===== */
+.art-joseph::after, .card-artwork.art-joseph::after {
+    content: '约瑟夫'; position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%); color: #000000; font-size: 12px;
+    font-weight: 900; line-height: 1; white-space: nowrap;
+}
+.art-camera::after, .card-artwork.art-camera::after {
+    content: '摄像机'; position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%); color: #000000; font-size: 12px;
+    font-weight: 900; line-height: 1; white-space: nowrap;
+}
+.unit.camera-photo {
+    box-shadow: 0 0 10px rgba(241, 196, 15, 0.9), inset 0 0 8px rgba(255, 230, 120, 0.6);
+    border-radius: 8px;
+}
+body.mirror-view #gameBoard { filter: grayscale(1) contrast(1.06); }
+.mirror-toggle-btn {
+    position: fixed; right: 18px; bottom: 18px; z-index: 120;
+    background: rgba(30, 34, 40, 0.95); color: #dfe6e9;
+    border: 1px solid #7f8c8d; border-radius: 10px;
+    padding: 10px 16px; font-size: 13px; cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+.mirror-toggle-btn:hover { background: #4a5568; }
+
+.mirror-toggle-btn.hidden { display: none !important; }
+
+/* ===== 科迪琉斯 / 暗影世界 ===== */
+.art-cordelius::after, .card-artwork.art-cordelius::after {
+    content: '蘑菇'; position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%); color: #a55bff; font-size: 15px;
+    font-weight: 900; line-height: 1; white-space: nowrap;
+    text-shadow: 0 0 6px rgba(165, 91, 255, 0.6);
+}
+body.shadow-view #gameBoard {
+    filter: hue-rotate(255deg) saturate(1.35) brightness(1.02);
+}
+/* 世界切换按钮上移,避免挡住跳过回合/法术按钮 */
+.mirror-toggle-btn { bottom: 82px !important; }
+
+/* 暗影世界:紫/浅紫/白配色(不用色相滤镜) */
+body.shadow-view #gameBoard {
+    filter: none !important;
+    background: radial-gradient(circle at 50% 40%, #4a2270 0%, #2a0f45 70%, #1c0830 100%) !important;
+    position: relative;
+}
+body.shadow-view .cell {
+    background-color: #3a1a5a !important;
+    border-color: rgba(190, 150, 255, 0.45) !important;
+}
+body.shadow-view .cell.blue-base,
+body.shadow-view .cell.red-base {
+    background-color: #2a0f45 !important;
+}
+body.shadow-view #gameBoard::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 95;
+    background: linear-gradient(135deg, rgba(150, 80, 255, 0.55), rgba(225, 200, 255, 0.35));
+    mix-blend-mode: color;
+}
+body.shadow-view .unit {
+    box-shadow: 0 0 10px rgba(185, 140, 255, 0.75);
+    border-radius: 8px;
+}
+body.shadow-view .unit-hp-bar { background: rgba(40, 20, 60, 0.8); }
+
+/* 暗影世界:浅紫配色,保证单位可见 */
+body.shadow-view #gameBoard {
+    background: radial-gradient(circle at 50% 40%, #f6f0ff 0%, #e2d4fb 60%, #cdb8f0 100%) !important;
+}
+body.shadow-view .cell {
+    background-color: #ece1fd !important;
+    border-color: rgba(150, 110, 210, 0.42) !important;
+}
+body.shadow-view .cell.blue-base,
+body.shadow-view .cell.red-base {
+    background-color: #dccbf6 !important;
+}
+body.shadow-view #gameBoard::after {
+    background: linear-gradient(135deg, rgba(170, 130, 255, 0.22), rgba(255, 255, 255, 0.22)) !important;
+    mix-blend-mode: color;
+}
+body.shadow-view .unit {
+    box-shadow: 0 0 8px rgba(150, 100, 230, 0.45) !important;
+}
+body.shadow-view .unit-hp-bar { background: rgba(255, 255, 255, 0.65) !important; }
+
+/* ===== 小种子 ===== */
+.art-seed::after, .card-artwork.art-seed::after {
+    content: '小种子'; position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%); color: #27ae60; font-size: 15px;
+    font-weight: 900; line-height: 1; white-space: nowrap;
+}
