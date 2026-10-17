@@ -1,12 +1,64 @@
-// 联机服务器 - 部署到 Render.com / Railway
-// package.json: { "name": "chessboard-server", "dependencies": { "ws": "^8.0" }, "scripts": { "start": "node server.js" } }
+// 联机服务器：同一端口同时提供游戏静态页面 + WebSocket 对战
+// 本地运行: node server.js  (默认 8090)
+// 部署: Render/Railway 的 PORT 环境变量同样生效
 
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
 const { WebSocketServer } = require('ws');
+
+const ROOT = __dirname;
+const PORT = parseInt(process.env.PORT || '8090', 10);
 
 const rooms = {}; // roomId -> { password, players: [], state }
 const matchQueue = []; // 随机匹配等待队列
 
-const wss = new WebSocketServer({ port: process.env.PORT || 8090 });
+const MIME = {
+    '.html': 'text/html; charset=utf-8',
+    '.js': 'text/javascript; charset=utf-8',
+    '.css': 'text/css; charset=utf-8',
+    '.json': 'application/json; charset=utf-8',
+    '.png': 'image/png',
+    '.jpg': 'image/jpeg',
+    '.jpeg': 'image/jpeg',
+    '.webp': 'image/webp',
+    '.gif': 'image/gif',
+    '.svg': 'image/svg+xml',
+    '.ico': 'image/x-icon',
+    '.mp3': 'audio/mpeg',
+    '.wav': 'audio/wav',
+    '.woff': 'font/woff',
+    '.woff2': 'font/woff2',
+    '.ttf': 'font/ttf'
+};
+
+const server = http.createServer((req, res) => {
+    let urlPath = decodeURIComponent(req.url.split('?')[0]);
+    if (urlPath === '/' || urlPath === '') urlPath = '/index.html';
+    // 防止目录穿越
+    const filePath = path.normalize(path.join(ROOT, urlPath));
+    const rel = path.relative(ROOT, filePath);
+    // 防止目录穿越 / 访问隐藏目录(.cowork-temp 等)
+    if (rel.startsWith('..') || path.isAbsolute(rel) || rel.split(path.sep).some(seg => seg.startsWith('.'))) {
+        res.writeHead(403);
+        res.end('403');
+        return;
+    }
+    fs.readFile(filePath, (err, data) => {
+        if (err) {
+            res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+            res.end('404 ' + urlPath);
+            return;
+        }
+        res.writeHead(200, {
+            'Content-Type': MIME[path.extname(filePath).toLowerCase()] || 'application/octet-stream',
+            'Cache-Control': 'no-cache'
+        });
+        res.end(data);
+    });
+});
+
+const wss = new WebSocketServer({ server });
 
 wss.on('connection', (ws) => {
     let userRoom = null;
@@ -37,6 +89,8 @@ wss.on('connection', (ws) => {
                 rooms[roomId] = { password: data.password, players: [{ ws, ready: false }], state: null };
                 userRoom = roomId;
                 userTeam = 'red';
+                ws.userRoom = roomId;
+                ws.userTeam = 'red';
                 ws.send(JSON.stringify({ type: 'roomCreated', roomId, team: 'red' }));
             }
             else if (data.type === 'join') {
@@ -47,6 +101,8 @@ wss.on('connection', (ws) => {
                 room.players.push({ ws, ready: false });
                 userRoom = data.roomId;
                 userTeam = 'blue';
+                ws.userRoom = data.roomId;
+                ws.userTeam = 'blue';
                 ws.send(JSON.stringify({ type: 'joined', team: 'blue' }));
                 // 通知双方开始
                 room.players[0].ws.send(JSON.stringify({ type: 'opponentJoined' }));
@@ -89,7 +145,7 @@ wss.on('connection', (ws) => {
                     room.players.forEach(p => p.ws.send(JSON.stringify({ type: 'allReady' })));
                 }
             }
-        } catch(e) {}
+        } catch (e) {}
     });
 
     ws.on('close', () => {
@@ -107,4 +163,4 @@ wss.on('connection', (ws) => {
     });
 });
 
-console.log('Server running on port', process.env.PORT || 8090);
+server.listen(PORT, () => console.log('Server running on port ' + PORT));

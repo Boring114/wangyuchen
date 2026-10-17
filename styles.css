@@ -702,6 +702,35 @@ h1 {
 /* 小王子:图标"小王子"(金色,横向) */
 .art-prince::after { content: '小王子'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #f1c40f; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 3px rgba(0,0,0,0.55); }
 .card-artwork.art-prince::after { content: '小王子'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #f1c40f; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 3px rgba(0,0,0,0.55); }
+/* 小雪花:图标"小雪花"(绿色,横向,12px) */
+.art-snowflake::after { content: '小雪花'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #27ae60; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 3px rgba(0,0,0,0.5); }
+.card-artwork.art-snowflake::after { content: '小雪花'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #27ae60; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 3px rgba(0,0,0,0.5); }
+/* 寒冰射手:图标"冰豌豆"(蓝色,横向,12px) */
+.art-ice_shooter::after { content: '冰豌豆'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #3498db; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 3px rgba(0,0,0,0.5); }
+.card-artwork.art-ice_shooter::after { content: '冰豌豆'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #3498db; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 3px rgba(0,0,0,0.5); }
+/* 冰川菇:图标"冰川菇"(蓝色,横向,12px) */
+.art-glacier::after { content: '冰川菇'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #3498db; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 3px rgba(0,0,0,0.5); }
+.card-artwork.art-glacier::after { content: '冰川菇'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #3498db; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 3px rgba(0,0,0,0.5); }
+/* 美须藤:图标"美须藤"(绿色,横向,12px) */
+.art-beauty_vine::after { content: '美须藤'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #27ae60; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 3px rgba(0,0,0,0.5); }
+.card-artwork.art-beauty_vine::after { content: '美须藤'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #27ae60; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 3px rgba(0,0,0,0.5); }
+/* 蜂医:图标"蜂医"(绿色,横向,15px) */
+.art-bee_medic::after { content: '蜂医'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #27ae60; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 3px rgba(0,0,0,0.5); }
+.card-artwork.art-bee_medic::after { content: '蜂医'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #27ae60; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 3px rgba(0,0,0,0.5); }
+/* 护士巨尸:图标"护士巨"(黑色,横向,12px) */
+.art-nurse_giant::after { content: '护士巨'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #000000; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 3px rgba(255,255,255,0.6); }
+.card-artwork.art-nurse_giant::after { content: '护士巨'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #000000; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 3px rgba(255,255,255,0.6); }
+/* 超新星巨尸:图标"超新星"(金色,横向,12px) */
+.art-supernova_giant::after { content: '超新星'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #f1c40f; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 3px rgba(0,0,0,0.55); }
+.card-artwork.art-supernova_giant::after { content: '超新星'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #f1c40f; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 3px rgba(0,0,0,0.55); }
+/* 蜂医绿色治疗烟雾 */
+.smoke-cover.heal-smoke { background: rgba(110, 220, 150, 0.62); box-shadow: inset 0 0 24px rgba(50, 200, 110, 0.55); }
+/* 蜂医烟雾弹/无人机 */
+.bee-smoke-bomb { width: 12px; height: 12px; border-radius: 50%; background: radial-gradient(circle, #e6e6e6, #999 65%, #555); box-shadow: 0 0 10px rgba(160,160,160,0.85); pointer-events: none; }
+.bee-drone { width: 10px; height: 10px; background: #111; box-shadow: 0 0 10px rgba(0,0,0,0.85); pointer-events: none; }
+/* 冰川菇全屏冰霜 */
+.glacier-flash { background: radial-gradient(circle at 50% 50%, rgba(120,200,255,0.35), rgba(40,110,200,0.15)); animation: glacierFlash 0.9s ease-out forwards; }
+@keyframes glacierFlash { 0% { opacity: 0; } 25% { opacity: 1; } 100% { opacity: 0; } }
 /* 皇家护卫:图标"护卫" */
 .art-prince_guard::after { content: '护卫'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #f1c40f; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 3px rgba(0,0,0,0.55); }
 .card-artwork.art-prince_guard::after { content: '护卫'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #f1c40f; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; text-shadow: 0 0 3px rgba(0,0,0,0.55); }
@@ -712,6 +741,7 @@ h1 {
 @keyframes madaraHalberdFade { 0% { opacity: 0.3; } 100% { opacity: 1; } }
 .madara-ranbu { width: 0; height: 0; pointer-events: none; }
 .madara-ranbu-blade { position: absolute; left: -3px; top: -62px; width: 6px; height: 124px; background: linear-gradient(180deg, rgba(231,76,60,1), rgba(150,20,20,0.9)); border-radius: 4px; box-shadow: 0 0 12px rgba(231,76,60,0.95); transform-origin: 50% 50%; animation: madaraSpin 0.7s linear 3; }
+.madara-ranbu-trail { background: linear-gradient(180deg, rgba(255,130,95,0.95), rgba(180,20,20,0.08)); box-shadow: 0 0 10px rgba(255,60,40,0.75); filter: blur(1.2px); animation-iteration-count: infinite; }
 @keyframes madaraSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 .madara-jump { display: flex; align-items: center; justify-content: center; color: #e74c3c; font-size: 12px; font-weight: 900; background: rgba(231,76,60,0.25); border-radius: 50%; border: 1px solid rgba(231,76,60,0.8); box-shadow: 0 0 12px rgba(231,76,60,0.8); pointer-events: none; animation: madaraHalberdFade 0.3s ease-out; }
 .madara-stomp { background: radial-gradient(circle, rgba(231,76,60,0.5), rgba(231,76,60,0.05)); border-radius: 50%; pointer-events: none; animation: madaraStompAnim 0.7s ease-out forwards; }
@@ -735,7 +765,7 @@ h1 {
 .mirror-clone { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 28px; height: 28px; border-radius: 50%; background: rgba(26, 82, 118, 0.2); border: 2px dashed rgba(26, 82, 118, 0.55); display: flex; align-items: center; justify-content: center; color: rgba(26, 82, 118, 0.5); font-size: 15px; font-weight: 900; z-index: 12; pointer-events: none; opacity: 0.5; }
 .mirror-shard { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #2471a3; font-size: 16px; z-index: 12; pointer-events: none; }
 .mirror-shard-fly { position: absolute; color: #2471a3; font-size: 18px; z-index: 45; pointer-events: none; transition: all 0.35s ease-in; }
-.art-elite_ice::after { content: '冰人'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #aed6f1; font-size: 14px; font-weight: 900; line-height: 1; white-space: nowrap; }
+.art-elite_ice::after { content: '冰人'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #3498db; font-size: 14px; font-weight: 900; line-height: 1; white-space: nowrap; }
 .art-golem::after { content: '石人'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #7f8c8d; font-size: 14px; font-weight: 900; line-height: 1; white-space: nowrap; }
 .art-golem-mini::after { content: '小石人'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #7f8c8d; font-size: 10px; font-weight: 900; line-height: 1; white-space: nowrap; }
 .art-black_zetsu::after { content: '黑绝'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #000; font-size: 14px; font-weight: 900; line-height: 1; white-space: nowrap; }
@@ -1381,20 +1411,55 @@ h1 {
 }
 
 /* 火柱特效 */
-.fire-pillar {
-    position: absolute;
-    border-radius: 50%;
-    background: radial-gradient(circle, #fff7e6 10%, #ff6b35 40%, #e74c3c 70%, #8b0000 90%);
-    z-index: 25;
-    pointer-events: none;
-    animation: pillarUp 1s ease-out forwards;
-    box-shadow: 0 -10px 20px rgba(255, 100, 30, 0.6), 0 0 30px rgba(231, 76, 60, 0.5);
+.fire-pillar-wrap { pointer-events: none; }
+.fire-pillar-base {
+    border-radius: 8px;
+    background: radial-gradient(ellipse at 50% 65%, rgba(255,252,240,0.95) 0%, rgba(255,205,80,0.88) 28%, rgba(255,120,40,0.55) 55%, rgba(210,40,15,0.2) 80%, rgba(150,10,0,0) 100%);
+    filter: blur(2px);
+    box-shadow: 0 0 26px rgba(255,120,40,0.7), inset 0 0 22px rgba(255,160,60,0.6);
+    animation: fireBasePulse 0.3s ease-in-out infinite;
 }
-
-@keyframes pillarUp {
-    0% { transform: scaleY(0.1); opacity: 0; }
-    30% { transform: scaleY(1); opacity: 1; }
-    100% { transform: scaleY(0.8); opacity: 0; }
+@keyframes fireBasePulse { 0%, 100% { opacity: 0.9; transform: scale(1); } 50% { opacity: 1; transform: scale(1.03); } }
+.fire-pillar-jet {
+    background: linear-gradient(0deg, rgba(255,248,225,0.98) 0%, rgba(255,200,70,0.95) 10%, rgba(255,110,35,0.82) 35%, rgba(220,45,20,0.5) 65%, rgba(140,10,0,0) 100%);
+    border-radius: 48% 48% 32% 32% / 34% 34% 8% 8%;
+    filter: blur(2px);
+    box-shadow: 0 0 24px rgba(255,120,35,0.8), 0 0 60px rgba(255,60,20,0.45);
+    transform-origin: 50% 100%;
+    animation: firePillarRise 1.5s ease-out forwards, firePillarFlicker 0.16s linear infinite;
+}
+@keyframes firePillarRise {
+    0% { transform: scaleY(0.05) scaleX(0.6); opacity: 0; }
+    12% { transform: scaleY(1) scaleX(1); opacity: 1; }
+    68% { transform: scaleY(1.05) scaleX(0.94); opacity: 1; }
+    100% { transform: scaleY(1.12) scaleX(0.78); opacity: 0; }
+}
+@keyframes firePillarFlicker {
+    0%, 100% { filter: blur(2px) brightness(1); }
+    50% { filter: blur(3px) brightness(1.35); }
+}
+.fire-pillar-core {
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(255,252,235,0.95) 0%, rgba(255,190,60,0.85) 35%, rgba(255,90,25,0.35) 70%, rgba(255,60,20,0) 100%);
+    filter: blur(3px);
+    animation: firePillarCorePulse 0.32s ease-in-out infinite;
+}
+@keyframes firePillarCorePulse { 0%, 100% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.15); opacity: 1; } }
+.fire-pillar-spark {
+    position: absolute;
+    bottom: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fff6cf, #ff9a2e 55%, rgba(255,60,20,0));
+    box-shadow: 0 0 8px rgba(255,150,50,0.9);
+    pointer-events: none;
+    animation-name: firePillarSpark;
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+}
+@keyframes firePillarSpark {
+    0% { transform: translateY(0) scale(1); opacity: 0; }
+    15% { opacity: 1; }
+    100% { transform: translateY(-140px) scale(0.3); opacity: 0; }
 }
 
 /* 闪避文字 */

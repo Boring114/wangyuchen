@@ -1,5 +1,12 @@
 // 联机对战客户端
-const ONLINE_SERVER = 'wss://28544e4e.r17.cpolar.top';
+// 服务器地址自动推导：页面和 WebSocket 由同一个服务器/隧道提供
+const ONLINE_SERVER = (() => {
+    const qs = new URLSearchParams(location.search);
+    if (qs.get('server')) return qs.get('server');
+    if (location.protocol === 'file:') return 'ws://127.0.0.1:8090';
+    if (location.hostname === '127.0.0.1' || location.hostname === 'localhost') return 'ws://127.0.0.1:8090';
+    return (location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host;
+})();
 
 let ws = null;
 let onlineRoomId = null;
@@ -152,6 +159,10 @@ function tryConnect(cb) {
                 gameState.fireZones = gs.fireZones || [];
                 gameState.erinRings = gs.erinRings || [];
                 if (typeof renderErinRings === "function") renderErinRings();
+                gameState.sasukeFlames = gs.sasukeFlames || [];
+                gameState.beeSmokes = gs.beeSmokes || [];
+                if (typeof renderSasukeFlames === 'function') renderSasukeFlames();
+                if (typeof renderBeeSmokes === 'function') renderBeeSmokes();
                 gameState.currentTurn = gs.currentTurn || 'blue';
                 updateEnergyDisplay();
                 updateBaseHpDisplay();
@@ -192,6 +203,10 @@ function tryConnect(cb) {
                 gameState.fireZones = gs.fireZones || [];
                 gameState.erinRings = gs.erinRings || [];
                 if (typeof renderErinRings === "function") renderErinRings();
+                gameState.sasukeFlames = gs.sasukeFlames || [];
+                gameState.beeSmokes = gs.beeSmokes || [];
+                if (typeof renderSasukeFlames === 'function') renderSasukeFlames();
+                if (typeof renderBeeSmokes === 'function') renderBeeSmokes();
                 gameState.currentTurn = gs.currentTurn || 'red';
                 updateEnergyDisplay();
                 updateBaseHpDisplay();
@@ -323,6 +338,18 @@ case 'bluePillar': if (typeof showBluePillar === 'function') showBluePillar(u); 
             case 'pierce': showPierceSkillFX(fx.toR, fx.toC); break;
             case 'spike': showSkillFlashFx(fx.row, fx.col, '#3498db', 50); break;
             case 'lvbuSlash': if (typeof showLvbuSlash === 'function') showLvbuSlash(u); else showSkillFlashFx(fx.toR, fx.toC, '#f39c12', 45); break;
+            case 'sasukeSusanoo': { const uel = gameState.board[u.row] && gameState.board[u.row][u.col] ? gameState.board[u.row][u.col].querySelector(`.unit[data-unit-id="${u.id}"]`) : null; if (uel) uel.classList.add('sasuke-susanoo'); break; }
+            case 'sasukeArrow': { const dr = Math.sign(fx.toR - fx.row), dc = Math.sign(fx.toC - fx.col); if (typeof showSasukeArrow === 'function') { showSasukeArrow(u, dr, dc, 1500); setTimeout(() => { if (typeof showSasukeBoom === 'function') showSasukeBoom(u, dr, dc); }, 1500); } else showOnlineAttackFx(fx.row, fx.col, fx.toR, fx.toC); break; }
+            case 'sasukeFlame': if (typeof showSkillFlashFx === 'function') showSkillFlashFx(fx.toR, fx.toC, '#1a1a1a', 60); break;
+            case 'princeGuard': { const dir = fx.team === 'red' ? -1 : 1; if (typeof showGuardCharge === 'function') showGuardCharge(u, dir, fx.toR, fx.toC, 800); else showSkillFlashFx(fx.toR, fx.toC, '#f1c40f', 50); break; }
+            case 'madaraPoJun': { const dr = Math.sign(fx.toR - fx.row), dc = Math.sign(fx.toC - fx.col); if (typeof showMadaraPoJunFX === 'function') showMadaraPoJunFX(u, dr, dc); else showSkillFlashFx(fx.toR, fx.toC, '#e74c3c', 50); break; }
+            case 'madaraRanbu': if (typeof showMadaraRanbuFX === 'function') showMadaraRanbuFX(u); else showSkillFlashFx(fx.row, fx.col, '#e74c3c', 60); break;
+            case 'madaraJump': if (typeof showMadaraJumpFX === 'function') showMadaraJumpFX(u); else showSkillFlashFx(fx.row, fx.col, '#e74c3c', 45); break;
+            case 'madaraStomp': if (typeof showMadaraStompFX === 'function') showMadaraStompFX(fx.toR, fx.toC); else showSkillFlashFx(fx.toR, fx.toC, '#e74c3c', 50); break;
+            case 'madaraMeteor': if (typeof showMeteorButton === 'function') showMeteorButton(u, false, true); else showSkillFlashFx(fx.row, fx.col, '#8e44ad', 60); break;
+            case 'beeSmokeBomb': if (typeof showBeeSmokeBombFx === 'function') showBeeSmokeBombFx(fx.row, fx.col, fx.toR, fx.toC); else showSkillFlashFx(fx.toR, fx.toC, '#9aa7b5', 50); break;
+            case 'beeSmokeScreen': if (typeof showBeeDroneFx === 'function') showBeeDroneFx(fx.row, fx.col, fx.team); else showSkillFlashFx(fx.row, fx.col, '#333333', 45); break;
+            case 'glacier': if (typeof showGlacierFX === 'function') showGlacierFX(); else showSkillFlashFx(fx.row, fx.col, '#3498db', 50); break;
             default: showOnlineAttackFx(fx.row, fx.col, fx.toR, fx.toC);
         }
     } catch (e) { /* 动画播放失败不影响游戏 */ }
@@ -399,7 +426,9 @@ function syncGameState() {
             iceFields: gameState.iceFields || [],
             windZones: gameState.windZones || [],
             fireZones: gameState.fireZones || [],
-            erinRings: gameState.erinRings || []
+            erinRings: gameState.erinRings || [],
+            sasukeFlames: gameState.sasukeFlames || [],
+            beeSmokes: gameState.beeSmokes || []
         })
     }));
 }

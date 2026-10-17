@@ -69,7 +69,7 @@ const cardLibrary = [
         id: 'saeed',
         name: '赛伊德',
         attack: 3,
-        hp: 4,
+        hp: 5,
         armor: 1,
         moveRange: 5,
         attackRange: 5,
@@ -134,7 +134,7 @@ const cardLibrary = [
         armor: 1,
         moveRange: 5,
         attackRange: 5,
-        cost: 6,
+        cost: 4,
         artwork: 'light-tank',
         description: "很普通的坦克,有溅射伤害。",
         splashRadius: 1
@@ -163,7 +163,7 @@ const cardLibrary = [
         cost: 14,
         critChance: 0.25,
     artwork: 'madara',
-        description: "普通攻击3格内单体2伤,命中积攒能量。双击显示技能栏(可手动释放):一技能·破军(选方向,3格内3伤)/乱舞(本回合先普攻则变为乱舞:5×5内3次2伤,随后可选4格内敌人跃击火柱3伤);二技能·绝空(跳起变空中单位可自由移动;二段可选3格内敌人落下践踏3×3造成2伤);三技能·天下无双(需4能量)。5/6能量无双结束后自动奥义陨石。",
+        description: "普通攻击3格内单体2伤。双击显示技能栏(可手动释放):一技能·破军(选方向,3格内3伤)/乱舞(本回合先普攻则变为乱舞:5×5内3次2伤,随后可选4格内敌人跃击火柱3伤);二技能·绝空(跳起变空中单位可自由移动;二段可选3格内敌人落下践踏3×3造成2伤);三技能·天下无双(需4能量)。5/6能量无双结束后自动奥义陨石。",
         hero: true,
         heroDeployText: '吾不可阻挡!',
         heroDeployColor: '#e74c3c',
@@ -273,7 +273,7 @@ const cardLibrary = [
         id: 'lightning_dragon',
         name: '雷电飞龙',
         attack: 5,
-        hp: 6,
+        hp: 7,
         moveRange: 4,
         attackRange: 4,
         cost: 8,
@@ -288,7 +288,7 @@ const cardLibrary = [
         id: 'pain_tendo',
         name: '佩恩·天道',
         attack: 2,
-        hp: 5,
+        hp: 6,
         moveRange: 5,
         attackRange: 2,
         cost: 10,
@@ -311,8 +311,8 @@ const cardLibrary = [
     {
         id: 'big_pekka',
         name: '觉醒大皮卡',
-        attack: 5,
-        hp: 7,
+        attack: 6,
+        hp: 8,
         moveRange: 3,
         attackRange: 2,
         cost: 7,
@@ -337,8 +337,8 @@ const cardLibrary = [
     {
         id: 'snow_monster',
         name: '大雪怪',
-        attack: 2,
-        hp: 8,
+        attack: 4,
+        hp: 9,
         moveRange: 3,
         attackRange: 2,
         cost: 8,
@@ -383,7 +383,7 @@ const cardLibrary = [
         id: 'demulan',
         name: '德穆兰',
         attack: 5,
-        hp: 3,
+        hp: 6,
         armor: 1,
         armorPen: 99,
         moveRange: 2,
@@ -510,7 +510,7 @@ const cardLibrary = [
         hp: 1,
         moveRange: 9,
         attackRange: 1,
-        cost: 11,
+        cost: 9,
         artwork: 'skull-army',
         description: '15个骷髅的军团!大哥护盾挡一次攻击,骷髅死亡变阴兵,大哥亡则阴兵尽灭。',
         skullArmy: true
@@ -569,7 +569,7 @@ const cardLibrary = [
         armor: 0,
         moveRange: 3,
         attackRange: 2,
-        cost: 7,
+        cost: 6,
         artwork: 'golem',
         golem: true,
         description: '死亡后分裂成两个小石头人(一左一右)。'
@@ -609,7 +609,7 @@ const cardLibrary = [
         id: 'super_knight',
         name: '觉醒超级骑士',
         attack: 3,
-        hp: 8,
+        hp: 10,
         armor: 0,
         moveRange: 4,
         attackRange: 2,
@@ -712,6 +712,101 @@ const cardLibrary = [
         description: '攻击上限每回合最多+1(移动≤2格触发),永久叠加:1→2→3→4→5次,最高5次。双击召唤皇家护卫向前冲锋:将竖向3×6内所有敌人推向范围终点并造成3伤,护卫留在场上(攻2/血6/攻距2/移3/护甲1)。技能有冷却:用后下个己方回合不可用,再下一个己方回合恢复。'
     },
     {
+        id: 'little_snowflake',
+        name: '小雪花',
+        attack: 1,
+        hp: 2,
+        armor: 0,
+        moveRange: 3,
+        attackRange: 5,
+        cost: 3,
+        artwork: 'snowflake',
+        littleSnowflake: true,
+        description: '当有敌人被冰冻时,小雪花永久+2攻击力、+2生命值(无上限)。'
+    },
+    {
+        id: 'ice_shooter',
+        name: '寒冰射手',
+        attack: 1,
+        hp: 3,
+        armor: 0,
+        moveRange: 0,
+        attackRange: 6,
+        cost: 2,
+        artwork: 'ice_shooter',
+        freeze: true,
+        description: '不可移动。攻击附带冰冻,被击中的敌人下1回合无法行动。'
+    },
+    {
+        id: 'glacier_shroom',
+        name: '冰川菇',
+        attack: 0,
+        hp: 3,
+        armor: 0,
+        moveRange: 0,
+        attackRange: 0,
+        cost: 13,
+        artwork: 'glacier',
+        glacierShroom: true,
+        description: '不可移动。双击或死亡时:冰冻全屏敌方单位1回合并造成1点伤害;双击会立即造成其死亡。'
+    },
+    {
+        id: 'beauty_vine',
+        name: '美须藤',
+        attack: 3,
+        hp: 12,
+        armor: 2,
+        moveRange: 0,
+        attackRange: 3,
+        cost: 14,
+        artwork: 'beauty_vine',
+        beautyVine: true,
+        description: '不可移动。为大本营承担所有伤害;场上有多株时,按出现顺序依次承担。'
+    },
+    {
+        id: 'bee_medic',
+        name: '蜂医',
+        attack: 3,
+        hp: 7,
+        armor: 0,
+        moveRange: 5,
+        attackRange: 5,
+        cost: 13,
+        artwork: 'bee_medic',
+        beeMedic: true,
+        hero: true,
+        heroDeployText: '新年快乐！',
+        heroDeployColor: '#f1c40f',
+        heroDeployDuration: 2000,
+        description: '双击显示技能栏:激素枪(2伤穿1/射程4,可奶友军3血并持续3回合回1)/蜂巢烟雾弹(8格内5×5烟雾,挡敌视野;激素枪打中烟内友军变绿色治疗烟)/烟幕(前方5×13大片烟雾)/专业救援(复活上回合阵亡友军,30%血)。'
+    },
+    {
+        id: 'nurse_giant',
+        name: '护士巨尸',
+        attack: 6,
+        hp: 7,
+        armor: 0,
+        moveRange: 3,
+        attackRange: 3,
+        cost: 7,
+        artwork: 'nurse_giant',
+        nurseGiant: true,
+        description: '它造成多少伤害,就为己方大本营恢复多少生命值。'
+    },
+    {
+        id: 'supernova_giant',
+        name: '超新星巨尸',
+        attack: 5,
+        hp: 8,
+        armor: 0,
+        moveRange: 3,
+        attackRange: 3,
+        cost: 6,
+        artwork: 'supernova_giant',
+        supernovaGiant: true,
+        description: '当其消灭一个敌方单位时,场上所有同种敌方单位也会被一同秒杀。'
+    },
+    {
         id: 'hog_rider',
         name: '野猪骑士',
         attack: 2,
@@ -745,7 +840,7 @@ const cardLibrary = [
         armor: 0,
         moveRange: 5,
         attackRange: 2,
-        cost: 5,
+        cost: 4,
         artwork: 'elite_knight',
         hero: true,
         heroDeployText: '',
@@ -806,7 +901,7 @@ const cardLibrary = [
         armor: 0,
         moveRange: 2,
         attackRange: 4,
-        cost: 19,
+        cost: 16,
         artwork: 'yogg_saron',
         hero: true,
         heroDeployText: '在死亡之神的面前屈服吧!',
@@ -874,7 +969,7 @@ const cardLibrary = [
         armor: 0,
         moveRange: 0,
         attackRange: 0,
-        cost: 4,
+        cost: 3,
         artwork: 'stone_wall',
         spell: true,
         stoneWall: true,
@@ -935,7 +1030,7 @@ const cardLibrary = [
         armor: 0,
         moveRange: 0,
         attackRange: 0,
-        cost: 4,
+        cost: 3,
         artwork: 'magic_shield',
         spell: true,
         magicShield: true,
@@ -949,7 +1044,7 @@ const cardLibrary = [
         armor: 0,
         moveRange: 0,
         attackRange: 0,
-        cost: 6,
+        cost: 3,
         artwork: 'heal',
         spell: true,
         heal: true,
@@ -1063,7 +1158,7 @@ const cardLibrary = [
         armor: 0,
         moveRange: 0,
         attackRange: 0,
-        cost: 6,
+        cost: 5,
         artwork: 'missile',
         spell: true,
         missileLaunch: true,
@@ -1213,7 +1308,7 @@ const cardLibrary = [
         armorPen: 2,
         moveRange: 5,
         attackRange: 0,
-        cost: 13,
+        cost: 10,
         artwork: 'shangbole',
         shangbole: true,
         hero: true,
@@ -1304,6 +1399,8 @@ const gameState = {
     fireZones: [],
     sasukeFlames: [],
     smokeZones: [],
+    beeSmokes: [],
+    graveyard: [],
     windZones: [],
     iceFields: [],
     erinRings: [],
@@ -1542,6 +1639,12 @@ counterBurn: card.counterBurn || false,
         hogRider: card.hogRider || false,
         royalGiant: card.royalGiant || false,
         prince: card.prince || false,
+        littleSnowflake: card.littleSnowflake || false,
+        glacierShroom: card.glacierShroom || false,
+        beautyVine: card.beautyVine || false,
+        beeMedic: card.beeMedic || false,
+        nurseGiant: card.nurseGiant || false,
+        supernovaGiant: card.supernovaGiant || false,
         eliteKnight: card.eliteKnight || false,
         fisherman: card.fisherman || false,
         spell: card.spell || false,
@@ -1644,7 +1747,7 @@ function handleCellClick(e) {
     if (gameState.aiMode && gameState.currentTurn === 'blue') return;
 
     // 技能框打开时点击棋盘:关闭技能框并忽略本次点击(避免误触部署弹窗)
-    const skillModals = ['deepBlueSkillModal', 'lvbuSkillModal', 'yoggSkillModal', 'guySkillModal', 'shangboleSkillModal', 'sasukeSkillModal', 'painSkillModal', 'madaraSkillModal'];
+    const skillModals = ['deepBlueSkillModal', 'lvbuSkillModal', 'yoggSkillModal', 'guySkillModal', 'shangboleSkillModal', 'sasukeSkillModal', 'painSkillModal', 'madaraSkillModal', 'beeMedicModal'];
     for (const id of skillModals) {
         const m = document.getElementById(id);
         if (m && !m.classList.contains('hidden')) {
@@ -1656,6 +1759,7 @@ function handleCellClick(e) {
             else if (id === 'sasukeSkillModal') closeSasukeSkillModalFunc();
             else if (id === 'painSkillModal') closePainSkillModalFunc();
             else if (id === 'madaraSkillModal') closeMadaraSkillModalFunc();
+            else if (id === 'beeMedicModal') closeBeeMedicSkillModalFunc();
             return;
         }
     }
@@ -1915,6 +2019,23 @@ function handleCellClick(e) {
         const md = gameState.selectedUnit;
         md._madaraStompMode = false;
         if (cell.classList.contains('pierce-target')) madaraStomp(md, { row: row, col: col });
+        else { clearHighlights(); gameState.selectedUnit = null; }
+        return;
+    }
+    // 蜂医 激素枪:选4格内单位(敌我均可)
+    if (gameState.selectedUnit && gameState.selectedUnit.beeMedic && gameState.selectedUnit._beeHormoneMode) {
+        const md = gameState.selectedUnit;
+        const tu = gameState.units.find(u => u.row === row && u.col === col && u.id !== md.id && !u.ghost && !u._removing);
+        md._beeHormoneMode = false;
+        if (tu && cell.classList.contains('sasuke-ult-target')) beeHormoneShoot(md, tu);
+        else { clearHighlights(); gameState.selectedUnit = null; }
+        return;
+    }
+    // 蜂医 蜂巢烟雾弹:8格内选点
+    if (gameState.selectedUnit && gameState.selectedUnit.beeMedic && gameState.selectedUnit._beeS2Mode) {
+        const md = gameState.selectedUnit;
+        md._beeS2Mode = false;
+        if (cell.classList.contains('pierce-target')) beeDeploySmokeBomb(md, row, col);
         else { clearHighlights(); gameState.selectedUnit = null; }
         return;
     }
@@ -2311,6 +2432,17 @@ if (gameState._viralTargeting) {
             openMadaraSkillModal(clickedUnit);
             return;
         }
+        // 冰川菇:双击爆发并自毁
+        if (clickedUnit.glacierShroom && clickedUnit === gameState.selectedUnit && !clickedUnit._glacierBurst) {
+            glacierBurst(clickedUnit);
+            removeUnit(clickedUnit);
+            return;
+        }
+        // 蜂医:双击显示技能栏
+        if (clickedUnit.beeMedic && clickedUnit === gameState.selectedUnit) {
+            openBeeMedicSkillModal(clickedUnit);
+            return;
+        }
         // 铠大招:双击激活不灭魔躯(冷却结束且未激活时可用)
         if (clickedUnit.kaiShurikenRange && clickedUnit === gameState.selectedUnit && !clickedUnit.kaiUltActive && (clickedUnit.kaiUltCooldown||0) === 0) {
             activateKaiUlt(clickedUnit);
@@ -2577,6 +2709,7 @@ if (closeBoardUnitModalEl) closeBoardUnitModalEl.addEventListener('click', () =>
 
 // 联机操作限制:非自己回合禁止操作(统一拦截)
 function canActNow() {
+    if (gameState._meteorAnimating) return false;
     return !(gameState.onlineMode && gameState.currentTurn !== onlineTeam);
 }
 
@@ -2691,7 +2824,7 @@ function showMovableRange(unit) {
 // 对空判定:飞行单位恒可对空;白名单含植物人(骷髅军团不在白名单,不能对空)
 function canHitAirUnit(unit) {
     if (unit.flying) return true;
-    return ['musketeer','saeed','warden_gherros','cattail','electric_pea','reynolds','reynolds_jackson','pain_tendo','lightning_dragon','asala_flamer','gale','demulan','hashirama','doom_shroom','crazy_cannon','yogg','yogg_saron','yogg_fate','guy_death_gate','pierce','deep_blue','shangbole','inferno_tower'].includes(unit.cardId);
+    return ['musketeer','saeed','warden_gherros','cattail','electric_pea','reynolds','reynolds_jackson','pain_tendo','lightning_dragon','asala_flamer','gale','demulan','hashirama','doom_shroom','crazy_cannon','yogg','yogg_saron','yogg_fate','guy_death_gate','pierce','deep_blue','shangbole','inferno_tower','ice_sprite','leisi','erin','blowdart_goblin','tesla','heal_fairy','prince','little_snowflake','ice_shooter','bee_medic','eagle_artillery'].includes(unit.cardId);
 }
 
 // 显示可攻击目标
@@ -2748,6 +2881,8 @@ function showAttackableTargets(unit) {
                     if (targetUnit && targetUnit.patroller && targetUnit._grabbing) continue;
                     // 野猪骑士:只能攻击建筑单位
                     if (unit.hogRider && targetUnit && !targetUnit.building) continue;
+                    // 戈仑石人:只能攻击建筑单位
+                    if ((unit.golem || unit.golemMini) && targetUnit && !targetUnit.building) continue;
                     // 觉醒皇家巨人:只能攻击建筑单位
                     if (unit.royalGiant && targetUnit && !targetUnit.building) continue;
                     // 气球兵:只能攻击建筑单位
@@ -3595,8 +3730,7 @@ function fateScepter(unit) {
             showCritText(t.u.row, t.u.col, '权杖');
             if (t.u.currentHp <= 0) removeUnit(t.u);
         } else {
-            if (t.team === 'red') gameState.redBaseHp -= 10;
-            else gameState.blueBaseHp -= 10;
+            damageBase(t.team === 'blue', 10);
             updateBaseHpDisplay();
             showCritText(1, 15, '权杖');
         }
@@ -4005,6 +4139,12 @@ function attackUnit(target) {
         gameState.selectedUnit = null;
         return;
     }
+    // 戈仑石人:只能攻击建筑单位(大本营走 attackBase)
+    if ((attacker.golem || attacker.golemMini) && !target.building) {
+        clearHighlights();
+        gameState.selectedUnit = null;
+        return;
+    }
     // 觉醒皇家巨人:只能攻击建筑单位(大本营走 attackBase)
     if (attacker.royalGiant && !target.building) {
         clearHighlights();
@@ -4191,8 +4331,8 @@ function attackUnit(target) {
         } else {
             damage = target.currentHp; // 第二击直接清空
         }
-    } else if (attacker.meleeAttack && dist <= attacker.meleeRange) {
-        // 近战攻击
+    } else if (attacker.meleeAttack && dist <= attacker.meleeRange && !target.flying) {
+        // 近战攻击(空中目标不适用,改用远程伤害)
         damage = attacker.meleeAttack;
     } else if (attacker.infernoTower) {
         // 地狱之塔:激光伤害(同目标递增翻倍1→2→4…,切换目标重置为1;真实伤害无视护甲)
@@ -4380,6 +4520,24 @@ function attackUnit(target) {
         }
     }
     target.currentHp -= actualDamage;
+    // 护士巨尸:造成多少伤害,己方大本营回复多少
+    if (attacker.nurseGiant && actualDamage > 0) {
+        if (attacker.team === 'red') gameState.redBaseHp = Math.min(50, gameState.redBaseHp + actualDamage);
+        else gameState.blueBaseHp = Math.min(50, gameState.blueBaseHp + actualDamage);
+        updateBaseHpDisplay();
+        showCritText(attacker.row, attacker.col, '回血+' + actualDamage);
+    }
+    // 超新星巨尸:击杀敌人时,场上同种敌人一并秒杀
+    if (attacker.supernovaGiant && target.currentHp <= 0 && !target._removing) {
+        const typeId = target.cardId || target.name;
+        gameState.units.slice().forEach(e => {
+            if (e === target || e.team === attacker.team || e.ghost || e._removing) return;
+            if ((e.cardId || e.name) !== typeId) return;
+            e.currentHp = 0;
+            showCritText(e.row, e.col, '超新星');
+            removeUnit(e);
+        });
+    }
     // 觉醒吹箭哥布林:命中附加中毒(连续命中升级)
     if (attacker.blowdart) {
         target.goblinHitThisTurn = true;
@@ -4454,15 +4612,11 @@ function attackUnit(target) {
         }
     }
 
-    // 马斑:普通攻击为3格内单体;命中敌人积攒能量并施加燃烧
+    // 马斑:普通攻击为3格内单体(不加能量,能量仅由技能命中获得);命中施加燃烧
     if (attacker.madaraMaxEnergy) {
         // 攻击特效:红色箭头
         showMadaraAttackFX(attacker, target);
         applyMadaraBurn(target);
-        if (!attacker.inMusou) {
-            attacker.madaraEnergy = Math.min(attacker.madaraMaxEnergy, (attacker.madaraEnergy || 0) + 1);
-            renderEnergyBar(attacker, gameState.board[attacker.row][attacker.col].querySelector('.unit'));
-        }
     }
 
     // 标记已攻击(天下无双/铠双攻期间不限制)
@@ -4650,9 +4804,11 @@ function attackUnit(target) {
     // 冰冻效果
     if (attacker.freeze && target.currentHp > 0) {
         if (!isImmuneToFreeze(target)) {
+            const wasFrozen = !!target.frozen;
             target.frozen = true;
             updateFrozenVisual(target);
             showCritText(target.row, target.col, '冰冻');
+            if (!wasFrozen) buffSnowflakes(attacker.team);
         }
         // 厂长被冻召唤木炭
         if (target.percentAttack && (target.charcoalCount||0) < (target.charcoalMax||2)) {
@@ -4679,8 +4835,7 @@ function attackUnit(target) {
                 if (u) { lineTargets.push(u); attacker.electricHit.push(u.id); }
                 if (!attacker._baseHit && ((attacker.team === 'red' && isBlueBase(r, c)) || (attacker.team === 'blue' && isRedBase(r, c)))) {
                     attacker._baseHit = true;
-                    if (attacker.team === 'red') gameState.blueBaseHp -= 1;
-                    else gameState.redBaseHp -= 1;
+                    damageBase(attacker.team === 'red', 1);
                     updateBaseHpDisplay();
                 }
             }
@@ -4817,12 +4972,13 @@ function attackBase(isBlueBase) {
         royalGiantShockwave(attacker);
     }
 
-    if (isBlueBase) {
-        gameState.blueBaseHp -= damage;
+    damageBase(isBlueBase, damage);
+    // 护士巨尸:攻击大本营时,己方大本营等量回血
+    if (attacker.nurseGiant && damage > 0) {
+        if (attacker.team === 'red') gameState.redBaseHp = Math.min(50, gameState.redBaseHp + damage);
+        else gameState.blueBaseHp = Math.min(50, gameState.blueBaseHp + damage);
         updateBaseHpDisplay();
-    } else {
-        gameState.redBaseHp -= damage;
-        updateBaseHpDisplay();
+        showCritText(attacker.row, attacker.col, '回血+' + damage);
     }
     // 马斑无双:攻击大本营后标记,本回合不能再打大本营
     if (attacker.inMusou) attacker._musouBaseAttacked = true;
@@ -5240,12 +5396,12 @@ if (card.rage) { castRageSpell(card, row, col); return; }
             for (let dc = -r; dc <= r; dc++) {
                 const nr = row + dr, nc = col + dc;
                 if (gameState.currentTurn === 'red' && isBlueBase(nr, nc)) {
-                    gameState.blueBaseHp -= card.baseDamage || 2;
+                    damageBase(true, card.baseDamage || 2);
                     baseHit = true;
                     break;
                 }
                 if (gameState.currentTurn === 'blue' && isRedBase(nr, nc)) {
-                    gameState.redBaseHp -= card.baseDamage || 2;
+                    damageBase(false, card.baseDamage || 2);
                     baseHit = true;
                     break;
                 }
@@ -5386,8 +5542,8 @@ function castLogSpell(card, row, col) {
             const nc = col + dc;
             if (!isValidPosition(r, nc)) continue;
             // 大本营固定1伤(总一次)
-            if (!baseHit && team === 'red' && isBlueBase(r, nc)) { gameState.blueBaseHp -= card.baseDamage || 1; baseHit = true; updateBaseHpDisplay(); }
-            if (!baseHit && team === 'blue' && isRedBase(r, nc)) { gameState.redBaseHp -= card.baseDamage || 1; baseHit = true; updateBaseHpDisplay(); }
+            if (!baseHit && team === 'red' && isBlueBase(r, nc)) { damageBase(true, card.baseDamage || 1); baseHit = true; updateBaseHpDisplay(); }
+            if (!baseHit && team === 'blue' && isRedBase(r, nc)) { damageBase(false, card.baseDamage || 1); baseHit = true; updateBaseHpDisplay(); }
             // 敌人:2伤穿甲1 + 向后击退1格(不重复受伤)
             const u = gameState.units.find(x => x.row === r && x.col === nc);
             if (u && u.team !== team && !u.ghost && !u._removing && !u.flying && !u._magicShield && !hitSet.has(u.id)) { // 魔法护盾免疫法术
@@ -5492,6 +5648,8 @@ function triggerCounter(attacker, target) {
     if (attacker.flying && !target.flying && !canHitAirUnit(target)) return;
     // 野猪骑士:只能攻击建筑,所以只反击建筑的攻击(普通兵种攻击无法反击)
     if (target.hogRider && !attacker.building) return;
+    // 戈仑石人:只能攻击建筑,所以只反击建筑的攻击
+    if ((target.golem || target.golemMini) && !attacker.building) return;
     // 觉醒皇家巨人:只能攻击建筑,所以只反击建筑的攻击(普通兵种攻击无法反击)
     if (target.royalGiant && !attacker.building) return;
     // 气球兵:只能攻击建筑,所以只反击建筑的攻击(普通兵种攻击无法反击)
@@ -6717,9 +6875,9 @@ function princeSkill(unit) {
     const inPath = u => cols.includes(u.col) && proj(u.row) >= 1 && proj(u.row) <= 6;
     clearHighlights();
     gameState.selectedUnit = null;
-    // 造成3点伤害(路径内敌人)
+    // 造成3点伤害(路径内地面敌人,不可对空)
     gameState.units.slice().forEach(e => {
-        if (e.team === unit.team || e.ghost || e._removing) return;
+        if (e.team === unit.team || e.ghost || e._removing || e.flying) return;
         if (inPath(e)) {
             e.currentHp -= 3;
             updateUnitHp(e);
@@ -6728,7 +6886,7 @@ function princeSkill(unit) {
         }
     });
     // 幸存敌人 → 计算推挤终点
-    const enemies = gameState.units.filter(u => u.team !== unit.team && !u.ghost && !u._removing && inPath(u));
+    const enemies = gameState.units.filter(u => u.team !== unit.team && !u.ghost && !u._removing && !u.flying && inPath(u));
     const STEP = 240; // 每格耗时(越大越慢)
     const res = princeComputePushTargets(unit, dir, enemies, STEP);
     const land = princeGuardLanding(unit, dir, cols, res.occ);
@@ -6736,6 +6894,7 @@ function princeSkill(unit) {
     // 护卫冲锋动画(速度=1格/STEP)
     if (land) {
         const gd = (proj(land.row) + 1) * STEP;
+        sendSkillFx('princeGuard', unit, land.row, land.col);
         showGuardCharge(unit, dir, land.row, land.col, gd);
         maxMs = Math.max(maxMs, gd);
     }
@@ -7851,6 +8010,16 @@ if (unit._stoneWallProtect) {
 // 防重复移除/递归死循环(导弹/爆炸/连锁移除时同一单位只处理一次)
 if (unit._removing) return;
 unit._removing = true;
+// 冰川菇:死亡时冰冻全屏敌方1回合并造成1点伤害(双击自毁时已标记不重复)
+if (unit.glacierShroom && !unit._glacierBurst) {
+    unit._glacierBurst = true;
+    glacierBurst(unit);
+}
+// 记录阵亡单位(供蜂医"专业救援"复活)
+if (gameState.graveyard && unit.team) {
+    gameState.graveyard.push(Object.assign({}, unit, { _removing: false, diedTurn: gameState.turnNumber }));
+    if (gameState.graveyard.length > 40) gameState.graveyard.shift();
+}
 // 地狱之塔激光:塔死亡或激光目标死亡时移除对应激光线
 gameState.units.forEach(u => {
     if (u.infernoTower && u._infernoLaserEl && (u.id === unit.id || u._infernoLaserTarget === unit.id)) {
@@ -7895,6 +8064,16 @@ if (unit.eliteKnight) {
     }
     // 戈仑石人:死亡分裂成两个小石头人(一左一右,不递归分裂)
     if (unit.golem) {
+        // 分裂冲击:3×3 范围内敌人受3伤并被连锁击退1格(建筑受伤害但不可击退)
+        gameState.units.slice().forEach(e => {
+            if (e === unit || e.ghost || e._removing || e.team === unit.team) return;
+            if (Math.max(Math.abs(e.row - unit.row), Math.abs(e.col - unit.col)) > 1) return;
+            e.currentHp -= 3;
+            updateUnitHp(e);
+            if (e.currentHp <= 0) { removeUnit(e); return; }
+            const dr = Math.sign(e.row - unit.row), dc = Math.sign(e.col - unit.col);
+            if (dr !== 0 || dc !== 0) chainPush(e, dr, dc, new Set());
+        });
         [[0,-1],[0,1]].forEach(p => {
             const nr = unit.row + p[0], nc = unit.col + p[1];
             if (!isValidPosition(nr, nc)) return;
@@ -7903,6 +8082,18 @@ if (unit.eliteKnight) {
             const mini = { id: 'golem_mini_' + Date.now() + '_' + Math.random(), cardId: 'golem_mini', name: '小石头人', attack: 1, maxHp: 6, currentHp: 6, armor: 0, moveRange: 3, attackRange: 2, artwork: 'golem-mini', team: unit.team, row: nr, col: nc, golemMini: true };
             gameState.units.push(mini);
             renderUnit(mini);
+        });
+    }
+    // 小石头人:死亡时对周围3×3敌人造成2伤并连锁击退1格(建筑受伤害但不可击退)
+    if (unit.golemMini) {
+        gameState.units.slice().forEach(e => {
+            if (e === unit || e.ghost || e._removing || e.team === unit.team) return;
+            if (Math.max(Math.abs(e.row - unit.row), Math.abs(e.col - unit.col)) > 1) return;
+            e.currentHp -= 2;
+            updateUnitHp(e);
+            if (e.currentHp <= 0) { removeUnit(e); return; }
+            const dr = Math.sign(e.row - unit.row), dc = Math.sign(e.col - unit.col);
+            if (dr !== 0 || dc !== 0) chainPush(e, dr, dc, new Set());
         });
     }
     // 黑绝:队友死亡,黑绝回归本体(保留附身时血量)
@@ -8092,6 +8283,7 @@ function renderUnit(unit) {
     if (unit.teslaHidden) unitElement.classList.add('tesla-hidden');
     if (unit.superKnight) unitElement.classList.add('awakened');
     if (unit.madaraSolve && unit._susanooActive) renderSusanooVisual(unit);
+    if (unit.sasuke && unit._sasukeSusanoo) unitElement.classList.add('sasuke-susanoo');
     if (unit._possessed) {
         unitElement.classList.add('zetsu-possessed');
         if (unit.zetsu && unit.zetsu.revealed) unitElement.classList.add('zetsu-revealed');
@@ -8921,6 +9113,7 @@ function sasukeSkillArmor(unit) {
     if (unit.treeBound) { unit.treeBound = false; if (typeof updateTreeVisual === 'function') updateTreeVisual(unit); }
     const el = (gameState.board[unit.row] && gameState.board[unit.row][unit.col]) ? gameState.board[unit.row][unit.col].querySelector('.unit') : null;
     if (el) el.classList.add('sasuke-susanoo');
+    sendSkillFx('sasukeSusanoo', unit);
     showHeroDeployText(unit, '须佐能乎', '#000000', 1500);
     renderEnergyBar(unit, el);
     clearHighlights();
@@ -8985,6 +9178,7 @@ function enterSasukeFlame1(unit) {
 // 黑炎落点(两段)
 function sasukeFlameCast(unit, row, col, stage) {
     clearHighlights();
+    sendSkillFx('sasukeFlame', unit, row, col);
     if (stage === 1) {
         unit._sasukeS2Cd = 2;
         const hits = sasukeFlameHit(unit, row, col, 1, 2);
@@ -9089,6 +9283,7 @@ function sasukeUltimateAt(unit, target) {
     const proj = (r, c) => ((r - unit.row) * dirR + (c - unit.col) * dirC) / norm;
     const endRow = unit.row + dirR * 4, endCol = unit.col + dirC * 4;
     const FLIGHT = 1500;
+    sendSkillFx('sasukeArrow', unit, target.row, target.col);
     showSasukeArrow(unit, dirR, dirC, FLIGHT);
     showHeroDeployText(unit, '须佐能乎·贯', '#000000', 1800);
     clearHighlights();
@@ -9678,7 +9873,54 @@ function freezeEnemiesInIce(ice) {
         if (d <= 2) {
             u.frozen = true;
             updateFrozenVisual(u);
+            buffSnowflakes(ice.team);
         }
+    });
+}
+// 冰川菇:冰冻全屏敌方单位1回合并造成1点伤害
+function glacierBurst(unit) {
+    if (!unit) return;
+    unit._glacierBurst = true;
+    sendSkillFx('glacier', unit);
+    const team = unit.team;
+    gameState.units.slice().forEach(e => {
+        if (e.team === team || e.ghost || e._removing) return;
+        if (!isImmuneToFreeze(e)) {
+            e.frozen = true;
+            updateFrozenVisual(e);
+        }
+        e.currentHp -= 1;
+        updateUnitHp(e);
+        if (e.currentHp <= 0) removeUnit(e);
+    });
+    showCritText(unit.row, unit.col, '冰川爆发');
+    showGlacierFX();
+    syncOnlineNow();
+}
+function showGlacierFX() {
+    const board = document.getElementById('gameBoard');
+    if (!board) return;
+    const el = document.createElement('div');
+    el.className = 'glacier-flash';
+    el.style.position = 'absolute';
+    el.style.left = '0';
+    el.style.top = '0';
+    el.style.width = '100%';
+    el.style.height = '100%';
+    el.style.zIndex = '35';
+    el.style.pointerEvents = 'none';
+    board.appendChild(el);
+    setTimeout(() => el.remove(), 900);
+}
+// 小雪花:有敌人被冰冻时,永久+2攻击/+2生命(无上限)
+function buffSnowflakes(team) {
+    gameState.units.forEach(u => {
+        if (!u.littleSnowflake || u.team !== team || u._removing) return;
+        u.attack += 2;
+        u.maxHp += 2;
+        u.currentHp += 2;
+        updateUnitHp(u);
+        showCritText(u.row, u.col, '雪花+2');
     });
 }
 // 灼烧:立即解除冰冻
@@ -9998,12 +10240,12 @@ function shinraTensei(pain) {
     if (pain.team === 'red') {
         for (let r = 0; r <= 2; r++) for (let c = 10; c <= 13; c++) {
             const dist = Math.max(Math.abs(r - pain.row), Math.abs(c - pain.col));
-            if (dist <= radius) { gameState.blueBaseHp -= pain._crogDebuffed ? 1 : (pain.shinraDamage + painSkillBonus(pain)); updateBaseHpDisplay(); }
+            if (dist <= radius) { damageBase(true, pain._crogDebuffed ? 1 : (pain.shinraDamage + painSkillBonus(pain))); updateBaseHpDisplay(); }
         }
     } else {
         for (let r = 25; r <= 27; r++) for (let c = 10; c <= 13; c++) {
             const dist = Math.max(Math.abs(r - pain.row), Math.abs(c - pain.col));
-            if (dist <= radius) { gameState.redBaseHp -= pain._crogDebuffed ? 1 : (pain.shinraDamage + painSkillBonus(pain)); updateBaseHpDisplay(); }
+            if (dist <= radius) { damageBase(false, pain._crogDebuffed ? 1 : (pain.shinraDamage + painSkillBonus(pain))); updateBaseHpDisplay(); }
         }
     }
     pain.abilityTimer = 2;
@@ -10155,6 +10397,7 @@ function enterMadaraDirMode(madara) {
 }
 function madaraPoJunCast(madara, dirR, dirC) {
     madara._madaraDirMode = false;
+    sendSkillFx('madaraPoJun', madara, madara.row + dirR * 3, madara.col + dirC * 3);
     madara._madaraS1Used = true;
     let hit = false;
     for (let k = 1; k <= 3; k++) {
@@ -10182,6 +10425,7 @@ function madaraPoJunCast(madara, dirR, dirC) {
 // 乱舞:5×5内每圈对敌人各造成2伤(戟转到目标时才结算,转3圈=3次)
 function madaraRanbu(madara) {
     madara._madaraS1Used = true;
+    sendSkillFx('madaraRanbu', madara);
     madara._madaraS1Stage2Ready = true;
     showMadaraRanbuFX(madara);
     const PERIOD = 700;   // 与CSS每圈时长一致
@@ -10277,6 +10521,7 @@ function madaraJueKong(madara) {
     madara._madaraS2Used = true;
     madara._madaraAirborne = true;
     madara.flying = true;
+    sendSkillFx('madaraJump', madara);
     showMadaraJumpFX(madara);
     clearHighlights();
     gameState.selectedUnit = madara;
@@ -10301,6 +10546,7 @@ function madaraUseStomp(madara) {
 }
 function madaraStomp(madara, land) {
     madara._madaraStompMode = false;
+    sendSkillFx('madaraStomp', madara, land.row, land.col);
     madara._madaraStompUsed = true;
     madara._madaraAirborne = false;
     madara.flying = false;
@@ -10366,7 +10612,7 @@ function showMadaraPoJunFX(madara, dirR, dirC) {
     board.appendChild(el);
     setTimeout(() => el.remove(), 500);
 }
-// 视觉:乱舞红戟环绕三圈
+// 视觉:乱舞红戟环绕三圈(带红色渐变拖尾)
 function showMadaraRanbuFX(madara) {
     const board = document.getElementById('gameBoard');
     if (!board) return;
@@ -10376,6 +10622,16 @@ function showMadaraRanbuFX(madara) {
     wrap.style.left = (madara.col*cellW + cellW/2) + 'px';
     wrap.style.top = (madara.row*cellH + cellH/2) + 'px';
     wrap.style.zIndex = '44';
+    // 红色渐变拖尾:多层滞后的戟影,覆盖整圈形成旋转残影
+    const N = 16;
+    for (let i = 1; i <= N; i++) {
+        const t = document.createElement('div');
+        t.className = 'madara-ranbu-blade madara-ranbu-trail';
+        t.style.animationDelay = (-0.042 * i).toFixed(3) + 's';
+        t.style.opacity = (0.10 + 0.48 * (i / N)).toFixed(2);
+        wrap.appendChild(t);
+    }
+    // 主戟
     const spin = document.createElement('div');
     spin.className = 'madara-ranbu-blade';
     wrap.appendChild(spin);
@@ -10523,15 +10779,60 @@ function showFirePillar(row, col) {
     sendSkillFx('firePillar', null, row, col);
 
     const board = document.getElementById('gameBoard');
-    const cellSize = cellW, cH = cellH, radius = 1;
-    const pillar = document.createElement('div');
-    pillar.className = 'fire-pillar';
-    pillar.style.left = ((col - radius) * cellSize) + 'px';
-    pillar.style.top = ((row - radius) * cH + cH) + 'px';
-    pillar.style.width = ((radius * 2 + 1) * cellSize) + 'px';
-    pillar.style.height = ((radius * 2 + 1) * cH) + 'px';
-    board.appendChild(pillar);
-    setTimeout(() => pillar.remove(), 1000);
+    if (!board) return;
+    const w = 3 * cellW;        // 3格宽
+    const baseH = 3 * cellH;    // 3×3 伤害范围
+    const riseH = 4 * cellH;    // 冲天高度
+    const wrap = document.createElement('div');
+    wrap.className = 'fire-pillar-wrap';
+    wrap.style.position = 'absolute';
+    wrap.style.left = ((col - 1) * cellW) + 'px';
+    wrap.style.top = ((row - 1) * cellH - riseH) + 'px';
+    wrap.style.width = w + 'px';
+    wrap.style.height = (baseH + riseH) + 'px';
+    wrap.style.zIndex = '26';
+    wrap.style.pointerEvents = 'none';
+    // 3×3 火焰本体(铺满整个伤害范围)
+    const base = document.createElement('div');
+    base.className = 'fire-pillar-base';
+    base.style.position = 'absolute';
+    base.style.left = '0';
+    base.style.bottom = '0';
+    base.style.width = '100%';
+    base.style.height = baseH + 'px';
+    wrap.appendChild(base);
+    // 冲天火柱(3格宽,向上冲)
+    const jet = document.createElement('div');
+    jet.className = 'fire-pillar-jet';
+    jet.style.position = 'absolute';
+    jet.style.left = '0';
+    jet.style.bottom = (baseH - 6) + 'px';
+    jet.style.width = '100%';
+    jet.style.height = riseH + 'px';
+    wrap.appendChild(jet);
+    // 底部火核
+    const core = document.createElement('div');
+    core.className = 'fire-pillar-core';
+    core.style.position = 'absolute';
+    core.style.left = '10%';
+    core.style.bottom = '0';
+    core.style.width = '80%';
+    core.style.height = baseH + 'px';
+    wrap.appendChild(core);
+    // 上升火舌粒子
+    for (let i = 0; i < 12; i++) {
+        const p = document.createElement('div');
+        p.className = 'fire-pillar-spark';
+        p.style.left = (8 + Math.random() * 84) + '%';
+        p.style.animationDelay = (Math.random() * 0.7).toFixed(2) + 's';
+        p.style.animationDuration = (0.8 + Math.random() * 0.7).toFixed(2) + 's';
+        const s = 4 + Math.random() * 7;
+        p.style.width = s + 'px';
+        p.style.height = s + 'px';
+        wrap.appendChild(p);
+    }
+    board.appendChild(wrap);
+    setTimeout(() => wrap.remove(), 1600);
 }
 
 // 飞镖弹射动画
@@ -10947,9 +11248,11 @@ function showCounterFX(madara) {
 }
 
 // 陨石
-function showMeteorButton(u) {
+function showMeteorButton(u, fromEndTurn, visualOnly) {
     const board = document.getElementById('gameBoard');
+    if (fromEndTurn && !visualOnly) gameState._meteorAnimating = true;
     if (!board) return;
+    if (!visualOnly) sendSkillFx('madaraMeteor', u);
     const centerRow = u.row, centerCol = u.col, radius = 2;
     const RISE = 110;
     const RISE_MS = 2000;
@@ -10976,25 +11279,33 @@ function showMeteorButton(u) {
     board.appendChild(wrapEl);
     // ① 包裹:1伤 + 双方都看不到被包裹的单位(标记,重渲染也保持)
     wrapSet.forEach(e => { e._meteorHidden = true; const el = elOf(e); if (el) el.style.visibility = 'hidden'; });
-    wrapSet.forEach(e => { e.currentHp -= 1; updateUnitHp(e); if (e.currentHp <= 0) removeUnit(e); });
+    if (!visualOnly) wrapSet.forEach(e => { e.currentHp -= 1; updateUnitHp(e); if (e.currentHp <= 0) removeUnit(e); });
     // ② 上升到空中(2秒):2伤
     setTimeout(() => {
         lift(true, RISE_MS);
         wrapEl.style.transition = `top ${RISE_MS}ms ease-out`;
         wrapEl.style.top = ((centerRow - radius) * cellH - RISE) + 'px';
-        wrapSet.forEach(e => { if (e._removing) return; e.currentHp -= 2; updateUnitHp(e); if (e.currentHp <= 0) removeUnit(e); });
+        if (!visualOnly) wrapSet.forEach(e => { if (e._removing) return; e.currentHp -= 2; updateUnitHp(e); if (e.currentHp <= 0) removeUnit(e); });
     }, 700);
-    // ③ 蓝色循环呼吸特效(浅、范围大,上升过程中)
+    // ③ 蓝色循环呼吸特效(浅、范围大;挂在马斑图标上,随其升降)
     setTimeout(() => {
+        const uel = elOf(u);
+        if (!uel) return;
+        const wrapAura = document.createElement('div');
+        wrapAura.style.position = 'absolute';
+        wrapAura.style.left = '50%';
+        wrapAura.style.top = '50%';
+        wrapAura.style.transform = 'translate(-50%, -50%)';
+        wrapAura.style.width = (9 * cellW) + 'px';
+        wrapAura.style.height = (9 * cellH) + 'px';
+        wrapAura.style.pointerEvents = 'none';
         const aura = document.createElement('div');
         aura.className = 'madara-blue-aura';
-        aura.style.position = 'absolute';
-        aura.style.left = (centerCol * cellW + cellW / 2 - 4.5 * cellW) + 'px';
-        aura.style.top = (centerRow * cellH + cellH / 2 - 4.5 * cellH) + 'px';
-        aura.style.width = (9 * cellW) + 'px';
-        aura.style.height = (9 * cellH) + 'px';
-        board.appendChild(aura);
-        setTimeout(() => aura.remove(), 2400);
+        aura.style.width = '100%';
+        aura.style.height = '100%';
+        wrapAura.appendChild(aura);
+        uel.appendChild(wrapAura);
+        setTimeout(() => wrapAura.remove(), 2400);
     }, 1800);
     // ④ 蓝色大戟(头朝下)插入陨石:插进去的部分被裁掉,2伤
     setTimeout(() => {
@@ -11032,7 +11343,7 @@ function showMeteorButton(u) {
             crackEl.appendChild(line);
         }
         wrapEl.appendChild(crackEl);
-        wrapSet.forEach(e => { if (e._removing) return; e.currentHp -= 2; updateUnitHp(e); if (e.currentHp <= 0) removeUnit(e); });
+        if (!visualOnly) wrapSet.forEach(e => { if (e._removing) return; e.currentHp -= 2; updateUnitHp(e); if (e.currentHp <= 0) removeUnit(e); });
     }, 2900);
     // ⑤ 一起坠落
     setTimeout(() => {
@@ -11045,6 +11356,7 @@ function showMeteorButton(u) {
         wrapEl.classList.add('meteor-boom');
         setTimeout(() => wrapEl.remove(), 700);
         for (let i = 0; i < 3; i++) {
+            if (visualOnly) break;
             setTimeout(() => {
                 wrapSet.forEach(e => {
                     if (e._removing || e.ghost) return;
@@ -11063,6 +11375,8 @@ function showMeteorButton(u) {
         const uel = elOf(u);
         if (uel) { uel.style.transition = ''; uel.style.transform = ''; }
     }, 4800);
+    // 回合结束触发时:陨石结束后才开放敌方回合操作/倒计时
+    if (fromEndTurn && !visualOnly) setTimeout(() => { gameState._meteorAnimating = false; }, 5600);
 }
 
 // 铠大招:不灭魔躯
@@ -11085,6 +11399,319 @@ function activateKaiUlt(kai) {
 }
 
 // 烟雾弹特效
+// ===== 蜂医 =====
+function openBeeMedicSkillModal(medic) {
+    gameState._beeMedicSelected = medic;
+    const b1 = document.getElementById('beeSkill1Btn');
+    const b2 = document.getElementById('beeSkill2Btn');
+    const b3 = document.getElementById('beeSkill3Btn');
+    const b4 = document.getElementById('beeSkill4Btn');
+    if (b1) b1.disabled = !!medic._beeS1Used;
+    if (b2) b2.disabled = !!medic._beeS2Used;
+    if (b3) b3.disabled = (medic._beeS3Cd || 0) > 0;
+    if (b4) b4.disabled = !!medic._beeS4Used;
+    const list = document.getElementById('beeRescueList');
+    if (list) { list.style.display = 'none'; list.innerHTML = ''; }
+    const m = document.getElementById('beeMedicModal');
+    if (m) m.classList.remove('hidden');
+}
+function closeBeeMedicSkillModalFunc() {
+    const m = document.getElementById('beeMedicModal');
+    if (m) m.classList.add('hidden');
+    gameState._beeMedicSelected = null;
+}
+// 激素枪:选4格内单位(敌我均可)
+function beeHormoneMode(medic) {
+    closeBeeMedicSkillModalFunc();
+    if (!medic || medic._beeS1Used) return;
+    medic._beeHormoneMode = true;
+    gameState.selectedUnit = medic;
+    clearHighlights();
+    gameState.units.forEach(u => {
+        if (u.id === medic.id || u.ghost || u._removing) return;
+        if (Math.max(Math.abs(u.row - medic.row), Math.abs(u.col - medic.col)) <= 4) {
+            gameState.board[u.row][u.col].classList.add('sasuke-ult-target');
+        }
+    });
+}
+function beeApplyHormone(u) {
+    u.currentHp = Math.min(u.maxHp, u.currentHp + 3);
+    u._regenTurns = 3;
+    u._regenAmount = 1;
+    updateUnitHp(u);
+    showCritText(u.row, u.col, '激素');
+}
+function beeHormoneShoot(medic, target) {
+    medic._beeHormoneMode = false;
+    medic._beeS1Used = true;
+    clearHighlights();
+    gameState.selectedUnit = null;
+    if (target.team === medic.team) {
+        beeApplyHormone(target);
+        // 绿色治疗烟雾:激素枪打中烟内友军
+        let converted = null;
+        (gameState.beeSmokes || []).forEach(s => {
+            if (s.noHormone || s.heal) return;
+            if (s.cells.some(c => c.r === target.row && c.c === target.col)) { s.heal = true; converted = s; }
+        });
+        if (converted) {
+            renderBeeSmokes();
+            gameState.units.forEach(u => {
+                if (u.team !== medic.team || u.ghost || u._removing) return;
+                if (converted.cells.some(c => c.r === u.row && c.c === u.col)) beeApplyHormone(u);
+            });
+        }
+    } else {
+        const dmg = Math.max(0, 2 - Math.max(0, (target.armor || 0) - 1));
+        target.currentHp -= dmg;
+        updateUnitHp(target);
+        showCritText(target.row, target.col, '激素枪');
+        if (target.currentHp <= 0) removeUnit(target);
+    }
+    syncOnlineNow();
+}
+// 蜂巢烟雾弹:8格内选点 → 5×5 烟雾
+function beeSmokeBombMode(medic) {
+    closeBeeMedicSkillModalFunc();
+    if (!medic || medic._beeS2Used) return;
+    medic._beeS2Mode = true;
+    gameState.selectedUnit = medic;
+    clearHighlights();
+    for (let r = medic.row - 8; r <= medic.row + 8; r++) {
+        for (let c = medic.col - 8; c <= medic.col + 8; c++) {
+            if (!isValidPosition(r, c)) continue;
+            if (isBlueBase(r, c) || isRedBase(r, c)) continue;
+            if (Math.max(Math.abs(r - medic.row), Math.abs(c - medic.col)) > 8) continue;
+            gameState.board[r][c].classList.add('pierce-target');
+        }
+    }
+}
+function beeDeploySmokeBomb(medic, row, col) {
+    medic._beeS2Mode = false;
+    medic._beeS2Used = true;
+    sendSkillFx('beeSmokeBomb', medic, row, col);
+    clearHighlights();
+    gameState.selectedUnit = null;
+    const makeSmoke = () => {
+        const cells = [];
+        for (let r = row - 2; r <= row + 2; r++) {
+            for (let c = col - 2; c <= col + 2; c++) {
+                if (isValidPosition(r, c)) cells.push({ r, c });
+            }
+        }
+        gameState.beeSmokes.push({ team: medic.team, heal: false, cells });
+        renderBeeSmokes();
+        syncOnlineNow();
+    };
+    const board = document.getElementById('gameBoard');
+    if (!board) { makeSmoke(); return; }
+    // 灰色烟雾弹飞向目标格
+    const fromL = medic.col * cellW + cellW / 2 - 6;
+    const fromT = medic.row * cellH + cellH / 2 - 6;
+    const toL = col * cellW + cellW / 2 - 6;
+    const toT = row * cellH + cellH / 2 - 6;
+    const dot = document.createElement('div');
+    dot.className = 'bee-smoke-bomb';
+    dot.style.position = 'absolute';
+    dot.style.left = fromL + 'px';
+    dot.style.top = fromT + 'px';
+    dot.style.zIndex = '45';
+    board.appendChild(dot);
+    let done = false;
+    const finish = () => {
+        if (done) return;
+        done = true;
+        if (dot.parentNode) dot.remove();
+        makeSmoke();
+    };
+    tweenEl(dot, fromL, fromT, toL, toT, 0, 500, finish);
+    // 兼底:即使动画帧被节流也保证烟雾弹出
+    setTimeout(finish, 750);
+}
+// 烟幕:前方 5×13 大范围烟雾(无人机飞过逐步展开,不能配合激素枪)
+function beeSmokeScreen(medic) {
+    closeBeeMedicSkillModalFunc();
+    if (!medic || (medic._beeS3Cd || 0) > 0) return;
+    medic._beeS3Cd = 2;
+    sendSkillFx('beeSmokeScreen', medic);
+    const dir = medic.team === 'red' ? -1 : 1;
+    const rows = [];
+    for (let k = 1; k <= 13; k++) rows.push(medic.row + dir * k);
+    const cols = [medic.col - 2, medic.col - 1, medic.col, medic.col + 1, medic.col + 2];
+    const zone = { team: medic.team, heal: false, noHormone: true, cells: [] };
+    gameState.beeSmokes.push(zone);
+    clearHighlights();
+    gameState.selectedUnit = null;
+    const board = document.getElementById('gameBoard');
+    if (!board) {
+        rows.forEach(r => cols.forEach(c => { if (isValidPosition(r, c)) zone.cells.push({ r, c }); }));
+        renderBeeSmokes();
+        syncOnlineNow();
+        return;
+    }
+    // 黑色方形无人机飞过区域,飞过处出现烟幕
+    const drone = document.createElement('div');
+    drone.className = 'bee-drone';
+    drone.style.position = 'absolute';
+    drone.style.left = (medic.col * cellW + cellW / 2 - 5) + 'px';
+    drone.style.top = (medic.row * cellH + cellH / 2 - 5) + 'px';
+    drone.style.zIndex = '45';
+    drone.style.transition = 'top 0.11s linear';
+    board.appendChild(drone);
+    let i = 0;
+    const step = () => {
+        if (i >= rows.length) {
+            drone.remove();
+            syncOnlineNow();
+            return;
+        }
+        const r = rows[i];
+        cols.forEach(c => { if (isValidPosition(r, c)) zone.cells.push({ r, c }); });
+        drone.style.top = (r * cellH + cellH / 2 - 5) + 'px';
+        renderBeeSmokes();
+        i++;
+        setTimeout(step, 110);
+    };
+    step();
+}
+// 专业救援:列出上一回合己方阵亡单位
+function beeOpenRescue(medic) {
+    const list = document.getElementById('beeRescueList');
+    if (!list) return;
+    medic._beeRescueOpen = true;
+    list.style.display = 'block';
+    list.innerHTML = '';
+    const dead = (gameState.graveyard || []).filter(g => g.team === medic.team && g.diedTurn >= gameState.turnNumber - 1);
+    if (!dead.length) {
+        list.innerHTML = '<p style="color:#888;font-size:12px;">上一回合没有己方阵亡单位</p>';
+        return;
+    }
+    dead.forEach(g => {
+        const btn = document.createElement('button');
+        btn.className = 'skill-btn';
+        btn.textContent = '复活：' + g.name + '（30%血）';
+        btn.addEventListener('click', () => beeRevive(medic, g));
+        list.appendChild(btn);
+    });
+}
+function beeRevive(medic, g) {
+    if (!medic || !g) return;
+    let dest = null;
+    const dirs = [[0,1],[0,-1],[1,0],[-1,0],[1,1],[1,-1],[-1,1],[-1,-1],[2,0],[-2,0],[0,2],[0,-2]];
+    for (const [dr, dc] of dirs) {
+        const r = medic.row + dr, c = medic.col + dc;
+        if (!isValidPosition(r, c)) continue;
+        if (isBlueBase(r, c) || isRedBase(r, c)) continue;
+        if (gameState.units.some(u => u.row === r && u.col === c)) continue;
+        dest = { r, c };
+        break;
+    }
+    if (!dest) return;
+    const u = Object.assign({}, g, {
+        id: (g.cardId || 'revived') + '_revive_' + Date.now() + '_' + Math.random(),
+        row: dest.r, col: dest.c, _removing: false, ghost: false
+    });
+    u.maxHp = g.maxHp;
+    u.currentHp = Math.max(1, Math.ceil((g.maxHp || 1) * 0.3));
+    delete u.diedTurn;
+    delete u._meteorHidden;
+    gameState.graveyard = gameState.graveyard.filter(x => x !== g);
+    gameState.units.push(u);
+    renderUnit(u);
+    medic._beeS4Used = true;
+    showCritText(dest.r, dest.c, '复活');
+    closeBeeMedicSkillModalFunc();
+    syncOnlineNow();
+}
+// 蜂烟渲染(复用 .smoke-cover 的视野遮挡逻辑;已存在的格子不重建,避免淡入动画重播)
+function renderBeeSmokes() {
+    const needed = new Map();
+    (gameState.beeSmokes || []).forEach(s => {
+        s.cells.forEach(({ r, c }) => {
+            const key = r + ',' + c;
+            const prev = needed.get(key);
+            if (!prev) needed.set(key, { team: s.team, heal: !!s.heal });
+            else if (s.heal) prev.heal = true;
+        });
+    });
+    // 移除已失效的蜂烟
+    document.querySelectorAll('.bee-smoke').forEach(el => {
+        const cell = el.parentElement;
+        if (!cell || !cell.dataset || cell.dataset.row === undefined) { el.remove(); return; }
+        const key = cell.dataset.row + ',' + cell.dataset.col;
+        if (!needed.has(key)) el.remove();
+    });
+    // 添加/更新
+    needed.forEach((info, key) => {
+        const parts = key.split(',');
+        const r = parseInt(parts[0], 10), c = parseInt(parts[1], 10);
+        const cell = gameState.board[r] && gameState.board[r][c];
+        if (!cell) return;
+        let cv = cell.querySelector('.bee-smoke');
+        if (!cv) {
+            if (cell.querySelector('.smoke-cover')) return;
+            cv = document.createElement('div');
+            cv.className = 'smoke-cover bee-smoke';
+            cell.appendChild(cv);
+        }
+        cv.dataset.smokeTeam = info.team;
+        cv.classList.toggle('heal-smoke', !!info.heal);
+    });
+    updateSmokeVisibility();
+}
+// 联机重放:蜂巢烟雾弹灰点飞行
+function showBeeSmokeBombFx(fromR, fromC, toR, toC) {
+    const board = document.getElementById('gameBoard');
+    if (!board) return;
+    const fromL = fromC * cellW + cellW / 2 - 6;
+    const fromT = fromR * cellH + cellH / 2 - 6;
+    const toL = toC * cellW + cellW / 2 - 6;
+    const toT = toR * cellH + cellH / 2 - 6;
+    const dot = document.createElement('div');
+    dot.className = 'bee-smoke-bomb';
+    dot.style.position = 'absolute';
+    dot.style.left = fromL + 'px';
+    dot.style.top = fromT + 'px';
+    dot.style.zIndex = '45';
+    board.appendChild(dot);
+    tweenEl(dot, fromL, fromT, toL, toT, 0, 500, () => dot.remove());
+    setTimeout(() => { if (dot.parentNode) dot.remove(); }, 750);
+}
+// 联机重放:蜂医烟幕无人机飞行
+function showBeeDroneFx(fromR, fromC, team) {
+    const board = document.getElementById('gameBoard');
+    if (!board) return;
+    const dir = team === 'red' ? -1 : 1;
+    const drone = document.createElement('div');
+    drone.className = 'bee-drone';
+    drone.style.position = 'absolute';
+    drone.style.left = (fromC * cellW + cellW / 2 - 5) + 'px';
+    drone.style.top = (fromR * cellH + cellH / 2 - 5) + 'px';
+    drone.style.zIndex = '45';
+    drone.style.transition = 'top 0.11s linear';
+    board.appendChild(drone);
+    for (let k = 1; k <= 13; k++) {
+        setTimeout(() => {
+            drone.style.top = ((fromR + dir * k) * cellH + cellH / 2 - 5) + 'px';
+        }, k * 110);
+    }
+    setTimeout(() => drone.remove(), 13 * 110 + 300);
+}
+
+// 技能框按钮绑定
+(function wireBeeMedicModal() {
+    const m = document.getElementById('beeMedicModal');
+    if (!m) return;
+    const g = id => document.getElementById(id);
+    const sel = () => gameState._beeMedicSelected;
+    if (g('beeSkill1Btn')) g('beeSkill1Btn').addEventListener('click', () => { const u = sel(); if (u) beeHormoneMode(u); });
+    if (g('beeSkill2Btn')) g('beeSkill2Btn').addEventListener('click', () => { const u = sel(); if (u) beeSmokeBombMode(u); });
+    if (g('beeSkill3Btn')) g('beeSkill3Btn').addEventListener('click', () => { const u = sel(); if (u) beeSmokeScreen(u); });
+    if (g('beeSkill4Btn')) g('beeSkill4Btn').addEventListener('click', () => { const u = sel(); if (u) beeOpenRescue(u); });
+    if (g('closeBeeMedicModal')) g('closeBeeMedicModal').addEventListener('click', closeBeeMedicSkillModalFunc);
+    m.addEventListener('click', (e) => { if (e.target === m) closeBeeMedicSkillModalFunc(); });
+})();
+
 function deploySmoke(centerRow, centerCol, radius, team) {
     for (let r = centerRow - radius; r <= centerRow + radius; r++) {
         for (let c = centerCol - radius; c <= centerCol + radius; c++) {
@@ -11338,6 +11965,8 @@ function clearExpiredSmoke() {
             }
         }
     });
+    // 蜂医烟雾的格子也算作有效烟雾(避免被误清)
+    (gameState.beeSmokes || []).forEach(s => s.cells.forEach(c => activeZones.add(c.r + ',' + c.c)));
     document.querySelectorAll('.smoke-cover').forEach(cv => {
         const cell = cv.parentElement;
         const row = parseInt(cell.dataset.row);
@@ -11391,6 +12020,32 @@ function isCellSmokedFor(row, col, team) {
     return false;
 }
 
+// 大本营伤害:若己方场上存在美须藤,由其按出现顺序承担(护甲生效,溢出传给下一株/大本营)
+function damageBase(isBlueBase, amount) {
+    if (amount <= 0) return;
+    const team = isBlueBase ? 'blue' : 'red';
+    let remaining = amount;
+    const vines = gameState.units.filter(u => u.beautyVine && u.team === team && !u._removing);
+    for (const v of vines) {
+        if (remaining <= 0) break;
+        const taken = Math.max(0, remaining - (v.armor || 0));
+        v.currentHp -= taken;
+        updateUnitHp(v);
+        if (v.currentHp <= 0) {
+            const overflow = -v.currentHp;
+            v.currentHp = 0;
+            removeUnit(v);
+            remaining = overflow;
+        } else {
+            remaining = 0;
+        }
+    }
+    if (remaining > 0) {
+        if (isBlueBase) gameState.blueBaseHp -= remaining;
+        else gameState.redBaseHp -= remaining;
+    }
+    updateBaseHpDisplay();
+}
 // 检查是否是蓝方大本营
 function isBlueBase(row, col) {
     return row >= 0 && row <= 2 && col >= 10 && col <= 13;
@@ -11480,13 +12135,15 @@ function updateTimerDisplay() {
 
 // 结束回合
 function endTurn() {
+    // 陨石演出中:禁止结束回合/跳过
+    if (gameState._meteorAnimating) return;
     stopTimer();
     clearHighlights();
     gameState.selectedUnit = null;
     gameState.deployMode = false;
     // 回合结束:关闭所有技能弹窗/清空选中(防对方回合残留误操作)
-    ['deepBlueSkillModal','lvbuSkillModal','yoggSkillModal','guySkillModal','shangboleSkillModal','sasukeSkillModal','painSkillModal','madaraSkillModal'].forEach(id => { const m = document.getElementById(id); if (m) m.classList.add('hidden'); });
-    gameState._deepBlueSelected = null; gameState._lvbuSelected = null; gameState._guySelected = null; gameState._yoggSelected = null; gameState._shangboleSelected = null; gameState._sasukeSelected = null; gameState._painSelected = null; gameState._madaraSelected = null;
+    ['deepBlueSkillModal','lvbuSkillModal','yoggSkillModal','guySkillModal','shangboleSkillModal','sasukeSkillModal','painSkillModal','madaraSkillModal','beeMedicModal'].forEach(id => { const m = document.getElementById(id); if (m) m.classList.add('hidden'); });
+    gameState._deepBlueSelected = null; gameState._lvbuSelected = null; gameState._guySelected = null; gameState._yoggSelected = null; gameState._shangboleSelected = null; gameState._sasukeSelected = null; gameState._painSelected = null; gameState._madaraSelected = null; gameState._beeMedicSelected = null;
     // 战车:结束回合重置锁定模式
     gameState.units.forEach(u => { u._targeting = false; u._witherTargeting = false; u._witherCharged = false; u._zetsuSkillUsed = false; u._zetsuTargeting = false; u._sasukeUltTargeting = false; u._sasukeFlameStage = 0; });
 
@@ -11497,14 +12154,14 @@ function endTurn() {
         gameState.currentTurn = 'blue';
         // 蓝方能量与红方同步(turnNumber,不再+1):玩家1→AI1→玩家2→AI2
         gameState.blueEnergy = Math.min(gameState.maxEnergy >= 500 ? (gameState.blueMaxEnergy || gameState.maxEnergy) : gameState.turnNumber, gameState.blueMaxEnergy || gameState.maxEnergy);
-        // 能量收集器加成
-        const blueBoost = gameState.units.filter(u => u.team === 'blue' && u.building).length;
+        // 能量收集器加成(只有能量收集器提供能量;被冰冻的收集器不产出)
+        const blueBoost = gameState.units.filter(u => u.team === 'blue' && u.energyBoost && !u.frozen).length;
         gameState.blueEnergy = Math.min(gameState.blueEnergy + blueBoost, gameState.blueMaxEnergy || gameState.maxEnergy);
     } else {
         gameState.currentTurn = 'red';
         gameState.turnNumber++;
         gameState.redEnergy = Math.min(gameState.maxEnergy >= 500 ? (gameState.redMaxEnergy || gameState.maxEnergy) : gameState.turnNumber, gameState.redMaxEnergy || gameState.maxEnergy);
-        const redBoost = gameState.units.filter(u => u.team === 'red' && u.building).length;
+        const redBoost = gameState.units.filter(u => u.team === 'red' && u.energyBoost && !u.frozen).length;
         gameState.redEnergy = Math.min(gameState.redEnergy + redBoost, gameState.redMaxEnergy || gameState.maxEnergy);
     }
 
@@ -11675,6 +12332,15 @@ function endTurn() {
             sasukeEndSusanoo(u);
         }
     });
+    // 蜂医:技能次数重置
+    gameState.units.forEach(u => {
+        if (!u.beeMedic) return;
+        if (u.team === prevTurn) {
+            u._beeS1Used = false; u._beeS2Used = false; u._beeS4Used = false;
+            if (u._beeS3Cd > 0) u._beeS3Cd--;
+            u._beeHormoneMode = false; u._beeS2Mode = false; u._beeRescueOpen = false;
+        }
+    });
     // 小王子:移动计数/攻击数重置 + 技能冷却递减
     gameState.units.forEach(u => {
         if (u.prince && u.team === prevTurn) {
@@ -11817,7 +12483,7 @@ function endTurn() {
             u.attack = Math.floor(u.attack / 2);
             const ue = gameState.board[u.row][u.col].querySelector('.unit');
             if (ue) ue.classList.remove('kai-ult', 'musou-form');
-            if ((u.madaraEnergy||0) >= 1 && (u.madaraEnergy||0) <= 2) showMeteorButton(u);
+            if ((u.madaraEnergy||0) >= 1 && (u.madaraEnergy||0) <= 2) showMeteorButton(u, true);
             u.madaraEnergy = 0;
             renderEnergyBar(u, gameState.board[u.row][u.col].querySelector('.unit'));
         }
@@ -11923,6 +12589,15 @@ function endTurn() {
             });
         });
     }
+
+    // 激素枪持续回复:每回合回1,持续3回合
+    gameState.units.forEach(u => {
+        if (u._regenTurns > 0 && !u._removing) {
+            u.currentHp = Math.min(u.maxHp, u.currentHp + (u._regenAmount || 1));
+            u._regenTurns--;
+            updateUnitHp(u);
+        }
+    });
 
     // 中毒结算:每回合扣血(无视护甲),连续计数未命中则重置
     gameState.units.slice().forEach(u => {
@@ -12083,18 +12758,42 @@ function endTurn() {
         return sz.turns > 0;
     });
     clearExpiredSmoke();
-
-    // 开始新回合计时(联机模式:只有当前回合操作方计时,等待方不显示倒计时)
-    if (!gameState.onlineMode || gameState.currentTurn === onlineTeam) {
-        startTimer();
-    } else {
-        stopTimer();
-        timerDisplay.textContent = '对方回合';
+    // 蜂医烟雾:持续到敌方回合结束
+    if (gameState.beeSmokes && gameState.beeSmokes.length) {
+        const beforeBee = gameState.beeSmokes.length;
+        gameState.beeSmokes = gameState.beeSmokes.filter(s => s.team === prevTurn);
+        if (gameState.beeSmokes.length !== beforeBee) clearExpiredSmoke();
     }
 
-    // AI模式:蓝色回合自动AI行动(联机模式绝无AI)
-    if (gameState.aiMode && !gameState.onlineMode && gameState.currentTurn === 'blue') {
-        setTimeout(aiTurn, 500);
+    // 开始新回合计时(联机模式:只有当前回合操作方计时,等待方不显示倒计时)
+    // 陨石演出中:倒计时与AI行动延后到陨石结束
+    if (gameState._meteorAnimating) {
+        stopTimer();
+        timerDisplay.textContent = '';
+        const waitMeteor = () => {
+            if (gameState._meteorAnimating) { setTimeout(waitMeteor, 150); return; }
+            if (!gameState.onlineMode || gameState.currentTurn === onlineTeam) {
+                startTimer();
+            } else {
+                stopTimer();
+                timerDisplay.textContent = '对方回合';
+            }
+            if (gameState.aiMode && !gameState.onlineMode && gameState.currentTurn === 'blue') {
+                setTimeout(aiTurn, 500);
+            }
+        };
+        setTimeout(waitMeteor, 150);
+    } else {
+        if (!gameState.onlineMode || gameState.currentTurn === onlineTeam) {
+            startTimer();
+        } else {
+            stopTimer();
+            timerDisplay.textContent = '对方回合';
+        }
+        // AI模式:蓝色回合自动AI行动(联机模式绝无AI)
+        if (gameState.aiMode && !gameState.onlineMode && gameState.currentTurn === 'blue') {
+            setTimeout(aiTurn, 500);
+        }
     }
 }
 
@@ -12289,11 +12988,19 @@ function showCardInfo(card) {
     if (card.tankSpawn) features.push('召唤战车×2(攻3/护甲2/血4,限老太周围4格)');
     if (card.erin) features.push('双发连击/黄圈/计数技能/保命装');
     if (card.doomShroom) features.push('双击引爆:7×7爆炸7伤+留弹坑4回合');
-    if (card.smallShroom) features.push('每回合限2个/不可移动');
+    if (card.smallShroom) features.push('每回合限1个/不可移动');
     if (card.patroller) features.push('咬住敌人3回合不能移动');
     if (card.royalGuard) features.push('部署6卫兵/3伤护盾/移动≥3冲锋翻倍');
     if (card.prince) features.push('攻击上限每回合最多+1(移动≤2格触发,永久叠加至5)/双击召唤皇家护卫冲锋(3×6推敌+3伤)');
+    if (card.littleSnowflake) features.push('敌人被冰冻时永久+2攻/+2血(无上限)');
+    if (card.id === 'ice_shooter') features.push('不可移动·攻击附带冰冻(敌人1回合无法行动)');
+    if (card.glacierShroom) features.push('不可移动·双击/死亡:全屏冰冻1回合+1伤,双击自毁');
+    if (card.beautyVine) features.push('不可移动·为大本营承担所有伤害(多株按出现顺序)');
+    if (card.beeMedic) features.push('双击技能栏:激素枪/蜂巢烟雾弹/烟幕/专业救援');
+    if (card.nurseGiant) features.push('造成伤害等量治疗己方大本营');
+    if (card.supernovaGiant) features.push('击杀敌人时秒杀场上所有同种敌人');
     if (card.hogRider) features.push('只能攻击建筑/大本营');
+    if (card.golem) features.push('死亡分裂小石人·只能攻击建筑/大本营');
     if (card.royalGiant) features.push('只能攻击建筑/大本营,攻击时5×5冲击波:击退1格+1伤');
     if (card.eliteKnight) features.push('7×7法阵嘲讽+3伤护盾');
     if (card.fisherman) features.push('双击拉敌人到身前+可再普攻');
@@ -12496,6 +13203,8 @@ function startGame() {
     gameState.rageZones = [];
     gameState.fireZones = [];
     gameState.sasukeFlames = [];
+    gameState.beeSmokes = [];
+    gameState.graveyard = [];
     gameState.iceFields = [];
     gameState.spikeNets = [];
     gameState.shroomCount = { red: 0, blue: 0 };
@@ -12518,7 +13227,7 @@ function startGame() {
     gameState._guySelected = null;
     gameState.abilityPhase = 0;
     // 关闭所有弹窗(防残留)
-    ['deployModal','spellModal','deepBlueSkillModal','lvbuSkillModal','yoggSkillModal','guySkillModal','shangboleSkillModal','sasukeSkillModal','painSkillModal','madaraSkillModal'].forEach(id => { const m = document.getElementById(id); if (m) m.classList.add('hidden'); });
+    ['deployModal','spellModal','deepBlueSkillModal','lvbuSkillModal','yoggSkillModal','guySkillModal','shangboleSkillModal','sasukeSkillModal','painSkillModal','madaraSkillModal','beeMedicModal'].forEach(id => { const m = document.getElementById(id); if (m) m.classList.add('hidden'); });
 
     // 后手补偿:蓝方(后手)拥有能量卡标记(0费,整局一次,+1能量)——不污染卡组,红方(先手)永远看不到
     gameState._blueEnergyCardLeft = gameState.maxEnergy < 500;
@@ -12874,6 +13583,7 @@ function aiUseSkill(u) {
     return false;
 }
 function aiTurn() {
+    if (gameState._meteorAnimating) { setTimeout(aiTurn, 200); return; }
     if (gameState.gameOver || gameState.currentTurn !== 'blue') return;
     const aiDeck = gameState.aiDeck || [];
     const energy = gameState.blueEnergy;
@@ -12942,6 +13652,7 @@ function aiMoveAndAttack() {
         gameState.units.forEach(e => {
             if (e.team === 'red' && (!tk || e.id === tk.id) && !e.ghost) {
                 if (u.hogRider && !e.building) return;
+                if ((u.golem || u.golemMini) && !e.building) return;
                 if (u.royalGiant && !e.building) return;
                 if (u.balloon && !e.building) return;
                 if (e.flying && !canHitAirUnit(u)) return;
@@ -12972,6 +13683,7 @@ function aiMoveAndAttack() {
             let nearest = null, minD = Infinity;
             gameState.units.filter(e => e.team === 'red' && (!tk || e.id === tk.id)).forEach(e => {
                 if (u.hogRider && !e.building) return;
+                if ((u.golem || u.golemMini) && !e.building) return;
                 if (u.royalGiant && !e.building) return;
                 if (u.balloon && !e.building) return;
                 if (e.flying && !canHitAirUnit(u)) return;
@@ -13012,6 +13724,7 @@ function aiMoveUnit(u, tk) {
     let closestEnemy = null, cDist = Infinity;
     gameState.units.filter(e => e.team === 'red' && (!tk || e.id === tk.id)).forEach(e => {
         if (u.hogRider && !e.building) return;
+        if ((u.golem || u.golemMini) && !e.building) return;
                 if (u.royalGiant && !e.building) return;
                 if (u.balloon && !e.building) return;
         if (e.flying && !canHitAirUnit(u)) return;
