@@ -311,6 +311,10 @@ function playSkillFx(fx) {
             case 'halfHpText': if (typeof showHalfHpText === 'function') showHalfHpText(u); break;
             case 'lightning': if (typeof showLightningStrike === 'function') showLightningStrike(t); else showSkillFlashFx(fx.toR, fx.toC, '#f1c40f', 45); break;
             case 'firePillar': if (typeof showFirePillar === 'function') showFirePillar(fx.toR, fx.toC); else showSkillFlashFx(fx.toR, fx.toC, '#e74c3c', 45); break;
+            case 'zepBomb': if (typeof showZepBombFx === 'function') showZepBombFx(fx.toR, fx.toC); else showSkillFlashFx(fx.toR, fx.toC, '#ff9800', 45); break;
+            case 'zepFire': if (typeof showZepFireFx === 'function') showZepFireFx(fx.toR, fx.toC); else showSkillFlashFx(fx.toR, fx.toC, '#ff5722', 55); break;
+            case 'zepDarts': if (typeof showZepDartsFx === 'function') showZepDartsFx(fx.row, fx.col); else showSkillFlashFx(fx.row, fx.col, '#cfd8dc', 45); break;
+            case 'zepDeath': if (typeof showZepDeathFx === 'function') showZepDeathFx(fx.row, fx.col); else showSkillFlashFx(fx.row, fx.col, '#ff6f00', 70); break;
             case 'missile': if (typeof showMissile === 'function') showMissile(u); else showSkillFlashFx(fx.toR, fx.toC, '#e67e22', 40); break;
             case 'dragonChain': if (typeof showDragonChain === 'function') showDragonChain(u, t, [t]); else showOnlineAttackFx(fx.row, fx.col, fx.toR, fx.toC); break;
             case 'madaraFx': if (typeof showMadaraAttackFX === 'function') showMadaraAttackFX(u, t); else showOnlineAttackFx(fx.row, fx.col, fx.toR, fx.toC); break;
@@ -322,6 +326,11 @@ function playSkillFx(fx) {
             case 'erinBullet': if (typeof showErinBullet === 'function') showErinBullet(u, t); else showOnlineAttackFx(fx.row, fx.col, fx.toR, fx.toC); break;
             case 'infernoLaser': if (typeof showInfernoLaser === 'function') { const tar = gameState.units.find(x => x.id === u._infernoLaserTarget); if (tar) showInfernoLaser(u, tar); } else showOnlineAttackFx(fx.row, fx.col, fx.toR, fx.toC); break;
             case 'goldenDragon': if (typeof showGoldenDragon === 'function') { const d = showGoldenDragon(u); setTimeout(() => { if (d && d.parentNode) d.remove(); }, 1500); } else showSkillFlashFx(fx.row, fx.col, '#f1c40f', 50); break;
+            case 'hashiDragon': if (typeof showGoldenDragon === 'function') { const d2 = showGoldenDragon(u); setTimeout(() => { if (d2 && d2.parentNode) d2.remove(); }, 2200); } else showSkillFlashFx(fx.row, fx.col, '#f1c40f', 50); break;
+            case 'hashiGolem': if (typeof showHashiWoodGolem === 'function') { showHashiWoodGolem(u); showHashiBluePillars(u); } else showSkillFlashFx(fx.row, fx.col, '#3498db', 50); break;
+            case 'hashiBind': if (typeof showTreeEffect === 'function') showTreeEffect(t); else showSkillFlashFx(fx.toR, fx.toC, '#8b5a2b', 40); break;
+            case 'hashiFlower': if (typeof showTreeEffect === 'function') showTreeEffect(t); if (typeof showGoldPollen === 'function') showGoldPollen(t); break;
+            case 'hashiDots': if (typeof showHashiBlackDots === 'function') showHashiBlackDots(t); else showSkillFlashFx(fx.toR, fx.toC, '#111111', 40); break;
             case 'mirrorSkill': if (typeof showMirrorSkillVisual === 'function') showMirrorSkillVisual(u, t); else showSkillFlashFx(fx.toR, fx.toC, '#f1c40f', 50); break;
 case 'counterGolem': if (typeof showGolemVisual === 'function') showGolemVisual(u, t); else showSkillFlashFx(fx.toR, fx.toC, '#27ae60', 40); break;
 case 'bluePillar': if (typeof showBluePillar === 'function') showBluePillar(u); else showSkillFlashFx(fx.row, fx.col, '#3498db', 45); break;

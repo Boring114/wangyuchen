@@ -50,8 +50,32 @@ const server = http.createServer((req, res) => {
             res.end('404 ' + urlPath);
             return;
         }
+        const mime = MIME[path.extname(filePath).toLowerCase()] || 'application/octet-stream';
+        const range = req.headers.range;
+        if (range && /^bytes=/.test(range)) {
+            const parts = range.replace(/bytes=/, '').split('-');
+            const start = parseInt(parts[0], 10) || 0;
+            const end = parts[1] ? parseInt(parts[1], 10) : data.length - 1;
+            if (start >= data.length || end >= data.length) {
+                res.writeHead(416, { 'Content-Range': 'bytes */' + data.length });
+                res.end();
+                return;
+            }
+            const chunk = data.subarray(start, end + 1);
+            res.writeHead(206, {
+                'Content-Type': mime,
+                'Content-Range': 'bytes ' + start + '-' + end + '/' + data.length,
+                'Accept-Ranges': 'bytes',
+                'Content-Length': chunk.length,
+                'Cache-Control': 'no-cache'
+            });
+            res.end(chunk);
+            return;
+        }
         res.writeHead(200, {
-            'Content-Type': MIME[path.extname(filePath).toLowerCase()] || 'application/octet-stream',
+            'Content-Type': mime,
+            'Content-Length': data.length,
+            'Accept-Ranges': 'bytes',
             'Cache-Control': 'no-cache'
         });
         res.end(data);

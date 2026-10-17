@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>棋盘游戏</title>
-    <link rel="stylesheet" href="styles.css?v=8">
+    <link rel="stylesheet" href="styles.css?v=28">
 </head>
 <body>
     <!-- 初始界面 -->
     <div id="startScreen" class="screen">
         <div id="startDecor" class="start-decor"></div>
+        <button id="menuMusicBtn" class="menu-music-btn" title="背景音乐">♪ 音乐</button>
         <h1>棋盘游戏</h1>
         <div class="board-preview">
             <div class="preview-board"></div>
@@ -90,6 +91,10 @@
 
         <!-- 卡牌收藏 -->
         <div id="cardCollection" class="tab-content">
+            <div class="sort-bar">
+                <button id="sortByCostBtn" class="sort-btn active">按费用</button>
+                <button id="sortByRarityBtn" class="sort-btn">按稀有度</button>
+            </div>
             <div class="card-grid" id="cardGrid">
                 <!-- 卡牌将动态生成 -->
             </div>
@@ -174,6 +179,7 @@
         <div class="bottom-controls">
             <button id="unitInfoBtn" class="spell-btn">卡牌信息</button>
             <button id="spellBtn" class="spell-btn">法术</button>
+            <button id="musicBtn" class="music-btn" title="背景音乐">♪ 音乐</button>
             <div class="chat-wrap">
                 <button id="chatBtn" class="chat-btn" title="聊天">💬</button>
                 <div id="chatOptions" class="chat-options hidden">
@@ -336,6 +342,26 @@
         </div>
     </div>
 
+    <div id="zeppelinModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>齐柏林飞艇 · 技能</h3>
+            <button id="zepSkill1Btn" class="skill-btn">高爆炸弹</button>
+            <button id="zepSkill2Btn" class="skill-btn">燃烧弹</button>
+            <button id="zepSkill3Btn" class="skill-btn">金属飞镖</button>
+            <button id="closeZeppelinModal" class="close-btn">关闭</button>
+        </div>
+    </div>
+
+    <div id="hashiramaModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>千手柱间 · 技能</h3>
+            <button id="hashiSkill1Btn" class="skill-btn">木遁·木人之术</button>
+            <button id="hashiSkill2Btn" class="skill-btn">木遁·树界降临</button>
+            <button id="hashiSkill3Btn" class="skill-btn">火之意志</button>
+            <button id="closeHashiramaModal" class="close-btn">关闭</button>
+        </div>
+    </div>
+
     <!-- 游戏结束弹窗 -->
     <div id="gameOverModal" class="modal hidden">
         <div class="modal-content">
@@ -344,7 +370,9 @@
         </div>
     </div>
 
-    <script src="game.js?v=9"></script>
-    <script src="online.js?v=8"></script>
+    <script src="game.js?v=35"></script>
+    <script src="online.js?v=10"></script>
+    <script src="music.js?v=12"></script>
+    <script src="sfx.js?v=4"></script>
 </body>
 </html>

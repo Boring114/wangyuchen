@@ -1,4 +1,4 @@
-const cellW = 30; const cellH = 26;const BOARD_ROWS = 28;
+﻿const cellW = 30; const cellH = 26;const BOARD_ROWS = 28;
 const BOARD_COLS = 24;
 
 // 卡牌数据
@@ -19,6 +19,7 @@ const cardLibrary = [
         name: '骑兵',
         attack: 1,
         hp: 3,
+        armor: 1,
         moveRange: 8,
         attackRange: 2,
         cost: 2,
@@ -60,8 +61,9 @@ const cardLibrary = [
         cost: 2,
         artwork: 'asala',
         description: "你丫完了,我说的!一个大飞踹给你李宁踹开线了,再一枪爆头。",
-        meleeAttack: 3,
+        meleeAttack: 5,
         meleeRange: 1,
+        meleeDiagonal: true,
         armorPen: 1,
         rangedCrit: true
     },
@@ -178,6 +180,7 @@ const cardLibrary = [
     },
     {
         id: 'kai',
+        rarity: 'purple',
         name: '铠',
         attack: 3,
         hp: 6,
@@ -202,6 +205,7 @@ const cardLibrary = [
     },
     {
         id: 'cattail',
+        rarity: 'green',
         name: '猫尾草',
         attack: 1,
         hp: 3,
@@ -214,6 +218,7 @@ const cardLibrary = [
     },
     {
         id: 'electric_pea',
+        rarity: 'gold',
         name: '超级电能豌豆·5阶',
         attack: 4,
         hp: 3,
@@ -229,6 +234,7 @@ const cardLibrary = [
     },
     {
         id: 'energy_collector',
+        rarity: 'blue',
         name: '能量收集器',
         attack: 0,
         hp: 3,
@@ -242,6 +248,7 @@ const cardLibrary = [
     },
     {
         id: 'miner',
+        rarity: 'purple',
         name: '掘地矿工',
         attack: 2,
         hp: 3,
@@ -310,6 +317,7 @@ const cardLibrary = [
     },
     {
         id: 'big_pekka',
+        rarity: 'purple',
         name: '觉醒大皮卡',
         attack: 6,
         hp: 8,
@@ -317,7 +325,7 @@ const cardLibrary = [
         attackRange: 2,
         cost: 7,
         artwork: 'pekka',
-        description: '觉醒的大皮卡!击杀敌人时回复3点生命,可超出上限,最高12点。',
+        description: '觉醒的大皮卡!击杀敌人时回复3点生命,可超出上限,最多超过上限6点。',
         pekkaHeal: true
     },
     {
@@ -348,6 +356,7 @@ const cardLibrary = [
     },
     {
         id: 'gale',
+        rarity: 'purple',
         name: '疯狗·疾风',
         attack: 3,
         hp: 3,
@@ -460,6 +469,7 @@ const cardLibrary = [
     },
     {
         id: 'blowdart_goblin',
+        rarity: 'blue',
         name: '觉醒吹箭哥布林',
         attack: 1,
         hp: 2,
@@ -488,13 +498,13 @@ const cardLibrary = [
         id: 'hashirama',
         name: '千手柱间·秽土转生',
         attack: 2,
-        hp: 6,
+        hp: 8,
         armor: 1,
         moveRange: 4,
-        attackRange: 3,
+        attackRange: 2,
         cost: 15,
         artwork: 'hashirama',
-        description: '木遁·木人之术+树界降临!格挡反击!火之意志!',
+        description: '普通攻击2伤、攻击距2。双击技能栏:木遁·木人之术(前方5×5蓝光柱3伤;能量≥4时自动升级洰龙击)、木遁·树界降临(5格内选敌,3伤并镇压至敌方回合结束;能量≥4时升级花树界降临,3×3花粉毒3回合+减速)、火之意志(黑点击穿+佛手镇压)。',
         hashirama: true,
         hashiMaxEnergy: 6,
         critChance: 0.5,
@@ -517,6 +527,7 @@ const cardLibrary = [
     },
     {
         id: 'wither',
+        rarity: 'purple',
         name: '凋零',
         attack: 3,
         hp: 8,
@@ -532,6 +543,7 @@ const cardLibrary = [
     },
     {
         id: 'tesla',
+        rarity: 'blue',
         name: '觉醒特斯拉电磁塔',
         attack: 3,
         hp: 5,
@@ -593,6 +605,7 @@ const cardLibrary = [
     },
     {
         id: 'mirror',
+        rarity: 'blue',
         name: '镜',
         attack: 3,
         hp: 4,
@@ -607,6 +620,7 @@ const cardLibrary = [
     },
     {
         id: 'super_knight',
+        rarity: 'purple',
         name: '觉醒超级骑士',
         attack: 3,
         hp: 10,
@@ -660,6 +674,7 @@ const cardLibrary = [
     },
     {
         id: 'small_shroom',
+        rarity: 'green',
         name: '小喷菇',
         attack: 1,
         hp: 1,
@@ -700,6 +715,7 @@ const cardLibrary = [
     },
     {
         id: 'prince',
+        rarity: 'gold',
         name: '小王子',
         attack: 2,
         hp: 4,
@@ -713,6 +729,7 @@ const cardLibrary = [
     },
     {
         id: 'little_snowflake',
+        rarity: 'green',
         name: '小雪花',
         attack: 1,
         hp: 2,
@@ -739,6 +756,7 @@ const cardLibrary = [
     },
     {
         id: 'glacier_shroom',
+        rarity: 'blue',
         name: '冰川菇',
         attack: 0,
         hp: 3,
@@ -752,6 +770,7 @@ const cardLibrary = [
     },
     {
         id: 'beauty_vine',
+        rarity: 'purple',
         name: '美须藤',
         attack: 3,
         hp: 12,
@@ -808,6 +827,7 @@ const cardLibrary = [
     },
     {
         id: 'hog_rider',
+        rarity: 'purple',
         name: '野猪骑士',
         attack: 2,
         hp: 5,
@@ -862,6 +882,7 @@ const cardLibrary = [
     },
     {
         id: 'fireball',
+        rarity: 'purple',
         name: '大火球',
         attack: 0,
         hp: 0,
@@ -884,7 +905,7 @@ const cardLibrary = [
         armor: 0,
         moveRange: 2,
         attackRange: 3,
-        cost: 20,
+        cost: 18,
         artwork: 'yogg',
         hero: true,
         heroDeployText: '末日,终于降临了!',
@@ -929,6 +950,7 @@ const cardLibrary = [
     },
     {
         id: 'log_spell',
+        rarity: 'purple',
         name: '复仇滚木',
         attack: 0,
         hp: 0,
@@ -963,6 +985,7 @@ const cardLibrary = [
     },
     {
         id: 'stone_wall',
+        rarity: 'green',
         name: '石墙守护',
         attack: 0,
         hp: 0,
@@ -1024,6 +1047,7 @@ const cardLibrary = [
     },
     {
         id: 'magic_shield',
+        rarity: 'purple',
         name: '魔法护盾',
         attack: 0,
         hp: 0,
@@ -1055,13 +1079,14 @@ const cardLibrary = [
     },
     {
         id: 'evil_moon',
+        rarity: 'gold',
         name: '邪月当空',
         attack: 0,
         hp: 0,
         armor: 0,
         moveRange: 0,
         attackRange: 0,
-        cost: 20,
+        cost: 19,
         artwork: 'evil_moon',
         spell: true,
         evilMoon: true,
@@ -1084,6 +1109,7 @@ const cardLibrary = [
     },
     {
         id: 'eagle_artillery',
+        rarity: 'purple',
         name: '天鹰火炮',
         attack: 0,
         hp: 13,
@@ -1332,6 +1358,7 @@ const cardLibrary = [
     },
     {
         id: 'sasuke_susanoo',
+        rarity: 'gold',
         name: '宇智波佐助[须佐能乎]',
         attack: 2,
         hp: 5,
@@ -1363,6 +1390,37 @@ const cardLibrary = [
         solveEnergy: 0,
         solveMaxEnergy: 4,
         description: '25%暴击。一回合两个技能:木龙之术(选3×8内敌人,木龙冲3伤+俯冲3×3四伤+树缠)与火遁豪火灭却(3×6范围,树缠额外2伤)。技能命中+1能量,4能量双击开启完全体须佐能乎(霸体/无敌/推敌/子弹/十字斩),回合结束自动终极奥义(大剑5×5三伤×3)。敌方回合受击或冰冻/树缠时可双击开启特殊须佐(一局一次)。'
+    },
+    {
+        id: 'zeppelin',
+        name: '齐柏林飞艇',
+        attack: 3,
+        hp: 24,
+        armor: 3,
+        armorPen: 1,
+        moveRange: 3,
+        attackRange: 5,
+        cost: 20,
+        artwork: 'zeppelin',
+        flying: true,
+        rainbow: true,
+        zeppelin: true,
+        description: '彩卡·空中单位。双击技能栏:①高爆炸弹(6格内敌方建筑,每回合最多3次,5伤并使其下个敌方回合无法攻击,周围3×3敌人3伤溅射)②燃烧弹(5格内任意格,5×5范围敌人3伤+燃烧3回合每回合1伤)③金属飞镖(自身7×7范围敌人1伤无视护甲并永久清空护甲)。亡语:阵亡时对自身5×5内所有单位(含友方)造成10伤并留下燃烧火场,敌方进入者燃烧3回合。打出后需等2个己方回合冷却才能再次部署。'
+    },
+    {
+        id: 'witch',
+        name: '觉醒女巫',
+        attack: 2,
+        hp: 7,
+        armor: 0,
+        moveRange: 5,
+        attackRange: 4,
+        cost: 10,
+        artwork: 'witch',
+        rarity: 'purple',
+        witch: true,
+        splashRadius: 1,
+        description: '攻击附带3×3溅射。每个己方回合开始时,在上下左右各召唤1个骷髅(攻1/血1/攻距1/移动9)。召唤的骷髅死亡时,女巫回复2点生命,可超过上限最多6点。'
     }
 ];
 
@@ -1557,6 +1615,7 @@ function createUnitFromCard(card, team, row, col) {
         armor: card.armor || 0,
         meleeAttack: card.meleeAttack || 0,
         meleeRange: card.meleeRange || 0,
+        meleeDiagonal: card.meleeDiagonal || false,
         rangedCrit: card.rangedCrit || false,
         rangedCritUsed: false,
         hero: card.hero || false,
@@ -1645,6 +1704,8 @@ counterBurn: card.counterBurn || false,
         beeMedic: card.beeMedic || false,
         nurseGiant: card.nurseGiant || false,
         supernovaGiant: card.supernovaGiant || false,
+        zeppelin: card.zeppelin || false,
+        witch: card.witch || false,
         eliteKnight: card.eliteKnight || false,
         fisherman: card.fisherman || false,
         spell: card.spell || false,
@@ -1747,7 +1808,7 @@ function handleCellClick(e) {
     if (gameState.aiMode && gameState.currentTurn === 'blue') return;
 
     // 技能框打开时点击棋盘:关闭技能框并忽略本次点击(避免误触部署弹窗)
-    const skillModals = ['deepBlueSkillModal', 'lvbuSkillModal', 'yoggSkillModal', 'guySkillModal', 'shangboleSkillModal', 'sasukeSkillModal', 'painSkillModal', 'madaraSkillModal', 'beeMedicModal'];
+    const skillModals = ['deepBlueSkillModal', 'lvbuSkillModal', 'yoggSkillModal', 'guySkillModal', 'shangboleSkillModal', 'sasukeSkillModal', 'painSkillModal', 'madaraSkillModal', 'beeMedicModal', 'zeppelinModal', 'hashiramaModal'];
     for (const id of skillModals) {
         const m = document.getElementById(id);
         if (m && !m.classList.contains('hidden')) {
@@ -1760,6 +1821,7 @@ function handleCellClick(e) {
             else if (id === 'painSkillModal') closePainSkillModalFunc();
             else if (id === 'madaraSkillModal') closeMadaraSkillModalFunc();
             else if (id === 'beeMedicModal') closeBeeMedicSkillModalFunc();
+            else if (id === 'zeppelinModal') closeZeppelinSkillModalFunc();
             return;
         }
     }
@@ -2037,6 +2099,36 @@ function handleCellClick(e) {
         md._beeS2Mode = false;
         if (cell.classList.contains('pierce-target')) beeDeploySmokeBomb(md, row, col);
         else { clearHighlights(); gameState.selectedUnit = null; }
+        return;
+    }
+    // 齐柏林飞艇 高爆炸弹:选6格内敌方建筑
+    if (gameState.selectedUnit && gameState.selectedUnit.zeppelin && gameState.selectedUnit._zepBombMode) {
+        const zp = gameState.selectedUnit;
+        if (row === zp.row && col === zp.col) {
+            zp._zepBombMode = false; clearHighlights(); openZeppelinSkillModal(zp); return;
+        }
+        const bd = gameState.units.find(u => u.row === row && u.col === col && u.building && u.team !== zp.team && !u.ghost && !u._removing);
+        if (bd && cell.classList.contains('pierce-target')) zepDropBomb(zp, bd);
+        else { zp._zepBombMode = false; clearHighlights(); gameState.selectedUnit = null; }
+        return;
+    }
+    // 齐柏林飞艇 燃烧弹:选5格内任意格
+    if (gameState.selectedUnit && gameState.selectedUnit.zeppelin && gameState.selectedUnit._zepFireMode) {
+        const zp = gameState.selectedUnit;
+        if (row === zp.row && col === zp.col) {
+            zp._zepFireMode = false; clearHighlights(); openZeppelinSkillModal(zp); return;
+        }
+        zp._zepFireMode = false;
+        if (cell.classList.contains('pierce-target')) zepDropFire(zp, row, col);
+        else { clearHighlights(); gameState.selectedUnit = null; }
+        return;
+    }
+    // 千手柱间 树界降临:选5格内敌人
+    if (gameState.selectedUnit && gameState.selectedUnit.hashirama && gameState.selectedUnit._hashiBindMode) {
+        const hp = gameState.selectedUnit;
+        const te = gameState.units.find(u => u.row === row && u.col === col && u.team !== hp.team && !u.ghost && !u._removing);
+        if (te && cell.classList.contains('sasuke-ult-target')) hashiBindApply(hp, te);
+        else { hp._hashiBindMode = false; clearHighlights(); gameState.selectedUnit = null; }
         return;
     }
     // 夺心护目镜:选3个敌方单位变己方(移到 row/col 定义后)
@@ -2443,6 +2535,11 @@ if (gameState._viralTargeting) {
             openBeeMedicSkillModal(clickedUnit);
             return;
         }
+        // 齐柏林飞艇:双击显示技能栏
+        if (clickedUnit.zeppelin && clickedUnit === gameState.selectedUnit) {
+            openZeppelinSkillModal(clickedUnit);
+            return;
+        }
         // 铠大招:双击激活不灭魔躯(冷却结束且未激活时可用)
         if (clickedUnit.kaiShurikenRange && clickedUnit === gameState.selectedUnit && !clickedUnit.kaiUltActive && (clickedUnit.kaiUltCooldown||0) === 0) {
             activateKaiUlt(clickedUnit);
@@ -2508,9 +2605,9 @@ if (gameState._viralTargeting) {
             activateErinSkill(clickedUnit);
             return;
         }
-        // 千手柱间技能:能量≥4双击(火之意志)
-        if (clickedUnit.hashirama && clickedUnit === gameState.selectedUnit && (clickedUnit.hashiEnergy||0) >= 4) {
-            activateHashiramaSkill(clickedUnit);
+        // 千手柱间:双击打开技能栏(木人/树界/火之意志)
+        if (clickedUnit.hashirama && clickedUnit === gameState.selectedUnit) {
+            openHashiramaSkillModal(clickedUnit);
             return;
         }
         // 镜:双击开启镜像法阵(4格内有敌人)
@@ -2762,7 +2859,7 @@ function showActionMode(unit) {
     // 显示可攻击目标(尤格萨隆:三个技能用完才能普攻)
     if (unit.yogg && ((unit._yoggSkill1Used||0) + (unit._yoggSkill2Used||0) + (unit._yoggSkill3Used||0) < 3)) {
         // 技能未用完:不显示攻击
-    } else if (!gameState.attackedUnits.has(unit.id) || (unit.tankSpawn && (unit.demuAttacksUsed||0) < (unit.demuBonusAttacks||0)) || (unit.erin && (unit.erinSkillActive ? (unit.erinSkillAttacks||0) > 0 : (unit.erinAttacksUsed||0) < 2)) || (unit.blowdart && (unit.blowdartAttacksUsed||0) < 2) || (unit.hashirama && (unit.hashiAttacksUsed||0) < 2) || (unit.prince && (unit._princeAttacks||0) < princeMaxAttacks(unit))) {
+    } else if (!gameState.attackedUnits.has(unit.id) || (unit.tankSpawn && (unit.demuAttacksUsed||0) < (unit.demuBonusAttacks||0)) || (unit.erin && (unit.erinSkillActive ? (unit.erinSkillAttacks||0) > 0 : (unit.erinAttacksUsed||0) < 2)) || (unit.blowdart && (unit.blowdartAttacksUsed||0) < 2) || (unit.prince && (unit._princeAttacks||0) < princeMaxAttacks(unit))) {
         // 铠飞镖攻击时使用飞镖射程
         if (unit.kaiShurikenRange && unit.kaiAttacks >= 1) {
             const orig = unit.attackRange;
@@ -2793,7 +2890,7 @@ function showMovableRange(unit) {
     if (unit.copSpawn && unit.copsSpawned) return;
     const { row, col, moveRange } = unit;
     const used = gameState.moveUsed[unit.id] || 0;
-    let remaining = moveRange - used + getWindMoveMod(unit) + (unit.erinMoveBonus||0) + (unit._rageMove||0) + (unit._healMove||0) + (unit._sasukeMoveBonus||0);
+    let remaining = moveRange - used + getWindMoveMod(unit) + (unit.erinMoveBonus||0) + (unit._rageMove||0) + (unit._healMove||0) + (unit._sasukeMoveBonus||0) - (unit._hashiSlow||0);
     if (remaining <= 0) return;
     // 循环边界用最大可达距离(防止加成后的移动范围被基础值截断)
     const maxReach = Math.max(moveRange, remaining);
@@ -2836,7 +2933,7 @@ function showAttackableTargets(unit) {
         if (unit._form === 'pistol' && unit._pistolAttacked) return;
         if (unit._form === 'sniper' && unit._sniperAttacked) return;
     }
-    const attackRange = unit.superKnight ? 5 : (unit.hashirama ? ((unit.hashiAttacksUsed||0) === 0 ? 3 : 4) : unit.attackRange);
+    const attackRange = unit.superKnight ? 5 : unit.attackRange;
     // 钢刺网:敌方网内任意格(5×5)在攻击范围内可攻击
     gameState.spikeNets.forEach(n => {
         if (n.team === unit.team) return;
@@ -3032,6 +3129,7 @@ function rollCrit(attacker, baseDamage) {
 // 千手柱间:木人之术·金龙(周围3格所有敌人3次×2伤)
 function goldenDragonAttack(attacker) {
     const dragonEl = showGoldenDragon(attacker);
+    let gained = false;
     // 3段伤害逐段打出(环绕半径3格)
     for (let hit = 0; hit < 3; hit++) {
         setTimeout(() => {
@@ -3041,6 +3139,7 @@ function goldenDragonAttack(attacker) {
                 if (u.team === a.team || u._removing || u.ghost) return;
                 const dist = Math.max(Math.abs(u.row - a.row), Math.abs(u.col - a.col));
                 if (dist <= 3) {
+                    if (!gained) { gained = true; hashiGainEnergy(a); }
                     u.currentHp -= rollCrit(a, 2);
                     updateUnitHp(u);
                     if (u.currentHp <= 0) removeUnit(u);
@@ -3067,6 +3166,7 @@ function goldenDragonAttack(attacker) {
                 gameState.units.slice().forEach(u => {
                     if (u.team === a2.team || u._removing || u.ghost) return;
                     if (u.row >= Math.min(r0, r1) && u.row <= Math.max(r0, r1) && u.col >= a2.col - 1 && u.col <= a2.col + 1) {
+                        if (!gained) { gained = true; hashiGainEnergy(a2); }
                         u.currentHp -= rollCrit(a2, 2);
                         updateUnitHp(u);
                         if (u.currentHp <= 0) removeUnit(u);
@@ -3082,83 +3182,79 @@ function counterGolem(target, attacker) {
     // 联机:木人反击视觉同步
     sendSkillFx('counterGolem', target, attacker.row, attacker.col);
     // 木人现身(攻击者身后)
-    const dir = target.team === 'red' ? 1 : -1;
-    const gr = attacker.row + dir;
-    if (isValidPosition(gr, attacker.col) && !gameState.units.some(u => u.row === gr && u.col === attacker.col)) {
-        const golem = document.createElement('div');
-        golem.className = 'wood-golem';
-        golem.textContent = '木';
-        gameState.board[gr][attacker.col].appendChild(golem);
-        setTimeout(() => { if (golem.parentNode) golem.parentNode.removeChild(golem); }, 1200);
+    showGolemVisual(target, attacker);
+    // 蓝色光柱从敌人脚下冲起,5×5 三伤(能量≥4也不变金龙)
+    if (attacker && attacker.row !== undefined && !attacker._removing) {
+        showHashiBluePillarAt(attacker.row, attacker.col);
+        for (let dr = -2; dr <= 2; dr++) {
+            for (let dc = -2; dc <= 2; dc++) {
+                const r = attacker.row + dr, c = attacker.col + dc;
+                gameState.units.slice().forEach(u => {
+                    if (u.team === target.team || u.ghost || u._removing) return;
+                    if (u.row === r && u.col === c) {
+                        u.currentHp -= rollCrit(target, 3);
+                        updateUnitHp(u);
+                        if (u.currentHp <= 0) removeUnit(u);
+                    }
+                });
+            }
+        }
     }
-    // 木人纯视觉(联机接收方重放,不含伤害)
+}
+
+// 木人纯视觉(联机接收方重放用,顶层函数)
 function showGolemVisual(target, attacker) {
     if (!attacker || attacker.row === undefined) return;
+    const board = document.getElementById('gameBoard');
+    if (!board) return;
     const dir = target.team === 'red' ? 1 : -1;
     const gr = attacker.row + dir;
     if (!isValidPosition(gr, attacker.col)) return;
     const golem = document.createElement('div');
-    golem.className = 'wood-golem';
-    golem.textContent = '木';
-    gameState.board[gr][attacker.col].appendChild(golem);
-    setTimeout(() => { if (golem.parentNode) golem.parentNode.removeChild(golem); }, 1200);
-}
-// 木人打一下:1伤(可暴击)
-    attacker.currentHp -= rollCrit(target, 1);
-    updateUnitHp(attacker);
-    if (attacker.currentHp <= 0) removeUnit(attacker);
-    // 蓝色光柱:3×3两段×2伤(逐段打出)
-    showBluePillar(attacker);
-    for (let hit = 0; hit < 2; hit++) {
-        setTimeout(() => {
-            const t = gameState.units.find(x => x.id === target.id);
-            if (!t) return;
-            const atk2 = gameState.units.find(x => x.id === attacker.id) || attacker;
-            gameState.units.slice().forEach(u => {
-                if (u.team === t.team || u._removing || u.ghost) return;
-                const dist = Math.max(Math.abs(u.row - atk2.row), Math.abs(u.col - atk2.col));
-                if (dist <= 1) {
-                    u.currentHp -= rollCrit(t, 2);
-                    updateUnitHp(u);
-                    if (u.currentHp <= 0) removeUnit(u);
-                }
-            });
-        }, hit * 400);
-    }
+    golem.className = 'hashi-wood-golem';
+    golem.style.left = ((attacker.col - 1) * cellW) + 'px';
+    golem.style.top = ((gr - 1) * cellH) + 'px';
+    golem.style.width = (3 * cellW) + 'px';
+    golem.style.height = (3 * cellH) + 'px';
+    board.appendChild(golem);
+    setTimeout(() => { if (golem.parentNode) golem.parentNode.removeChild(golem); }, 1300);
 }
 
 // 千手柱间:第二次格挡反击(大树缠绕+花粉中毒)
 function counterPollen(target, attacker) {
     showTreeEffect(attacker);
-    showGoldPollen(attacker);
-    showHeroDeployText(attacker, '花树界降临', '#8b5a2b', 1200);
-    // 与树界降临相同的捆绑效果(棕色光晕,持续2回合)
+    showHeroDeployText(attacker, '树界降临', '#8b5a2b', 1200);
+    // 与技能二一致:3伤 + 缠绕(不附带花粉毒,能量≥4也不升级花树界)
+    attacker.currentHp -= rollCrit(target, 3);
+    updateUnitHp(attacker);
+    if (attacker.currentHp <= 0) {
+        removeUnit(attacker);
+        return;
+    }
     attacker.treeBound = true;
     attacker.treeBoundTurns = 2;
+    attacker.stunned = true;
+    attacker.stunnedTurns = 2;
     updateTreeVisual(attacker);
-    gameState.units.slice().forEach(u => {
-        if (u.team === target.team || u._removing) return;
-        const dist = Math.max(Math.abs(u.row - attacker.row), Math.abs(u.col - attacker.col));
-        if (dist <= 1) {
-            u.goblinHitThisTurn = true;
-            u.poisonHits = (u.poisonHits || 0) + 1;
-            u.poisonLevel = Math.max(u.poisonLevel || 0, 1);
-            u.poisonTurns = 3;
-            updatePoisonVisual(u);
-        }
-    });
 }
 
 // 千手柱间:技能(火之意志/大佛/神掌)
-function activateHashiramaSkill(unit) {
+// opts.delay:整体延后(黑点先穿,佛手后落)
+function activateHashiramaSkill(unit, opts) {
+    opts = opts || {};
+    const delay = opts.delay || 0;
     const golden = (unit.hashiEnergy||0) >= 5;
     const hits = golden ? ((unit.hashiEnergy||0) === 6 ? 5 : 4) : 3;
-    showHeroDeployText(unit, '火之意志!!', '#e74c3c', 3000);
-    showGodPalm(unit, golden);
+    if (!opts.skipText) showHeroDeployText(unit, '火之意志!!', '#e74c3c', 3000);
     // 前方5×5(不含植物人本体):红方 row-5..row-1,蓝方 row+1..row+5
     const r0 = unit.team === 'red' ? unit.row - 5 : unit.row + 1;
     const r1 = unit.team === 'red' ? unit.row - 1 : unit.row + 5;
+    setTimeout(() => {
+        const u2 = gameState.units.find(x => x.id === unit.id);
+        if (u2) showGodPalm(u2, golden);
+    }, delay);
     // 神掌多段伤害逐段打出
+    let gained = false;
     for (let hit = 0; hit < hits; hit++) {
         setTimeout(() => {
             const u2 = gameState.units.find(x => x.id === unit.id);
@@ -3166,15 +3262,17 @@ function activateHashiramaSkill(unit) {
             gameState.units.slice().forEach(u => {
                 if (u.team === u2.team || u._removing || u.ghost) return;
                 if (u.row >= r0 && u.row <= r1 && u.col >= u2.col - 2 && u.col <= u2.col + 2) {
+                    if (!gained) { gained = true; hashiGainEnergy(u2); }
                     u.currentHp -= rollCrit(u2, 3);
                     updateUnitHp(u);
                     if (u.currentHp <= 0) removeUnit(u);
                 }
             });
-        }, 1500 + hit * 400);
+        }, delay + 500 + hit * 380);
     }
     unit.hashiEnergy = 0;
     renderEnergyBar(unit, gameState.board[unit.row][unit.col].querySelector('.unit'));
+    return hits;
 }
 
 // 视觉特效
@@ -3187,6 +3285,20 @@ function showGoldenDragon(unit) {
     d.className = 'golden-dragon';
     d.style.left = (unit.col * cellW + cellW/2 - 50) + 'px';
     d.style.top = (unit.row * cellH + cellH/2 - 41) + 'px';
+    // 龙身:沿圆环排布的鳞节,头大尾小,随圆环一起盘旋
+    for (let i = 0; i < 12; i++) {
+        const seg = document.createElement('div');
+        seg.className = 'golden-dragon-seg';
+        const ang = (-90 + i * 22) * Math.PI / 180;
+        const radius = 42 - i * 0.6;
+        const size = Math.max(4, 13 - i * 0.8);
+        seg.style.width = size + 'px';
+        seg.style.height = size + 'px';
+        seg.style.left = (50 + Math.cos(ang) * radius - size / 2) + 'px';
+        seg.style.top = (50 + Math.sin(ang) * radius - size / 2) + 'px';
+        seg.style.opacity = String(1 - i * 0.055);
+        d.appendChild(seg);
+    }
     board.appendChild(d);
     return d;
 }
@@ -3209,6 +3321,17 @@ function flyGoldenDragon(unit, el) {
     el.style.top = (dir === -1 ? cy - 260 : cy) + 'px';
     el.style.transition = 'top 0.8s ease-out, opacity 0.3s ease-out';
     board.appendChild(el);
+    // 蓝色冲击波随金龙一起向前冲出
+    const wave = document.createElement('div');
+    wave.className = 'hashi-blue-wave';
+    wave.style.left = (cx - 1.5 * cellW) + 'px';
+    wave.style.top = (cy - cellH) + 'px';
+    board.appendChild(wave);
+    requestAnimationFrame(() => {
+        wave.style.top = (cy + dir * 8 * cellH - cellH) + 'px';
+        wave.style.opacity = '0';
+    });
+    setTimeout(() => wave.remove(), 1100);
     const targetTop = (dir === -1 ? cy - 260 - 8 * cellH : cy + 8 * cellH) + 'px';
     requestAnimationFrame(() => {
         el.style.top = targetTop;
@@ -3787,6 +3910,17 @@ function deployUnit(row, col) {
 
     if (!card) return;
 
+    // 齐柏林飞艇:打出后进入3回合冷却(下两个己方回合不可再下)
+    if (card.zeppelin) {
+        if (!gameState._zepCd) gameState._zepCd = { red: 0, blue: 0 };
+        const zepCd = gameState._zepCd[gameState.currentTurn] || 0;
+        if (zepCd > 0) {
+            alert('齐柏林飞艇冷却中，还需 ' + zepCd + ' 个己方回合');
+            closeDeployModalFunc();
+            return;
+        }
+    }
+
     // 法术卡:全图任意格直接施放(不创建单位)
     if (card.spell) {
         // 后手能量卡:蓝方专用,立即+1能量(本回合),整局一次用完消失
@@ -3875,6 +4009,8 @@ function deployUnit(row, col) {
     // 混乱触须:消耗一次免费次数
     if (card.chaosTentacle && gameState._freeTentacles > 0) gameState._freeTentacles--;
     gameState.units.push(unit);
+    // 部署到火场:立即附着燃烧(齐柏林亡语火场只烧敌方)
+    if (typeof checkFireZoneBurn === 'function') checkFireZoneBurn(unit);
 
     // 扣除能量
     if (gameState.currentTurn === 'red') {
@@ -3886,6 +4022,10 @@ function deployUnit(row, col) {
     }
     // 累计能量消耗:天鹰火炮开启条件(敌方花费40能量)
     gameState.energySpent[gameState.currentTurn] = (gameState.energySpent[gameState.currentTurn] || 0) + cardCost;
+    if (card.zeppelin) {
+        if (!gameState._zepCd) gameState._zepCd = { red: 0, blue: 0 };
+        gameState._zepCd[gameState.currentTurn] = 3;
+    }
     checkEagleArtillery();
     // 导演部署后:法术减费机制回归原价(重新从20起算)
     if (card.yogg) gameState.spellsCastThisGame = 0;
@@ -4077,6 +4217,13 @@ function attackUnit(target) {
 
     const attacker = gameState.selectedUnit;
     let lastDamage = 0;
+    // 建筑失效(齐柏林高爆炸弹):本回合无法攻击
+    if ((attacker._disabledTurns || 0) > 0) {
+        showHeroDeployText(attacker, '失效中', '#888888', 900);
+        clearHighlights();
+        gameState.selectedUnit = null;
+        return;
+    }
     // 技能型攻击标志:技能为输出手段的攻击不触发通用反击
     let skillAttack = false;
 
@@ -4244,27 +4391,9 @@ function attackUnit(target) {
         if (target.currentHp <= 0) removeUnit(target);
         // 不进入正常伤害流程
     } else {
-    // 千手柱间:第一击木人之术·金龙,第二击树界降临
+    // 千手柱间:普通攻击 2 伤(不产生能量)
     if (attacker.hashirama) {
-        skillAttack = true;
-        if ((attacker.hashiAttacksUsed||0) === 0) {
-            attacker.hashiAttacksUsed = 1;
-            attacker.hashiEnergy = Math.min(6, (attacker.hashiEnergy||0) + 1);
-            renderEnergyBar(attacker, gameState.board[attacker.row][attacker.col].querySelector('.unit'));
-            goldenDragonAttack(attacker);
-            damage = 0;
-        } else {
-            damage = rollCrit(attacker, 4);
-            attacker.hashiAttacksUsed = 2;
-            attacker.hashiEnergy = Math.min(6, (attacker.hashiEnergy||0) + 1);
-            renderEnergyBar(attacker, gameState.board[attacker.row][attacker.col].querySelector('.unit'));
-            target.stunned = true;
-            target.stunnedTurns = 2;
-            target.treeBound = true;
-            target.treeBoundTurns = 2;
-            updateTreeVisual(target);
-            showHeroDeployText(target, '树界降临', '#8b5a2b', 1000);
-        }
+        damage = attacker.attack;
     } else
     // 艾琳特殊攻击(子弹4伤/普攻2伤+后撤/技能3伤)
     if (attacker.erin) {
@@ -4331,7 +4460,7 @@ function attackUnit(target) {
         } else {
             damage = target.currentHp; // 第二击直接清空
         }
-    } else if (attacker.meleeAttack && dist <= attacker.meleeRange && !target.flying) {
+    } else if (attacker.meleeAttack && (attacker.meleeDiagonal ? Math.max(Math.abs(attacker.row - target.row), Math.abs(attacker.col - target.col)) : dist) <= attacker.meleeRange && !target.flying) {
         // 近战攻击(空中目标不适用,改用远程伤害)
         damage = attacker.meleeAttack;
     } else if (attacker.infernoTower) {
@@ -4455,7 +4584,7 @@ function attackUnit(target) {
     }
     // 千手柱间格挡:每回合前两次受击格挡并反击
     if (target.hashirama && actualDamage > 0 && (target.hashiBlocksUsed||0) < 2) {
-        target.hashiBlocksUsed++;
+        target.hashiBlocksUsed = (target.hashiBlocksUsed || 0) + 1;
         target.hashiEnergy = Math.min(6, (target.hashiEnergy||0) + 1);
         renderEnergyBar(target, gameState.board[target.row][target.col].querySelector('.unit'));
         actualDamage = 0;
@@ -4665,8 +4794,8 @@ function attackUnit(target) {
         attacker.blowdartAttacksUsed = (attacker.blowdartAttacksUsed || 0) + 1;
         if (attacker.blowdartAttacksUsed >= 2) gameState.attackedUnits.add(attacker.id);
     } else if (attacker.hashirama) {
-        // 柱间:两次攻击后标记
-        if ((attacker.hashiAttacksUsed||0) >= 2) gameState.attackedUnits.add(attacker.id);
+        // 柱间:每回合一次普通攻击
+        gameState.attackedUnits.add(attacker.id);
     } else if (attacker.galeSkillActive) {
         // 疾风紧急回避装置:期间每回合可攻击2次(第一次不标记)
         skillAttack = true;
@@ -4789,9 +4918,9 @@ function attackUnit(target) {
         }
     }
 
-    // 觉醒大皮卡:击杀敌人回复3生命(可超上限,最高12)
+    // 觉醒大皮卡:击杀敌人回复3生命(可超上限,最多超过6点)
     if (target.currentHp <= 0 && attacker.pekkaHeal && !target.galeSkillActive && !target.galeAnchor) {
-        attacker.currentHp = Math.min(12, (attacker.currentHp || 0) + 3);
+        attacker.currentHp = Math.min((attacker.maxHp || 8) + 6, (attacker.currentHp || 0) + 3);
         updateUnitHp(attacker);
         showCritText(attacker.row, attacker.col, '回复');
     }
@@ -4938,6 +5067,12 @@ function attackBase(isBlueBase) {
     }
 
     const attacker = gameState.selectedUnit;
+    if ((attacker._disabledTurns || 0) > 0) {
+        showHeroDeployText(attacker, '失效中', '#888888', 900);
+        clearHighlights();
+        gameState.selectedUnit = null;
+        return;
+    }
 
     // 计算攻击距离(取最近的大本营格子)
     const baseRow = isBlueBase ? 1 : 26;
@@ -4997,8 +5132,7 @@ function attackBase(isBlueBase) {
         attacker.blowdartAttacksUsed = (attacker.blowdartAttacksUsed || 0) + 1;
         if (attacker.blowdartAttacksUsed >= 2) gameState.attackedUnits.add(attacker.id);
     } else if (attacker.hashirama) {
-        attacker.hashiAttacksUsed = (attacker.hashiAttacksUsed || 0) + 1;
-        if (attacker.hashiAttacksUsed >= 2) gameState.attackedUnits.add(attacker.id);
+        gameState.attackedUnits.add(attacker.id);
     } else if (attacker.erin) {
         if (attacker.erinSkillActive) {
             attacker.erinSkillAttacks = (attacker.erinSkillAttacks || 0) - 1;
@@ -5221,7 +5355,7 @@ function fishermanHook(fisher, target) {
 
 // 尤格萨隆局内费用:每释放一个法术牌减1(下限0)
 function getYoggCost() {
-    return Math.max(0, 20 - (gameState.spellsCastThisGame || 0));
+    return Math.max(0, 18 - (gameState.spellsCastThisGame || 0));
 }
 
 // 法术卡施放:分发到具体法术
@@ -5712,9 +5846,9 @@ function triggerCounter(attacker, target) {
             updateUnitHp(attacker);
             showCritText(attacker.row, attacker.col, '反击');
             if (attacker.currentHp <= 0) {
-                // 反击击杀:觉醒大皮卡也能回血(可超上限,最高12)
+                // 反击击杀:觉醒大皮卡也能回血(可超上限,最多超过6点)
                 if (target.pekkaHeal) {
-                    target.currentHp = Math.min(12, (target.currentHp || 0) + 3);
+                    target.currentHp = Math.min((target.maxHp || 8) + 6, (target.currentHp || 0) + 3);
                     updateUnitHp(target);
                     showCritText(target.row, target.col, '回复');
                 }
@@ -8015,6 +8149,15 @@ if (unit.glacierShroom && !unit._glacierBurst) {
     unit._glacierBurst = true;
     glacierBurst(unit);
 }
+// 觉醒女巫的骷髅死亡:女巫回复2点生命(可超上限最多6点)
+if (unit.skeleton && unit.summonerId) {
+    const w = gameState.units.find(x => x.id === unit.summonerId && !x._removing && x.currentHp > 0);
+    if (w) {
+        w.currentHp = Math.min(w.maxHp + 6, w.currentHp + 2);
+        updateUnitHp(w);
+        showCritText(w.row, w.col, '回复');
+    }
+}
 // 记录阵亡单位(供蜂医"专业救援"复活)
 if (gameState.graveyard && unit.team) {
     gameState.graveyard.push(Object.assign({}, unit, { _removing: false, diedTurn: gameState.turnNumber }));
@@ -8040,6 +8183,10 @@ if (unit.balloon && !unit._balloonExploded) {
             if (e.currentHp <= 0) removeUnit(e);
         }
     });
+}
+// 齐柏林飞艇:亡语大爆炸(5×5单位10伤+火场3回合)
+if (unit.zeppelin) {
+    zeppelinDeathrattle(unit);
 }
 // 毁灭菇:死亡时爆炸(敌方攻击致死触发;双击引爆已标记 _doomExploded 防重复)
 if (unit.doomShroom && !unit._doomExploded) {
@@ -8281,6 +8428,7 @@ function renderUnit(unit) {
     if (unit._stoneWallProtect) unitElement.classList.add('stone-bubble');
     if (unit._magicShield) unitElement.classList.add('magic-shield');
     if (unit.teslaHidden) unitElement.classList.add('tesla-hidden');
+    if (unit.skeleton) unitElement.classList.add('skeleton-glow');
     if (unit.superKnight) unitElement.classList.add('awakened');
     if (unit.madaraSolve && unit._susanooActive) renderSusanooVisual(unit);
     if (unit.sasuke && unit._sasukeSusanoo) unitElement.classList.add('sasuke-susanoo');
@@ -10774,9 +10922,10 @@ function madaraJumpAndPillar(madara) {
 }
 
 // 火柱特效
-function showFirePillar(row, col) {
-    // 联机:火柱动画同步
-    sendSkillFx('firePillar', null, row, col);
+function showFirePillar(row, col, opts) {
+    opts = opts || {};
+    // 联机:火柱动画同步(蓝柱变体由调用方自行同步)
+    if (!opts.noFx) sendSkillFx('firePillar', null, row, col);
 
     const board = document.getElementById('gameBoard');
     if (!board) return;
@@ -10785,6 +10934,7 @@ function showFirePillar(row, col) {
     const riseH = 4 * cellH;    // 冲天高度
     const wrap = document.createElement('div');
     wrap.className = 'fire-pillar-wrap';
+    if (opts.blue) wrap.classList.add('blue-fire');
     wrap.style.position = 'absolute';
     wrap.style.left = ((col - 1) * cellW) + 'px';
     wrap.style.top = ((row - 1) * cellH - riseH) + 'px';
@@ -11712,6 +11862,598 @@ function showBeeDroneFx(fromR, fromC, team) {
     m.addEventListener('click', (e) => { if (e.target === m) closeBeeMedicSkillModalFunc(); });
 })();
 
+function zepApplyDamage(target, amount, attacker, ignoreArmor) {
+    let dmg = amount;
+    if (!ignoreArmor) {
+        const armor = Math.max(0, (target.armor || 0) - ((attacker && attacker.armorPen) || 0));
+        dmg = Math.max(0, amount - armor);
+    }
+    if (dmg <= 0) return 0;
+    target.currentHp -= dmg;
+    updateUnitHp(target);
+    if (target.currentHp <= 0) removeUnit(target);
+    return dmg;
+}
+
+function zepAlive(zep) {
+    return zep && zep.zeppelin && !zep._removing && !zep.ghost && zep.currentHp > 0;
+}
+
+function openZeppelinSkillModal(zep) {
+    gameState._zepSelected = zep;
+    zep._zepBombMode = false;
+    zep._zepFireMode = false;
+    const b1 = document.getElementById('zepSkill1Btn');
+    const b2 = document.getElementById('zepSkill2Btn');
+    const b3 = document.getElementById('zepSkill3Btn');
+    if (b1) b1.disabled = (zep._zepS1Count || 0) >= 3;
+    if (b2) b2.disabled = !!zep._zepS2Used;
+    if (b3) b3.disabled = !!zep._zepS3Used;
+    const m = document.getElementById('zeppelinModal');
+    if (m) m.classList.remove('hidden');
+}
+
+function closeZeppelinSkillModalFunc() {
+    const m = document.getElementById('zeppelinModal');
+    if (m) m.classList.add('hidden');
+    gameState._zepSelected = null; gameState._hashiSelected = null;
+}
+
+function zepHighlightBuildings(zep) {
+    gameState.units.forEach(u => {
+        if (u.team === zep.team || !u.building || u.ghost || u._removing) return;
+        if (Math.max(Math.abs(u.row - zep.row), Math.abs(u.col - zep.col)) <= 6) {
+            gameState.board[u.row][u.col].classList.add('pierce-target');
+        }
+    });
+}
+
+function zepBombMode(zep) {
+    closeZeppelinSkillModalFunc();
+    if (!zepAlive(zep) || (zep._zepS1Count || 0) >= 3) return;
+    zep._zepFireMode = false;
+    zep._zepBombMode = true;
+    gameState.selectedUnit = zep;
+    clearHighlights();
+    zepHighlightBuildings(zep);
+}
+
+function zepDropBomb(zep, building) {
+    if (!zepAlive(zep) || !building || (zep._zepS1Count || 0) >= 3) return;
+    zep._zepBombMode = false;
+    zep._zepS1Count = (zep._zepS1Count || 0) + 1;
+    sendSkillFx('zepBomb', zep, building.row, building.col);
+    showZepBombFx(building.row, building.col);
+    zepApplyDamage(building, 5, zep);
+    building._disabledTurns = Math.max(building._disabledTurns || 0, 1);
+    gameState.units.slice().forEach(e => {
+        if (e === building || e.team === zep.team || e.ghost || e._removing) return;
+        if (Math.max(Math.abs(e.row - building.row), Math.abs(e.col - building.col)) <= 1) {
+            zepApplyDamage(e, 3, zep);
+        }
+    });
+    clearHighlights();
+    if (typeof syncOnlineNow === 'function') syncOnlineNow();
+    if (zepAlive(zep) && (zep._zepS1Count || 0) < 3) {
+        gameState.selectedUnit = zep;
+        zep._zepBombMode = true;
+        zepHighlightBuildings(zep);
+    } else {
+        gameState.selectedUnit = null;
+    }
+}
+
+function zepFireMode(zep) {
+    closeZeppelinSkillModalFunc();
+    if (!zepAlive(zep) || zep._zepS2Used) return;
+    zep._zepBombMode = false;
+    zep._zepFireMode = true;
+    gameState.selectedUnit = zep;
+    clearHighlights();
+    for (let r = zep.row - 5; r <= zep.row + 5; r++) {
+        for (let c = zep.col - 5; c <= zep.col + 5; c++) {
+            if (!isValidPosition(r, c)) continue;
+            if (isBlueBase(r, c) || isRedBase(r, c)) continue;
+            if (Math.max(Math.abs(r - zep.row), Math.abs(c - zep.col)) > 5) continue;
+            gameState.board[r][c].classList.add('pierce-target');
+        }
+    }
+}
+
+function zepDropFire(zep, row, col) {
+    if (!zepAlive(zep) || zep._zepS2Used) return;
+    zep._zepFireMode = false;
+    zep._zepS2Used = true;
+    sendSkillFx('zepFire', zep, row, col);
+    showZepFireFx(row, col);
+    gameState.units.slice().forEach(e => {
+        if (e.team === zep.team || e.ghost || e._removing) return;
+        if (Math.max(Math.abs(e.row - row), Math.abs(e.col - col)) <= 2) {
+            zepApplyDamage(e, 3, zep);
+            if (!e._removing && e.currentHp > 0) {
+                e.burnTurns = 3;
+                e.burnDamage = 1;
+                updateBurnVisual(e);
+            }
+        }
+    });
+    clearHighlights();
+    gameState.selectedUnit = null;
+    if (typeof syncOnlineNow === 'function') syncOnlineNow();
+}
+
+function zepDarts(zep) {
+    if (!zepAlive(zep) || zep._zepS3Used) return;
+    zep._zepS3Used = true;
+    zep._zepBombMode = false;
+    zep._zepFireMode = false;
+    closeZeppelinSkillModalFunc();
+    sendSkillFx('zepDarts', zep);
+    showZepDartsFx(zep.row, zep.col);
+    gameState.units.slice().forEach(e => {
+        if (e.team === zep.team || e.ghost || e._removing) return;
+        if (Math.max(Math.abs(e.row - zep.row), Math.abs(e.col - zep.col)) <= 3) {
+            e.armor = 0;
+            zepApplyDamage(e, 1, zep, true);
+            if (!e._removing) updateBurnVisual(e);
+        }
+    });
+    clearHighlights();
+    gameState.selectedUnit = null;
+    if (typeof syncOnlineNow === 'function') syncOnlineNow();
+}
+
+function zeppelinDeathrattle(zep) {
+    if (zep._zepDeathDone) return;
+    zep._zepDeathDone = true;
+    sendSkillFx('zepDeath', zep);
+    showZepDeathFx(zep.row, zep.col);
+    gameState.units.slice().forEach(u => {
+        if (u === zep || u.ghost || u._removing) return;
+        if (Math.max(Math.abs(u.row - zep.row), Math.abs(u.col - zep.col)) <= 2) {
+            u.currentHp -= 10;
+            updateUnitHp(u);
+            if (u.currentHp <= 0) removeUnit(u);
+        }
+    });
+    if (!gameState.fireZones) gameState.fireZones = [];
+    gameState.fireZones.push({ row: zep.row, col: zep.col, radius: 2, turns: 3, team: zep.team, enemyOnly: true });
+    renderFireZones();
+    gameState.units.forEach(u => {
+        if (u.team === zep.team || u.ghost || u._removing) return;
+        if (Math.max(Math.abs(u.row - zep.row), Math.abs(u.col - zep.col)) <= 2) {
+            u.burnTurns = Math.max(u.burnTurns || 0, 3);
+            u.burnDamage = 1;
+            updateBurnVisual(u);
+        }
+    });
+}
+
+// ===== 齐柏林飞艇特效 =====
+function zepBoard() { return document.getElementById('gameBoard'); }
+
+function showZepBombFx(row, col) {
+    const board = zepBoard();
+    if (!board) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'zep-bomb-wrap';
+    wrap.style.left = ((col - 1) * cellW) + 'px';
+    wrap.style.top = ((row - 1) * cellH) + 'px';
+    wrap.style.width = (3 * cellW) + 'px';
+    wrap.style.height = (3 * cellH) + 'px';
+    wrap.innerHTML = '<div class="zep-bomb-core"></div><div class="zep-bomb-ring"></div>';
+    board.appendChild(wrap);
+    setTimeout(() => wrap.remove(), 900);
+}
+
+function showZepFireFx(row, col) {
+    const board = zepBoard();
+    if (!board) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'zep-fire-wrap';
+    wrap.style.left = ((col - 2) * cellW) + 'px';
+    wrap.style.top = ((row - 2) * cellH) + 'px';
+    wrap.style.width = (5 * cellW) + 'px';
+    wrap.style.height = (5 * cellH) + 'px';
+    for (let i = 0; i < 14; i++) {
+        const f = document.createElement('div');
+        f.className = 'zep-fire-flame';
+        f.style.left = (Math.random() * 100) + '%';
+        f.style.top = (Math.random() * 100) + '%';
+        f.style.animationDelay = (Math.random() * 0.35) + 's';
+        f.style.width = (8 + Math.random() * 12) + 'px';
+        f.style.height = (14 + Math.random() * 20) + 'px';
+        wrap.appendChild(f);
+    }
+    const shell = document.createElement('div');
+    shell.className = 'zep-fire-shell';
+    wrap.appendChild(shell);
+    board.appendChild(wrap);
+    setTimeout(() => wrap.remove(), 1400);
+}
+
+function showZepDartsFx(row, col) {
+    const board = zepBoard();
+    if (!board) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'zep-darts-wrap';
+    wrap.style.left = ((col - 3) * cellW) + 'px';
+    wrap.style.top = ((row - 3) * cellH) + 'px';
+    wrap.style.width = (7 * cellW) + 'px';
+    wrap.style.height = (7 * cellH) + 'px';
+    // 7×7 每格都落弹(每格 2 枚),确保特效铺满整个技能范围
+    for (let r = 0; r < 7; r++) {
+        for (let c = 0; c < 7; c++) {
+            for (let k = 0; k < 2; k++) {
+                const d = document.createElement('div');
+                d.className = 'zep-dart';
+                const jx = (k === 0 ? 0.3 : 0.7) + (Math.random() - 0.5) * 0.18;
+                d.style.left = (((c + jx) / 7) * 100) + '%';
+                d.style.top = ((r * cellH) - 26) + 'px';
+                d.style.height = (16 + Math.random() * 10) + 'px';
+                d.style.animationDelay = (r * 0.028 + c * 0.012 + k * 0.06) + 's';
+                wrap.appendChild(d);
+            }
+            // 每格命中闪光,强化覆盖感
+            const hit = document.createElement('div');
+            hit.className = 'zep-dart-hit';
+            hit.style.left = (((c + 0.5) / 7) * 100) + '%';
+            hit.style.top = (((r + 0.5) / 7) * 100) + '%';
+            hit.style.animationDelay = (0.16 + r * 0.028 + c * 0.012) + 's';
+            wrap.appendChild(hit);
+        }
+    }
+    board.appendChild(wrap);
+    setTimeout(() => wrap.remove(), 1600);
+}
+
+function showZepDeathFx(row, col) {
+    const board = zepBoard();
+    if (!board) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'zep-death-wrap';
+    wrap.style.left = ((col - 2) * cellW) + 'px';
+    wrap.style.top = ((row - 2) * cellH) + 'px';
+    wrap.style.width = (5 * cellW) + 'px';
+    wrap.style.height = (5 * cellH) + 'px';
+    const core = document.createElement('div');
+    core.className = 'zep-death-core';
+    const shock = document.createElement('div');
+    shock.className = 'zep-death-shock';
+    const smoke = document.createElement('div');
+    smoke.className = 'zep-death-smoke';
+    wrap.appendChild(core);
+    wrap.appendChild(shock);
+    wrap.appendChild(smoke);
+    for (let i = 0; i < 18; i++) {
+        const f = document.createElement('div');
+        f.className = 'zep-death-ember';
+        f.style.left = (Math.random() * 100) + '%';
+        f.style.top = (Math.random() * 100) + '%';
+        f.style.animationDelay = (Math.random() * 0.4) + 's';
+        wrap.appendChild(f);
+    }
+    board.appendChild(wrap);
+    setTimeout(() => wrap.remove(), 1800);
+}
+
+(function wireZeppelinModal() {
+    const m = document.getElementById('zeppelinModal');
+    if (!m) return;
+    const g = id => document.getElementById(id);
+    const sel = () => gameState._zepSelected;
+    if (g('zepSkill1Btn')) g('zepSkill1Btn').addEventListener('click', () => { const u = sel(); if (u) zepBombMode(u); });
+    if (g('zepSkill2Btn')) g('zepSkill2Btn').addEventListener('click', () => { const u = sel(); if (u) zepFireMode(u); });
+    if (g('zepSkill3Btn')) g('zepSkill3Btn').addEventListener('click', () => { const u = sel(); if (u) zepDarts(u); });
+    if (g('closeZeppelinModal')) g('closeZeppelinModal').addEventListener('click', closeZeppelinSkillModalFunc);
+    m.addEventListener('click', (e) => { if (e.target === m) closeZeppelinSkillModalFunc(); });
+})();
+
+// ===== 千手柱间 重做:技能栏/木人/树界/火之意志 =====
+function openHashiramaSkillModal(u) {
+    gameState._hashiSelected = u;
+    const up = (u.hashiEnergy || 0) >= 4;
+    const b1 = document.getElementById('hashiSkill1Btn');
+    const b2 = document.getElementById('hashiSkill2Btn');
+    const b3 = document.getElementById('hashiSkill3Btn');
+    if (b1) { b1.textContent = up ? '木遁·木人之术·轰龙击' : '木遁·木人之术'; b1.disabled = !!u._hashiS1Used; }
+    if (b2) { b2.textContent = up ? '木遁·花树界降临' : '木遁·树界降临'; b2.disabled = !!u._hashiS2Used; }
+    if (b3) {
+        b3.textContent = (u.hashiEnergy || 0) >= 4 ? '火之意志' : '火之意志（需4能量）';
+        b3.disabled = !!u._hashiS3Used || (u.hashiEnergy || 0) < 4;
+    }
+    const m = document.getElementById('hashiramaModal');
+    if (m) m.classList.remove('hidden');
+}
+
+function closeHashiramaSkillModalFunc() {
+    const m = document.getElementById('hashiramaModal');
+    if (m) m.classList.add('hidden');
+    gameState._hashiSelected = null;
+}
+
+// 柱间技能命中回能(每次技能最多+1)
+function hashiGainEnergy(u, n) {
+    if (!u || !u.hashirama || u._removing || u.currentHp <= 0) return;
+    u.hashiEnergy = Math.min(6, (u.hashiEnergy || 0) + (n || 1));
+    const cell = gameState.board[u.row] && gameState.board[u.row][u.col];
+    renderEnergyBar(u, cell ? cell.querySelector('.unit') : null);
+}
+
+// 木人(3×3 纯视觉,出现在植物人身后)
+function showHashiWoodGolem(u) {
+    const board = document.getElementById('gameBoard');
+    if (!board) return;
+    const behind = u.team === 'red' ? 1 : -1;
+    const gr = u.row + behind * 2;
+    if (!isValidPosition(gr, u.col)) return;
+    const el = document.createElement('div');
+    el.className = 'hashi-wood-golem';
+    el.innerHTML = '';
+    el.style.left = ((u.col - 1) * cellW) + 'px';
+    el.style.top = ((gr - 1) * cellH) + 'px';
+    el.style.width = (3 * cellW) + 'px';
+    el.style.height = (3 * cellH) + 'px';
+    board.appendChild(el);
+    setTimeout(() => el.remove(), 1300);
+}
+
+// 蓝色光柱绘制:给定左/上/宽/高,画一整根连续光柱
+function buildHashiBluePillar(left, top, w, baseH, riseH) {
+    const board = document.getElementById('gameBoard');
+    if (!board) return null;
+    const wrap = document.createElement('div');
+    wrap.className = 'fire-pillar-wrap hashi-blue-big';
+    wrap.style.position = 'absolute';
+    wrap.style.left = left + 'px';
+    wrap.style.top = (top - riseH) + 'px';
+    wrap.style.width = w + 'px';
+    wrap.style.height = (baseH + riseH) + 'px';
+    wrap.style.zIndex = '27';
+    wrap.style.pointerEvents = 'none';
+
+    // 底部扩散云:与主柱同色,避免圆底和柱身断开
+    const flare = document.createElement('div');
+    flare.className = 'hashi-blue-flare';
+    flare.style.position = 'absolute';
+    flare.style.left = '0';
+    flare.style.bottom = '0';
+    flare.style.width = '100%';
+    flare.style.height = (baseH * 0.55) + 'px';
+    wrap.appendChild(flare);
+
+    // 主柱:从底部一直冲到顶部,底部埋进扩散云里
+    const col = document.createElement('div');
+    col.className = 'hashi-blue-column';
+    col.style.position = 'absolute';
+    col.style.left = '16%';
+    col.style.bottom = (baseH * 0.10) + 'px';
+    col.style.width = '68%';
+    col.style.height = ((baseH + riseH) * 0.98) + 'px';
+    wrap.appendChild(col);
+
+    // 中心亮芯
+    const core = document.createElement('div');
+    core.className = 'hashi-blue-core';
+    core.style.position = 'absolute';
+    core.style.left = '38%';
+    core.style.bottom = (baseH * 0.12) + 'px';
+    core.style.width = '24%';
+    core.style.height = ((baseH + riseH) * 0.95) + 'px';
+    wrap.appendChild(core);
+
+    for (let i = 0; i < 22; i++) {
+        const p = document.createElement('div');
+        p.className = 'fire-pillar-spark';
+        p.style.left = (4 + Math.random() * 92) + '%';
+        p.style.animationDelay = (Math.random() * 0.7).toFixed(2) + 's';
+        p.style.animationDuration = (0.8 + Math.random() * 0.7).toFixed(2) + 's';
+        const s = 4 + Math.random() * 8;
+        p.style.width = s + 'px';
+        p.style.height = s + 'px';
+        wrap.appendChild(p);
+    }
+    board.appendChild(wrap);
+    setTimeout(() => wrap.remove(), 1700);
+    return wrap;
+}
+
+// 技能一:前方 5×5 的冲天柱
+function showHashiBluePillars(u) {
+    const r0 = u.team === 'red' ? u.row - 5 : u.row + 1;
+    return buildHashiBluePillar((u.col - 2) * cellW, r0 * cellH, 5 * cellW, 5 * cellH, 5 * cellH);
+}
+
+// 防反:敌人脚下 5×5 的冲天柱
+function showHashiBluePillarAt(row, col) {
+    return buildHashiBluePillar((col - 2) * cellW, (row - 2) * cellH, 5 * cellW, 5 * cellH, 5 * cellH);
+}
+
+function hashiSkill1(u) {
+    closeHashiramaSkillModalFunc();
+    if (!u || u._hashiS1Used) return;
+    u._hashiS1Used = true;
+    const up = (u.hashiEnergy || 0) >= 4;
+    if (up) {
+        sendSkillFx('hashiDragon', u);
+        goldenDragonAttack(u);
+    } else {
+        sendSkillFx('hashiGolem', u);
+        showHashiWoodGolem(u);
+        showHashiBluePillars(u);
+        const dir = u.team === 'red' ? -1 : 1;
+        let hitAny = false;
+        for (let step = 1; step <= 5; step++) {
+            const r = u.row + dir * step;
+            for (let dc = -2; dc <= 2; dc++) {
+                const c = u.col + dc;
+                gameState.units.slice().forEach(e => {
+                    if (e.team === u.team || e.ghost || e._removing) return;
+                    if (e.row === r && e.col === c) {
+                        hitAny = true;
+                        e.currentHp -= rollCrit(u, 3);
+                        updateUnitHp(e);
+                        if (e.currentHp <= 0) removeUnit(e);
+                    }
+                });
+            }
+        }
+        if (hitAny) hashiGainEnergy(u);
+    }
+    clearHighlights();
+    gameState.selectedUnit = null;
+    if (typeof syncOnlineNow === 'function') syncOnlineNow();
+}
+
+function hashiBindMode(u) {
+    closeHashiramaSkillModalFunc();
+    if (!u || u._hashiS2Used) return;
+    u._hashiBindMode = true;
+    gameState.selectedUnit = u;
+    clearHighlights();
+    gameState.units.forEach(e => {
+        if (e.team === u.team || e.ghost || e._removing) return;
+        if (Math.max(Math.abs(e.row - u.row), Math.abs(e.col - u.col)) <= 5) {
+            gameState.board[e.row][e.col].classList.add('sasuke-ult-target');
+        }
+    });
+}
+
+function hashiBindApply(u, target) {
+    u._hashiBindMode = false;
+    u._hashiS2Used = true;
+    const flower = (u.hashiEnergy || 0) >= 4;
+    sendSkillFx(flower ? 'hashiFlower' : 'hashiBind', u, target.row, target.col);
+    showTreeEffect(target);
+    showHeroDeployText(target, flower ? '花树界降临' : '树界降临', '#8b5a2b', 1200);
+    target.currentHp -= rollCrit(u, 3);
+    updateUnitHp(target);
+    hashiGainEnergy(u);
+    if (target.currentHp <= 0) removeUnit(target);
+    if (!target._removing && target.currentHp > 0) {
+        target.treeBound = true;
+        target.treeBoundTurns = 1;
+        target.stunned = true;
+        target.stunnedTurns = 1;
+        updateTreeVisual(target);
+    }
+    if (flower) {
+        showGoldPollen(target);
+        gameState.units.forEach(e => {
+            if (e.team === u.team || e.ghost || e._removing) return;
+            if (Math.max(Math.abs(e.row - target.row), Math.abs(e.col - target.col)) <= 1) {
+                e.poisonTurns = Math.max(e.poisonTurns || 0, 3);
+                e.poisonLevel = 1;
+                e._hashiSlow = 2;
+                e._hashiSlowTurns = 1;
+                updatePoisonVisual(e);
+            }
+        });
+    }
+    clearHighlights();
+    gameState.selectedUnit = null;
+    if (typeof syncOnlineNow === 'function') syncOnlineNow();
+}
+
+// 黑点穿击:两个黑点从敌人左下/右上对穿
+function showHashiBlackDots(target) {
+    const board = document.getElementById('gameBoard');
+    if (!board || !target) return;
+    const cx = target.col * cellW + cellW / 2;
+    const cy = target.row * cellH + cellH / 2;
+    const dx = cellW * 0.95, dy = cellH * 0.95;
+    const fire = (sx, sy, ex, ey) => {
+        const d = document.createElement('div');
+        d.className = 'hashi-black-dot';
+        d.style.left = (sx - 10) + 'px';
+        d.style.top = (sy - 10) + 'px';
+        board.appendChild(d);
+        requestAnimationFrame(() => {
+            d.style.transition = 'left 0.4s linear, top 0.4s linear';
+            d.style.left = (ex - 10) + 'px';
+            d.style.top = (ey - 10) + 'px';
+        });
+        setTimeout(() => {
+            const t = gameState.units.find(x => x.id === target.id);
+            if (t && !t._removing && t.currentHp > 0) {
+                t.currentHp -= 2;
+                updateUnitHp(t);
+                if (t.currentHp <= 0) removeUnit(t);
+            }
+            d.remove();
+        }, 400);
+        setTimeout(() => d.remove(), 650);
+    };
+    fire(cx + dx, cy + dy, cx - dx, cy - dy);
+    fire(cx - dx, cy - dy, cx + dx, cy + dy);
+}
+
+function hashiSkill3(u) {
+    closeHashiramaSkillModalFunc();
+    if (!u || u._hashiS3Used || (u.hashiEnergy || 0) < 4) return;
+    u._hashiS3Used = true;
+    const dir = u.team === 'red' ? -1 : 1;
+    const energy = u.hashiEnergy || 0;
+    const hits = energy >= 5 ? (energy === 6 ? 5 : 4) : 3;
+    showHeroDeployText(u, '火之意志!!', '#e74c3c', 3000);
+    // 选前方5×5内最近的敌人:先黑点对穿
+    let nearest = null, best = Infinity;
+    gameState.units.forEach(e => {
+        if (e.team === u.team || e.ghost || e._removing) return;
+        const dr = (e.row - u.row) * dir;
+        if (dr < 1 || dr > 5) return;
+        if (Math.abs(e.col - u.col) > 2) return;
+        const d = dr * 10 + Math.abs(e.col - u.col);
+        if (d < best) { best = d; nearest = e; }
+    });
+    if (nearest) {
+        sendSkillFx('hashiDots', u, nearest.row, nearest.col);
+        showHashiBlackDots(nearest);
+    }
+    // 黑点穿完后再落佛手
+    activateHashiramaSkill(u, { delay: 900, skipText: true });
+    clearHighlights();
+    gameState.selectedUnit = null;
+}
+
+(function wireHashiramaModal() {
+    const m = document.getElementById('hashiramaModal');
+    if (!m) return;
+    const g = id => document.getElementById(id);
+    const sel = () => gameState._hashiSelected;
+    if (g('hashiSkill1Btn')) g('hashiSkill1Btn').addEventListener('click', () => { const u = sel(); if (u) hashiSkill1(u); });
+    if (g('hashiSkill2Btn')) g('hashiSkill2Btn').addEventListener('click', () => { const u = sel(); if (u) hashiBindMode(u); });
+    if (g('hashiSkill3Btn')) g('hashiSkill3Btn').addEventListener('click', () => { const u = sel(); if (u) hashiSkill3(u); });
+    if (g('closeHashiramaModal')) g('closeHashiramaModal').addEventListener('click', closeHashiramaSkillModalFunc);
+    m.addEventListener('click', (e) => { if (e.target === m) closeHashiramaSkillModalFunc(); });
+})();
+
+// ===== 觉醒女巫 =====
+const SKELETON_TOKEN_CARD = { id: 'skeleton_token', name: '骷髅', attack: 1, hp: 1, moveRange: 9, attackRange: 1, artwork: 'skeleton' };
+
+function witchSummonSkeletons(witch) {
+    if (!witch || witch._removing || witch.currentHp <= 0) return;
+    const dirs = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+    let count = 0;
+    dirs.forEach(([dr, dc], idx) => {
+        const r = witch.row + dr, c = witch.col + dc;
+        if (!isValidPosition(r, c)) return;
+        if (isBlueBase(r, c) || isRedBase(r, c)) return;
+        if (gameState.units.some(u => u.row === r && u.col === c && !u._removing)) return;
+        const sk = createUnitFromCard(SKELETON_TOKEN_CARD, witch.team, r, c);
+        sk.id = 'skel_' + witch.id + '_' + Date.now() + '_' + idx;
+        sk.skeleton = true;
+        sk.summonerId = witch.id;
+        gameState.units.push(sk);
+        renderUnit(sk);
+        count++;
+    });
+    if (count > 0) {
+        if (typeof showSkillFlashFx === 'function') showSkillFlashFx(witch.row, witch.col, '#a55bff', 30);
+        if (typeof syncOnlineNow === 'function') syncOnlineNow();
+    }
+}
+
 function deploySmoke(centerRow, centerCol, radius, team) {
     for (let r = centerRow - radius; r <= centerRow + radius; r++) {
         for (let c = centerCol - radius; c <= centerCol + radius; c++) {
@@ -11797,11 +12539,13 @@ function renderWindZones() {
 function renderFireZones() {
     document.querySelectorAll('.fire-zone').forEach(fz => fz.remove());
     gameState.fireZones.forEach(fz => {
-        for (let r = fz.row - 1; r <= fz.row + 1; r++) {
-            for (let c = fz.col - 1; c <= fz.col + 1; c++) {
+        const rad = fz.radius || 1;
+        for (let r = fz.row - rad; r <= fz.row + rad; r++) {
+            for (let c = fz.col - rad; c <= fz.col + rad; c++) {
                 if (!isValidPosition(r, c)) continue;
                 const cover = document.createElement('div');
                 cover.className = 'fire-zone';
+                if (rad > 1) cover.classList.add('fire-zone-big');
                 gameState.board[r][c].appendChild(cover);
             }
         }
@@ -11811,9 +12555,11 @@ function renderFireZones() {
 // 检查单位是否踏入火焰区域
 function checkFireZoneBurn(unit) {
     gameState.fireZones.forEach(fz => {
+        if (fz.enemyOnly && unit.team === fz.team) return;
         const d = Math.max(Math.abs(unit.row - fz.row), Math.abs(unit.col - fz.col));
-        if (d <= 1) {
-            if (unit.burnTurns <= 0) unit.burnTurns = 3;
+        if (d <= (fz.radius || 1)) {
+            if (!(unit.burnTurns > 0)) unit.burnTurns = 3;
+            unit.burnDamage = 1;
             updateBurnVisual(unit);
         }
     });
@@ -12142,8 +12888,8 @@ function endTurn() {
     gameState.selectedUnit = null;
     gameState.deployMode = false;
     // 回合结束:关闭所有技能弹窗/清空选中(防对方回合残留误操作)
-    ['deepBlueSkillModal','lvbuSkillModal','yoggSkillModal','guySkillModal','shangboleSkillModal','sasukeSkillModal','painSkillModal','madaraSkillModal','beeMedicModal'].forEach(id => { const m = document.getElementById(id); if (m) m.classList.add('hidden'); });
-    gameState._deepBlueSelected = null; gameState._lvbuSelected = null; gameState._guySelected = null; gameState._yoggSelected = null; gameState._shangboleSelected = null; gameState._sasukeSelected = null; gameState._painSelected = null; gameState._madaraSelected = null; gameState._beeMedicSelected = null;
+    ['deepBlueSkillModal','lvbuSkillModal','yoggSkillModal','guySkillModal','shangboleSkillModal','sasukeSkillModal','painSkillModal','madaraSkillModal','beeMedicModal','zeppelinModal','hashiramaModal'].forEach(id => { const m = document.getElementById(id); if (m) m.classList.add('hidden'); });
+    gameState._deepBlueSelected = null; gameState._lvbuSelected = null; gameState._guySelected = null; gameState._yoggSelected = null; gameState._shangboleSelected = null; gameState._sasukeSelected = null; gameState._painSelected = null; gameState._madaraSelected = null; gameState._beeMedicSelected = null; gameState._zepSelected = null; gameState._hashiSelected = null;
     // 战车:结束回合重置锁定模式
     gameState.units.forEach(u => { u._targeting = false; u._witherTargeting = false; u._witherCharged = false; u._zetsuSkillUsed = false; u._zetsuTargeting = false; u._sasukeUltTargeting = false; u._sasukeFlameStage = 0; });
 
@@ -12177,6 +12923,8 @@ function endTurn() {
     gameState.units.forEach(u => {
         if (u._knockedDown && u.team === gameState.currentTurn) gameState.attackedUnits.add(u.id);
     });
+    // 觉醒女巫:己方回合开始,上下左右各召唤1个骷髅
+    gameState.units.filter(u => u.witch && u.team === gameState.currentTurn && !u._removing).forEach(w => witchSummonSkeletons(w));
     // 钢刺网:网方回合开始时,网内敌人受2真伤(无视护甲)
     spikeNetTick();
     // 地狱之塔:激光连住的目标每个回合自动灼烧(当前倍率真伤),同一目标每次自动翻倍
@@ -12341,6 +13089,19 @@ function endTurn() {
             u._beeHormoneMode = false; u._beeS2Mode = false; u._beeRescueOpen = false;
         }
     });
+    // 齐柏林飞艇:技能次数重置 / 建筑失效解除 / 卡牌冷却递减
+    gameState.units.forEach(u => {
+        if (u.zeppelin && u.team === prevTurn) {
+            u._zepS1Count = 0;
+            u._zepS2Used = false;
+            u._zepS3Used = false;
+            u._zepBombMode = false;
+            u._zepFireMode = false;
+        }
+        if ((u._disabledTurns || 0) > 0 && u.team === prevTurn) u._disabledTurns--;
+    });
+    if (!gameState._zepCd) gameState._zepCd = { red: 0, blue: 0 };
+    if (gameState._zepCd[prevTurn] > 0) gameState._zepCd[prevTurn]--;
     // 小王子:移动计数/攻击数重置 + 技能冷却递减
     gameState.units.forEach(u => {
         if (u.prince && u.team === prevTurn) {
@@ -12736,6 +13497,16 @@ function endTurn() {
     gameState.units.forEach(u => {
         if (u.blowdart) u.blowdartAttacksUsed = 0;
         if (u.hashirama) { u.hashiAttacksUsed = 0; u.hashiBlocksUsed = 0; }
+        if (u.hashirama && u.team === prevTurn) {
+            u._hashiS1Used = false;
+            u._hashiS2Used = false;
+            u._hashiS3Used = false;
+            u._hashiBindMode = false;
+        }
+        if (u._hashiSlowTurns > 0 && u.team === prevTurn) {
+            u._hashiSlowTurns--;
+            if (u._hashiSlowTurns <= 0) u._hashiSlow = 0;
+        }
         if (u.erin) {
             u.erinAttacksUsed = 0;
             if (u.erinSkillActive) {
@@ -12856,7 +13627,8 @@ function updateDeployModalCards() {
         let cardCost = card.cost;
         if (card.yogg) cardCost = getYoggCost();
         if (card.chaosTentacle && gameState._freeTentacles > 0) cardCost = 0;
-        cardElement.className = `battle-deck-card ${currentEnergy < cardCost ? 'disabled' : ''}`;
+        const zepCdLeft = card.zeppelin ? ((gameState._zepCd && gameState._zepCd[gameState.currentTurn]) || 0) : 0;
+        cardElement.className = `battle-deck-card ${currentEnergy < cardCost || zepCdLeft > 0 ? 'disabled' : ''}${card.rainbow ? ' rainbow' : ''}${(card.hero || card.rarity === 'gold') ? ' hero' : ''}${(card.rarity && card.rarity !== 'gold') ? ' rarity-' + card.rarity : ''}`;
         cardElement.dataset.index = index;
         cardElement.dataset.cost = cardCost;
 
@@ -12865,6 +13637,7 @@ function updateDeployModalCards() {
             <h4>${card.name}${card.yogg ? ` (${cardCost})` : (card.chaosTentacle && gameState._freeTentacles > 0 ? ' (免费)' : '')}</h4>
             ${card.yoggFate ? `<div class="cost" style="color:#9b59b6;">${Math.max(0, 10 - (gameState._fateWheelProgress||0)) > 0 ? '还需 ' + Math.max(0, 10 - (gameState._fateWheelProgress||0)) + ' 个法术开启命运之轮' : '命运之轮已就绪!'}</div>` : ''}
             <div class="cost">${cardCost} 能量</div>
+            ${zepCdLeft > 0 ? `<div class="cost" style="color:#e74c3c;">冷却 ${zepCdLeft} 回合</div>` : ''}
         `;
 
         battleDeckGrid.appendChild(cardElement);
@@ -12900,7 +13673,7 @@ function renderCardCollection() {
 
     gameState.cardCollection.forEach(card => {
         const cardElement = document.createElement('div');
-        cardElement.className = 'card-item' + (card.hero ? ' hero' : '');
+        cardElement.className = 'card-item' + ((card.hero || card.rarity === 'gold') ? ' hero' : '') + (card.rainbow ? ' rainbow' : '') + ((card.rarity && card.rarity !== 'gold') ? ' rarity-' + card.rarity : '');
 
         cardElement.innerHTML = `
             ${card.artwork ? `<div class="card-artwork art-${card.artwork}"></div>` : ''}
@@ -12938,6 +13711,7 @@ function renderCardCollection() {
 
         // 点击卡牌本身也显示信息
         cardElement.addEventListener('click', () => {
+            if (window.playCardSfx) window.playCardSfx();
             showCardInfo(card);
         });
 
@@ -12993,12 +13767,15 @@ function showCardInfo(card) {
     if (card.royalGuard) features.push('部署6卫兵/3伤护盾/移动≥3冲锋翻倍');
     if (card.prince) features.push('攻击上限每回合最多+1(移动≤2格触发,永久叠加至5)/双击召唤皇家护卫冲锋(3×6推敌+3伤)');
     if (card.littleSnowflake) features.push('敌人被冰冻时永久+2攻/+2血(无上限)');
+    if (card.meleeDiagonal) features.push('近战含斜向');
     if (card.id === 'ice_shooter') features.push('不可移动·攻击附带冰冻(敌人1回合无法行动)');
     if (card.glacierShroom) features.push('不可移动·双击/死亡:全屏冰冻1回合+1伤,双击自毁');
     if (card.beautyVine) features.push('不可移动·为大本营承担所有伤害(多株按出现顺序)');
     if (card.beeMedic) features.push('双击技能栏:激素枪/蜂巢烟雾弹/烟幕/专业救援');
     if (card.nurseGiant) features.push('造成伤害等量治疗己方大本营');
     if (card.supernovaGiant) features.push('击杀敌人时秒杀场上所有同种敌人');
+    if (card.zeppelin) features.push('空中单位·双击技能栏(高爆炸弹/燃烧弹/金属飞镖)·亡语5×5爆炸10伤+火场·打出后冷却3回合');
+    if (card.hashirama) features.push('普攻2伤/攻距2·双击技能栏(木人5×5蓝光柱/树界镇压/火之意志)·能量≥4时技能升级');
     if (card.hogRider) features.push('只能攻击建筑/大本营');
     if (card.golem) features.push('死亡分裂小石人·只能攻击建筑/大本营');
     if (card.royalGiant) features.push('只能攻击建筑/大本营,攻击时5×5冲击波:击退1格+1伤');
@@ -13062,7 +13839,7 @@ function showUnitInfo(unit, keepSelection) {
     }
     const used = gameState.moveUsed[unit.id] || 0;
     const windMod = getWindMoveMod(unit) + (unit.erinMoveBonus||0);
-    const remaining = Math.max(0, unit.moveRange - used + windMod);
+    const remaining = Math.max(0, unit.moveRange - used + windMod - (unit._hashiSlow||0));
 
     cardName.textContent = unit.name;
     cardAttack.textContent = unit.attack;
@@ -13135,7 +13912,7 @@ function updateBattleDeckDisplay() {
 
     gameState.battleDeck.forEach((card, index) => {
         const cardElement = document.createElement('div');
-        cardElement.className = 'deck-card';
+        cardElement.className = 'deck-card' + ((card.rarity && card.rarity !== 'gold') ? ' rarity-' + card.rarity : '');
 
         cardElement.innerHTML = `
             <button class="remove-btn" data-index="${index}">×</button>
@@ -13208,6 +13985,7 @@ function startGame() {
     gameState.iceFields = [];
     gameState.spikeNets = [];
     gameState.shroomCount = { red: 0, blue: 0 };
+    gameState._zepCd = { red: 0, blue: 0 };
     gameState.spellsCastThisGame = 0;
     // 全量清理残留状态(确保新局与上一局完全无关)
     gameState.energySpent = { red: 0, blue: 0 };
@@ -13227,7 +14005,7 @@ function startGame() {
     gameState._guySelected = null;
     gameState.abilityPhase = 0;
     // 关闭所有弹窗(防残留)
-    ['deployModal','spellModal','deepBlueSkillModal','lvbuSkillModal','yoggSkillModal','guySkillModal','shangboleSkillModal','sasukeSkillModal','painSkillModal','madaraSkillModal','beeMedicModal'].forEach(id => { const m = document.getElementById(id); if (m) m.classList.add('hidden'); });
+    ['deployModal','spellModal','deepBlueSkillModal','lvbuSkillModal','yoggSkillModal','guySkillModal','shangboleSkillModal','sasukeSkillModal','painSkillModal','madaraSkillModal','beeMedicModal','zeppelinModal','hashiramaModal'].forEach(id => { const m = document.getElementById(id); if (m) m.classList.add('hidden'); });
 
     // 后手补偿:蓝方(后手)拥有能量卡标记(0费,整局一次,+1能量)——不污染卡组,红方(先手)永远看不到
     gameState._blueEnergyCardLeft = gameState.maxEnergy < 500;
@@ -13245,6 +14023,9 @@ function startGame() {
     startScreen.classList.add('hidden');
     cardPackScreen.classList.add('hidden');
     gameScreen.classList.remove('hidden');
+    // 进入对局:立即切换战斗BGM(训练营/人机/联机/普通对局统一)
+    if (window.chessMusic && window.chessMusic.setScene) window.chessMusic.setScene('battle');
+    if (window.chessMusic && window.chessMusic.restartBattle) window.chessMusic.restartBattle();
     positionChatMessages();
 
     // 开始计时(联机模式:只有当前回合操作方计时,等待方不显示倒计时)
@@ -13283,6 +14064,8 @@ function goToStartScreen() {
     gameState.aiMode = false;
     const cm = document.getElementById('chatMessages');
     if (cm) cm.innerHTML = '';
+    // 回到主界面:切回菜单BGM
+    if (window.chessMusic && window.chessMusic.setScene) window.chessMusic.setScene('menu');
 }
 
 // 重新开始
@@ -13363,13 +14146,14 @@ function openSpellModal() {
     gameState.battleDeck.forEach((card, index) => {
         if (!card.spell) return;
         const el = document.createElement('div');
-        el.className = `battle-deck-card ${curE < card.cost ? 'disabled' : ''}`;
+        el.className = `battle-deck-card ${curE < card.cost ? 'disabled' : ''}${(card.hero || card.rarity === 'gold') ? ' hero' : ''}${(card.rarity && card.rarity !== 'gold') ? ' rarity-' + card.rarity : ''}`;
         el.innerHTML = `
             ${card.artwork ? `<div class="card-artwork art-${card.artwork}"></div>` : ''}
             <h4>${card.name}</h4>
             <div class="cost">${card.cost} 能量</div>
         `;
         el.addEventListener('click', () => {
+            if (window.playCardSfx) window.playCardSfx();
             if (curE < card.cost) return;
             document.getElementById('spellModal').classList.add('hidden');
             startSpellCasting(card);
@@ -13834,6 +14618,7 @@ function showUnitCardInfo(unit) {
 battleDeckGrid.addEventListener('click', (e) => {
     const card = e.target.closest('.battle-deck-card');
     if (!card) return;
+    if (window.playCardSfx) window.playCardSfx();
 
     // AI模式:蓝色回合由AI控制,玩家不能替AI部署
     if (gameState.aiMode && gameState.currentTurn === 'blue') return;
@@ -13867,6 +14652,31 @@ battleDeckGrid.addEventListener('click', (e) => {
     gameState.deployPosition = index;
     deployUnit(gameState.deployTargetRow, gameState.deployTargetCol);
     closeDeployModalFunc();
+});
+
+// 卡包排序:按费用 / 按稀有度
+function setSortActive(which) {
+    const costBtn = document.getElementById('sortByCostBtn');
+    const rareBtn = document.getElementById('sortByRarityBtn');
+    if (costBtn) costBtn.classList.toggle('active', which === 'cost');
+    if (rareBtn) rareBtn.classList.toggle('active', which === 'rarity');
+}
+document.getElementById('sortByCostBtn').addEventListener('click', () => {
+    gameState.cardCollection.sort((a, b) => (a.cost || 0) - (b.cost || 0));
+    setSortActive('cost');
+    renderCardCollection();
+});
+document.getElementById('sortByRarityBtn').addEventListener('click', () => {
+    const rank = { white: 0, green: 1, blue: 2, purple: 3, gold: 4, rainbow: 5 };
+    const rarityOf = c => c.rarity || (c.rainbow ? 'rainbow' : (c.hero ? 'gold' : 'white'));
+    gameState.cardCollection.sort((a, b) => {
+        const ra = rank[rarityOf(a)] || 0;
+        const rb = rank[rarityOf(b)] || 0;
+        if (ra !== rb) return ra - rb;
+        return (a.cost || 0) - (b.cost || 0);
+    });
+    setSortActive('rarity');
+    renderCardCollection();
 });
 
 // 卡包标签切换
