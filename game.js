@@ -358,14 +358,14 @@ const cardLibrary = [
     {
         id: 'gale',
         rarity: 'purple',
-        name: '疯狗·疾风',
+        name: '克莱尔·安·拜尔斯',
         attack: 3,
         hp: 3,
         armor: 2,
         armorPen: 2,
         moveRange: 6,
         attackRange: 6,
-        cost: 9,
+        cost: 6,
         artwork: 'gale',
         description: '疯狗来了!',
         critChance: 0.3,
@@ -458,8 +458,8 @@ const cardLibrary = [
     {
         id: 'erin',
         name: '艾琳',
-        attack: 2,
-        hp: 3,
+        attack: 3,
+        hp: 7,
         armorPen: 1,
         moveRange: 6,
         attackRange: 5,
@@ -1509,6 +1509,21 @@ const cardLibrary = [
         artwork: 'seed',
         seed: true,
         description: '不可移动。部署后的下一个己方回合,随机变成卡包中的任意一张非法术卡牌(不会变成小种子)。'
+    },
+    {
+        id: 'char2c',
+        name: '夏尔2c',
+        attack: 2,
+        hp: 15,
+        armor: 3,
+        armorPen: 1,
+        moveRange: 3,
+        attackRange: 6,
+        cost: 16,
+        artwork: 'char2c',
+        rarity: 'gold',
+        char2c: true,
+        description: '金卡。一回合可攻击4次。双击技能栏:75mm M1897野战炮,选8格内任意格(含友方/敌方/空格),炮弹爆炸造成4点伤害(穿甲3)并溅射5×5。'
     }
 ];
 
@@ -1798,6 +1813,7 @@ counterBurn: card.counterBurn || false,
         joseph: card.joseph || false,
         cordelius: card.cordelius || false,
         seed: card.seed || false,
+        char2c: card.char2c || false,
         stormDragon: card.stormDragon || false,
         eliteKnight: card.eliteKnight || false,
         fisherman: card.fisherman || false,
@@ -1901,7 +1917,7 @@ function handleCellClick(e) {
     if (gameState.aiMode && gameState.currentTurn === 'blue') return;
 
     // 技能框打开时点击棋盘:关闭技能框并忽略本次点击(避免误触部署弹窗)
-    const skillModals = ['deepBlueSkillModal', 'lvbuSkillModal', 'yoggSkillModal', 'guySkillModal', 'shangboleSkillModal', 'sasukeSkillModal', 'painSkillModal', 'madaraSkillModal', 'beeMedicModal', 'zeppelinModal', 'hashiramaModal', 'stormDragonModal', 'josephModal'];
+    const skillModals = ['deepBlueSkillModal', 'lvbuSkillModal', 'yoggSkillModal', 'guySkillModal', 'shangboleSkillModal', 'sasukeSkillModal', 'painSkillModal', 'madaraSkillModal', 'beeMedicModal', 'zeppelinModal', 'hashiramaModal', 'stormDragonModal', 'josephModal', 'char2cModal'];
     for (const id of skillModals) {
         const m = document.getElementById(id);
         if (m && !m.classList.contains('hidden')) {
@@ -1916,6 +1932,7 @@ function handleCellClick(e) {
             else if (id === 'beeMedicModal') closeBeeMedicSkillModalFunc();
             else if (id === 'zeppelinModal') closeZeppelinSkillModalFunc();
             else if (id === 'josephModal') closeJosephModal();
+            else if (id === 'char2cModal') closeChar2cModal();
             return;
         }
     }
@@ -2214,6 +2231,14 @@ function handleCellClick(e) {
         }
         zp._zepFireMode = false;
         if (cell.classList.contains('pierce-target')) zepDropFire(zp, row, col);
+        else { clearHighlights(); gameState.selectedUnit = null; }
+        return;
+    }
+    // 夏尔2c 野战炮:选8格内任意格
+    if (gameState.selectedUnit && gameState.selectedUnit.char2c && gameState.selectedUnit._charSkillMode) {
+        const cu = gameState.selectedUnit;
+        cu._charSkillMode = false;
+        if (cell.classList.contains('pierce-target')) fireCharShell(cu, row, col);
         else { clearHighlights(); gameState.selectedUnit = null; }
         return;
     }
@@ -2737,6 +2762,11 @@ if (gameState._viralTargeting) {
             cordeliusShadowMode(clickedUnit);
             return;
         }
+        // 夏尔2c:双击打开技能栏
+        if (clickedUnit.char2c && clickedUnit === gameState.selectedUnit) {
+            openChar2cModal(clickedUnit);
+            return;
+        }
         // 镜:双击开启镜像法阵(4格内有敌人)
         if (clickedUnit.mirror && clickedUnit === gameState.selectedUnit && !clickedUnit._mirrorSkillCd && !clickedUnit._mirrorSkillMode && !clickedUnit._mirrorSkillTargetId) {
             const hasEnemy4 = gameState.units.some(e => e.team !== clickedUnit.team && !e.ghost && Math.max(Math.abs(e.row - clickedUnit.row), Math.abs(e.col - clickedUnit.col)) <= 4);
@@ -2997,7 +3027,7 @@ function showActionMode(unit) {
         // 技能未用完:不显示攻击
     } else if (unit.princess && (unit._princessCd || 0) > 0) {
         // 觉醒公主:蓄力回合不显示攻击范围
-    } else if (!gameState.attackedUnits.has(unit.id) || (unit.tankSpawn && (unit.demuAttacksUsed||0) < (unit.demuBonusAttacks||0)) || (unit.erin && (unit.erinSkillActive ? (unit.erinSkillAttacks||0) > 0 : (unit.erinAttacksUsed||0) < 2)) || (unit.blowdart && (unit.blowdartAttacksUsed||0) < 2) || (unit.prince && (unit._princeAttacks||0) < princeMaxAttacks(unit))) {
+    } else if (!gameState.attackedUnits.has(unit.id) || (unit.tankSpawn && (unit.demuAttacksUsed||0) < (unit.demuBonusAttacks||0)) || (unit.erin && (unit.erinSkillActive ? (unit.erinSkillAttacks||0) > 0 : (unit.erinAttacksUsed||0) < 2)) || (unit.blowdart && (unit.blowdartAttacksUsed||0) < 2) || (unit.char2c && (unit._char2cAttacks||0) < 4) || (unit.prince && (unit._princeAttacks||0) < princeMaxAttacks(unit))) {
         // 铠飞镖攻击时使用飞镖射程
         if (unit.kaiShurikenRange && unit.kaiAttacks >= 1) {
             const orig = unit.attackRange;
@@ -4973,6 +5003,10 @@ function attackUnit(target) {
         // 觉醒公主:攻击后进入蓄力,下个己方回合不能攻击
         attacker._princessCd = 2;
         gameState.attackedUnits.add(attacker.id);
+    } else if (attacker.char2c) {
+        // 夏尔2c:一回合可攻击4次
+        attacker._char2cAttacks = (attacker._char2cAttacks || 0) + 1;
+        if (attacker._char2cAttacks >= 4) gameState.attackedUnits.add(attacker.id);
     } else if (attacker.galeSkillActive) {
         // 疾风紧急回避装置:期间每回合可攻击2次(第一次不标记)
         skillAttack = true;
@@ -13363,6 +13397,89 @@ function seedTransform(unit) {
     if (typeof syncOnlineNow === 'function') syncOnlineNow();
 }
 
+// ===== 夏尔2c =====
+function openChar2cModal(u) {
+    gameState._char2cSelected = u;
+    const b = document.getElementById('charSkill1Btn');
+    if (b) { b.disabled = !!u._charSkillUsed; b.textContent = u._charSkillUsed ? '75mm M1897野战炮（已使用）' : '75mm M1897野战炮'; }
+    const m = document.getElementById('char2cModal');
+    if (m) m.classList.remove('hidden');
+}
+function closeChar2cModal() {
+    const m = document.getElementById('char2cModal');
+    if (m) m.classList.add('hidden');
+    gameState._char2cSelected = null;
+}
+function char2cShellMode(u) {
+    closeChar2cModal();
+    if (!u || u._charSkillUsed) return;
+    u._charSkillMode = true;
+    gameState.selectedUnit = u;
+    clearHighlights();
+    for (let r = u.row - 8; r <= u.row + 8; r++) {
+        for (let c = u.col - 8; c <= u.col + 8; c++) {
+            if (!isValidPosition(r, c)) continue;
+            if (isBlueBase(r, c) || isRedBase(r, c)) continue;
+            if (Math.max(Math.abs(r - u.row), Math.abs(c - u.col)) > 8) continue;
+            gameState.board[r][c].classList.add('pierce-target');
+        }
+    }
+}
+function showCharShellFx(fr, fc, tr, tc) {
+    const board = document.getElementById('gameBoard');
+    if (!board) return;
+    const dot = document.createElement('div');
+    dot.className = 'char-shell-dot';
+    dot.style.left = (fc * cellW + cellW / 2 - 5) + 'px';
+    dot.style.top = (fr * cellH + cellH / 2 - 5) + 'px';
+    board.appendChild(dot);
+    requestAnimationFrame(() => {
+        dot.style.left = (tc * cellW + cellW / 2 - 5) + 'px';
+        dot.style.top = (tr * cellH + cellH / 2 - 5) + 'px';
+    });
+    setTimeout(() => {
+        dot.remove();
+        const blast = document.createElement('div');
+        blast.className = 'char-blast';
+        blast.style.left = ((tc - 2) * cellW) + 'px';
+        blast.style.top = ((tr - 2) * cellH) + 'px';
+        blast.style.width = (5 * cellW) + 'px';
+        blast.style.height = (5 * cellH) + 'px';
+        board.appendChild(blast);
+        setTimeout(() => blast.remove(), 700);
+    }, 360);
+}
+function fireCharShell(u, row, col) {
+    if (!u || u._charSkillUsed) return;
+    u._charSkillMode = false;
+    u._charSkillUsed = true;
+    sendSkillFx('charShell', u, row, col);
+    showCharShellFx(u.row, u.col, row, col);
+    setTimeout(() => {
+        gameState.units.slice().forEach(e => {
+            if (e.ghost || e._removing) return;
+            if (Math.max(Math.abs(e.row - row), Math.abs(e.col - col)) > 2) return;
+            const dmg = Math.max(0, 4 - Math.max(0, (e.armor || 0) - 3));
+            if (dmg <= 0) return;
+            e.currentHp -= dmg;
+            updateUnitHp(e);
+            if (e.currentHp <= 0) removeUnit(e);
+        });
+        if (typeof syncOnlineNow === 'function') syncOnlineNow();
+    }, 380);
+    clearHighlights();
+    gameState.selectedUnit = null;
+    if (typeof syncOnlineNow === 'function') syncOnlineNow();
+}
+(function wireChar2cModal() {
+    const m = document.getElementById('char2cModal');
+    if (!m) return;
+    const g = id => document.getElementById(id);
+    if (g('charSkill1Btn')) g('charSkill1Btn').addEventListener('click', () => { const u = gameState._char2cSelected; if (u) char2cShellMode(u); });
+    if (g('closeChar2cModal')) g('closeChar2cModal').addEventListener('click', closeChar2cModal);
+    m.addEventListener('click', (e) => { if (e.target === m) closeChar2cModal(); });
+})();
+
 function deploySmoke(centerRow, centerCol, radius, team) {
     for (let r = centerRow - radius; r <= centerRow + radius; r++) {
         for (let c = centerCol - radius; c <= centerCol + radius; c++) {
@@ -13799,7 +13916,7 @@ function endTurn() {
     gameState.selectedUnit = null;
     gameState.deployMode = false;
     // 回合结束:关闭所有技能弹窗/清空选中(防对方回合残留误操作)
-    ['deepBlueSkillModal','lvbuSkillModal','yoggSkillModal','guySkillModal','shangboleSkillModal','sasukeSkillModal','painSkillModal','madaraSkillModal','beeMedicModal','zeppelinModal','hashiramaModal','stormDragonModal','josephModal'].forEach(id => { const m = document.getElementById(id); if (m) m.classList.add('hidden'); });
+    ['deepBlueSkillModal','lvbuSkillModal','yoggSkillModal','guySkillModal','shangboleSkillModal','sasukeSkillModal','painSkillModal','madaraSkillModal','beeMedicModal','zeppelinModal','hashiramaModal','stormDragonModal','josephModal','char2cModal'].forEach(id => { const m = document.getElementById(id); if (m) m.classList.add('hidden'); });
     gameState._deepBlueSelected = null; gameState._lvbuSelected = null; gameState._guySelected = null; gameState._yoggSelected = null; gameState._shangboleSelected = null; gameState._sasukeSelected = null; gameState._painSelected = null; gameState._madaraSelected = null; gameState._beeMedicSelected = null; gameState._zepSelected = null; gameState._hashiSelected = null; gameState._stormSelected = null;
     // 战车:结束回合重置锁定模式
     gameState.units.forEach(u => { u._targeting = false; u._witherTargeting = false; u._witherCharged = false; u._zetsuSkillUsed = false; u._zetsuTargeting = false; u._sasukeUltTargeting = false; u._sasukeFlameStage = 0; });
@@ -14449,6 +14566,7 @@ function endTurn() {
         if (u.hashirama) { u.hashiAttacksUsed = 0; u.hashiBlocksUsed = 0; }
         if (u.princess && u.team === prevTurn && (u._princessCd || 0) > 0) u._princessCd--;
         if (u.cordelius && u.team === prevTurn) { u._shadowUsed = false; u._shadowMode = false; }
+        if (u.char2c && u.team === prevTurn) { u._char2cAttacks = 0; u._charSkillUsed = false; u._charSkillMode = false; }
         if (u.stormDragon && u.team === prevTurn) {
             u._stormS1Used = false;
             u._stormS2Used = false;
@@ -14972,7 +15090,7 @@ function startGame() {
     gameState._guySelected = null;
     gameState.abilityPhase = 0;
     // 关闭所有弹窗(防残留)
-    ['deployModal','spellModal','deepBlueSkillModal','lvbuSkillModal','yoggSkillModal','guySkillModal','shangboleSkillModal','sasukeSkillModal','painSkillModal','madaraSkillModal','beeMedicModal','zeppelinModal','hashiramaModal','stormDragonModal','josephModal'].forEach(id => { const m = document.getElementById(id); if (m) m.classList.add('hidden'); });
+    ['deployModal','spellModal','deepBlueSkillModal','lvbuSkillModal','yoggSkillModal','guySkillModal','shangboleSkillModal','sasukeSkillModal','painSkillModal','madaraSkillModal','beeMedicModal','zeppelinModal','hashiramaModal','stormDragonModal','josephModal','char2cModal'].forEach(id => { const m = document.getElementById(id); if (m) m.classList.add('hidden'); });
 
     // 后手补偿:蓝方(后手)拥有能量卡标记(0费,整局一次,+1能量)——不污染卡组,红方(先手)永远看不到
     gameState._blueEnergyCardLeft = gameState.maxEnergy < 500;
