@@ -773,7 +773,7 @@ h1 {
     content: ''; position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
     box-shadow: inset 0 0 22px rgba(255, 120, 40, 0.55), inset 0 0 6px rgba(255, 190, 120, 0.35);
 }
-.meteor-surface { position: absolute; inset: 0; border-radius: 50%; overflow: hidden; animation: meteorSpin 26s linear infinite; }
+.meteor-surface { position: absolute; inset: 0; border-radius: 50%; overflow: hidden; z-index: 3; animation: meteorSpin 26s linear infinite; }
 .meteor-crater {
     position: absolute; border-radius: 50%;
     background: radial-gradient(circle at 38% 30%, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.30) 50%, rgba(255,226,190,0.16) 76%, rgba(0,0,0,0) 84%);
@@ -783,7 +783,7 @@ h1 {
 @keyframes meteorWrapIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 .meteor-boom { animation: meteorBoom 0.7s ease-out forwards; }
 @keyframes meteorBoom { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.25); opacity: 0; } }
-.meteor-crack { position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; border-radius: 50%; animation: crackIn 0.3s ease-out; }
+.meteor-crack { position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; border-radius: 50%; z-index: 4; animation: crackIn 0.3s ease-out; }
 @keyframes crackIn { from { opacity: 0; } to { opacity: 1; } }
 .meteor-crack-line { position: absolute; left: 50%; top: 0; width: 2px; background: linear-gradient(180deg, rgba(255,80,80,0.98), rgba(200,20,20,0.15)); transform-origin: top center; box-shadow: 0 0 6px rgba(255,60,60,0.95); }
 .madara-blue-aura { z-index: 29; pointer-events: none; border-radius: 50%; background: radial-gradient(circle, rgba(80,160,255,0.18), rgba(80,160,255,0.04)); box-shadow: 0 0 30px rgba(80,160,255,0.5), inset 0 0 30px rgba(80,160,255,0.3); animation: blueBreath 1.5s ease-in-out infinite; }
@@ -1394,12 +1394,11 @@ h1 {
     transform: translateX(-50%);
     white-space: nowrap;
     color: #e74c3c;
-    font-size: 18px;
+    font-size: 26px;
     font-weight: 900;
     z-index: 20;
     pointer-events: none;
     text-shadow: 0 0 4px rgba(0,0,0,0.8);
-    animation: musouPop 1.5s ease-out forwards;
 }
 
 @keyframes musouPop {
@@ -3682,12 +3681,12 @@ body.shadow-view .unit-hp-bar { background: rgba(255, 255, 255, 0.65) !important
 /* 戟头:独立元素,每把朝向不同 */
 .madara-stomp-halberd::before { display: none !important; }
 .madara-halberd-head {
-    position: absolute; left: -5px; top: -9px;
-    width: 14px; height: 12px;
-    background: linear-gradient(135deg, #4a4a4a 0%, #141414 55%, #2a0a08 100%);
-    clip-path: polygon(50% 0%, 100% 55%, 56% 70%, 50% 100%, 44% 70%, 0% 55%);
-    box-shadow: 0 0 6px rgba(255, 50, 50, 0.6);
-    transform-origin: 50% 60%;
+    position: absolute; width: 12px; height: 18px;
+    background: linear-gradient(180deg, #f0f0f0 0%, #8a8a8a 22%, #2a2a2a 55%, #6a0f08 100%);
+    clip-path: polygon(50% 0%, 80% 52%, 64% 100%, 36% 100%, 20% 52%);
+    box-shadow: 0 0 7px rgba(255, 60, 40, 0.7);
+    transform-origin: 50% 100%;
+    z-index: 2;
 }
 
 /* 陨石下落:白色空气流拖尾 */
@@ -4259,4 +4258,70 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%); color: #3498db; font-size: 12px;
     font-weight: 900; line-height: 1; white-space: nowrap;
     text-shadow: 0 0 5px rgba(52,152,219,0.7), 0 0 10px rgba(20,80,160,0.6);
+}
+
+/* 陨石红色火焰拖尾:一整团贴在陨石底部 */
+.meteor-flame-trail {
+    position: absolute; left: 50%; bottom: 55%; width: 112%; height: 240px;
+    transform: translateX(-50%); pointer-events: none; z-index: 1;
+}
+.meteor-flame-mass {
+    position: absolute; left: 50%; bottom: 0; width: 78%; height: 100%;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse at 50% 100%, rgba(255,248,200,0.95) 0%, rgba(255,190,70,0.92) 18%, rgba(255,90,10,0.8) 42%, rgba(190,25,0,0.5) 68%, rgba(120,0,0,0) 92%);
+    clip-path: polygon(10% 100%, 90% 100%, 68% 46%, 57% 0%, 43% 0%, 32% 46%);
+    filter: blur(2px) drop-shadow(0 0 12px rgba(255,80,10,0.75));
+    animation: flameMassFlicker 0.32s ease-in-out infinite alternate;
+}
+.meteor-flame-core {
+    position: absolute; left: 50%; bottom: 0; width: 42%; height: 88%;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse at 50% 100%, rgba(255,255,235,1) 0%, rgba(255,225,130,0.95) 22%, rgba(255,140,30,0.75) 50%, rgba(255,60,0,0) 88%);
+    clip-path: polygon(20% 100%, 80% 100%, 60% 0%, 40% 0%);
+    filter: blur(1px);
+    animation: flameMassFlicker 0.26s ease-in-out infinite alternate-reverse;
+}
+@keyframes flameMassFlicker {
+    from { transform: translateX(-50%) scaleY(0.92) scaleX(0.94); opacity: 0.85; }
+    to { transform: translateX(-50%) scaleY(1.12) scaleX(1.06); opacity: 1; }
+}
+.meteor-wrap.meteor-burning {
+    box-shadow:
+        inset -24px -28px 50px rgba(0, 0, 0, 0.92),
+        inset 18px 20px 38px rgba(255, 215, 170, 0.22),
+        inset 0 0 70px rgba(255, 80, 20, 0.55),
+        0 0 44px rgba(255, 90, 20, 0.75),
+        0 12px 34px rgba(0, 0, 0, 0.6);
+}
+
+/* 绝空落戟:3D 站立,每把朝不同方位倾斜 */
+.madara-stomp-area { perspective: 340px; }
+.madara-stomp-halberd { transform-style: preserve-3d; }
+
+.meteor-body-cover {
+    position: absolute; inset: 0; border-radius: 50%;
+    background: inherit; box-shadow: inherit;
+    z-index: 2; pointer-events: none;
+}
+
+/* 绝空落地选格:红色落点,与绿色移动区分 */
+.cell.stomp-target {
+    background: rgba(231, 76, 60, 0.30) !important;
+    box-shadow: inset 0 0 0 2px rgba(231, 76, 60, 0.95), 0 0 10px rgba(231, 76, 60, 0.6);
+    animation: stompTargetPulse 1s ease-in-out infinite;
+}
+@keyframes stompTargetPulse {
+    0%, 100% { background: rgba(231, 76, 60, 0.24) !important; }
+    50% { background: rgba(231, 76, 60, 0.42) !important; }
+}
+
+/* ===== 玉碎 ===== */
+.art-jade_break::after, .card-artwork.art-jade_break::after {
+    content: '玉碎'; position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%); color: #000; font-size: 15px;
+    font-weight: 900; line-height: 1; white-space: nowrap;
+    text-shadow: 0 0 3px rgba(200,245,255,0.8);
+}
+.unit.jade-break-buff {
+    box-shadow: 0 0 0 2px rgba(220, 245, 255, 0.95), 0 0 16px rgba(150, 220, 255, 0.9) !important;
 }
