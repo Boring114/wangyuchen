@@ -4325,3 +4325,18 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
 .unit.jade-break-buff {
     box-shadow: 0 0 0 2px rgba(220, 245, 255, 0.95), 0 0 16px rgba(150, 220, 255, 0.9) !important;
 }
+
+/* 第六张:下一张卡预览(虚影,不可用) */
+.battle-deck-card.next-card-preview {
+    opacity: 0.42;
+    filter: grayscale(0.35);
+    border-style: dashed;
+    pointer-events: none;
+    position: relative;
+}
+.battle-deck-card.next-card-preview::after {
+    content: '下一张';
+    position: absolute; top: 4px; left: 50%; transform: translateX(-50%);
+    font-size: 10px; color: #fff; background: rgba(0,0,0,0.55);
+    padding: 1px 5px; border-radius: 6px; white-space: nowrap;
+}

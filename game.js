@@ -95,14 +95,14 @@ const cardLibrary = [
         id: 'warden_gherros',
         name: '典狱长·格赫罗斯',
         attack: 5,
-        hp: 6,
+        hp: 7,
         armor: 2,
         armorPen: 1,
         moveRange: 5,
         attackRange: 5,
         cost: 12,
         artwork: 'warden',
-        description: "自带亲卫队(攻2 血3 护甲1 移3 攻距4),自身降到半血以下暴击率由百分之50提升至百分之100。",
+        description: "自带亲卫队(攻2 血5 护甲1 移3 攻距4),自身降到半血以下暴击率由百分之50提升至百分之100。",
         hero: true,
         heroDeployText: '立即肃清,一个都不能放过!',
         halfHpText: '典狱长实力受损!',
@@ -114,7 +114,7 @@ const cardLibrary = [
         id: 'raven',
         name: '渡鸦',
         attack: 3,
-        hp: 5,
+        hp: 7,
         armor: 1,
         moveRange: 4,
         attackRange: 4,
@@ -185,7 +185,7 @@ const cardLibrary = [
         rarity: 'purple',
         name: '铠',
         attack: 3,
-        hp: 6,
+        hp: 8,
         armor: 1,
         moveRange: 6,
         attackRange: 1,
@@ -223,10 +223,10 @@ const cardLibrary = [
         rarity: 'gold',
         name: '超级电能豌豆·5阶',
         attack: 4,
-        hp: 3,
+        hp: 5,
         moveRange: 0,
         attackRange: 99,
-        cost: 11,
+        cost: 8,
         artwork: 'electric-pea',
         description: "至尊平a,闪电连锁!",
         lineAttack: true,
@@ -318,7 +318,7 @@ const cardLibrary = [
         armorPen: 1,
         moveRange: 3,
         attackRange: 6,
-        cost: 20,
+        cost: 25,
         artwork: 'grand_wizard',
         grandWizard: true,
         description: '彩卡。登场时复活本局所有已阵亡的己方单位(满血,原地复活,位置被占则就近),复活前先爆出紫黑色光晕。部署后冷却6个己方回合。'
@@ -331,7 +331,7 @@ const cardLibrary = [
         hp: 1,
         moveRange: 0,
         attackRange: 0,
-        cost: 18,
+        cost: 16,
         artwork: 'clover',
         hero: true,
         clover: true,
@@ -554,7 +554,7 @@ const cardLibrary = [
         armor: 1,
         moveRange: 10,
         attackRange: 0,
-        cost: 12,
+        cost: 9,
         artwork: 'cop-car',
         description: '白捷达 黑普桑 条子来了!',
         copSpawn: true
@@ -664,7 +664,7 @@ const cardLibrary = [
         rarity: 'purple',
         name: '凋零',
         attack: 3,
-        hp: 8,
+        hp: 11,
         armor: 0,
         moveRange: 5,
         attackRange: 4,
@@ -694,7 +694,7 @@ const cardLibrary = [
         id: 'black_zetsu',
         name: '黑绝',
         attack: 2,
-        hp: 6,
+        hp: 7,
         armor: 0,
         moveRange: 10,
         attackRange: 2,
@@ -1290,7 +1290,7 @@ const cardLibrary = [
         armor: 0,
         moveRange: 2,
         attackRange: 2,
-        cost: 17,
+        cost: 14,
         artwork: 'yogg_fate',
         hero: true,
         yoggFate: true,
@@ -1361,7 +1361,7 @@ const cardLibrary = [
         armor: 0,
         moveRange: 0,
         attackRange: 0,
-        cost: 4,
+        cost: 2,
         artwork: 'viral_spread',
         spell: true,
         viralSpread: true,
@@ -1425,7 +1425,7 @@ const cardLibrary = [
         armorPen: 1,
         moveRange: 7,
         attackRange: 8,
-        cost: 8,
+        cost: 6,
         artwork: 'pierce',
         pierce: true,
         description: '普攻命中敌人后在身边生成1个弹壳;走到弹壳格拾起并自动攻击最近敌人(拾起攻击不生成弹壳、不触发反击)。双击选点(8格内任意格):以该格为中心5×5所有敌人受普攻,每命中1敌生成1弹壳。大招冷却2个己方回合。可对空。'
@@ -1463,7 +1463,7 @@ const cardLibrary = [
         id: 'shangbole',
         name: '尚博勒',
         attack: 0,
-        hp: 5,
+        hp: 6,
         armor: 0,
         armorPen: 2,
         moveRange: 5,
@@ -3559,6 +3559,8 @@ function rollCrit(attacker, baseDamage) {
     if (attacker._crogDebuffed) return 1;
     // 狂暴法术:技能每段伤害+2
     if (attacker._rageAttack) baseDamage += attacker._rageAttack;
+    // 黑绝附身:技能每段伤害+2
+    if (attacker._possessed && attacker.zetsu) baseDamage += 2;
     // 剩饭:技能每段伤害+1(永久)
     if (attacker._leftoverBuff) baseDamage += attacker._leftoverBuff;
     if (attacker.critChance && Math.random() < attacker.critChance) {
@@ -4091,7 +4093,7 @@ function runDeployEffects(unit) {
             var nr=unit.row+p[0],nc=unit.col+p[1];
             if(!isValidPosition(nr,nc))return;
             if(gameState.units.some(u => u.row === nr && u.col === nc))return;
-            var tank={id:"tank_"+Date.now()+"_"+Math.random(),name:"战车",attack:3,maxHp:4,currentHp:4,armor:2,armorPen:1,moveRange:99,attackRange:3,team:unit.team,row:nr,col:nc,artwork:'tank',tank:true,tankMaster:unit.id};
+            var tank={id:"tank_"+Date.now()+"_"+Math.random(),name:"战车",attack:3,maxHp:6,currentHp:6,armor:2,armorPen:1,moveRange:99,attackRange:3,team:unit.team,row:nr,col:nc,artwork:'tank',tank:true,tankMaster:unit.id};
             gameState.units.push(tank);renderUnit(tank);
         });
     }
@@ -4335,7 +4337,7 @@ function dirtyRatSummon(unit) {
                 const nr = nu.row + p[0], nc = nu.col + p[1];
                 if (!isValidPosition(nr, nc)) return;
                 if (gameState.units.some(u => u.row === nr && u.col === nc)) return;
-                const tank = { id: 'tank_' + Date.now() + '_' + Math.random(), name: '战车', attack: 3, maxHp: 4, currentHp: 4, armor: 2, armorPen: 1, moveRange: 99, attackRange: 3, team: nu.team, row: nr, col: nc, artwork: 'tank', tank: true, tankMaster: nu.id };
+                const tank = { id: 'tank_' + Date.now() + '_' + Math.random(), name: '战车', attack: 3, maxHp:6, currentHp:6, armor: 2, armorPen: 1, moveRange: 99, attackRange: 3, team: nu.team, row: nr, col: nc, artwork: 'tank', tank: true, tankMaster: nu.id };
                 gameState.units.push(tank);
                 renderUnit(tank);
             });
@@ -4464,11 +4466,18 @@ function deployUnit(row, col) {
         gameState.blueEnergy -= cardCost;
         updateEnergyDisplay();
     }
+    // 手牌轮换:用掉一张后补入一张未显示的卡
+    rotateHandAfterUse(card.id);
     // 累计能量消耗:天鹰火炮开启条件(敌方花费30能量)
     gameState.energySpent[gameState.currentTurn] = (gameState.energySpent[gameState.currentTurn] || 0) + cardCost;
     if (card.zeppelin) card._cd = 3;
     if (card.stormDragon) card._cd = 4;
     if (card.grandWizard) { card._cd = 6; gameState._reviveDiscount[gameState.currentTurn] = 0; }
+    if (card.id === 'reynolds' || card.id === 'reynolds_jackson') card._cd = 6;
+    if (card.id === 'yogg') card._cd = 4;
+    if (card.id === 'yogg_fate') card._cd = 4;
+    if (card.id === 'yogg_saron') card._cd = 2;
+    if (card.id === 'guff') card._cd = 5;
     checkEagleArtillery();
     // 导演部署后:法术减费机制回归原价(重新从20起算)
     if (card.yogg) gameState.spellsCastThisGame = 0;
@@ -4512,6 +4521,7 @@ function deployUnit(row, col) {
     runDeployEffects(unit);
     // 联机实时同步:下兵后立即同步(对面实时看到新单位)
     syncOnlineNow();
+
 }
 
 // 移动单位
@@ -6029,6 +6039,30 @@ function applyJadeBreak(u) {
     syncOnlineNow();
 }
 
+// ===== 局内手牌轮换:10张中随机显示5张,用掉后补一张 =====
+function initHandRotation() {
+    const ids = (gameState.battleDeck || []).map(c => c.id);
+    for (let i = ids.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [ids[i], ids[j]] = [ids[j], ids[i]];
+    }
+    gameState.handIds = ids.slice(0, 5);
+    gameState._deckCycle = ids.slice(5);
+}
+function rotateHandAfterUse(cardId) {
+    if (!gameState.handIds || !cardId) return;
+    const idx = gameState.handIds.indexOf(cardId);
+    if (idx < 0) return;
+    gameState.handIds.splice(idx, 1);
+    if (gameState._deckCycle && gameState._deckCycle.length) {
+        gameState.handIds.push(gameState._deckCycle.shift());
+        gameState._deckCycle.push(cardId);
+    } else {
+        gameState.handIds.push(cardId);
+    }
+    if (typeof syncOnlineNow === 'function') syncOnlineNow();
+}
+
 function attackUnit(target, skipBulletDelay) {
     if (!gameState.selectedUnit) return;
     // 迈特凯·死门:冲撞攻击(冲过去撞3伤,每回合4次,每撞2次+1能量)
@@ -7317,6 +7351,7 @@ function showFireballVisual(row, col, r) {
 }
 
 function castSpell(card, row, col) {
+    rotateHandAfterUse(card.id);
     gameState.spellsCastThisGame = (gameState.spellsCastThisGame || 0) + 1;
     gameState._fateWheelProgress = (gameState._fateWheelProgress || 0) + 1; // 命运之轮进度(转轮后重置)
     // 后手能量卡:蓝方+1能量(本回合),整局一次用完消失(不造成任何伤害/特效)
@@ -7865,11 +7900,6 @@ function triggerCounter(attacker, target) {
 
 // 同名英雄唯一:脱困古神·尤格-萨隆/孤胆游侠雷诺/雷诺·杰克逊各自场上只能有一个存活(不同卡互不干扰)
 function isUniqueGroupBlocked(card) {
-    if (!card) return false;
-    const aliveSame = (pred) => gameState.units.some(u => pred(u.cardId) && !u._removing && u.currentHp > 0);
-    if (card.id === 'yogg' || card.id === 'reynolds' || card.id === 'reynolds_jackson') {
-        return aliveSame(id => id === card.id);
-    }
     return false;
 }
 
@@ -8714,7 +8744,7 @@ function transformToCard(unit, newCard) {
             const nr = unit.row + p[0], nc = unit.col + p[1];
             if (!isValidPosition(nr, nc)) return;
             if (gameState.units.some(u => u.row === nr && u.col === nc)) return;
-            const tank = { id: 'tank_' + Date.now() + '_' + Math.random(), name: '战车', attack: 3, maxHp: 4, currentHp: 4, armor: 2, armorPen: 1, moveRange: 99, attackRange: 3, team: unit.team, row: nr, col: nc, artwork: 'tank', tank: true, tankMaster: unit.id };
+            const tank = { id: 'tank_' + Date.now() + '_' + Math.random(), name: '战车', attack: 3, maxHp:6, currentHp:6, armor: 2, armorPen: 1, moveRange: 99, attackRange: 3, team: unit.team, row: nr, col: nc, artwork: 'tank', tank: true, tankMaster: unit.id };
             gameState.units.push(tank);
             renderUnit(tank);
         });
@@ -10212,7 +10242,7 @@ if (unit.eliteKnight) {
     // 黑绝:队友死亡,黑绝回归本体(保留附身时血量)
     if (unit._possessed && unit.zetsu) {
         const z = unit.zetsu;
-        const zUnit = { id: 'black_zetsu_' + Date.now() + '_' + Math.random(), cardId: 'black_zetsu', name: '黑绝', attack: 2, maxHp: 6, currentHp: Math.max(1, z.currentHp), armor: 0, moveRange: 10, attackRange: 2, artwork: 'black_zetsu', team: unit.team, row: unit.row, col: unit.col, blackZetsu: true };
+        const zUnit = { id: 'black_zetsu_' + Date.now() + '_' + Math.random(), cardId: 'black_zetsu', name: '黑绝', attack: 2, maxHp: 7, currentHp: Math.max(1, z.currentHp), armor: 0, moveRange: 10, attackRange: 2, artwork: 'black_zetsu', team: unit.team, row: unit.row, col: unit.col, blackZetsu: true };
         gameState.units.push(zUnit);
         renderUnit(zUnit);
 
@@ -10508,7 +10538,7 @@ function summonWardenGuards(warden) {
         name: '渡鸦亲卫队', attack: 5, maxHp: 4, currentHp: 4,
         armor: 1, armorPen: 1, moveRange: 4, attackRange: 2, artwork: 'raven-guard'
     } : {
-        name: '亲卫队', attack: 2, maxHp: 3, currentHp: 3,
+        name: '亲卫队', attack: 2, maxHp: 5, currentHp: 5,
         armor: 1, moveRange: 3, attackRange: 4, critChance: 0.5, artwork: 'guard'
     };
     offsets.forEach(([dr, dc]) => {
@@ -12072,9 +12102,9 @@ function thawIfBurned(unit) {
 // 附身:加成队友
 function possessUnit(card, host) {
     host._possessed = true;
-    host.zetsu = { currentHp: 6, maxHp: 6, revealed: false };
-    host.attack = (host.attack || 0) + 1;
-    host.critChance = (host.critChance || 0) + 0.2;
+    host.zetsu = { currentHp: 7, maxHp: 7, revealed: false };
+    host.attack = (host.attack || 0) + 2;
+    host.critChance = (host.critChance || 0) + 0.25;
     host.maxHp = (host.maxHp || 1) + 2;
     host.currentHp = (host.currentHp || 0) + 2;
     host.moveRange = (host.moveRange || 0) + 3;
@@ -12086,8 +12116,8 @@ function possessUnit(card, host) {
 // 收回附身加成
 function releaseZetsu(unit) {
     if (!unit._possessed || !unit.zetsu) return;
-    unit.attack = Math.max(0, (unit.attack || 0) - 1);
-    unit.critChance = Math.max(0, (unit.critChance || 0) - 0.2);
+    unit.attack = Math.max(0, (unit.attack || 0) - 2);
+    unit.critChance = Math.max(0, (unit.critChance || 0) - 0.25);
     unit.maxHp = Math.max(1, (unit.maxHp || 1) - 2);
     unit.currentHp = Math.min(unit.currentHp, unit.maxHp);
     unit.moveRange = Math.max(0, (unit.moveRange || 0) - 3);
@@ -12233,7 +12263,7 @@ function activateChakra(unit) {
 // 佩恩技能伤害加成:狂暴+剩饭+黑绝附身攻击加成
 function painSkillBonus(pain) {
     let b = (pain._rageAttack || 0) + (pain._leftoverBuff || 0);
-    if (pain._possessed && pain.zetsu) b += 1; // 黑绝附身:攻击+1
+    if (pain._possessed && pain.zetsu) b += 2; // 黑绝附身:技能伤害+2
     return b;
 }
 
@@ -16731,6 +16761,23 @@ function openDeployModal(row, col) {
 }
 
 // 更新部署弹窗中的卡牌
+// 第六张:下一张牌的虚影预览
+function appendNextCardPreview(container) {
+    if (!container) return;
+    const nextId = (gameState._deckCycle || [])[0];
+    if (!nextId) return;
+    const card = gameState.battleDeck.find(c => c.id === nextId);
+    if (!card) return;
+    const el = document.createElement('div');
+    el.className = 'battle-deck-card next-card-preview' + (card.rainbow ? ' rainbow' : '') + ((card.hero || card.rarity === 'gold') ? ' hero' : '');
+    el.innerHTML = `
+        ${card.artwork ? `<div class="card-artwork art-${card.artwork}"></div>` : ''}
+        <h4>${card.name}</h4>
+        <div class="cost">下一张</div>
+    `;
+    container.appendChild(el);
+}
+
 function updateDeployModalCards() {
     battleDeckGrid.innerHTML = '';
 
@@ -16742,6 +16789,7 @@ function updateDeployModalCards() {
     const isEnemyHalf = (gameState.currentTurn === 'red' && targetRow <= 13) || (gameState.currentTurn === 'blue' && targetRow >= 14);
 
     gameState.battleDeck.forEach((card, index) => {
+        if (gameState.handIds && !gameState.handIds.includes(card.id)) return;
         // 目标格有友方单位:只显示法术卡(黑绝不再通过部署框附身)
         const targetHasUnit = gameState.units.some(u => u.row === targetRow && u.col === targetCol);
         if (targetHasUnit) {
@@ -16754,7 +16802,7 @@ function updateDeployModalCards() {
         if (card.grandWizard) cardCost = gwCostFor(gameState.currentTurn);
         if (card.yogg) cardCost = getYoggCost();
         if (card.chaosTentacle && gameState._freeTentacles > 0) cardCost = 0;
-        const zepCdLeft = (card.zeppelin || card.stormDragon || card.grandWizard) ? (card._cd || 0) : 0;
+        const zepCdLeft = (card.zeppelin || card.stormDragon || card.grandWizard || card.id === 'reynolds' || card.id === 'reynolds_jackson' || card.id === 'yogg' || card.id === 'yogg_fate' || card.id === 'yogg_saron' || card.id === 'guff') ? (card._cd || 0) : 0;
         cardElement.className = `battle-deck-card ${currentEnergy < cardCost || zepCdLeft > 0 ? 'disabled' : ''}${card.rainbow ? ' rainbow' : ''}${(card.hero || card.rarity === 'gold') ? ' hero' : ''}${(card.rarity && card.rarity !== 'gold') ? ' rarity-' + card.rarity : ''}`;
         cardElement.dataset.index = index;
         cardElement.dataset.cost = cardCost;
@@ -16770,6 +16818,7 @@ function updateDeployModalCards() {
         battleDeckGrid.appendChild(cardElement);
     });
 
+    appendNextCardPreview(battleDeckGrid);
     // 后手能量卡:仅蓝方回合且未使用时显示(独立于卡组,红方永远看不到)
     if (gameState.currentTurn === 'blue' && gameState._blueEnergyCardLeft) {
         const eCardEl = document.createElement('div');
@@ -16885,7 +16934,7 @@ function showCardInfo(card) {
     if (card.kaiShurikenRange) features.push(`双攻/飞镖弹射${card.kaiShurikenMax}人+回血`);
     if (card.lineAttack) features.push(`直线3列射击/闪电链${card.chainDamage}伤`);
     if (card.hero) features.push('金卡');
-    if (card.tankSpawn) features.push('召唤战车×2(攻3/护甲2/血4,限老太周围4格)');
+    if (card.tankSpawn) features.push('召唤战车×2(攻3/护甲2/血6,限老太周围4格)');
     if (card.erin) features.push('双发连击/黄圈/计数技能/保命装');
     if (card.doomShroom) features.push('双击引爆:7×7爆炸7伤+留弹坑4回合');
     if (card.smallShroom) features.push('每回合限1个/不可移动');
@@ -17182,6 +17231,12 @@ function startGame() {
         timerDisplay.textContent = '对方回合';
     }
 
+    // 新对局:能量上限回到基础值(避免古夫加成叠加到下一局)
+    gameState.redMaxEnergy = gameState.maxEnergy;
+    gameState.blueMaxEnergy = gameState.maxEnergy;
+    // 新对局:清空所有卡牌的冷却(两张雷诺各自独立)
+    (gameState.battleDeck || []).forEach(c => { c._cd = 0; });
+    initHandRotation();
     // 手机端适配:按视口宽度缩放游戏界面(棋盘+UI整体缩小,保证完整显示)
     fitGameScreen();
 }
@@ -17293,6 +17348,7 @@ function openSpellModal() {
     }
     gameState.battleDeck.forEach((card, index) => {
         if (!card.spell) return;
+        if (gameState.handIds && !gameState.handIds.includes(card.id)) return;
         const el = document.createElement('div');
         el.className = `battle-deck-card ${curE < card.cost ? 'disabled' : ''}${(card.hero || card.rarity === 'gold') ? ' hero' : ''}${(card.rarity && card.rarity !== 'gold') ? ' rarity-' + card.rarity : ''}`;
         el.innerHTML = `
@@ -17308,6 +17364,7 @@ function openSpellModal() {
         });
         grid.appendChild(el);
     });
+    appendNextCardPreview(grid);
     if (!grid.children.length) grid.innerHTML = '<p style="color: #7f8c8d;">卡组中没有法术卡</p>';
     document.getElementById('spellModal').classList.remove('hidden');
 }
