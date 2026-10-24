@@ -6012,6 +6012,11 @@ function attackUnit(target, skipBulletDelay) {
 
     const attacker = gameState.selectedUnit;
     let lastDamage = 0;
+    // 杨戬:普攻每回合最多一次(虚妄破灭的额外普攻除外)
+    if (attacker && attacker.yangjian && !skipBulletDelay) {
+        if (gameState.attackedUnits.has(attacker.id) && !attacker._yjBonusAttack) return;
+        gameState.attackedUnits.add(attacker.id);
+    }
     // 杨戬:韧性满后的下一次攻击/受击进入法天象地
     if (attacker && attacker.yangjian && attacker._yjReady && !attacker._yjTransformed) yjTransform(attacker);
     if (target && target.yangjian && target._yjReady && !target._yjTransformed) yjTransform(target);
@@ -6946,6 +6951,12 @@ function attackBase(isBlueBase) {
     }
 
     const attacker = gameState.selectedUnit;
+    // 杨戬:攻击大本营同样每回合一次,额外普攻只能消耗一次
+    if (attacker.yangjian) {
+        if (gameState.attackedUnits.has(attacker.id) && !attacker._yjBonusAttack) return;
+        attacker._yjBonusAttack = false;
+        gameState.attackedUnits.add(attacker.id);
+    }
     if ((attacker._disabledTurns || 0) > 0) {
         showHeroDeployText(attacker, '失效中', '#888888', 900);
         clearHighlights();
