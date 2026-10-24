@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>棋盘游戏</title>
-    <link rel="stylesheet" href="styles.css?v=43">
+    <link rel="stylesheet" href="styles.css?v=99">
 </head>
 <body>
     <!-- 初始界面 -->
@@ -289,7 +289,7 @@
             <button id="shangboleSkill1Btn" class="skill-btn">猎头手枪（攻3穿2攻距5暴击30%翻倍）</button>
             <button id="shangboleSkill2Btn" class="skill-btn">慢行特区（8格空格放视野精灵，视野攻击1伤后敌移-2）</button>
             <button id="shangboleSkill3Btn" class="skill-btn">传送（6格放传送装置，双击装置传送到其前方）</button>
-            <button id="shangboleSkill4Btn" class="skill-btn">狙击枪（攻4无限穿甲射程14）</button>
+            <button id="shangboleSkill4Btn" class="skill-btn">狙击枪（攻7无限穿甲射程14）</button>
             <button id="closeShangboleSkillModal" class="close-btn">关闭</button>
         </div>
     </div>
@@ -321,7 +321,6 @@
         <div class="modal-content">
             <h3>马斑 · 技能</h3>
             <button id="madaraSkill1Btn" class="skill-btn">破军</button>
-            <button id="madaraSkill2Btn" class="skill-btn">乱舞·第二段</button>
             <button id="madaraSkill3Btn" class="skill-btn">绝空</button>
             <button id="madaraSkill4Btn" class="skill-btn">绝空·落</button>
             <button id="madaraSkill5Btn" class="skill-btn">天下无双</button>
@@ -387,6 +386,41 @@
         </div>
     </div>
 
+
+    <div id="haiyueModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>海月 · 技能</h3>
+            <button id="haiyueSkill1Btn" class="skill-btn">瞬华 (3/3)</button>
+            <button id="haiyueSkill2Btn" class="skill-btn">流光</button>
+            <button id="haiyueSkill3Btn" class="skill-btn">幻海映月</button>
+            <button id="closeHaiyueModal" class="close-btn">关闭</button>
+        </div>
+    </div>
+    <div id="yangjianModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>杨戬 · 技能</h3>
+            <button id="yjSkill1Btn" class="skill-btn">逆转乾坤</button>
+            <button id="yjSkill2Btn" class="skill-btn">虚妄破灭</button>
+            <button id="yjSkill3Btn" class="skill-btn">根源之目 (1/3)</button>
+            <button id="closeYangjianModal" class="close-btn">关闭</button>
+        </div>
+    </div>
+    <div id="reviveModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>复活萝卜 · 选择复活单位</h3>
+            <div id="reviveList" style="display:flex;flex-direction:column;gap:8px;max-height:50vh;overflow:auto;margin:10px 0;"></div>
+            <button id="closeReviveModal" class="close-btn">关闭</button>
+        </div>
+    </div>
+    <div id="taiyiModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>太乙真人 · 技能</h3>
+            <button id="tySkill1Btn" class="skill-btn">意外事故</button>
+            <button id="tySkill2Btn" class="skill-btn">第三只手</button>
+            <button id="tySkill3Btn" class="skill-btn">大变活人</button>
+            <button id="closeTaiyiModal" class="close-btn">关闭</button>
+        </div>
+    </div>
     <!-- 游戏结束弹窗 -->
     <div id="gameOverModal" class="modal hidden">
         <div class="modal-content">
@@ -395,9 +429,13 @@
         </div>
     </div>
 
-        <button id="mirrorToggleBtn" class="mirror-toggle-btn hidden">切换到现实世界</button>
-<script src="game.js?v=79"></script>
-    <script src="online.js?v=13"></script>
+        <div id="worldToggleBar" class="world-toggle-bar">
+            <button id="mirrorToggleBtn" class="mirror-toggle-btn hidden">切换到现实世界</button>
+            <button id="shadowToggleBtn" class="mirror-toggle-btn shadow-toggle-btn hidden">切换到现实世界</button>
+            <button id="haiyueToggleBtn" class="mirror-toggle-btn haiyue-toggle-btn hidden">隐藏幻境</button>
+        </div>
+<script src="game.js?v=175"></script>
+    <script src="online.js?v=20"></script>
     <script src="music.js?v=15"></script>
     <script src="sfx.js?v=4"></script>
 </body>

@@ -144,6 +144,7 @@ function tryConnect(cb) {
                 // 蓝方接收红方状态并合并
                 gameState.units = gs.units.map(u => ({...u, team: u.team === 'red' ? 'red' : 'blue'}));
                 applyMirrorFromSync(gs);
+                applyHaiyueFromSync(gs);
                 gameState.redBaseHp = gs.redBaseHp;
                 gameState.blueBaseHp = gs.blueBaseHp;
                 gameState.redEnergy = gs.redEnergy;
@@ -182,15 +183,15 @@ function tryConnect(cb) {
                 if (typeof renderWindZones === 'function') renderWindZones();
                 if (typeof renderFireZones === 'function') renderFireZones();
                 if (typeof renderStormDomains === 'function') renderStormDomains();
-                gameState.units.forEach(u => { if (u._susanooActive && typeof renderSusanooVisual === 'function') renderSusanooVisual(u); });
                 gameState.units.forEach(u => { if (u._infernoLaserTarget && typeof showInfernoLaser === 'function') { const tar = gameState.units.find(x => x.id === u._infernoLaserTarget); if (tar) showInfernoLaser(u, tar); } });
                 gameState.units.forEach(u => { if (u.poisonTurns > 0 && typeof updatePoisonVisual === 'function') updatePoisonVisual(u); if (u.treeBound && typeof updateTreeVisual === 'function') updateTreeVisual(u); });
-                gameState.units.forEach(u => { const uel = gameState.board[u.row] && gameState.board[u.row][u.col] && gameState.board[u.row][u.col].querySelector('.unit'); if (uel) { if (u._magicShield) uel.classList.add('magic-shield'); if ((u._shieldHp || 0) > 0) uel.classList.add('guard-shield'); if (u._stoneWall) uel.classList.add('stone-bubble'); } });
+                gameState.units.forEach(u => { const uel = gameState.board[u.row] && gameState.board[u.row][u.col] && gameState.board[u.row][u.col].querySelector('.unit'); if (uel) { if (u._magicShield) uel.classList.add('magic-shield'); if ((u._shieldHp || 0) > 0) uel.classList.add('guard-shield'); if ((u._haiyueMarkTurns || 0) > 0) uel.classList.add('haiyue-marked'); if (u._stoneWall) uel.classList.add('stone-bubble'); } });
                 flushFxQueue();
             } else {
                 // 红方接收蓝方状态(蓝方回合结束后回合流转回红方)
                 gameState.units = gs.units.map(u => ({...u}));
                 applyMirrorFromSync(gs);
+                applyHaiyueFromSync(gs);
                 gameState.redBaseHp = gs.redBaseHp;
                 gameState.blueBaseHp = gs.blueBaseHp;
                 gameState.redEnergy = gs.redEnergy;
@@ -229,10 +230,9 @@ function tryConnect(cb) {
                 if (typeof renderWindZones === 'function') renderWindZones();
                 if (typeof renderFireZones === 'function') renderFireZones();
                 if (typeof renderStormDomains === 'function') renderStormDomains();
-                gameState.units.forEach(u => { if (u._susanooActive && typeof renderSusanooVisual === 'function') renderSusanooVisual(u); });
                 gameState.units.forEach(u => { if (u._infernoLaserTarget && typeof showInfernoLaser === 'function') { const tar = gameState.units.find(x => x.id === u._infernoLaserTarget); if (tar) showInfernoLaser(u, tar); } });
                 gameState.units.forEach(u => { if (u.poisonTurns > 0 && typeof updatePoisonVisual === 'function') updatePoisonVisual(u); if (u.treeBound && typeof updateTreeVisual === 'function') updateTreeVisual(u); });
-                gameState.units.forEach(u => { const uel = gameState.board[u.row] && gameState.board[u.row][u.col] && gameState.board[u.row][u.col].querySelector('.unit'); if (uel) { if (u._magicShield) uel.classList.add('magic-shield'); if ((u._shieldHp || 0) > 0) uel.classList.add('guard-shield'); if (u._stoneWall) uel.classList.add('stone-bubble'); } });
+                gameState.units.forEach(u => { const uel = gameState.board[u.row] && gameState.board[u.row][u.col] && gameState.board[u.row][u.col].querySelector('.unit'); if (uel) { if (u._magicShield) uel.classList.add('magic-shield'); if ((u._shieldHp || 0) > 0) uel.classList.add('guard-shield'); if ((u._haiyueMarkTurns || 0) > 0) uel.classList.add('haiyue-marked'); if (u._stoneWall) uel.classList.add('stone-bubble'); } });
                 flushFxQueue();
             }
         }
@@ -302,7 +302,7 @@ function playSkillFx(fx) {
         const u = findU(fx.row, fx.col) || { row: fx.row, col: fx.col, team: fx.team, currentHp: 1, maxHp: 1, attack: 1, armor: 0 };
         const t = findU(fx.toR, fx.toC) || { row: fx.toR, col: fx.toC, team: fx.team === 'red' ? 'blue' : 'red', currentHp: 1, maxHp: 1, attack: 1, armor: 0 };
         switch (fx.skill) {
-            case 'shinra': if (typeof showShinraVisual === 'function') showShinraVisual(u.row, u.col, u.shinraRange || 3); else showSkillFlashFx(fx.row, fx.col, '#9b59b6', 50); break;
+            case 'shinra': if (typeof showShinraVisual === 'function') showShinraVisual(u.row, u.col, u.shinraRange || 3, fx.team); else showSkillFlashFx(fx.row, fx.col, '#9b59b6', 50); break;
             case 'bansho': if (typeof showBanshoVisual === 'function') showBanshoVisual(u); else showSkillFlashFx(fx.row, fx.col, '#3498db', 40); break;
             case 'chibaku': if (typeof showChibakuVisual === 'function') showChibakuVisual(u); else showSkillFlashFx(fx.row, fx.col, '#e74c3c', 60); break;
             case 'woodDragon': if (typeof showWoodDragonVisual === 'function') showWoodDragonVisual(u, t); else showSkillFlashFx(fx.toR, fx.toC, '#27ae60', 50); break;
@@ -319,6 +319,24 @@ function playSkillFx(fx) {
             case 'firePillar': if (typeof showFirePillar === 'function') showFirePillar(fx.toR, fx.toC); else showSkillFlashFx(fx.toR, fx.toC, '#e74c3c', 45); break;
             case 'stormClaw': if (typeof showStormCracks === 'function') showStormCracks(fx.row, fx.col); else showSkillFlashFx(fx.row, fx.col, '#5aa9ff', 55); break;
             case 'stormBreath': if (typeof showStormDomain === 'function') showStormDomain({ id: 'rx_' + Date.now(), row: fx.row, col: fx.col, team: fx.team }); else showSkillFlashFx(fx.row, fx.col, '#5aa9ff', 60); break;
+            case 'bullet_black': if (typeof showBulletFx === 'function') showBulletFx(fx.row, fx.col, fx.toR, fx.toC, 'black'); else showSkillFlashFx(fx.toR, fx.toC, '#ffffff', 25); break;
+            case 'bullet_purple': if (typeof showBulletFx === 'function') showBulletFx(fx.row, fx.col, fx.toR, fx.toC, 'purple'); else showSkillFlashFx(fx.toR, fx.toC, '#ffffff', 25); break;
+            case 'bullet_blue': if (typeof showBulletFx === 'function') showBulletFx(fx.row, fx.col, fx.toR, fx.toC, 'blue'); else showSkillFlashFx(fx.toR, fx.toC, '#ffffff', 25); break;
+            case 'bullet_green': if (typeof showBulletFx === 'function') showBulletFx(fx.row, fx.col, fx.toR, fx.toC, 'green'); else showSkillFlashFx(fx.toR, fx.toC, '#ffffff', 25); break;
+            case 'bullet_red': if (typeof showBulletFx === 'function') showBulletFx(fx.row, fx.col, fx.toR, fx.toC, 'red'); else showSkillFlashFx(fx.toR, fx.toC, '#ffffff', 25); break;
+            case 'bullet_arrow': if (typeof showBulletFx === 'function') showBulletFx(fx.row, fx.col, fx.toR, fx.toC, 'arrow'); else showSkillFlashFx(fx.toR, fx.toC, '#ffffff', 25); break;
+            case 'bullet_spike': if (typeof showBulletFx === 'function') showBulletFx(fx.row, fx.col, fx.toR, fx.toC, 'spike'); else showSkillFlashFx(fx.toR, fx.toC, '#ffffff', 25); break;
+            case 'bullet_tesla': if (typeof showBulletFx === 'function') showBulletFx(fx.row, fx.col, fx.toR, fx.toC, 'tesla'); else showSkillFlashFx(fx.toR, fx.toC, '#ffffff', 25); break;
+            case 'haiyueWave': if (typeof showHaiyueWaveFx === 'function') showHaiyueWaveFx(u); else showSkillFlashFx(fx.row, fx.col, '#4aa8ff', 50); break;
+            case 'haiyueOrb': if (typeof showHaiyueOrbFx === 'function') showHaiyueOrbFx(u, t); else showSkillFlashFx(fx.toR, fx.toC, '#4aa8ff', 35); break;
+            case 'haiyueLink': if (typeof showHaiyueLinkFx === 'function') showHaiyueLinkFx(u, t); else showSkillFlashFx(fx.toR, fx.toC, '#9fe8ff', 45); break;
+            case 'haiyueMark': showSkillFlashFx(fx.toR, fx.toC, '#8fdcff', 30); break;
+            case 'yjDog': if (typeof showYjDogFx === 'function') showYjDogFx(u, t); else showSkillFlashFx(fx.toR, fx.toC, '#ffd75e', 30); break;
+            case 'yjCharge': if (typeof showSkillFlashFx === 'function') showSkillFlashFx(fx.toR, fx.toC, '#ffd75e', 45); break;
+            case 'yjSweep': if (typeof showYjSweepFx === 'function') showYjSweepFx(u); else showSkillFlashFx(fx.row, fx.col, '#ffd75e', 40); break;
+            case 'yjLaser': if (typeof showYjLaserFx === 'function') showYjLaserFx(u, [{ dr: fx.team === 'red' ? -1 : 1, dc: 0 }]); else showSkillFlashFx(fx.row, fx.col, '#ffd75e', 40); break;
+            case 'taiyiBomb': if (typeof showSkillFlashFx === 'function') showSkillFlashFx(fx.row, fx.col, '#2ecc71', 80); break;
+            case 'taiyiHand': if (typeof showSkillFlashFx === 'function') showSkillFlashFx(fx.toR, fx.toC, '#2ecc71', 45); break;
             case 'hurricane': if (typeof showHurricaneFx === 'function') showHurricaneFx(fx.toR, fx.toC); else showSkillFlashFx(fx.toR, fx.toC, '#7ec8ff', 60); break;
             case 'zepBomb': if (typeof showZepBombFx === 'function') showZepBombFx(fx.toR, fx.toC); else showSkillFlashFx(fx.toR, fx.toC, '#ff9800', 45); break;
             case 'zepFire': if (typeof showZepFireFx === 'function') showZepFireFx(fx.toR, fx.toC); else showSkillFlashFx(fx.toR, fx.toC, '#ff5722', 55); break;
@@ -423,6 +441,28 @@ function showOnlineAttackFx(r1, c1, r2, c2) {
 }
 
 // 每次操作后同步状态(单位完整对象,含属性/技能字段,确保对方渲染正常)
+function applyHaiyueFromSync(gs) {
+    const p = gs.haiyueIllusionWorld;
+    const tb = document.getElementById('haiyueToggleBtn');
+    if (p && p.active) {
+        const prevLocal = gameState.haiyueIllusion && gameState.haiyueIllusion.localView;
+        gameState.haiyueIllusion = Object.assign({}, p, { localView: prevLocal || p.view || 'illusion' });
+        const lv = gameState.haiyueIllusion.localView;
+        const src = lv === 'illusion' ? p.illusionUnits : p.realUnits;
+        if (src) gameState.units = src.map(u => ({...u}));
+        document.body.classList.toggle('haiyue-illusion-view', lv === 'illusion');
+        if (tb) { tb.classList.remove('hidden'); tb.textContent = lv === 'illusion' ? '查看现实棋盘' : '返回水月幻境'; }
+        if (typeof renderHaiyueIllusion === 'function') setTimeout(() => { if (gameState.haiyueIllusion) renderHaiyueIllusion(); }, 0);
+        const sb = document.getElementById('skipBtn');
+        if (sb && lv === 'illusion') sb.style.display = 'none';
+    } else if (gameState.haiyueIllusion) {
+        gameState.haiyueIllusion = null;
+        document.body.classList.remove('haiyue-illusion-view');
+        const l = document.getElementById('haiyueIllusionLayer');
+        if (l) l.remove();
+        if (tb) tb.classList.add('hidden');
+    }
+}
 function applyMirrorFromSync(gs) {
     if (gs.mirror && gs.mirror.active) {
         const prevLocal = gameState.mirror && gameState.mirror.localView;
@@ -460,6 +500,21 @@ function syncGameState() {
             mirrorUnits: m.mirrorUnits, realUnits: m.realUnits
         };
     }
+    // 水月幻境:同步幻境/现实两套单位
+    let haiyuePayload = null;
+    if (gameState.haiyueIllusion && gameState.haiyueIllusion.active) {
+        const ill = gameState.haiyueIllusion;
+        if ((ill.localView || ill.view) === 'illusion') ill.illusionUnits = JSON.parse(JSON.stringify(gameState.units));
+        else ill.realUnits = JSON.parse(JSON.stringify(gameState.units));
+        const lv = ill.localView || ill.view;
+        unitsForSend = ((lv === 'illusion' ? ill.illusionUnits : ill.realUnits) || []).map(u => ({...u}));
+        haiyuePayload = {
+            active: true, ownerId: ill.ownerId, targetId: ill.targetId, team: ill.team,
+            center: ill.center, halvesLeft: ill.halvesLeft, view: ill.view,
+            illusionUnits: ill.illusionUnits, realUnits: ill.realUnits,
+            visible: ill.visible
+        };
+    }
     ws.send(JSON.stringify({
         type: 'gameState',
         state: JSON.stringify({
@@ -483,7 +538,8 @@ function syncGameState() {
             stormDomains: gameState.stormDomains || [],
             erinRings: gameState.erinRings || [],
             sasukeFlames: gameState.sasukeFlames || [],
-            beeSmokes: gameState.beeSmokes || []
+            beeSmokes: gameState.beeSmokes || [],
+            haiyueIllusionWorld: haiyuePayload
         })
     }));
 }
