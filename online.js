@@ -164,6 +164,8 @@ function tryConnect(cb) {
                 if (typeof renderErinRings === "function") renderErinRings();
                 gameState.sasukeFlames = gs.sasukeFlames || [];
                 gameState.beeSmokes = gs.beeSmokes || [];
+                gameState.nitroZones = gs.nitroZones || [];
+                if (typeof renderNitroZones === 'function') renderNitroZones();
                 if (typeof renderSasukeFlames === 'function') renderSasukeFlames();
                 if (typeof renderBeeSmokes === 'function') renderBeeSmokes();
                 gameState.currentTurn = gs.currentTurn || 'blue';
@@ -185,7 +187,7 @@ function tryConnect(cb) {
                 if (typeof renderStormDomains === 'function') renderStormDomains();
                 gameState.units.forEach(u => { if (u._infernoLaserTarget && typeof showInfernoLaser === 'function') { const tar = gameState.units.find(x => x.id === u._infernoLaserTarget); if (tar) showInfernoLaser(u, tar); } });
                 gameState.units.forEach(u => { if (u.poisonTurns > 0 && typeof updatePoisonVisual === 'function') updatePoisonVisual(u); if (u.treeBound && typeof updateTreeVisual === 'function') updateTreeVisual(u); });
-                gameState.units.forEach(u => { const uel = gameState.board[u.row] && gameState.board[u.row][u.col] && gameState.board[u.row][u.col].querySelector('.unit'); if (uel) { if (u._magicShield) uel.classList.add('magic-shield'); if ((u._shieldHp || 0) > 0) uel.classList.add('guard-shield'); if ((u._haiyueMarkTurns || 0) > 0) uel.classList.add('haiyue-marked'); if (u._stoneWall) uel.classList.add('stone-bubble'); } });
+                gameState.units.forEach(u => { const uel = gameState.board[u.row] && gameState.board[u.row][u.col] && gameState.board[u.row][u.col].querySelector('.unit'); if (uel) { if (u._magicShield) uel.classList.add('magic-shield'); if ((u._shieldHp || 0) > 0) uel.classList.add('guard-shield'); if ((u._haiyueMarkTurns || 0) > 0) uel.classList.add('haiyue-marked'); if ((u._blindedTurns || 0) > 0) uel.classList.add('gb-blinded'); if (u._stoneWall) uel.classList.add('stone-bubble'); } });
                 flushFxQueue();
             } else {
                 // 红方接收蓝方状态(蓝方回合结束后回合流转回红方)
@@ -211,6 +213,8 @@ function tryConnect(cb) {
                 if (typeof renderErinRings === "function") renderErinRings();
                 gameState.sasukeFlames = gs.sasukeFlames || [];
                 gameState.beeSmokes = gs.beeSmokes || [];
+                gameState.nitroZones = gs.nitroZones || [];
+                if (typeof renderNitroZones === 'function') renderNitroZones();
                 if (typeof renderSasukeFlames === 'function') renderSasukeFlames();
                 if (typeof renderBeeSmokes === 'function') renderBeeSmokes();
                 gameState.currentTurn = gs.currentTurn || 'red';
@@ -232,7 +236,7 @@ function tryConnect(cb) {
                 if (typeof renderStormDomains === 'function') renderStormDomains();
                 gameState.units.forEach(u => { if (u._infernoLaserTarget && typeof showInfernoLaser === 'function') { const tar = gameState.units.find(x => x.id === u._infernoLaserTarget); if (tar) showInfernoLaser(u, tar); } });
                 gameState.units.forEach(u => { if (u.poisonTurns > 0 && typeof updatePoisonVisual === 'function') updatePoisonVisual(u); if (u.treeBound && typeof updateTreeVisual === 'function') updateTreeVisual(u); });
-                gameState.units.forEach(u => { const uel = gameState.board[u.row] && gameState.board[u.row][u.col] && gameState.board[u.row][u.col].querySelector('.unit'); if (uel) { if (u._magicShield) uel.classList.add('magic-shield'); if ((u._shieldHp || 0) > 0) uel.classList.add('guard-shield'); if ((u._haiyueMarkTurns || 0) > 0) uel.classList.add('haiyue-marked'); if (u._stoneWall) uel.classList.add('stone-bubble'); } });
+                gameState.units.forEach(u => { const uel = gameState.board[u.row] && gameState.board[u.row][u.col] && gameState.board[u.row][u.col].querySelector('.unit'); if (uel) { if (u._magicShield) uel.classList.add('magic-shield'); if ((u._shieldHp || 0) > 0) uel.classList.add('guard-shield'); if ((u._haiyueMarkTurns || 0) > 0) uel.classList.add('haiyue-marked'); if ((u._blindedTurns || 0) > 0) uel.classList.add('gb-blinded'); if (u._stoneWall) uel.classList.add('stone-bubble'); } });
                 flushFxQueue();
             }
         }
@@ -337,6 +341,9 @@ function playSkillFx(fx) {
             case 'yjLaser': if (typeof showYjLaserFx === 'function') showYjLaserFx(u, [{ dr: fx.team === 'red' ? -1 : 1, dc: 0 }]); else showSkillFlashFx(fx.row, fx.col, '#ffd75e', 40); break;
             case 'taiyiBomb': if (typeof showSkillFlashFx === 'function') showSkillFlashFx(fx.row, fx.col, '#2ecc71', 80); break;
             case 'taiyiHand': if (typeof showSkillFlashFx === 'function') showSkillFlashFx(fx.toR, fx.toC, '#2ecc71', 45); break;
+            case 'gbBullet': if (typeof showSkillFlashFx === 'function') showSkillFlashFx(fx.toR, fx.toC, '#111111', 40); break;
+            case 'gbCan': if (typeof showSkillFlashFx === 'function') showSkillFlashFx(fx.toR, fx.toC, '#4aa8ff', 60); break;
+            case 'gbGrenade': if (typeof showSkillFlashFx === 'function') showSkillFlashFx(fx.toR, fx.toC, '#6fd0ff', 40); break;
             case 'hurricane': if (typeof showHurricaneFx === 'function') showHurricaneFx(fx.toR, fx.toC); else showSkillFlashFx(fx.toR, fx.toC, '#7ec8ff', 60); break;
             case 'zepBomb': if (typeof showZepBombFx === 'function') showZepBombFx(fx.toR, fx.toC); else showSkillFlashFx(fx.toR, fx.toC, '#ff9800', 45); break;
             case 'zepFire': if (typeof showZepFireFx === 'function') showZepFireFx(fx.toR, fx.toC); else showSkillFlashFx(fx.toR, fx.toC, '#ff5722', 55); break;
@@ -539,6 +546,7 @@ function syncGameState() {
             erinRings: gameState.erinRings || [],
             sasukeFlames: gameState.sasukeFlames || [],
             beeSmokes: gameState.beeSmokes || [],
+            nitroZones: gameState.nitroZones || [],
             haiyueIllusionWorld: haiyuePayload
         })
     }));
