@@ -294,9 +294,23 @@ function flushFxQueue() {
             else if (fx.kind === 'critText') showCritText(fx.row, fx.col, fx.msg);
             else if (fx.kind === 'attack') showOnlineAttackFx(fx.fromR, fx.fromC, fx.toR, fx.toC);
             else if (fx.kind === 'skill') playSkillFx(fx);
+            else if (fx.kind === 'move') playMoveFx(fx);
         } catch (e) {}
     });
     window._fxSyncing = false;
+}
+
+// 播放对方单位的移动平移动画(避免瞬移)
+function playMoveFx(fx) {
+    try {
+        if (typeof slideUnitElement !== "function") return;
+        if (fx.toR === undefined || fx.toC === undefined) return;
+        const cell = gameState.board[fx.toR] && gameState.board[fx.toR][fx.toC];
+        let el = cell ? cell.querySelector(".unit") : null;
+        if (!el && fx.id) el = document.querySelector(".unit[data-unit-id=\"" + fx.id + "\"]");
+        if (!el) return;
+        slideUnitElement(el, fx.fromR, fx.fromC, fx.toR, fx.toC);
+    } catch (e) {}
 }
 
 // 播放对方同步的技能动画:用真实单位对象调用原版动画函数(完整重放),缺失则用光效兜底

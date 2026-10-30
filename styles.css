@@ -996,17 +996,19 @@ h1 {
     border: none !important;
 }
 .art-madara::after {
-    content: '马斑';
+    content: '';
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: #c0392b;
-    font-size: 15px;
-    font-weight: 900;
-    line-height: 1;
-    white-space: nowrap;
-    text-shadow: 0 0 2px rgba(0,0,0,0.5);
+    width: 24px;
+    height: 24px;
+    background-image: url('images/madara.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
 }
 
 /* 铠——"铠" 文字 */
@@ -1252,17 +1254,19 @@ h1 {
 }
 
 .card-artwork.art-madara::after {
-    content: '马斑';
+    content: '';
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: #c0392b;
-    font-size: 15px;
-    font-weight: 900;
-    line-height: 1;
-    white-space: nowrap;
-    text-shadow: 0 0 2px rgba(0,0,0,0.5);
+    width: 100%;
+    height: 100%;
+    background-image: url('images/madara.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
 }
 
 .card-artwork.art-kai::after {
@@ -1970,8 +1974,36 @@ h1 {
 .art-dummy::after { content: '木偶'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #1a1a1a; font-size: 15px; font-weight: 900; line-height: 1; white-space: nowrap; }
 .card-artwork.art-dummy::after { content: '木偶'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #1a1a1a; font-size: 15px; font-weight: 900; line-height: 1; }
 .dummy-hp { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.6); color: #fff; font-size: 10px; font-weight: 900; border-radius: 6px; padding: 0 3px; z-index: 20; pointer-events: none; white-space: nowrap; }
-.art-hashirama::after { content: '植物人'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #145a32; font-size: 12px; font-weight: 900; line-height: 1; white-space: nowrap; }
-.card-artwork.art-hashirama::after { content: '植物人'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #145a32; font-size: 12px; font-weight: 900; line-height: 1; }
+.art-hashirama::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 24px;
+    height: 24px;
+    background-image: url('images/hashirama.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-hashirama::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background-image: url('images/hashirama.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
 .wood-golem { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #8b5a2b; font-size: 14px; font-weight: 900; background: rgba(139,90,43,0.35); border-radius: 50%; z-index: 12; pointer-events: none; }
 .wood-dragon.blue { transform: rotate(180deg); }
 .wood-dragon { position: absolute; width: 18px; height: 210px; background: linear-gradient(to bottom, rgba(160,120,65,0.98) 0%, rgba(150,110,60,0.8) 30%, rgba(140,100,50,0.5) 65%, rgba(120,80,40,0.1) 100%); border-radius: 9px; filter: drop-shadow(0 0 6px rgba(139,100,50,0.85)); z-index: 12; pointer-events: none; transition: left 0.5s ease-in, top 0.5s ease-in; }
@@ -4406,4 +4438,1237 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     width: 10px; height: 10px; border-radius: 2px;
     background: linear-gradient(135deg, #3a3a3a 0%, #111 45%, #000 100%);
     box-shadow: 0 0 8px rgba(0,0,0,0.95), 0 0 16px rgba(160,40,220,0.55), inset 0 0 3px rgba(120,60,160,0.6);
+}
+
+/* ===== 图片图标(正方形,等比缩放,不超出格子) ===== */
+.art-char2c::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/char2c.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-char2c::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/char2c.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-reynolds::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/reynolds.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-reynolds::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/reynolds.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-reynolds_jackson::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/reynolds_jackson.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-reynolds_jackson::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/reynolds_jackson.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-yogg::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/yogg.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-yogg::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/yogg.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-evil_moon::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/evil_moon.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-evil_moon::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/evil_moon.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-guff::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/guff.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-guff::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/guff.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-storm_dragon::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/storm_dragon.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-storm_dragon::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/storm_dragon.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-zeppelin::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/zeppelin.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-zeppelin::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/zeppelin.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-madara::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/madara.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-madara::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/madara.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-hashirama::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/hashirama.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-hashirama::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/hashirama.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+
+/* ===== 图片图标(第二批) ===== */
+.art-clover::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/clover.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-clover::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/clover.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-taiyi::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/taiyi.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-taiyi::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/taiyi.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-yogg_saron::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/yogg_saron.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-yogg_saron::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/yogg_saron.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-yogg_fate::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/yogg_fate.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-yogg_fate::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/yogg_fate.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-joseph::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/joseph.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-joseph::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/joseph.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-guy_death_gate::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/guy_death_gate.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-guy_death_gate::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/guy_death_gate.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+
+/* ===== 图片图标(第三批) ===== */
+.art-crog::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/crog.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-crog::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/crog.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-glacier::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/glacier.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-glacier::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/glacier.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-lvbu::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/lvbu.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-lvbu::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/lvbu.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-eagle_artillery::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/eagle_artillery.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-eagle_artillery::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/eagle_artillery.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-deep_blue::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/deep_blue.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-deep_blue::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/deep_blue.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-beauty_vine::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/beauty_vine.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-beauty_vine::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/beauty_vine.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-bee_medic::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/bee_medic.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-bee_medic::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/bee_medic.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+
+/* ===== 图片图标(第四批:含本体/亲卫队) ===== */
+.art-madara_solve::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/madara_solve.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-madara_solve::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/madara_solve.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-haiyue::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/haiyue.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-haiyue::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/haiyue.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-raven::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/raven.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-raven::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/raven.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-raven-guard::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/raven-guard.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-raven-guard::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/raven-guard.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-black_zetsu::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/black_zetsu.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-black_zetsu::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/black_zetsu.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-wither::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/wither.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-wither::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/wither.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-warden::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/warden.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-warden::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/warden.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-guard::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/guard.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-guard::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/guard.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+
+/* ===== 图片图标(第五批) ===== */
+.art-demulan::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/demulan.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-demulan::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/demulan.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-tank::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/tank.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-tank::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/tank.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-factory-manager::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/factory-manager.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-factory-manager::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/factory-manager.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-charcoal::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/charcoal.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-charcoal::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/charcoal.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-gabriel::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/gabriel.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-gabriel::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/gabriel.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-kai::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/kai.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-kai::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/kai.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-witch::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/witch.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-witch::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/witch.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-skeleton::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/skeleton.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-skeleton::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/skeleton.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-shangbole::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/shangbole.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-shangbole::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/shangbole.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+
+/* 骷髅图标:仅用于觉醒女巫骷髅与骷髅海普通骷髅 */
+.art-skeleton::after, .art-skull-soldier::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/skeleton.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+
+/* 阴兵:骷髅图标半透明+偏紫,与普通骷髅区分 */
+.unit.skull-ghost::after {
+    opacity: 0.75 !important;
+    filter: grayscale(0.55) brightness(1.45) drop-shadow(0 0 5px rgba(179,157,219,0.9)) !important;
 }

@@ -3635,8 +3635,10 @@ function erinRetreat(unit) {
         const oldCell = gameState.board[unit.row][unit.col];
         const newCell = gameState.board[targetRow][unit.col];
         const el = oldCell.querySelector('.unit');
+        const fromR = unit.row;
         if (el) { oldCell.removeChild(el); newCell.appendChild(el); }
         unit.row = targetRow;
+        slideUnitElement(el, fromR, unit.col, targetRow, unit.col);
     }
 }
 
@@ -4638,6 +4640,33 @@ function deployUnit(row, col) {
 
 }
 
+// ===== 单位移动平移动画 =====
+function unitSlideDuration(fromR, fromC, toR, toC) {
+    const dist = Math.max(Math.abs(toR - fromR), Math.abs(toC - fromC));
+    return Math.min(520, Math.max(180, 120 + dist * 55));
+}
+function slideUnitElement(el, fromR, fromC, toR, toC, dur) {
+    if (!el || fromR === toR && fromC === toC) return;
+    const dx = (fromC - toC) * cellW;
+    const dy = (fromR - toR) * cellH;
+    const ms = dur || unitSlideDuration(fromR, fromC, toR, toC);
+    // 用独立 translate 属性做动画:不会被 .unit 的 transform(含蓝方翻转)覆盖
+    el.style.transition = "none";
+    el.style.translate = dx + "px " + dy + "px";
+    void el.offsetWidth;
+    el.style.transition = "translate " + ms + "ms cubic-bezier(0.25, 0.8, 0.35, 1)";
+    el.style.translate = "0px 0px";
+    el.style.zIndex = "30";
+    if (el._slideTimer) clearTimeout(el._slideTimer);
+    el._slideTimer = setTimeout(() => {
+        el.style.transition = "";
+        el.style.translate = "";
+        el.style.zIndex = "";
+        el._slideTimer = null;
+    }, ms + 40);
+}
+
+// 移动单位
 // 移动单位
 function moveUnit(row, col) {
     if (!gameState.selectedUnit) return;
@@ -4706,6 +4735,8 @@ function moveUnit(row, col) {
     if (unitElement) {
         oldCell.removeChild(unitElement);
         newCell.appendChild(unitElement);
+        // 平移动画(人机/本地一致)
+        slideUnitElement(unitElement, oldRow, oldCol, row, col);
     }
 
     // 镜分身镜像跟随:镜移动 d,分身反向移动 d(保持关于对称中心镜像)
@@ -4780,6 +4811,10 @@ function moveUnit(row, col) {
     }
     // 中毒/凋零特效跟随移动
     syncStatusFxPositions();
+    // 联机:通知对面播放移动动画(而不是瞬移)
+    if (gameState.onlineMode && typeof ws !== 'undefined' && ws && ws.readyState === 1) {
+        ws.send(JSON.stringify({ type: 'fx', fx: { kind: 'move', id: unit.id, fromR: oldRow, fromC: oldCol, toR: row, toC: col } }));
+    }
     // 联机实时同步:移动后立即同步(对面实时看到走位)
     syncOnlineNow();
 }
@@ -6086,38 +6121,46 @@ function noteFriendlyRevive(team) {
 // ===== 三叶草 =====
 function cloverBlow(clover) {
     if (!clover || clover._removing) return;
-    const dir = clover.team === 'red' ? -1 : 1; // 朝敌方大本营
+    const dir = clover.team === "red" ? -1 : 1; // 朝敌方大本营
     const targets = gameState.units.filter(u => u.team !== clover.team && u.flying && !u._removing);
     // 风口特效
-    const board = document.getElementById('gameBoard');
+    const board = document.getElementById("gameBoard");
     if (board) {
-        const wind = document.createElement('div');
-        wind.className = 'clover-wind' + (dir > 0 ? ' down' : '');
+        const wind = document.createElement("div");
+        wind.className = "clover-wind" + (dir > 0 ? " down" : "");
         board.appendChild(wind);
         setTimeout(() => wind.remove(), 2200);
     }
+    // 彻底清理某个单位的残留图标(无论是否已被移除)
+    const purgeEl = (uid) => {
+        document.querySelectorAll(".unit[data-unit-id=\"" + uid + "\"]").forEach(el => el.remove());
+    };
     targets.forEach((u, i) => {
         u._blown = true;
         const cell = gameState.board[u.row] && gameState.board[u.row][u.col];
-        const el = cell ? cell.querySelector('.unit') : null;
+        const el = cell ? cell.querySelector(".unit") : null;
         if (el) {
-            el.style.transition = 'transform 2s cubic-bezier(0.25, 0.6, 0.35, 1), opacity 2s ease-in';
+            el.style.transition = "transform 2s cubic-bezier(0.25, 0.6, 0.35, 1), opacity 2s ease-in";
             const dist = dir < 0 ? -((u.row + 3) * cellH) : ((BOARD_ROWS - u.row + 3) * cellH);
-            el.style.transform = 'translate(-50%, calc(-50% + ' + dist + 'px)) rotate(' + (dir * 18) + 'deg)';
-            el.style.opacity = '0.15';
-            el.style.zIndex = '40';
+            el.style.transform = "translate(-50%, calc(-50% + " + dist + "px)) rotate(" + (dir * 18) + "deg)";
+            el.style.opacity = "0.15";
+            el.style.zIndex = "40";
         }
         setTimeout(() => {
-            if (u._removing) return;
-            showCritText(u.row, u.col, '吹飞');
-            u.currentHp = 0;
-            removeUnit(u);
+            const alive = gameState.units.some(x => x.id === u.id);
+            if (alive && u.currentHp > 0) {
+                showCritText(u.row, u.col, "吹飞");
+                u.currentHp = 0;
+                removeUnit(u);
+            }
+            // 兜底:无论单位是否已被移除,清掉残留图标
+            purgeEl(u.id);
         }, 1900 + i * 40);
     });
     setTimeout(() => {
-        const cell = gameState.board[clover.row] && gameState.board[clover.row][clover.col];
-        const el = cell ? cell.querySelector('.unit') : null;
-        if (el) el.remove();
+        // 三叶草自身:从棋盘数据与 DOM 双重清理(不依赖所在格查询)
+        clover._removing = true;
+        purgeEl(clover.id);
         gameState.units = gameState.units.filter(x => x.id !== clover.id);
         syncOnlineNow();
     }, 2000);
@@ -6521,6 +6564,7 @@ function attackUnit(target, skipBulletDelay) {
             const newCell = gameState.board[target.row][target.col];
             const unitEl = oldCell.querySelector('.unit');
             if (unitEl) { oldCell.removeChild(unitEl); newCell.appendChild(unitEl); }
+            slideUnitElement(unitEl, oldRow, oldCol, target.row, target.col);
             // 疾风弹力绳跟随闪避
             if (target.galeSkillActive && target.galeAnchor) drawGaleRope(target);
             target.dodgeUsed = true;
@@ -7448,6 +7492,10 @@ function attackBase(isBlueBase) {
         if (attacker.blowdartAttacksUsed >= 2) gameState.attackedUnits.add(attacker.id);
     } else if (attacker.hashirama) {
         gameState.attackedUnits.add(attacker.id);
+    } else if (attacker.char2c) {
+        // 夏尔2c:一回合4次攻击(打大本营同样计数,防止无限打基地)
+        attacker._char2cAttacks = (attacker._char2cAttacks || 0) + 1;
+        if (attacker._char2cAttacks >= 4) gameState.attackedUnits.add(attacker.id);
     } else if (attacker.erin) {
         if (attacker.erinSkillActive) {
             attacker.erinSkillAttacks = (attacker.erinSkillAttacks || 0) - 1;
@@ -11536,9 +11584,11 @@ function susanooPush(unit, dr, dc) {
     }
     const oldCell = gameState.board[unit.row][unit.col];
     const newCell = gameState.board[tr][tc];
+    const fromR = unit.row, fromC = unit.col;
     const el = oldCell.querySelector('.unit');
     if (el) { oldCell.removeChild(el); newCell.appendChild(el); }
     unit.row = tr; unit.col = tc;
+    slideUnitElement(el, fromR, fromC, tr, tc);
     return true;
 }
 // 击飞:无视中间障碍,强制飞到方向 dist 格外(落点无效则向前回溯找最近可站格)
@@ -11554,9 +11604,11 @@ function flingUnit(unit, dr, dc, dist) {
     if (nr !== unit.row || nc !== unit.col) {
         const oldCell = gameState.board[unit.row][unit.col];
         const newCell = gameState.board[nr][nc];
+        const fromR = unit.row, fromC = unit.col;
         const el = oldCell.querySelector('.unit');
         if (el) { oldCell.removeChild(el); newCell.appendChild(el); }
         unit.row = nr; unit.col = nc;
+        slideUnitElement(el, fromR, fromC, nr, nc);
         queueStatusFxSync();
         return true;
     }
@@ -11576,9 +11628,11 @@ function knockbackUnit(unit, dr, dc, dist) {
     if (nr !== unit.row || nc !== unit.col) {
         const oldCell = gameState.board[unit.row][unit.col];
         const newCell = gameState.board[nr][nc];
+        const fromR = unit.row, fromC = unit.col;
         const el = oldCell.querySelector('.unit');
         if (el) { oldCell.removeChild(el); newCell.appendChild(el); }
         unit.row = nr; unit.col = nc;
+        slideUnitElement(el, fromR, fromC, nr, nc);
         queueStatusFxSync();
         return true;
     }
@@ -11595,9 +11649,11 @@ function chainPush(unit, dr, dc, movedSet) {
         if (!chainPush(blocker, dr, dc, movedSet)) return false;
     }
     const oldCell = gameState.board[unit.row][unit.col];
+    const fromR = unit.row, fromC = unit.col;
     const el = oldCell.querySelector('.unit');
     if (el) { oldCell.removeChild(el); gameState.board[tr][tc].appendChild(el); }
     unit.row = tr; unit.col = tc;
+    slideUnitElement(el, fromR, fromC, tr, tc);
     queueStatusFxSync();
     if (movedSet) movedSet.add(unit.id);
     return true;
@@ -11682,10 +11738,12 @@ function sasukeDashSlash(attacker, target) {
     }
     if (lastFree) {
         const oldCell = gameState.board[attacker.row][attacker.col];
+        const fromR = attacker.row, fromC = attacker.col;
         const el = oldCell.querySelector('.unit');
         if (el) { oldCell.removeChild(el); gameState.board[lastFree.row][lastFree.col].appendChild(el); }
         attacker.row = lastFree.row;
         attacker.col = lastFree.col;
+        slideUnitElement(el, fromR, fromC, lastFree.row, lastFree.col);
     }
     if (target && !target._removing) {
         const effArmor = Math.max(0, (target.armor || 0) - 1);
@@ -12907,8 +12965,10 @@ function banshoTenin(pain) {
                 const oldCell = gameState.board[u.row][u.col];
                 const newCell = gameState.board[nr][u.col];
                 const unitEl = oldCell.querySelector('.unit');
+                const fromR = u.row, fromC = u.col;
                 if (unitEl) { oldCell.removeChild(unitEl); newCell.appendChild(unitEl); }
                 u.row = nr;
+                slideUnitElement(unitEl, fromR, fromC, nr, u.col);
                 placed = true;
                 break;
             }
@@ -13073,8 +13133,10 @@ function madaraLeapPillar(madara, target) {
         if (!isValidPosition(nr,nc)) continue;
         if (isBlueBase(nr,nc) || isRedBase(nr,nc)) continue;
         if (gameState.units.some(u => u.id !== madara.id && u.row === nr && u.col === nc)) continue;
+        const mr = madara.row, mc = madara.col;
         madara.row = nr; madara.col = nc;
         if (unitEl) { oldCell.removeChild(unitEl); gameState.board[nr][nc].appendChild(unitEl); }
+        slideUnitElement(unitEl, mr, mc, nr, nc);
         break;
     }
     showFirePillar(target.row, target.col, { big: true });
@@ -13149,33 +13211,22 @@ function madaraUseStomp(madara) {
 }
 function madaraStomp(madara, land) {
     madara._madaraStompMode = false;
-    sendSkillFx('madaraStomp', madara, land.row, land.col);
     madara._madaraStompUsed = true;
     madara._madaraAirborne = false;
     madara.flying = false;
     clearHighlights();
     gameState.selectedUnit = null;
-    showMadaraStompFX(land.row, land.col);
+    // 先落位:马斑从空中落到棋盘,落地瞬间再爆出戟插地特效与践踏伤害
     setTimeout(() => {
-        let hit = false;
-        gameState.units.slice().forEach(e => {
-            if (e.team === madara.team || e.ghost || e._removing) return;
-            if (Math.max(Math.abs(e.row - land.row), Math.abs(e.col - land.col)) <= 1) {
-                e.currentHp -= 2;
-                updateUnitHp(e);
-                if (e.currentHp <= 0) removeUnit(e);
-                hit = true;
-            }
-        });
         const oldCell = gameState.board[madara.row][madara.col];
-        const unitEl = oldCell.querySelector('.unit');
+        const unitEl = oldCell.querySelector(".unit");
         // 落点有存活单位:先把它挤到最近的空格,保证马斑落在选择的格子上
         const occupant = gameState.units.find(x => x.id !== madara.id && x.row === land.row && x.col === land.col && !x._removing);
         if (occupant) {
             let best = null, bd = Infinity;
             for (let rr = 0; rr < BOARD_ROWS; rr++) {
                 for (let cc = 0; cc < BOARD_COLS; cc++) {
-                    if (rr === land.row && cc === land.col) continue; // 落点本身留给马斑
+                    if (rr === land.row && cc === land.col) continue;
                     if (isBlueBase(rr, cc) || isRedBase(rr, cc)) continue;
                     if (gameState.units.some(x => x.id !== occupant.id && x.row === rr && x.col === cc)) continue;
                     const d = Math.abs(rr - land.row) + Math.abs(cc - land.col);
@@ -13194,12 +13245,39 @@ function madaraStomp(madara, land) {
         }
         madara.row = land.row;
         madara.col = land.col;
-        // 落地践踏命中:回复1能量(额外攻击仍只在空中阶段)
-        if (hit && !madara.inMusou) {
-            madara.madaraEnergy = Math.min(madara.madaraMaxEnergy, (madara.madaraEnergy || 0) + 1);
-            renderEnergyBar(madara, gameState.board[madara.row][madara.col].querySelector('.unit'));
+        // 下落动画:从上方两格落到地面
+        if (unitEl) {
+            unitEl.style.transition = "none";
+            unitEl.style.translate = "0px " + (-2 * cellH) + "px";
+            void unitEl.offsetWidth;
+            unitEl.style.transition = "translate 190ms cubic-bezier(0.4, 0, 1, 1)";
+            unitEl.style.translate = "0px 0px";
+            setTimeout(() => {
+                unitEl.style.transition = "";
+                unitEl.style.translate = "";
+            }, 230);
         }
-        syncOnlineNow();
+        // 落地瞬间:戟插地特效 + 践踏伤害
+        setTimeout(() => {
+            showMadaraStompFX(land.row, land.col);
+            sendSkillFx("madaraStomp", madara, land.row, land.col);
+            let hit = false;
+            gameState.units.slice().forEach(e => {
+                if (e.team === madara.team || e.ghost || e._removing) return;
+                if (Math.max(Math.abs(e.row - land.row), Math.abs(e.col - land.col)) <= 1) {
+                    e.currentHp -= 2;
+                    updateUnitHp(e);
+                    if (e.currentHp <= 0) removeUnit(e);
+                    hit = true;
+                }
+            });
+            if (hit && !madara.inMusou) {
+                madara.madaraEnergy = Math.min(madara.madaraMaxEnergy, (madara.madaraEnergy || 0) + 1);
+                const uel = gameState.board[madara.row][madara.col].querySelector(".unit");
+                if (uel) renderEnergyBar(madara, uel);
+            }
+            syncOnlineNow();
+        }, 190);
     }, 500);
     syncOnlineNow();
 }
@@ -13410,9 +13488,11 @@ function madaraJumpAndPillar(madara) {
         if (!isValidPosition(nr, nc)) continue;
         if (gameState.units.some(u => u.row === nr && u.col === nc)) continue;
         if (isBlueBase(nr, nc) || isRedBase(nr, nc)) continue;
+        const mr2 = madara.row, mc2 = madara.col;
         madara.row = nr; madara.col = nc;
         const newCell = gameState.board[nr][nc];
         if (unitEl) { oldCell.removeChild(unitEl); newCell.appendChild(unitEl); }
+        slideUnitElement(unitEl, mr2, mc2, nr, nc);
         placed = true; break;
     }
 
@@ -15066,14 +15146,38 @@ const SKELETON_TOKEN_CARD = { id: 'skeleton_token', name: '骷髅', attack: 1, h
 function witchSummonSkeletons(witch) {
     if (!witch || witch._removing || witch.currentHp <= 0) return;
     const dirs = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+    const isFree = (r, c) => isValidPosition(r, c)
+        && !isBlueBase(r, c) && !isRedBase(r, c)
+        && !(r === witch.row && c === witch.col)
+        && !gameState.units.some(u => u.row === r && u.col === c && !u._removing);
+    const used = new Set();
+    // 目标格被占:在周围逐圈找最近的空格,仍要召唤(而不是跳过)
+    const pickSpot = (r0, c0) => {
+        if (isFree(r0, c0) && !used.has(r0 + "," + c0)) return [r0, c0];
+        for (let rad = 1; rad <= 4; rad++) {
+            let best = null, bd = Infinity;
+            for (let dr = -rad; dr <= rad; dr++) {
+                for (let dc = -rad; dc <= rad; dc++) {
+                    if (Math.max(Math.abs(dr), Math.abs(dc)) !== rad) continue;
+                    const r = r0 + dr, c = c0 + dc;
+                    if (!isFree(r, c) || used.has(r + "," + c)) continue;
+                    const d = Math.abs(r - r0) + Math.abs(c - c0);
+                    if (d < bd) { bd = d; best = [r, c]; }
+                }
+            }
+            if (best) return best;
+        }
+        return null;
+    };
     let count = 0;
     dirs.forEach(([dr, dc], idx) => {
-        const r = witch.row + dr, c = witch.col + dc;
-        if (!isValidPosition(r, c)) return;
-        if (isBlueBase(r, c) || isRedBase(r, c)) return;
-        if (gameState.units.some(u => u.row === r && u.col === c && !u._removing)) return;
+        const spot = pickSpot(witch.row + dr, witch.col + dc);
+        if (!spot) return;
+        const r = spot[0], c = spot[1];
+        used.add(r + "," + c);
+        if (!isFree(r, c)) return;
         const sk = createUnitFromCard(SKELETON_TOKEN_CARD, witch.team, r, c);
-        sk.id = 'skel_' + witch.id + '_' + Date.now() + '_' + idx;
+        sk.id = "skel_" + witch.id + "_" + Date.now() + "_" + idx;
         sk.skeleton = true;
         sk.summonerId = witch.id;
         gameState.units.push(sk);
@@ -15081,8 +15185,8 @@ function witchSummonSkeletons(witch) {
         count++;
     });
     if (count > 0) {
-        if (typeof showSkillFlashFx === 'function') showSkillFlashFx(witch.row, witch.col, '#a55bff', 30);
-        if (typeof syncOnlineNow === 'function') syncOnlineNow();
+        if (typeof showSkillFlashFx === "function") showSkillFlashFx(witch.row, witch.col, "#a55bff", 30);
+        if (typeof syncOnlineNow === "function") syncOnlineNow();
     }
 }
 
@@ -17011,6 +17115,7 @@ function endTurn() {
         if (u.princess && u.team === prevTurn && (u._princessCd || 0) > 0) u._princessCd--;
         if (u.cordelius && u.team === prevTurn) { u._shadowUsed = false; u._shadowMode = false; }
         if (u.char2c && u.team === prevTurn) { u._char2cAttacks = 0; u._charSkillUsed = false; u._charSkillMode = false; }
+        if (u._aiSkilledThisTurn && u.team === prevTurn) u._aiSkilledThisTurn = false;
         if (u.stormDragon && u.team === prevTurn) {
             u._stormS1Used = false;
             u._stormS2Used = false;
@@ -17777,7 +17882,7 @@ function openSpellModal() {
         });
         grid.appendChild(el);
     });
-    appendNextCardPreview(grid);
+    // 法术栏不放"下一张"预览(那是部署框的轮换提示,法术栏只列法术)
     if (!grid.children.length) grid.innerHTML = '<p style="color: #7f8c8d;">卡组中没有法术卡</p>';
     document.getElementById('spellModal').classList.remove('hidden');
 }
@@ -17929,6 +18034,7 @@ document.getElementById('aiBattleBtn').addEventListener('click', () => {
     gameState.blueMaxEnergy = 20;
     modeSelectScreen.classList.add('hidden');
     gameState.aiDeck = pickAIDeck();
+    initAiHand();
     startGame();
     setTimeout(aiTurn, 1000);
 });
@@ -17955,18 +18061,63 @@ function pickAIDeck() {
 }
 
 // AI尝试使用简单技能(无需复杂选目标的):精英骑士法阵/毁灭菇引爆/精英冰人冰场/渔夫拉钩
+// 在范围内找敌人最密集的落点(用于AI选技能落点)
+function aiBestClusterCell(u, range) {
+    let best = null, bestScore = 0;
+    for (let r = u.row - range; r <= u.row + range; r++) {
+        for (let c = u.col - range; c <= u.col + range; c++) {
+            if (!isValidPosition(r, c)) continue;
+            if (isBlueBase(r, c) || isRedBase(r, c)) continue;
+            if (Math.max(Math.abs(r - u.row), Math.abs(c - u.col)) > range) continue;
+            if (gameState.units.some(e => e.row === r && e.col === c)) continue;
+            let score = 0;
+            gameState.units.forEach(e => {
+                if (e.team === u.team || e.ghost || e._removing) return;
+                if (Math.max(Math.abs(e.row - r), Math.abs(e.col - c)) <= 1) score += 1;
+            });
+            if (score > bestScore) { bestScore = score; best = { row: r, col: c }; }
+        }
+    }
+    return bestScore > 0 ? best : null;
+}
+// AI尝试使用技能(每回合每个单位最多一次)
 function aiUseSkill(u) {
+    if (!u || u._removing || u._aiSkilledThisTurn) return false;
+    const mark = () => { u._aiSkilledThisTurn = true; return true; };
     if (u.eliteKnight && !u._tauntSkillCd) {
         activateEliteKnightSkill(u);
-        return true;
+        return mark();
     }
     if (u.doomShroom && !u._doomExploded) {
         doomShroomExplode(u);
-        return true;
+        return mark();
     }
     if (u.eliteIce && !u._iceSkillActive) {
         activateEliteIceSkill(u);
-        return true;
+        return mark();
+    }
+    if (u.gabriel) {
+        // 一技能:致盲最近的敌人(6格内)
+        if (!u._gbS1Used) {
+            let t = null, best = Infinity;
+            gameState.units.forEach(e => {
+                if (e.team === u.team || e.ghost || e._removing) return;
+                const d = Math.max(Math.abs(e.row - u.row), Math.abs(e.col - u.col));
+                if (d <= 6 && d < best) { best = d; t = e; }
+            });
+            if (t) { gbFire1(u, t); return mark(); }
+        }
+        // 二技能:朝敌人最密集处丢液氮罐
+        if (!u._gbS2Used) {
+            const tgt = aiBestClusterCell(u, 7);
+            if (tgt) { gbThrowCan(u, tgt.row, tgt.col); return mark(); }
+        }
+        // 三技能:榴弹轰炸敌群
+        if ((u._gbS3Cd || 0) <= 0 && (u._gbS3Left || 0) > 0) {
+            const tgt = aiBestClusterCell(u, 8);
+            if (tgt) { gbGrenade(u, tgt.row, tgt.col); return mark(); }
+        }
+        return false;
     }
     if (u.fisherman && !u._fisherTargeting) {
         // 渔夫:拉最近敌人到身前
@@ -17980,68 +18131,131 @@ function aiUseSkill(u) {
             u._fisherTargeting = true;
             fishermanHook(u, nearest);
             u._fisherTargeting = false;
-            return true;
+            return mark();
         }
         return false;
     }
     return false;
 }
+function initAiHand() {
+    const ids = (gameState.aiDeck || []).map(c => c.id);
+    for (let i = ids.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [ids[i], ids[j]] = [ids[j], ids[i]];
+    }
+    gameState.aiHandIds = ids.slice(0, 5);
+    gameState._aiDeckCycle = ids.slice(5);
+}
+function rotateAiHand(cardId) {
+    if (!gameState.aiHandIds || !cardId) return;
+    const idx = gameState.aiHandIds.indexOf(cardId);
+    if (idx < 0) return;
+    gameState.aiHandIds.splice(idx, 1);
+    if (gameState._aiDeckCycle && gameState._aiDeckCycle.length) {
+        gameState.aiHandIds.push(gameState._aiDeckCycle.shift());
+        gameState._aiDeckCycle.push(cardId);
+    } else {
+        gameState.aiHandIds.push(cardId);
+    }
+}
+function aiCardCost(card) {
+    if (!card) return 0;
+    if (card.reviveCarrot) return 3;
+    if (card.grandWizard) return gwCostFor("blue");
+    if (card.yogg) return getYoggCost();
+    return card.cost || 0;
+}
+function aiSpellIsAuto(card) {
+    if (!card || !card.spell) return false;
+    if (card.reviveCarrot || card.edo || card.jadeBreak) return false;
+    return !!(card.spellDamage || card.logDamage || card.lgtDamage || card.missileLaunch || card.rollingStone || card.rage || card.leftover || card.stoneWall || card.heal || card.magicShield || card.evilMoon || card.shieldSpell);
+}
+function aiDeployCard(card) {
+    const cost = aiCardCost(card);
+    if (!card || gameState.blueEnergy < cost) return false;
+    // 黑绝:优先附身己方未附身单位
+    if (card.blackZetsu) {
+        const hosts = gameState.units.filter(u => u.team === "blue" && !u._possessed && !u.blackZetsu && !u._removing);
+        if (hosts.length > 0) {
+            const host = hosts[Math.floor(Math.random() * hosts.length)];
+            gameState.blueEnergy -= cost; updateEnergyDisplay();
+            possessUnit(card, host);
+            rotateAiHand(card.id);
+            return true;
+        }
+    }
+    const spots = [];
+    for (let r = 3; r <= 13; r++) {
+        for (let c = 10; c <= 19; c++) {
+            if (gameState.units.some(u => u.row === r && u.col === c)) continue;
+            if (isBlueBase(r, c) || isRedBase(r, c)) continue;
+            spots.push([r, c]);
+        }
+    }
+    if (!spots.length) return false;
+    const spot = spots[Math.floor(Math.random() * spots.length)];
+    const unit = createUnitFromCard(card, "blue", spot[0], spot[1]);
+    gameState.units.push(unit);
+    renderUnit(unit);
+    gameState.blueEnergy -= cost;
+    updateEnergyDisplay();
+    runDeployEffects(unit);
+    rotateAiHand(card.id);
+    return true;
+}
+// 单次花费:优先下高费单位,其次放自动法术;能花就返回 true
+function aiSpendOnce() {
+    const deck = gameState.aiDeck || [];
+    if (!gameState.aiHandIds || !gameState.aiHandIds.length) initAiHand();
+    const hand = (gameState.aiHandIds || []).map(id => deck.find(c => c.id === id)).filter(Boolean);
+    if (!hand.length) return false;
+    const energy = gameState.blueEnergy || 0;
+    const fieldCount = (id) => gameState.units.filter(u => u.team === "blue" && u.cardId === id && !u._removing).length;
+    const affordable = hand.filter(c => aiCardCost(c) <= energy);
+    if (!affordable.length) return false;
+    const blueUnits = gameState.units.filter(u => u.team === "blue" && !u._removing).length;
+    // 1) 部署单位(高费优先,尽量把能量花光)
+    const unitCards = affordable
+        .filter(c => !c.spell && !c.trainingOnly && fieldCount(c.id) < 2)
+        .sort((a, b) => aiCardCost(b) - aiCardCost(a));
+    if (unitCards.length && blueUnits < 16) {
+        if (aiDeployCard(unitCards[0])) return true;
+    }
+    // 2) 释放法术
+    const spellCards = affordable
+        .filter(c => aiSpellIsAuto(c))
+        .sort((a, b) => aiCardCost(b) - aiCardCost(a));
+    if (spellCards.length) {
+        const sc = spellCards[0];
+        const caster = gameState.units.find(u => u.team === "blue" && !u._removing) || { team: "blue", row: 15, col: 12 };
+        gameState.blueEnergy -= aiCardCost(sc);
+        updateEnergyDisplay();
+        castRandomSpell(sc, caster);
+        rotateAiHand(sc.id);
+        return true;
+    }
+    return false;
+}
+function aiSpendLoop(budget) {
+    if (gameState.gameOver || gameState.currentTurn !== "blue") return;
+    if (budget <= 0) { aiMoveAndAttack(); return; }
+    let acted = false;
+    try { acted = aiSpendOnce(); } catch (e) { acted = false; }
+    if (acted) setTimeout(() => aiSpendLoop(budget - 1), 430);
+    else aiMoveAndAttack();
+}
 function aiTurn() {
     if (gameState._meteorAnimating) { setTimeout(aiTurn, 200); return; }
-    if (gameState.gameOver || gameState.currentTurn !== 'blue') return;
-    const aiDeck = gameState.aiDeck || [];
-    const energy = gameState.blueEnergy;
-    const aiUnits = gameState.units.filter(u => u.team === 'blue');
-    // AI施放法术:随机选一张能量够的法术卡(伤害→随机敌人,增益→随机队友)
-    const spellCards = aiDeck.filter(c => c.spell && c.cost <= gameState.blueEnergy);
-    if (spellCards.length > 0 && Math.random() < 0.8) {
-        const sc = spellCards[Math.floor(Math.random() * spellCards.length)];
-        const caster = aiUnits[0] || { team: 'blue', row: 15, col: 12 };
-        gameState.blueEnergy -= sc.cost; updateEnergyDisplay();
-        castRandomSpell(sc, caster);
-    }
-    // 用当前能量判断可部署(法术扣费后),避免超支变负
-    const deployable = aiDeck.filter(c => !c.spell && c.cost <= gameState.blueEnergy && aiUnits.filter(u => u.cardId === c.id).length < 2);
-    if (deployable.length > 0) {
-        const card = deployable[Math.floor(Math.random() * deployable.length)];
-        // 蓝方黑绝:优先附身己方未附身单位(无目标则正常部署本体)
-        if (card.blackZetsu) {
-            const hosts = gameState.units.filter(u => u.team === 'blue' && !u._possessed && !u.blackZetsu);
-            if (hosts.length > 0) {
-                const host = hosts[Math.floor(Math.random() * hosts.length)];
-                gameState.blueEnergy -= card.cost; updateEnergyDisplay();
-                possessUnit(card, host);
-                setTimeout(aiMoveAndAttack, 1200);
-                return;
-            }
-        }
-        // 随机选一个合法部署格(避免AI总在同一位置下兵)
-        const spots = [];
-        for (let r = 3; r <= 13; r++) {
-            for (let c = 10; c <= 19; c++) {
-                if (gameState.units.some(u => u.row === r && u.col === c)) continue;
-                if (isBlueBase(r, c) || isRedBase(r, c)) continue;
-                spots.push([r, c]);
-            }
-        }
-        if (spots.length > 0) {
-            const spot = spots[Math.floor(Math.random() * spots.length)];
-            const row = spot[0], col = spot[1];
-            const unit = createUnitFromCard(card, 'blue', row, col);
-            gameState.units.push(unit); renderUnit(unit);
-            runDeployEffects(unit);
-            // 部署扣费(尤格萨隆按动态费用);扣费前兜底验证能量,不足则放弃部署
-            const realCost = card.yogg ? getYoggCost() : card.cost;
-            if (gameState.blueEnergy < realCost) { aiMoveAndAttack(); return; }
-            gameState.blueEnergy -= realCost; updateEnergyDisplay();
-            setTimeout(aiMoveAndAttack, 1200); return;
-        }
-    }
-    aiMoveAndAttack();
+    if (gameState.gameOver || gameState.currentTurn !== "blue") return;
+    if (!gameState.aiDeck || !gameState.aiDeck.length) { aiMoveAndAttack(); return; }
+    if (!gameState.aiHandIds || !gameState.aiHandIds.length) initAiHand();
+    // 每回合最多 8 次花费动作(下兵/法术),尽量把能量花光
+    aiSpendLoop(8);
 }
+
 function aiMoveAndAttack() {
     if (gameState.gameOver) return;
-    const aiUnits = gameState.units.filter(u => u.team === 'blue');
+    const aiUnits = gameState.units.filter(u => u.team === "blue");
     // 第一阶段:移动(所有AI单位先走位,不攻击)
     aiUnits.forEach(u => {
         if (gameState.attackedUnits.has(u.id)) return;
@@ -18049,14 +18263,19 @@ function aiMoveAndAttack() {
         if (u._knockedDown) { gameState.attackedUnits.add(u.id); return; }
         // 冰冻/眩晕/树缠:本回合无法行动
         if (u.frozen || u.stunned || u.treeBound) { gameState.attackedUnits.add(u.id); return; }
-        if (aiUseSkill(u)) { gameState.attackedUnits.add(u.id); return; }
-        if (!u.attack && !u.percentAttack && !u.meleeAttack) { gameState.attackedUnits.add(u.id); return; }
+        // 技能:先用技能,但仍可继续移动与攻击(技能不再直接结束该单位回合)
+        aiUseSkill(u);
         const tk = getTaunter(u);
+        // 没有攻击能力的辅助单位:照样向前走位
+        if (!u.attack && !u.percentAttack && !u.meleeAttack) {
+            aiMoveUnit(u, tk);
+            return;
+        }
         const atkRng = u.attackRange || 1;
         // 已能攻击到敌人/大本营:原地等待攻击阶段
         let canAtk = false;
         gameState.units.forEach(e => {
-            if (e.team === 'red' && (!tk || e.id === tk.id) && !e.ghost) {
+            if (e.team === "red" && (!tk || e.id === tk.id) && !e.ghost) {
                 if (u.hogRider && !e.building) return;
                 if ((u.golem || u.golemMini) && !e.building) return;
                 if (u.royalGiant && !e.building) return;
@@ -18084,12 +18303,12 @@ function aiMoveAndAttack() {
             // 冰冻/眩晕/树缠:本回合无法行动
             if (u.frozen || u.stunned || u.treeBound) { gameState.attackedUnits.add(u.id); return; }
             const tk = getTaunter(u);
-            if (aiUseSkill(u)) { gameState.attackedUnits.add(u.id); return; }
+            aiUseSkill(u);
             if (!u.attack && !u.percentAttack && !u.meleeAttack) { gameState.attackedUnits.add(u.id); return; }
             const atkRng = u.attackRange || 1;
             // 攻击范围内敌方单位
             let nearest = null, minD = Infinity;
-            gameState.units.filter(e => e.team === 'red' && (!tk || e.id === tk.id)).forEach(e => {
+            gameState.units.filter(e => e.team === "red" && (!tk || e.id === tk.id)).forEach(e => {
                 if (u.hogRider && !e.building) return;
                 if ((u.golem || u.golemMini) && !e.building) return;
                 if (u.royalGiant && !e.building) return;
@@ -18125,8 +18344,7 @@ function aiMoveAndAttack() {
         setTimeout(() => { if (!gameState.gameOver) endTurn(); }, 800);
     }, 800);
 }
-
-// AI移动:朝最近红方单位/大本营走(移动后不攻击,攻击在下一阶段)
+// AI移动:朝最近红方单位/大本营走
 function aiMoveUnit(u, tk) {
     let targetR = 26, targetC = 11;
     let closestEnemy = null, cDist = Infinity;
@@ -18158,6 +18376,8 @@ function aiMoveUnit(u, tk) {
         const el = oc.querySelector('.unit');
         if (el) { oc.removeChild(el); ncell.appendChild(el); }
         u.row = br; u.col = bc;
+        // AI 移动同样播放平移动画
+        slideUnitElement(el, oldR, oldC, br, bc);
         gameState.moveUsed[u.id] = (gameState.moveUsed[u.id]||0) + (Math.abs(br-oldR)+Math.abs(bc-oldC));
         // 皮尔斯:移动路线拾取弹壳
         if (u.pierce) {
