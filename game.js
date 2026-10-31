@@ -6202,6 +6202,12 @@ function applyJadeBreak(u) {
 // ===== 局内手牌轮换:10张中随机显示5张,用掉后补一张 =====
 function initHandRotation() {
     const ids = (gameState.battleDeck || []).map(c => c.id);
+    // 训练场:不做轮换,10 张全部可见,方便测试卡牌
+    if (gameState.trainingMode) {
+        gameState.handIds = ids.slice();
+        gameState._deckCycle = [];
+        return;
+    }
     for (let i = ids.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [ids[i], ids[j]] = [ids[j], ids[i]];
@@ -6210,6 +6216,7 @@ function initHandRotation() {
     gameState._deckCycle = ids.slice(5);
 }
 function rotateHandAfterUse(cardId) {
+    if (gameState.trainingMode) return;
     if (!gameState.handIds || !cardId) return;
     const idx = gameState.handIds.indexOf(cardId);
     if (idx < 0) return;
@@ -8156,6 +8163,8 @@ function hasBasicAttack(u) {
 // 通用反击:敌方单位被普通攻击命中后,若攻击者在敌方攻击范围内则反击一次
 // 规则:被攻击方为技能输出型/阴兵不反击;敌方一回合最多反击同一攻击者1次;即使致命伤害也先反击再死亡
 function triggerCounter(attacker, target) {
+    // 自动攻击只做普通攻击,不触发反击/技能型反应
+    if (Date.now() < (gameState._autoAttackUntil || 0)) return;
     if (gameState.mirror && gameState.mirror.active) return;
     if (target._removing) return;
     if (attacker._removing || attacker.currentHp <= 0) return;
@@ -8358,7 +8367,7 @@ function pierceShellAutoAttack(unit) {
         const d = Math.max(Math.abs(e.row - unit.row), Math.abs(e.col - unit.col));
         if (d < best) { best = d; nearest = e; }
     });
-    if (!nearest) return;
+    if (!nearest) return false;
     // 拾取自动攻击:不生成弹壳、不触发反击
     const dmg = Math.max(0, unit.attack - Math.max(0, (nearest.armor || 0) - (unit.armorPen || 0)));
     showPierceBullet(unit, nearest);
@@ -8366,6 +8375,68 @@ function pierceShellAutoAttack(unit) {
     updateUnitHp(nearest);
     if (nearest.currentHp <= 0) removeUnit(nearest);
     gameState.attackedUnits.add(unit.id);
+    return true;
+}
+
+// ===== 回合结束自动攻击(设置开关) =====
+function isAutoAttackEnabled() {
+    try { return localStorage.getItem("chessAutoAttack") === "on"; } catch (e) { return false; }
+}
+function autoAttackBeforeEndTurn(team) {
+    if (gameState.trainingMode) return;
+    if (!isAutoAttackEnabled()) return;
+    if (gameState.gameOver) return;
+    gameState.units.slice().forEach(u => {
+        if (!u || u.team !== team || u.ghost || u._removing || u.currentHp <= 0) return;
+        if (gameState.attackedUnits.has(u.id)) return;
+        if (u.frozen || u.stunned || u.treeBound || u._knockedDown) return;
+        if ((u._blindedTurns || 0) > 0) return;
+        if (!u.attack && !u.percentAttack && !u.meleeAttack) return;
+        // 只做普通攻击:需要技能选点/形态的单位跳过
+        if (u.tank || u.eagleArtillery || u._targeting || u._eagleTargeting || u._pierceTargeting) return;
+        if (u.shangbole && !u._form) return;
+        const tk = getTaunter(u);
+        const range = u.attackRange || 1;
+        let target = null, best = Infinity;
+        gameState.units.forEach(e => {
+            if (e.team === team || e.ghost || e._removing || e.currentHp <= 0) return;
+            if (tk && e.id !== tk.id) return;
+            if (u.hogRider && !e.building) return;
+            if ((u.golem || u.golemMini) && !e.building) return;
+            if (u.royalGiant && !e.building) return;
+            if (u.balloon && !e.building) return;
+            if (e.flying && !canHitAirUnit(u)) return;
+            if (e.teslaHidden) return;
+            if (isCellSmokedFor(e.row, e.col, team)) return;
+            const d = Math.max(Math.abs(e.row - u.row), Math.abs(e.col - u.col));
+            if (d <= range && d < best) { best = d; target = e; }
+        });
+        if (!target) return;
+        gameState.selectedUnit = u;
+        // 标记自动攻击窗口:期间不触发反击(远程子弹延迟命中也覆盖)
+        gameState._autoAttackUntil = Date.now() + 1000;
+        try { attackUnit(target); } catch (err) {}
+        gameState.selectedUnit = null;
+    });
+    clearHighlights();
+}
+
+// 回合结束:皮尔斯留下的弹壳自动拾取并攻击(每颗弹壳打出一次自动攻击)
+function autoPickupShellsOnTurnEnd(team) {
+    if (!gameState.shells || !gameState.shells.length) return;
+    const pierces = gameState.units.filter(u => u.pierce && u.team === team && !u.ghost && !u._removing && u.currentHp > 0);
+    if (!pierces.length) return;
+    let idx = 0, fired = 0;
+    while (gameState.shells.length > 0 && fired < 40) {
+        const unit = pierces[idx % pierces.length];
+        const shell = gameState.shells[0];
+        gameState.shells.shift();
+        const hit = pierceShellAutoAttack(unit);
+        if (!hit) { gameState.shells.unshift(shell); break; }
+        fired++;
+        idx++;
+    }
+    if (fired > 0) renderShells();
 }
 
 // 皮尔斯:拾起所在格弹壳并自动攻击最近敌人
@@ -8379,19 +8450,24 @@ function pickupPierceShell(unit) {
 
 // 皮尔斯子弹弹道特效
 function showPierceBullet(from, to) {
-    const board = document.getElementById('gameBoard');
-    const cs = cellW;
-    const bullet = document.createElement('div');
-    bullet.className = 'pierce-bullet';
-    bullet.style.left = (from.col * cs + cs / 2 - 3) + 'px';
-    bullet.style.top = (from.row * cs + cs / 2 - 3) + 'px';
+    const board = document.getElementById("gameBoard");
+    if (!board) return;
+    const bullet = document.createElement("div");
+    bullet.className = "pierce-bullet";
+    const fx = from.col * cellW + cellW / 2;
+    const fy = from.row * cellH + cellH / 2;
+    bullet.style.left = (fx - 3.5) + "px";
+    bullet.style.top = (fy - 3.5) + "px";
     board.appendChild(bullet);
-    setTimeout(() => {
-        bullet.style.transition = 'all 0.3s linear';
-        bullet.style.left = (to.col * cs + cs / 2 - 3) + 'px';
-        bullet.style.top = (to.row * cs + cs / 2 - 3) + 'px';
-    }, 30);
-    setTimeout(() => { if (bullet.parentNode) bullet.parentNode.removeChild(bullet); }, 400);
+    // 双 rAF 确保初始位置先渲染,再启动位移过渡(否则会被当成同一次样式变更,视觉上消失/瞬移)
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            bullet.style.transition = "left 0.34s linear, top 0.34s linear";
+            bullet.style.left = (to.col * cellW + cellW / 2 - 3.5) + "px";
+            bullet.style.top = (to.row * cellH + cellH / 2 - 3.5) + "px";
+        });
+    });
+    setTimeout(() => { if (bullet.parentNode) bullet.parentNode.removeChild(bullet); }, 520);
 }
 
 // 皮尔斯大招:以选点为中心5×5敌人受普攻,每命中1敌生成1弹壳
@@ -9542,8 +9618,9 @@ function showGuardCharge(unit, dir, landRow, landCol, duration) {
     const board = document.getElementById('gameBoard');
     if (!board) return;
     const el = document.createElement('div');
-    el.className = 'guard-charge';
-    el.textContent = '护卫';
+    el.className = 'guard-charge art-prince_guard';
+    // 用护卫图片图标(与场上护卫一致),不再显示文字
+    el.textContent = '';
     el.style.position = 'absolute';
     el.style.width = cellW + 'px';
     el.style.height = cellH + 'px';
@@ -16429,6 +16506,10 @@ function endTurn() {
     gameState.units.forEach(u => { u._targeting = false; u._witherTargeting = false; u._witherCharged = false; u._zetsuSkillUsed = false; u._zetsuTargeting = false; u._sasukeUltTargeting = false; u._sasukeFlameStage = 0; });
 
     const prevTurn = gameState.currentTurn;
+    // 设置开启时:未攻击且射程内有敌人的单位自动出手
+    autoAttackBeforeEndTurn(prevTurn);
+    // 皮尔斯:回合结束时未拾取的弹壳自动拾取并攻击敌人
+    autoPickupShellsOnTurnEnd(prevTurn);
     // 骷髅巨人炸弹:当前回合结束时爆炸
     explodeSkeletonBombs(prevTurn);
 
@@ -17761,18 +17842,60 @@ function startGame() {
 
 // 手机端适配:根据视口宽度动态缩放游戏界面(桌面基准宽度960px,窄屏等比缩小)
 function fitGameScreen() {
-    const screen = document.getElementById('gameScreen');
+    const screen = document.getElementById("gameScreen");
     if (!screen) return;
-    const scale = Math.min(1, window.innerWidth / 960);
-    screen.style.transform = 'scale(' + scale + ')';
-    // 反向补偿图标文字,避免局内文字被整体缩放变小
-    screen.style.setProperty('--icon-boost', scale > 0 ? (1 / scale).toFixed(4) : '1');
-    screen.style.transformOrigin = 'top center';
+    if (screen.classList.contains("hidden")) return;
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    // 复位后测量 1 倍内容尺寸
+    screen.style.transform = "";
+    screen.style.position = "";
+    screen.style.left = "";
+    screen.style.top = "";
+    screen.style.width = "";
+    screen.style.height = "";
+    const board = document.getElementById("gameBoard");
+    const boardW = board ? (board.offsetWidth || 720) : 720;
+    const boardH = board ? (board.offsetHeight || 728) : 728;
+    const w = Math.max(screen.scrollWidth || 0, boardW + 24, 360);
+    const h = Math.max(screen.scrollHeight || 0, boardH + 340, 640);
+    const isSmall = vw < 900;
+    // 手机:宽高都要装下(否则棋盘只看到一半);桌面:按宽度缩放
+    const scale = isSmall
+        ? Math.max(0.2, Math.min(1, vw / w, vh / h))
+        : Math.max(0.2, Math.min(1, vw / w));
+    // 用 fixed 容器包住再缩放:避免缩放后仍占满原布局宽度导致横向溢出
+    screen.style.position = "fixed";
+    screen.style.left = "0";
+    screen.style.top = "0";
+    screen.style.width = w + "px";
+    screen.style.height = h + "px";
+    screen.style.transformOrigin = "top left";
+    const offsetX = Math.max(0, (vw - w * scale) / 2);
+    screen.style.transform = "translate(" + offsetX.toFixed(2) + "px, 0px) scale(" + scale + ")";
+    document.body.style.overflow = "hidden";
+    // 文字图标反向补偿;图片图标由样式固定为 1(见 styles.css 末尾)
+    screen.style.setProperty("--icon-boost", scale > 0 ? (1 / scale).toFixed(4) : "1");
+}
+
+// 离开对局:恢复被缩放容器占用的样式
+function resetGameScreenFit() {
+    const screen = document.getElementById("gameScreen");
+    if (!screen) return;
+    screen.style.transform = "";
+    screen.style.position = "";
+    screen.style.left = "";
+    screen.style.top = "";
+    screen.style.width = "";
+    screen.style.height = "";
+    screen.style.transformOrigin = "";
+    document.body.style.overflow = "";
 }
 window.addEventListener('resize', fitGameScreen);
 
 // 返回初始界面
 function goToStartScreen() {
+    resetGameScreenFit();
     stopTimer();
     cardInfoPanel.classList.add('hidden');
     startScreen.classList.remove('hidden');
@@ -18011,6 +18134,7 @@ document.getElementById('howToBackBtn').addEventListener('click', () => {
 });
 document.getElementById('trainingBtn').addEventListener('click', () => {
     gameState.aiMode = false;
+    gameState.trainingMode = true;
     gameState.maxEnergy = 500;
     gameState.redMaxEnergy = 500;
     gameState.blueMaxEnergy = 500;
@@ -18029,6 +18153,7 @@ document.getElementById('aiBattleBtn').addEventListener('click', () => {
         return;
     }
     gameState.aiMode = true;
+    gameState.trainingMode = false;
     gameState.maxEnergy = 20;
     gameState.redMaxEnergy = 20;
     gameState.blueMaxEnergy = 20;
@@ -18643,4 +18768,31 @@ window.gameState = gameState;
     if (b2) b2.addEventListener('click', () => { const u = gameState._gbSelected; if (u) gbSkill2(u); });
     if (b3) b3.addEventListener('click', () => { const u = gameState._gbSelected; if (u) gbSkill3(u); });
     if (cb) cb.addEventListener('click', closeGabrielSkillModal);
+})();
+
+// ===== 设置界面(自动攻击 + 音量) =====
+(function wireSettings() {
+    const btn = document.getElementById("settingsBtn");
+    const m = document.getElementById("settingsModal");
+    const auto = document.getElementById("settingAutoAttack");
+    const vol = document.getElementById("settingVolume");
+    const volVal = document.getElementById("settingVolumeValue");
+    const close = document.getElementById("closeSettingsBtn");
+    if (!btn || !m) return;
+    try { auto.checked = localStorage.getItem("chessAutoAttack") === "on"; } catch (e) {}
+    let v = 1;
+    try { const sv = parseFloat(localStorage.getItem("chessVolume")); if (!isNaN(sv)) v = Math.max(0, Math.min(1, sv)); } catch (e) {}
+    if (vol) { vol.value = Math.round(v * 100); if (volVal) volVal.textContent = Math.round(v * 100) + "%"; }
+    if (window.chessMusic && window.chessMusic.setVolume) window.chessMusic.setVolume(v);
+    btn.addEventListener("click", () => m.classList.remove("hidden"));
+    if (close) close.addEventListener("click", () => m.classList.add("hidden"));
+    m.addEventListener("click", (e) => { if (e.target === m) m.classList.add("hidden"); });
+    if (auto) auto.addEventListener("change", () => {
+        try { localStorage.setItem("chessAutoAttack", auto.checked ? "on" : "off"); } catch (e) {}
+    });
+    if (vol) vol.addEventListener("input", () => {
+        const p = Math.max(0, Math.min(100, parseInt(vol.value, 10) || 0));
+        if (volVal) volVal.textContent = p + "%";
+        if (window.chessMusic && window.chessMusic.setVolume) window.chessMusic.setVolume(p / 100);
+    });
 })();

@@ -5,6 +5,9 @@
         battle: new Audio('audio/bgm_battle2.wav')
     };
     const volumes = { menu: 0.30, battle: 0.35 };
+    // 主音量(设置里拖动调节,0-1)
+    let master = 1;
+    try { const sv = parseFloat(localStorage.getItem('chessVolume')); if (!isNaN(sv)) master = Math.max(0, Math.min(1, sv)); } catch (e) {}
     const targets = { menu: 0, battle: 0 };
 
     Object.keys(tracks).forEach(k => {
@@ -39,7 +42,7 @@
 
     function applyTargets() {
         Object.keys(tracks).forEach(k => {
-            targets[k] = (enabled && started && k === current) ? volumes[k] : 0;
+            targets[k] = (enabled && started && k === current) ? volumes[k] * master : 0;
         });
     }
 
@@ -114,7 +117,22 @@
         }
     }
 
+    function applySfxVolume() {
+        try {
+            if (window.cardSfx && Array.isArray(window.cardSfx.pool)) {
+                window.cardSfx.pool.forEach(a => { a.volume = 0.5 * master; });
+            }
+        } catch (e) {}
+    }
     window.chessMusic = {
+        getVolume() { return master; },
+        setVolume(v) {
+            master = Math.max(0, Math.min(1, Number(v) || 0));
+            try { localStorage.setItem("chessVolume", String(master)); } catch (e) {}
+            applyTargets();
+            applySfxVolume();
+            return master;
+        },
         toggle() {
             // 已经开播(music on)时点击必定静音;从未开播时点击则开始播放
             const turnOff = enabled && started;

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>棋盘游戏</title>
-    <link rel="stylesheet" href="styles.css?v=132">
+    <link rel="stylesheet" href="styles.css?v=138">
 </head>
 <body>
     <!-- 初始界面 -->
@@ -19,6 +19,7 @@
             <button id="startBtn">开始游戏</button>
             <button id="cardPackBtn">卡包</button>
             <button id="howToBtn">玩法介绍</button>
+            <button id="settingsBtn">设置</button>
         </div>
     </div>
 
@@ -34,6 +35,23 @@
     </div>
 
     <!-- 玩法介绍 -->
+    <!-- 设置 -->
+    <div id="settingsModal" class="modal hidden">
+        <div class="modal-content settings-content">
+            <h2>设置</h2>
+            <div class="setting-row">
+                <label for="settingAutoAttack">回合结束自动攻击</label>
+                <input type="checkbox" id="settingAutoAttack">
+            </div>
+            <p class="setting-hint">开启后:回合结束时,攻击范围内还有敌人的未攻击单位会自动出手。</p>
+            <div class="setting-row">
+                <label for="settingVolume">音量</label>
+                <input type="range" id="settingVolume" min="0" max="100" step="1" value="100">
+                <span id="settingVolumeValue">100%</span>
+            </div>
+            <button id="closeSettingsBtn">关闭</button>
+        </div>
+    </div>
     <div id="howToScreen" class="screen hidden">
         <h1>游戏玩法介绍</h1>
         <div class="howto-content">
@@ -442,9 +460,9 @@
             <button id="shadowToggleBtn" class="mirror-toggle-btn shadow-toggle-btn hidden">切换到现实世界</button>
             <button id="haiyueToggleBtn" class="mirror-toggle-btn haiyue-toggle-btn hidden">隐藏幻境</button>
         </div>
-<script src="game.js?v=242"></script>
-    <script src="online.js?v=22"></script>
-    <script src="music.js?v=15"></script>
+<script src="game.js?v=255"></script>
+    <script src="online.js?v=23"></script>
+    <script src="music.js?v=2"></script>
     <script src="sfx.js?v=4"></script>
 </body>
 </html>

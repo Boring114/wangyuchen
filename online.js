@@ -254,6 +254,7 @@ function tryConnect(cb) {
 
 function startOnlineGame() {
     gameState.aiMode = false;
+    gameState.trainingMode = false;
     gameState.onlineMode = true;
     // 联机对战使用正常能量与回合计时(非训练模式)
     gameState.maxEnergy = 20;
