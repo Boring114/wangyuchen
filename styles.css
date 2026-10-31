@@ -9034,3 +9034,3365 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     border-radius: 4px;
     pointer-events: none;
 }
+
+/* ===== 图标雪碧图(单文件上传即可) ===== */
+.art-asala::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 0.0000% 0.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-asala::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 0.0000% 0.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-asala-flamer::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 10.0000% 0.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-asala-flamer::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 10.0000% 0.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-balloon::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 20.0000% 0.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-balloon::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 20.0000% 0.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-beauty_vine::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 30.0000% 0.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-beauty_vine::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 30.0000% 0.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-bee_medic::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 40.0000% 0.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-bee_medic::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 40.0000% 0.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-big_lightning::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 50.0000% 0.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-big_lightning::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 50.0000% 0.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-black_zetsu::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 60.0000% 0.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-black_zetsu::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 60.0000% 0.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-blowdart::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 70.0000% 0.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-blowdart::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 70.0000% 0.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-cannon::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 80.0000% 0.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-cannon::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 80.0000% 0.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-cattail::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 90.0000% 0.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-cattail::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 90.0000% 0.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-char2c::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 100.0000% 0.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-char2c::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 100.0000% 0.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-charcoal::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 0.0000% 10.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-charcoal::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 0.0000% 10.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-clover::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 10.0000% 10.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-clover::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 10.0000% 10.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-cordelius::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 20.0000% 10.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-cordelius::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 20.0000% 10.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-crazy_cannon::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 30.0000% 10.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-crazy_cannon::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 30.0000% 10.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-crog::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 40.0000% 10.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-crog::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 40.0000% 10.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-deep_blue::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 50.0000% 10.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-deep_blue::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 50.0000% 10.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-demulan::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 60.0000% 10.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-demulan::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 60.0000% 10.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-dirty_rat::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 70.0000% 10.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-dirty_rat::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 70.0000% 10.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-doom_shroom::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 80.0000% 10.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-doom_shroom::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 80.0000% 10.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-dragon-baby::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 90.0000% 10.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-dragon-baby::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 90.0000% 10.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-eagle_artillery::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 100.0000% 10.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-eagle_artillery::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 100.0000% 10.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-edo_tensei::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 0.0000% 20.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-edo_tensei::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 0.0000% 20.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-electric-pea::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 10.0000% 20.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-electric-pea::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 10.0000% 20.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-elite_ice::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 20.0000% 20.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-elite_ice::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 20.0000% 20.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-elite_knight::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 30.0000% 20.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-elite_knight::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 30.0000% 20.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-erin::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 40.0000% 20.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-erin::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 40.0000% 20.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-evil_moon::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 50.0000% 20.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-evil_moon::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 50.0000% 20.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-factory-manager::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 60.0000% 20.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-factory-manager::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 60.0000% 20.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-fireball::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 70.0000% 20.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-fireball::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 70.0000% 20.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-fisherman::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 80.0000% 20.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-fisherman::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 80.0000% 20.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-gabriel::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 90.0000% 20.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-gabriel::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 90.0000% 20.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-gale::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 100.0000% 20.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-gale::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 100.0000% 20.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-glacier::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 0.0000% 30.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-glacier::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 0.0000% 30.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-golem::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 10.0000% 30.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-golem::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 10.0000% 30.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-golem-mini::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 20.0000% 30.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-golem-mini::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 20.0000% 30.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-guard::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 30.0000% 30.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-guard::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 30.0000% 30.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-guff::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 40.0000% 30.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-guff::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 40.0000% 30.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-guy_death_gate::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 50.0000% 30.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-guy_death_gate::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 50.0000% 30.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-haiyue::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 60.0000% 30.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-haiyue::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 60.0000% 30.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-hashirama::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 70.0000% 30.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-hashirama::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 70.0000% 30.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-heal::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 80.0000% 30.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-heal::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 80.0000% 30.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-heal_fairy::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 90.0000% 30.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-heal_fairy::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 90.0000% 30.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-hog::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 100.0000% 30.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-hog::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 100.0000% 30.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-hurricane::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 0.0000% 40.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-hurricane::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 0.0000% 40.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-ice_shooter::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 10.0000% 40.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-ice_shooter::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 10.0000% 40.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-inferno_tower::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 20.0000% 40.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-inferno_tower::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 20.0000% 40.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-jade_break::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 30.0000% 40.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-jade_break::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 30.0000% 40.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-joseph::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 40.0000% 40.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-joseph::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 40.0000% 40.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-kai::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 50.0000% 40.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-kai::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 50.0000% 40.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-leftover::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 60.0000% 40.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-leftover::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 60.0000% 40.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-leisi::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 70.0000% 40.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-leisi::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 70.0000% 40.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-leisi-inf::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 80.0000% 40.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-leisi-inf::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 80.0000% 40.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-leisi-shield::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 90.0000% 40.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-leisi-shield::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 90.0000% 40.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-lightning-dragon::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 100.0000% 40.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-lightning-dragon::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 100.0000% 40.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-light-tank::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 0.0000% 50.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-light-tank::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 0.0000% 50.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-log::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 10.0000% 50.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-log::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 10.0000% 50.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-lvbu::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 20.0000% 50.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-lvbu::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 20.0000% 50.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-madara::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 30.0000% 50.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-madara::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 30.0000% 50.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-madara_solve::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 40.0000% 50.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-madara_solve::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 40.0000% 50.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-milk::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 50.0000% 50.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-milk::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 50.0000% 50.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-miner::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 60.0000% 50.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-miner::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 60.0000% 50.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-mirror::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 70.0000% 50.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-mirror::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 70.0000% 50.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-missile::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 80.0000% 50.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-missile::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 80.0000% 50.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-musketeer::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 90.0000% 50.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-musketeer::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 90.0000% 50.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-nurse_giant::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 100.0000% 50.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-nurse_giant::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 100.0000% 50.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-pain::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 0.0000% 60.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-pain::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 0.0000% 60.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-patroller::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 10.0000% 60.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-patroller::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 10.0000% 60.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-pekka::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 20.0000% 60.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-pekka::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 20.0000% 60.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-pierce::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 30.0000% 60.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-pierce::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 30.0000% 60.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-prince::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 40.0000% 60.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-prince::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 40.0000% 60.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-prince_guard::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 50.0000% 60.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-prince_guard::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 50.0000% 60.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-princess::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 60.0000% 60.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-princess::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 60.0000% 60.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-rage::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 70.0000% 60.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-rage::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 70.0000% 60.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-raven::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 80.0000% 60.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-raven::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 80.0000% 60.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-raven-guard::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 90.0000% 60.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-raven-guard::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 90.0000% 60.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-revive_carrot::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 100.0000% 60.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-revive_carrot::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 100.0000% 60.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-reynolds::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 0.0000% 70.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-reynolds::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 0.0000% 70.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-reynolds_jackson::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 10.0000% 70.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-reynolds_jackson::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 10.0000% 70.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-rolling_stone::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 20.0000% 70.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-rolling_stone::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 20.0000% 70.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-royal_giant::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 30.0000% 70.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-royal_giant::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 30.0000% 70.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-royal_guard::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 40.0000% 70.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-royal_guard::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 40.0000% 70.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-saeed::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 50.0000% 70.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-saeed::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 50.0000% 70.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-sasuke::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 60.0000% 70.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-sasuke::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 60.0000% 70.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-seed::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 70.0000% 70.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-seed::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 70.0000% 70.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-shangbole::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 80.0000% 70.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-shangbole::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 80.0000% 70.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-skeleton::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 90.0000% 70.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-skeleton::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 90.0000% 70.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-skeleton_giant::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 100.0000% 70.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-skeleton_giant::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 100.0000% 70.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-skull::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 0.0000% 80.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-skull::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 0.0000% 80.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-skull-army::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 10.0000% 80.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-skull-army::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 10.0000% 80.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-skull-soldier::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 20.0000% 80.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-skull-soldier::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 20.0000% 80.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-small_shroom::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 30.0000% 80.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-small_shroom::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 30.0000% 80.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-snowflake::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 40.0000% 80.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-snowflake::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 40.0000% 80.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-snow-monster::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 50.0000% 80.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-snow-monster::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 50.0000% 80.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-stone_wall::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 60.0000% 80.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-stone_wall::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 60.0000% 80.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-storm_dragon::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 70.0000% 80.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-storm_dragon::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 70.0000% 80.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-super_knight::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 80.0000% 80.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-super_knight::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 80.0000% 80.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-supernova_giant::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 90.0000% 80.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-supernova_giant::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 90.0000% 80.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-taiyi::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 100.0000% 80.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-taiyi::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 100.0000% 80.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-tank::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 0.0000% 90.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-tank::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 0.0000% 90.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-tentacle::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 10.0000% 90.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-tentacle::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 10.0000% 90.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-tesla::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 20.0000% 90.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-tesla::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 20.0000% 90.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-viral_spread::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 30.0000% 90.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-viral_spread::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 30.0000% 90.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-warden::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 40.0000% 90.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-warden::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 40.0000% 90.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-winter_squash::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 50.0000% 90.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-winter_squash::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 50.0000% 90.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-witch::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 60.0000% 90.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-witch::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 60.0000% 90.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-wither::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 70.0000% 90.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-wither::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 70.0000% 90.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-yangjian::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 80.0000% 90.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-yangjian::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 80.0000% 90.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-yogg::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 90.0000% 90.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-yogg::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 90.0000% 90.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-yogg_fate::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 100.0000% 90.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-yogg_fate::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 100.0000% 90.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-yogg_saron::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 0.0000% 100.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-yogg_saron::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 0.0000% 100.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-zeppelin::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 10.0000% 100.0000%;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-zeppelin::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/icons-sprite.png'), url('tubiao/icons-sprite.png');
+    background-size: 1100% 1100%;
+    background-position: 10.0000% 100.0000%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
