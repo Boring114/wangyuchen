@@ -1003,7 +1003,7 @@ h1 {
     transform: translate(-50%, -50%);
     width: 24px;
     height: 24px;
-    background-image: url('images/madara.png');
+    background-image: url('images/madara.png'), url('tubiao/madara.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -1261,7 +1261,7 @@ h1 {
     transform: translate(-50%, -50%);
     width: 100%;
     height: 100%;
-    background-image: url('images/madara.png');
+    background-image: url('images/madara.png'), url('tubiao/madara.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -1982,7 +1982,7 @@ h1 {
     transform: translate(-50%, -50%);
     width: 24px;
     height: 24px;
-    background-image: url('images/hashirama.png');
+    background-image: url('images/hashirama.png'), url('tubiao/hashirama.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -1997,7 +1997,7 @@ h1 {
     transform: translate(-50%, -50%);
     width: 100%;
     height: 100%;
-    background-image: url('images/hashirama.png');
+    background-image: url('images/hashirama.png'), url('tubiao/hashirama.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4449,7 +4449,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/char2c.png');
+    background-image: url('images/char2c.png'), url('tubiao/char2c.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4464,7 +4464,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/char2c.png');
+    background-image: url('images/char2c.png'), url('tubiao/char2c.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4479,7 +4479,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/reynolds.png');
+    background-image: url('images/reynolds.png'), url('tubiao/reynolds.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4494,7 +4494,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/reynolds.png');
+    background-image: url('images/reynolds.png'), url('tubiao/reynolds.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4509,7 +4509,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/reynolds_jackson.png');
+    background-image: url('images/reynolds_jackson.png'), url('tubiao/reynolds_jackson.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4524,7 +4524,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/reynolds_jackson.png');
+    background-image: url('images/reynolds_jackson.png'), url('tubiao/reynolds_jackson.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4539,7 +4539,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/yogg.png');
+    background-image: url('images/yogg.png'), url('tubiao/yogg.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4554,7 +4554,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/yogg.png');
+    background-image: url('images/yogg.png'), url('tubiao/yogg.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4569,7 +4569,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/evil_moon.png');
+    background-image: url('images/evil_moon.png'), url('tubiao/evil_moon.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4584,7 +4584,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/evil_moon.png');
+    background-image: url('images/evil_moon.png'), url('tubiao/evil_moon.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4599,7 +4599,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/guff.png');
+    background-image: url('images/guff.png'), url('tubiao/guff.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4614,7 +4614,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/guff.png');
+    background-image: url('images/guff.png'), url('tubiao/guff.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4629,7 +4629,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/storm_dragon.png');
+    background-image: url('images/storm_dragon.png'), url('tubiao/storm_dragon.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4644,7 +4644,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/storm_dragon.png');
+    background-image: url('images/storm_dragon.png'), url('tubiao/storm_dragon.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4659,7 +4659,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/zeppelin.png');
+    background-image: url('images/zeppelin.png'), url('tubiao/zeppelin.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4674,7 +4674,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/zeppelin.png');
+    background-image: url('images/zeppelin.png'), url('tubiao/zeppelin.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4689,7 +4689,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/madara.png');
+    background-image: url('images/madara.png'), url('tubiao/madara.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4704,7 +4704,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/madara.png');
+    background-image: url('images/madara.png'), url('tubiao/madara.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4719,7 +4719,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/hashirama.png');
+    background-image: url('images/hashirama.png'), url('tubiao/hashirama.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4734,7 +4734,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/hashirama.png');
+    background-image: url('images/hashirama.png'), url('tubiao/hashirama.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4751,7 +4751,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/clover.png');
+    background-image: url('images/clover.png'), url('tubiao/clover.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4766,7 +4766,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/clover.png');
+    background-image: url('images/clover.png'), url('tubiao/clover.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4781,7 +4781,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/taiyi.png');
+    background-image: url('images/taiyi.png'), url('tubiao/taiyi.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4796,7 +4796,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/taiyi.png');
+    background-image: url('images/taiyi.png'), url('tubiao/taiyi.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4811,7 +4811,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/yogg_saron.png');
+    background-image: url('images/yogg_saron.png'), url('tubiao/yogg_saron.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4826,7 +4826,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/yogg_saron.png');
+    background-image: url('images/yogg_saron.png'), url('tubiao/yogg_saron.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4841,7 +4841,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/yogg_fate.png');
+    background-image: url('images/yogg_fate.png'), url('tubiao/yogg_fate.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4856,7 +4856,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/yogg_fate.png');
+    background-image: url('images/yogg_fate.png'), url('tubiao/yogg_fate.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4871,7 +4871,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/joseph.png');
+    background-image: url('images/joseph.png'), url('tubiao/joseph.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4886,7 +4886,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/joseph.png');
+    background-image: url('images/joseph.png'), url('tubiao/joseph.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4901,7 +4901,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/guy_death_gate.png');
+    background-image: url('images/guy_death_gate.png'), url('tubiao/guy_death_gate.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4916,7 +4916,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/guy_death_gate.png');
+    background-image: url('images/guy_death_gate.png'), url('tubiao/guy_death_gate.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4933,7 +4933,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/crog.png');
+    background-image: url('images/crog.png'), url('tubiao/crog.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4948,7 +4948,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/crog.png');
+    background-image: url('images/crog.png'), url('tubiao/crog.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4963,7 +4963,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/glacier.png');
+    background-image: url('images/glacier.png'), url('tubiao/glacier.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4978,7 +4978,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/glacier.png');
+    background-image: url('images/glacier.png'), url('tubiao/glacier.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -4993,7 +4993,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/lvbu.png');
+    background-image: url('images/lvbu.png'), url('tubiao/lvbu.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5008,7 +5008,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/lvbu.png');
+    background-image: url('images/lvbu.png'), url('tubiao/lvbu.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5023,7 +5023,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/eagle_artillery.png');
+    background-image: url('images/eagle_artillery.png'), url('tubiao/eagle_artillery.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5038,7 +5038,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/eagle_artillery.png');
+    background-image: url('images/eagle_artillery.png'), url('tubiao/eagle_artillery.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5053,7 +5053,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/deep_blue.png');
+    background-image: url('images/deep_blue.png'), url('tubiao/deep_blue.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5068,7 +5068,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/deep_blue.png');
+    background-image: url('images/deep_blue.png'), url('tubiao/deep_blue.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5083,7 +5083,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/beauty_vine.png');
+    background-image: url('images/beauty_vine.png'), url('tubiao/beauty_vine.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5098,7 +5098,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/beauty_vine.png');
+    background-image: url('images/beauty_vine.png'), url('tubiao/beauty_vine.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5113,7 +5113,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/bee_medic.png');
+    background-image: url('images/bee_medic.png'), url('tubiao/bee_medic.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5128,7 +5128,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/bee_medic.png');
+    background-image: url('images/bee_medic.png'), url('tubiao/bee_medic.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5145,7 +5145,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/madara_solve.png');
+    background-image: url('images/madara_solve.png'), url('tubiao/madara_solve.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5160,7 +5160,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/madara_solve.png');
+    background-image: url('images/madara_solve.png'), url('tubiao/madara_solve.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5175,7 +5175,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/haiyue.png');
+    background-image: url('images/haiyue.png'), url('tubiao/haiyue.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5190,7 +5190,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/haiyue.png');
+    background-image: url('images/haiyue.png'), url('tubiao/haiyue.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5205,7 +5205,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/raven.png');
+    background-image: url('images/raven.png'), url('tubiao/raven.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5220,7 +5220,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/raven.png');
+    background-image: url('images/raven.png'), url('tubiao/raven.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5235,7 +5235,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/raven-guard.png');
+    background-image: url('images/raven-guard.png'), url('tubiao/raven-guard.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5250,7 +5250,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/raven-guard.png');
+    background-image: url('images/raven-guard.png'), url('tubiao/raven-guard.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5265,7 +5265,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/black_zetsu.png');
+    background-image: url('images/black_zetsu.png'), url('tubiao/black_zetsu.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5280,7 +5280,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/black_zetsu.png');
+    background-image: url('images/black_zetsu.png'), url('tubiao/black_zetsu.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5295,7 +5295,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/wither.png');
+    background-image: url('images/wither.png'), url('tubiao/wither.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5310,7 +5310,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/wither.png');
+    background-image: url('images/wither.png'), url('tubiao/wither.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5325,7 +5325,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/warden.png');
+    background-image: url('images/warden.png'), url('tubiao/warden.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5340,7 +5340,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/warden.png');
+    background-image: url('images/warden.png'), url('tubiao/warden.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5355,7 +5355,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/guard.png');
+    background-image: url('images/guard.png'), url('tubiao/guard.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5370,7 +5370,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/guard.png');
+    background-image: url('images/guard.png'), url('tubiao/guard.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5387,7 +5387,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/demulan.png');
+    background-image: url('images/demulan.png'), url('tubiao/demulan.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5402,7 +5402,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/demulan.png');
+    background-image: url('images/demulan.png'), url('tubiao/demulan.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5417,7 +5417,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/tank.png');
+    background-image: url('images/tank.png'), url('tubiao/tank.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5432,7 +5432,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/tank.png');
+    background-image: url('images/tank.png'), url('tubiao/tank.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5447,7 +5447,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/factory-manager.png');
+    background-image: url('images/factory-manager.png'), url('tubiao/factory-manager.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5462,7 +5462,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/factory-manager.png');
+    background-image: url('images/factory-manager.png'), url('tubiao/factory-manager.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5477,7 +5477,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/charcoal.png');
+    background-image: url('images/charcoal.png'), url('tubiao/charcoal.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5492,7 +5492,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/charcoal.png');
+    background-image: url('images/charcoal.png'), url('tubiao/charcoal.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5507,7 +5507,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/gabriel.png');
+    background-image: url('images/gabriel.png'), url('tubiao/gabriel.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5522,7 +5522,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/gabriel.png');
+    background-image: url('images/gabriel.png'), url('tubiao/gabriel.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5537,7 +5537,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/kai.png');
+    background-image: url('images/kai.png'), url('tubiao/kai.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5552,7 +5552,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/kai.png');
+    background-image: url('images/kai.png'), url('tubiao/kai.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5567,7 +5567,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/witch.png');
+    background-image: url('images/witch.png'), url('tubiao/witch.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5582,7 +5582,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/witch.png');
+    background-image: url('images/witch.png'), url('tubiao/witch.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5597,7 +5597,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/skeleton.png');
+    background-image: url('images/skeleton.png'), url('tubiao/skeleton.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5612,7 +5612,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/skeleton.png');
+    background-image: url('images/skeleton.png'), url('tubiao/skeleton.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5627,7 +5627,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/shangbole.png');
+    background-image: url('images/shangbole.png'), url('tubiao/shangbole.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5642,7 +5642,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 100%;
     height: 100%;
-    background-image: url('images/shangbole.png');
+    background-image: url('images/shangbole.png'), url('tubiao/shangbole.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -5659,7 +5659,7 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     transform: translate(-50%, -50%) !important;
     width: 24px;
     height: 24px;
-    background-image: url('images/skeleton.png');
+    background-image: url('images/skeleton.png'), url('tubiao/skeleton.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
