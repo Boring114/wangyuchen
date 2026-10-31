@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>棋盘游戏</title>
-    <link rel="stylesheet" href="styles.css?v=147">
+    <link rel="stylesheet" href="styles.css?v=157">
 </head>
 <body>
     <!-- 初始界面 -->
@@ -112,6 +112,7 @@
             <div class="sort-bar">
                 <button id="sortByCostBtn" class="sort-btn active">按费用</button>
                 <button id="sortByRarityBtn" class="sort-btn">按稀有度</button>
+                <span id="totalCardCount" class="total-card-count">总卡数：0</span>
             </div>
             <div class="card-grid" id="cardGrid">
                 <!-- 卡牌将动态生成 -->
@@ -284,12 +285,22 @@
     <div id="guySkillModal" class="modal hidden">
         <div class="modal-content">
             <h3>迈特凯 · 奥义</h3>
-            <button id="guySkill1Btn" class="skill-btn">夕象伍足（绕圈+白光冲击）</button>
-            <button id="guySkill2Btn" class="skill-btn">夜凯（一脚10伤，敌不死则自灭）</button>
+            <button id="guySkyBtn" class="skill-btn">天驱（冲刺3伤+击退）</button>
+            <button id="guyElephantBtn" class="skill-btn">夕象（前方3×5真空波4伤）</button>
+            <button id="guySkill1Btn" class="skill-btn">夕象伍足（4能量，3格内选敌）</button>
+            <button id="guySkill2Btn" class="skill-btn">夜凯（爆衣+4能量）</button>
             <button id="closeGuySkillModal" class="close-btn">关闭</button>
         </div>
     </div>
 
+    <!-- 脑机特工技能框 -->
+    <div id="agentSkillModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>脑机特工 H1000</h3>
+            <button id="agentSleepBtn" class="skill-btn">麻醉毒针（睡眠至其回合结束）</button>
+            <button id="closeAgentSkillModal" class="close-btn">关闭</button>
+        </div>
+    </div>
     <!-- 深蓝技能框 -->
     <div id="deepBlueSkillModal" class="modal hidden">
         <div class="modal-content">
@@ -460,7 +471,7 @@
             <button id="shadowToggleBtn" class="mirror-toggle-btn shadow-toggle-btn hidden">切换到现实世界</button>
             <button id="haiyueToggleBtn" class="mirror-toggle-btn haiyue-toggle-btn hidden">隐藏幻境</button>
         </div>
-<script src="game.js?v=274"></script>
+<script src="game.js?v=307"></script>
     <script src="online.js?v=25"></script>
     <script src="music.js?v=2"></script>
     <script src="sfx.js?v=4"></script>
