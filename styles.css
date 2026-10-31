@@ -15972,3 +15972,148 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     border-radius: 50%;
     pointer-events: none;
 }
+
+/* ===== 吕布:一技能红色横扫 / 三技能红色八戟插地 ===== */
+.lvbu-sweep {
+    position: absolute; z-index: 40; pointer-events: none;
+    background: radial-gradient(ellipse at 50% 108%,
+        rgba(255,80,70,0) 50%,
+        rgba(255,90,80,0.30) 68%,
+        rgba(255,120,110,0.85) 84%,
+        rgba(255,235,230,0.95) 92%,
+        rgba(255,80,70,0) 99%);
+    border-radius: 50% 50% 0 0;
+    filter: blur(0.5px) drop-shadow(0 0 8px rgba(231,76,60,0.8));
+}
+.lvbu-sweep-down { transform: scaleY(-1); }
+.lvbu-sweep-halberd {
+    position: absolute; width: 86px; height: 8px; transform-origin: 0 50%;
+    background: linear-gradient(90deg, rgba(255,235,230,0.98), #e74c3c 45%, #7b1410 100%);
+    box-shadow: 0 0 12px rgba(231,76,60,0.95), 0 0 24px rgba(192,57,43,0.6);
+    border-radius: 4px; z-index: 43; pointer-events: none;
+    transition: transform 0.45s cubic-bezier(0.35, 0.1, 0.3, 1);
+}
+.lvbu-sweep-halberd::after {
+    content: ""; position: absolute; right: -12px; top: 50%;
+    transform: translateY(-50%); width: 20px; height: 24px;
+    background: linear-gradient(135deg, #fff3f0, #e74c3c 55%, #8e1f18);
+    clip-path: polygon(0 50%, 55% 0, 100% 50%, 55% 100%);
+    filter: drop-shadow(0 0 5px rgba(255,90,80,0.95));
+}
+/* 三技能:范围更大、戟更长更红 */
+.lvbu-stomp-area {
+    border-radius: 18px !important;
+    background: radial-gradient(circle, rgba(255,35,30,0.34), rgba(160,0,0,0.14) 55%, rgba(80,0,0,0) 82%) !important;
+    box-shadow: inset 0 0 34px rgba(255,60,60,0.55) !important;
+}
+.lvbu-stomp-area .madara-stomp-halberd {
+    width: 5px !important; height: 58px !important;
+    background: linear-gradient(180deg, #ff8a80 0%, #e74c3c 40%, #5a0f0a 100%) !important;
+    box-shadow: 0 0 10px rgba(255,70,60,0.95), inset -1px 0 0 rgba(255,180,170,0.5) !important;
+}
+.lvbu-stomp-area .madara-stomp-halberd::before {
+    width: 20px !important; height: 17px !important; left: -8px !important; top: -13px !important;
+    background: linear-gradient(135deg, #ffb3a8 0%, #e74c3c 55%, #6b120c 100%) !important;
+}
+.lvbu-stomp-area .madara-stomp-chain {
+    stroke: rgba(255,70,60,0.95) !important; stroke-width: 3 !important;
+}
+
+/* 吕布一技能:只保留最外层半圆刀气,黑红色调(中心完全透明) */
+.lvbu-sweep {
+    background:
+        radial-gradient(ellipse at 50% 104%,
+            rgba(0,0,0,0) 60%,
+            rgba(60,0,0,0.30) 71%,
+            rgba(140,10,10,0.62) 79%,
+            rgba(255,55,45,0.95) 85%,
+            rgba(120,0,0,0.95) 89%,
+            rgba(10,0,0,0.92) 92%,
+            rgba(0,0,0,0) 96%) !important;
+    filter: blur(0.9px) drop-shadow(0 0 10px rgba(210,30,25,0.85)) !important;
+}
+/* 刀气外缘再加一道黑色锋线 */
+.lvbu-sweep::after {
+    content: '';
+    position: absolute; inset: 0;
+    border-radius: 50% 50% 0 0;
+    background: radial-gradient(ellipse at 50% 104%,
+        rgba(0,0,0,0) 86%,
+        rgba(0,0,0,0.85) 90%,
+        rgba(255,80,60,0.65) 92%,
+        rgba(0,0,0,0) 95%);
+    mix-blend-mode: multiply;
+}
+
+/* 吕布一技能:戟缩小、颜色变淡 */
+.lvbu-sweep-halberd {
+    width: 60px !important; height: 6px !important;
+    background: linear-gradient(90deg, rgba(255,225,220,0.85), rgba(226,110,100,0.9) 45%, rgba(140,60,55,0.9) 100%) !important;
+    box-shadow: 0 0 8px rgba(231,110,100,0.75), 0 0 16px rgba(192,80,70,0.45) !important;
+}
+.lvbu-sweep-halberd::after {
+    width: 14px !important; height: 17px !important; right: -9px !important;
+    background: linear-gradient(135deg, rgba(255,240,235,0.95), rgba(226,110,100,0.9) 55%, rgba(140,60,55,0.85)) !important;
+    filter: drop-shadow(0 0 4px rgba(255,120,110,0.7)) !important;
+}
+/* 吕布三技能落地:环形红色劈砍 */
+.lvbu-impact-ring {
+    position: absolute; border-radius: 50%;
+    border: 4px solid rgba(255,70,55,0.95);
+    box-shadow: 0 0 18px rgba(255,60,45,0.9), inset 0 0 18px rgba(255,60,45,0.55);
+    animation: lvbuRingBurst 0.6s ease-out forwards;
+    pointer-events: none;
+}
+@keyframes lvbuRingBurst {
+    from { transform: scale(0.35); opacity: 1; }
+    to { transform: scale(1.12); opacity: 0; }
+}
+.lvbu-slash-arc {
+    position: absolute; width: 46px; height: 10px;
+    border-radius: 50% / 60%;
+    background: linear-gradient(90deg, rgba(255,60,45,0) 0%, rgba(255,80,60,0.95) 40%, rgba(255,240,235,0.98) 62%, rgba(255,60,45,0) 100%);
+    box-shadow: 0 0 10px rgba(255,60,45,0.95);
+    transform-origin: 0 50%;
+    animation: lvbuArcFade 0.5s ease-out forwards;
+    pointer-events: none;
+}
+@keyframes lvbuArcFade {
+    from { opacity: 0; transform: translate(-50%, -50%) rotate(var(--arc-rot)) scaleX(0.5); }
+    25% { opacity: 1; }
+    to { opacity: 0; transform: translate(-50%, -50%) rotate(var(--arc-rot)) scaleX(1.25); }
+}
+
+/* 吕布三技能:刀气绕身转一圈(只保留旋转刀气,无戟本体) */
+.lvbu-spin-arc {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    background: conic-gradient(from 0deg,
+        rgba(0,0,0,0) 0deg,
+        rgba(0,0,0,0) 246deg,
+        rgba(120,5,5,0.55) 282deg,
+        rgba(255,50,40,0.95) 318deg,
+        rgba(255,235,230,0.98) 336deg,
+        rgba(140,0,0,0.9) 352deg,
+        rgba(0,0,0,0) 360deg);
+    -webkit-mask: radial-gradient(circle, transparent 50%, #000 57%, #000 88%, transparent 95%);
+    mask: radial-gradient(circle, transparent 50%, #000 57%, #000 88%, transparent 95%);
+    filter: blur(0.7px) drop-shadow(0 0 12px rgba(255,55,45,0.9));
+    animation: lvbuSpinOnce 0.62s cubic-bezier(0.2, 0.7, 0.25, 1) forwards;
+}
+@keyframes lvbuSpinOnce {
+    from { transform: rotate(0deg) scale(0.9); opacity: 0.15; }
+    22% { opacity: 1; }
+    to { transform: rotate(360deg) scale(1.02); opacity: 0; }
+}
+
+/* 吕布三技能:转圈刀气——范围更大、转速更慢 */
+.lvbu-spin-arc {
+    animation: lvbuSpinOnce 1.05s cubic-bezier(0.22, 0.68, 0.3, 1) forwards !important;
+    filter: blur(0.9px) drop-shadow(0 0 16px rgba(255,55,45,0.95)) !important;
+}
+@keyframes lvbuSpinOnce {
+    from { transform: rotate(0deg) scale(0.86); opacity: 0.12; }
+    25% { opacity: 1; }
+    to { transform: rotate(360deg) scale(1.04); opacity: 0; }
+}

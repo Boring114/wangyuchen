@@ -10047,7 +10047,8 @@ function closeLvbuSkillModalFunc() {
 // 技能1 方天画斩:前方2×3(前两行×中间3列)敌人3伤 + 附魔(真伤,无视护甲护盾)
 function lvbuSkill1(lvbu) {
     // 联机:方天画斩动画同步
-    sendSkillFx('lvbuSlash', lvbu);
+    sendSkillFx('lvbuSweep', lvbu);
+    showLvbuS1Fx(lvbu);
 
     lvbu._lvbuS1Used = 1;
     closeLvbuSkillModalFunc();
@@ -10073,7 +10074,7 @@ function lvbuSkill1(lvbu) {
         lvbu._enchant = true;
         lvbu._enchantTurns = 2;
     }
-    showHeroDeployText(lvbu, hit ? '方天画斩·附魔' : '方天画斩', '#c0392b', 1200);
+    showHeroDeployText(lvbu, '方天画斩', '#c0392b', 1200);
     clearHighlights();
     gameState.selectedUnit = null;
 }
@@ -10106,7 +10107,7 @@ function lvbuSkill2(lvbu) {
         const el = gameState.board[lvbu.row][lvbu.col].querySelector('.unit');
         if (el) el.classList.add('guard-shield');
     }
-    showHeroDeployText(lvbu, count > 0 ? '贪狼之握+' + Math.min(6, count) * 2 + '盾' : '贪狼之握', '#8e44ad', 1200);
+    showHeroDeployText(lvbu, '贪狼之握', '#8e44ad', 1200);
     clearHighlights();
     gameState.selectedUnit = null;
 }
@@ -10142,7 +10143,7 @@ function showLvbuLandingVisual(row, col) {
             }
         }
     }, 1500);
-    if (typeof showLvbuSlash === 'function') showLvbuSlash({ row: row, col: col });
+    if (typeof showLvbuStompFX === 'function') showLvbuStompFX(row, col);
 }
 
 function lvbuLanding(lvbu, row, col) {
@@ -10164,8 +10165,9 @@ function lvbuLanding(lvbu, row, col) {
     const doLand = () => {
         lvbu.row = row; lvbu.col = col;
         renderUnit(lvbu);
-        // 白色旋转特效(转一圈)
-        showLvbuSlash(lvbu);
+        // 落地:红色八戟插地 + 一圈红色劈砍
+        showLvbuStompFX(row, col);
+        showLvbuSpinSlash(row, col);
         // 圆圈内敌人4伤
         gameState.units.slice().forEach(u => {
             if (u.team === lvbu.team || u.ghost || u._removing) return;
@@ -10210,6 +10212,146 @@ function lvbuLanding(lvbu, row, col) {
     } else {
         doLand();
     }
+}
+
+// 吕布一技能:方天画戟从左到右横扫,半圆红色月牙覆盖前方范围
+function showLvbuS1Fx(lvbu) {
+    const board = document.getElementById("gameBoard");
+    if (!board || !lvbu) return;
+    const dir = lvbu.team === "red" ? -1 : 1;
+    const w = 3.2 * cellW, h = 2.3 * cellH;
+    const beam = document.createElement("div");
+    beam.className = "lvbu-sweep" + (dir > 0 ? " lvbu-sweep-down" : "");
+    beam.style.left = ((lvbu.col - 1.1) * cellW) + "px";
+    beam.style.top = (dir < 0 ? (lvbu.row - 2.2) * cellH : (lvbu.row + 0.2) * cellH) + "px";
+    beam.style.width = w + "px";
+    beam.style.height = h + "px";
+    beam.style.clipPath = "inset(0 100% 0 0)";
+    beam.style.transition = "clip-path 0.45s linear, opacity 0.25s ease-out";
+    board.appendChild(beam);
+    setTimeout(() => { beam.style.clipPath = "inset(0 0 0 0)"; }, 30);
+    setTimeout(() => { beam.style.opacity = "0"; }, 520);
+    setTimeout(() => beam.remove(), 800);
+    // 方天画戟从左侧扫到右侧
+    const hal = document.createElement("div");
+    hal.className = "lvbu-sweep-halberd";
+    hal.style.left = ((lvbu.col + 0.5) * cellW) + "px";
+    hal.style.top = ((lvbu.row + 0.5 + (dir < 0 ? -0.45 : 0.45)) * cellH) + "px";
+    const a0 = dir < 0 ? -150 : 150;
+    const a1 = dir < 0 ? -30 : 30;
+    hal.style.transform = "rotate(" + a0 + "deg)";
+    board.appendChild(hal);
+    setTimeout(() => { hal.style.transform = "rotate(" + a1 + "deg)"; }, 30);
+    setTimeout(() => hal.remove(), 700);
+}
+
+// 吕布三技能落地:刀气绕身转一整圈(不显示戟本体)
+function showLvbuSpinSlash(row, col) {
+    const board = document.getElementById("gameBoard");
+    if (!board) return;
+    const cx = col * cellW + cellW / 2;
+    const cy = row * cellH + cellH / 2;
+    const size = 7 * Math.max(cellW, cellH);
+    for (let k = 0; k < 2; k++) {
+        const arc = document.createElement("div");
+        arc.className = "lvbu-spin-arc";
+        arc.style.width = size + "px";
+        arc.style.height = size + "px";
+        arc.style.left = (cx - size / 2) + "px";
+        arc.style.top = (cy - size / 2) + "px";
+        arc.style.zIndex = "45";
+        arc.style.animationDelay = (k * 0.06) + "s";
+        if (k === 1) arc.style.opacity = "0.75";
+        board.appendChild(arc);
+        setTimeout(() => arc.remove(), 1400);
+    }
+}
+
+// 吕布三技能落地:一圈八道红色劈砍 + 冲击环
+function showLvbuImpactSlash(row, col) {
+    const board = document.getElementById("gameBoard");
+    if (!board) return;
+    const cx = col * cellW + cellW / 2;
+    const cy = row * cellH + cellH / 2;
+    // 扩散冲击环(覆盖5×5)
+    const ring = document.createElement("div");
+    ring.className = "lvbu-impact-ring";
+    const rw = 5 * cellW, rh = 5 * cellH;
+    ring.style.width = rw + "px";
+    ring.style.height = rh + "px";
+    ring.style.left = (cx - rw / 2) + "px";
+    ring.style.top = (cy - rh / 2) + "px";
+    ring.style.zIndex = "45";
+    board.appendChild(ring);
+    setTimeout(() => ring.remove(), 700);
+    // 一圈八道劈砍刀光
+    for (let i = 0; i < 8; i++) {
+        const ang = i * 45;
+        const arc = document.createElement("div");
+        arc.className = "lvbu-slash-arc";
+        arc.style.setProperty("--arc-rot", ang + "deg");
+        arc.style.left = cx + "px";
+        arc.style.top = cy + "px";
+        arc.style.zIndex = "46";
+        board.appendChild(arc);
+        setTimeout(() => arc.remove(), 700);
+    }
+}
+
+// 吕布三技能:红色八戟插地(5×5,比马斑大一圈)
+function showLvbuStompFX(row, col) {
+    const board = document.getElementById("gameBoard");
+    if (!board) return;
+    const W = 5 * cellW, H = 5 * cellH;
+    const wrap = document.createElement("div");
+    wrap.className = "madara-stomp-area lvbu-stomp-area";
+    wrap.style.position = "absolute";
+    wrap.style.left = ((col - 2) * cellW) + "px";
+    wrap.style.top = ((row - 2) * cellH) + "px";
+    wrap.style.width = W + "px";
+    wrap.style.height = H + "px";
+    wrap.style.zIndex = "44";
+    const cx = W / 2, cy = H / 2, rx = W * 0.45, ry = H * 0.45;
+    const pts = [];
+    for (let i = 0; i < 8; i++) {
+        const ang = (i * 45) * Math.PI / 180;
+        pts.push({ x: cx + Math.cos(ang) * rx, y: cy + Math.sin(ang) * ry, a: i * 45 });
+    }
+    const svgNS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute("class", "madara-stomp-chains");
+    svg.setAttribute("width", W);
+    svg.setAttribute("height", H);
+    svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+    for (let i = 0; i < 8; i++) {
+        const p = pts[i], q = pts[(i + 1) % 8];
+        const line = document.createElementNS(svgNS, "line");
+        line.setAttribute("x1", p.x); line.setAttribute("y1", p.y);
+        line.setAttribute("x2", q.x); line.setAttribute("y2", q.y);
+        line.setAttribute("class", "madara-stomp-chain");
+        svg.appendChild(line);
+    }
+    wrap.appendChild(svg);
+    pts.forEach((p) => {
+        const hb = document.createElement("div");
+        hb.className = "madara-stomp-halberd";
+        hb.style.left = (p.x - 2) + "px";
+        hb.style.top = (p.y - 58) + "px";
+        const rad = p.a * Math.PI / 180;
+        const leanZ = Math.cos(rad) * 26;
+        const tiltX = -Math.sin(rad) * 28;
+        hb.style.transform = "rotateZ(" + leanZ.toFixed(1) + "deg) rotateX(" + tiltX.toFixed(1) + "deg)";
+        const head = document.createElement("div");
+        head.className = "madara-halberd-head";
+        head.style.left = "50%";
+        head.style.top = "0px";
+        head.style.transformOrigin = "50% 100%";
+        head.style.transform = "translate(-50%, -100%)";
+        hb.appendChild(head);
+        wrap.appendChild(hb);
+    });
+    board.appendChild(wrap);
+    setTimeout(() => wrap.remove(), 1700);
 }
 
 // 吕布大招白色旋转特效(转一圈)
@@ -17854,30 +17996,38 @@ function fitGameScreen() {
     screen.style.top = "";
     screen.style.width = "";
     screen.style.height = "";
+    screen.style.transformOrigin = "";
+    document.body.style.overflow = "";
     const board = document.getElementById("gameBoard");
     const boardW = board ? (board.offsetWidth || 720) : 720;
     const boardH = board ? (board.offsetHeight || 728) : 728;
     const w = Math.max(screen.scrollWidth || 0, boardW + 24, 360);
     const h = Math.max(screen.scrollHeight || 0, boardH + 340, 640);
     const isSmall = vw < 900;
-    // 手机:宽高都要装下(否则棋盘只看到一半);桌面:按宽度缩放
-    const scale = isSmall
-        ? Math.max(0.2, Math.min(1, vw / w, vh / h))
-        : Math.max(0.2, Math.min(1, vw / w));
-    // 用 fixed 容器包住再缩放:避免缩放后仍占满原布局宽度导致横向溢出
-    screen.style.position = "fixed";
-    screen.style.left = "0";
-    screen.style.top = "0";
-    screen.style.width = w + "px";
-    screen.style.height = h + "px";
-    screen.style.transformOrigin = "top left";
-    const offsetX = Math.max(0, (vw - w * scale) / 2);
-    screen.style.transform = "translate(" + offsetX.toFixed(2) + "px, 0px) scale(" + scale + ")";
-    document.body.style.overflow = "hidden";
-    // 文字图标反向补偿;图片图标由样式固定为 1(见 styles.css 末尾)
-    screen.style.setProperty("--icon-boost", scale > 0 ? (1 / scale).toFixed(4) : "1");
+    screen.style.setProperty("--icon-boost", "1");
+    if (isSmall) {
+        // 手机:宽高都要装下(否则棋盘只看到一半),用固定容器 + 缩放
+        const scale = Math.max(0.2, Math.min(1, vw / w, vh / h));
+        screen.style.position = "fixed";
+        screen.style.left = "0";
+        screen.style.top = "0";
+        screen.style.width = w + "px";
+        screen.style.height = h + "px";
+        screen.style.transformOrigin = "top left";
+        const offsetX = Math.max(0, (vw - w * scale) / 2);
+        screen.style.transform = "translate(" + offsetX.toFixed(2) + "px, 0px) scale(" + scale + ")";
+        document.body.style.overflow = "hidden";
+        screen.style.setProperty("--icon-boost", scale > 0 ? (1 / scale).toFixed(4) : "1");
+        return;
+    }
+    // 桌面:保持文档流,只在宽度不够时按宽度缩放;高度不够时允许页面滚动
+    const scale = Math.max(0.2, Math.min(1, vw / w));
+    if (scale < 0.999) {
+        screen.style.transformOrigin = "top center";
+        screen.style.transform = "scale(" + scale + ")";
+        screen.style.setProperty("--icon-boost", (1 / scale).toFixed(4));
+    }
 }
-
 // 离开对局:恢复被缩放容器占用的样式
 function resetGameScreenFit() {
     const screen = document.getElementById("gameScreen");

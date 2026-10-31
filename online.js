@@ -331,6 +331,8 @@ function playSkillFx(fx) {
             case 'night': if (typeof showNightGuyVisual === 'function') showNightGuyVisual(u, t); else showSkillFlashFx(fx.toR, fx.toC, '#c0392b', 55); break;
             case 'hook': if (typeof showDeepBlueHookVisual === 'function') showDeepBlueHookVisual(u, t); else showSkillFlashFx(fx.row, fx.col, '#3498db', 45); break;
             case 'fateWheel': if (typeof showFateWheelVisual === 'function') showFateWheelVisual(); else showSkillFlashFx(fx.row, fx.col, '#e67e22', 55); break;
+            case 'lvbuSweep': if (typeof showLvbuS1Fx === 'function') showLvbuS1Fx({ row: fx.row, col: fx.col, team: fx.team }); else showSkillFlashFx(fx.row, fx.col, '#e74c3c', 55); break;
+            case 'lvbuStomp': if (typeof showLvbuStompFX === 'function') showLvbuStompFX(fx.toR, fx.toC); else showSkillFlashFx(fx.toR, fx.toC, '#e74c3c', 60); break;
             case 'lvbuLanding': if (typeof showLvbuLandingVisual === 'function') showLvbuLandingVisual(fx.toR, fx.toC); else showSkillFlashFx(fx.toR, fx.toC, '#f39c12', 50); break;
             case 'dodgeText': showDodgeText(fx.toR, fx.toC); break;
             case 'halfHpText': if (typeof showHalfHpText === 'function') showHalfHpText(u); break;
