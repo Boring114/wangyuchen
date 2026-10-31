@@ -165,6 +165,9 @@ function tryConnect(cb) {
                 gameState.sasukeFlames = gs.sasukeFlames || [];
                 gameState.beeSmokes = gs.beeSmokes || [];
                 gameState.nitroZones = gs.nitroZones || [];
+                gameState.flags = gs.flags || [];
+                gameState.goblinSquads = gs.goblinSquads || {};
+                if (typeof renderGoblinFlags === 'function') renderGoblinFlags();
                 if (typeof renderNitroZones === 'function') renderNitroZones();
                 if (typeof renderSasukeFlames === 'function') renderSasukeFlames();
                 if (typeof renderBeeSmokes === 'function') renderBeeSmokes();
@@ -214,6 +217,9 @@ function tryConnect(cb) {
                 gameState.sasukeFlames = gs.sasukeFlames || [];
                 gameState.beeSmokes = gs.beeSmokes || [];
                 gameState.nitroZones = gs.nitroZones || [];
+                gameState.flags = gs.flags || [];
+                gameState.goblinSquads = gs.goblinSquads || {};
+                if (typeof renderGoblinFlags === 'function') renderGoblinFlags();
                 if (typeof renderNitroZones === 'function') renderNitroZones();
                 if (typeof renderSasukeFlames === 'function') renderSasukeFlames();
                 if (typeof renderBeeSmokes === 'function') renderBeeSmokes();
@@ -564,6 +570,8 @@ function syncGameState() {
             sasukeFlames: gameState.sasukeFlames || [],
             beeSmokes: gameState.beeSmokes || [],
             nitroZones: gameState.nitroZones || [],
+            flags: gameState.flags || [],
+            goblinSquads: gameState.goblinSquads || {},
             haiyueIllusionWorld: haiyuePayload
         })
     }));

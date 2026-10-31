@@ -1572,6 +1572,32 @@ const cardLibrary = [
         description: '彩卡·空中单位。双击技能栏:①高爆炸弹(6格内敌方建筑,每回合最多3次,5伤并使其下个敌方回合无法攻击,周围3×3敌人3伤溅射)②燃烧弹(5格内任意格,5×5范围敌人3伤+燃烧3回合每回合1伤)③金属飞镖(自身7×7范围敌人1伤无视护甲并永久清空护甲)。亡语:阵亡时对自身5×5内所有单位(含友方)造成10伤并留下燃烧火场,敌方进入者燃烧3回合。打出后需等2个己方回合冷却才能再次部署。'
     },
     {
+        id: 'warlord',
+        rarity: 'purple',
+        name: '星际军阀',
+        attack: 2,
+        hp: 2,
+        moveRange: 4,
+        attackRange: 4,
+        cost: 5,
+        artwork: 'warlord',
+        warlord: true,
+        description: '紫卡。登场时为全场友方单位(含自己)+1攻+1血,并永久给己方手牌中所有非法术牌+1攻+1血(下出来即带加成);多个军阀可叠加。'
+    },
+    {
+        id: 'elite_goblin',
+        rarity: 'gold',
+        name: '精英哥布林',
+        attack: 2,
+        hp: 2,
+        moveRange: 7,
+        attackRange: 2,
+        cost: 2,
+        artwork: 'elite_goblin',
+        goblinSquad: true,
+        description: '金卡。花费2,部署4只哥布林(2×2占四格,部署格为左上角)。每只攻2/血2/攻距2/移7。4只全部阵亡时原地留下旗帜,该回合结束后以旗帜为左上角复活全部4只,仅能复活一次。'
+    },
+    {
         id: 'witch',
         name: '觉醒女巫',
         attack: 2,
@@ -1732,6 +1758,8 @@ const gameState = {
     missileMarks: [],
     craters: [],
     shells: [],
+    flags: [],
+    goblinSquads: {},
     shroomCount: { red: 0, blue: 0 },
     knightZones: [],
     rageZones: [],
@@ -1999,6 +2027,8 @@ counterBurn: card.counterBurn || false,
         skeletonGiant: card.skeletonGiant || false,
         grandWizard: card.grandWizard || false,
         clover: card.clover || false,
+        goblinSquad: card.goblinSquad || false,
+        warlord: card.warlord || false,
         winterSquash: card.winterSquash || false,
         rainbow: card.rainbow || false,
         _tyS1Armed: false,
@@ -4151,6 +4181,17 @@ function showMissile(m) {
 
 // 部署生效效果:金卡台词/沙尘暴/召唤类(玩家与AI共用)
 function runDeployEffects(unit) {
+    // 星际军阀:全场友军+1攻+1血,并永久强化己方手牌(非法术)
+    if (unit.warlord) applyWarlordBuff(unit);
+    // 精英哥布林:通过任何登场路径都拆成2×2小队(本体不保留)
+    if (unit.goblinSquad) {
+        const c0 = gameState.board[unit.row] && gameState.board[unit.row][unit.col];
+        const e0 = c0 ? c0.querySelector('.unit') : null;
+        if (e0) e0.remove();
+        gameState.units = gameState.units.filter(u => u.id !== unit.id);
+        spawnGoblinSquad(unit.row, unit.col, unit.team);
+        return;
+    }
     // 金卡登场特效
     if (unit.hero) {
         showHeroDeployText(unit, unit.heroDeployText, unit.heroDeployColor, unit.heroDeployDuration);
@@ -4607,6 +4648,16 @@ function deployUnit(row, col) {
     if (unit.clover) { cloverBlow(unit); }
     // 重生大巫师:登场复活本局所有阵亡己方单位
     if (unit.grandWizard) { grandWizardReviveAll(unit); }
+    // 精英哥布林:部署为2×2四只哥布林,本体不出现
+    if (unit.goblinSquad) {
+        // 先移除本体,腾出部署格给左上角那只哥布林
+        const gCell = gameState.board[unit.row] && gameState.board[unit.row][unit.col];
+        const gEl = gCell ? gCell.querySelector('.unit') : null;
+        if (gEl) gEl.remove();
+        gameState.units = gameState.units.filter(u => u.id !== unit.id);
+        spawnGoblinSquad(unit.row, unit.col, unit.team);
+        return;
+    }
     // 觉醒皇家卫队:部署为6个横向卫兵(每两个间隔1格),本体不出现
     if (unit.royalGuard) {
         spawnRoyalGuards(unit);
@@ -4832,6 +4883,7 @@ function bulletStyleFor(attacker) {
     if (id === 'little_snowflake') return 'green';
     if (['blowdart_goblin', 'cattail'].includes(id)) return 'spike';
     if (['princess', 'prince'].includes(id)) return 'arrow';
+    if (id === 'warlord') return 'red';
     if (id === 'dragon_baby') return 'red';
     return null;
 }
@@ -10730,6 +10782,16 @@ function closeGuySkillModalFunc() {
 
 // 移除单位
 function removeUnit(unit) {
+    // 精英哥布林:最后一只阵亡 → 原地留旗(旗帜到期后整队复活一次)
+    if (unit.goblinSquadMember && !unit._goblinFlagged) {
+        unit._goblinFlagged = true;
+        const alive = gameState.units.filter(u => u.squadId === unit.squadId && u.id !== unit.id && !u._removing && u.currentHp > 0).length;
+        const squad = gameState.goblinSquads ? gameState.goblinSquads[unit.squadId] : null;
+        if (alive === 0 && squad && !squad.revived) {
+            createGoblinFlag(unit.row, unit.col, unit.team, unit.squadId);
+        }
+    }
+
 // 石墙守护:无敌期间不可被移除(秒杀类兜底)
 if (unit._stoneWallProtect) {
     unit.currentHp = unit._stoneWallHpBase;
@@ -15359,6 +15421,155 @@ function hashiSkill3(u) {
     m.addEventListener('click', (e) => { if (e.target === m) closeHashiramaSkillModalFunc(); });
 })();
 
+// ===== 星际军阀 =====
+// 取军阀所属阵营的卡组:联机取本机队伍,人机红方玩家/蓝方AI,其他模式红方玩家
+function warlordDeckFor(team) {
+    if (!team) return null;
+    if (gameState.onlineMode) {
+        if (typeof onlineTeam === "undefined" || !onlineTeam) return null;
+        return team === onlineTeam ? (gameState.battleDeck || null) : null;
+    }
+    if (team === "red") return gameState.battleDeck || null;
+    if (team === "blue") return gameState.aiDeck || null;
+    return null;
+};
+
+function applyWarlordBuff(warlord) {
+    const team = warlord.team;
+    // 全场友方单位(含自己)+1攻/+1血,永久
+    gameState.units.forEach(u => {
+        if (!u || u.team !== team || u.ghost || u._removing) return;
+        u.attack = (u.attack || 0) + 1;
+        if (typeof u.meleeAttack === "number" && u.meleeAttack > 0) u.meleeAttack += 1;
+        u.maxHp = (u.maxHp || 1) + 1;
+        u.currentHp = (u.currentHp || 1) + 1;
+        updateUnitHp(u);
+    });
+    // 手牌/牌库:己方所有非法术牌永久+1攻/+1血(可叠加)
+    const buffDeck = (deck) => {
+        (deck || []).forEach(c => {
+            if (!c || c.spell) return;
+            c.attack = (c.attack || 0) + 1;
+            c.hp = (c.hp || 0) + 1;
+        });
+    };
+    // 只强化军阀自己这一方的牌:绝不碰对方卡组
+    const ownDeck = warlordDeckFor(team);
+    if (ownDeck) buffDeck(ownDeck);
+    // 场上单位与手牌数值刷新
+    if (typeof updateDeployModalCards === "function" && gameState.deployMode) updateDeployModalCards();
+    if (typeof renderCardCollection === "function" && !document.getElementById("cardPackScreen").classList.contains("hidden")) renderCardCollection();
+    showCritText(warlord.row, warlord.col, "军团强化");
+}
+
+// ===== 精英哥布林:2×2 小队 + 旗帜复活 =====
+function goblinCellFree(r, c) {
+    if (!isValidPosition(r, c)) return false;
+    if (isBlueBase(r, c) || isRedBase(r, c)) return false;
+    if (gameState.units.some(u => u.row === r && u.col === c && !u._removing)) return false;
+    if ((gameState.flags || []).some(f => f.row === r && f.col === c)) return false;
+    return true;
+}
+// 目标格被占/越界时,就近找空格
+function goblinFindSpot(r0, c0, used) {
+    const ok = (r, c) => goblinCellFree(r, c) && !used.has(r + "," + c);
+    if (ok(r0, c0)) return { row: r0, col: c0 };
+    for (let rad = 1; rad <= 5; rad++) {
+        let best = null, bd = Infinity;
+        for (let dr = -rad; dr <= rad; dr++) {
+            for (let dc = -rad; dc <= rad; dc++) {
+                if (Math.max(Math.abs(dr), Math.abs(dc)) !== rad) continue;
+                const r = r0 + dr, c = c0 + dc;
+                if (!ok(r, c)) continue;
+                const d = Math.abs(r - r0) + Math.abs(c - c0);
+                if (d < bd) { bd = d; best = { row: r, col: c }; }
+            }
+        }
+        if (best) return best;
+    }
+    return null;
+}
+// 生成小队:部署格=左上角;右侧/下方越界或占用则就近放
+function spawnGoblinSquad(row, col, team, squadId) {
+    const id = squadId || ("goblin_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6));
+    if (!gameState.goblinSquads) gameState.goblinSquads = {};
+    if (!gameState.goblinSquads[id]) gameState.goblinSquads[id] = { id: id, team: team, revived: false };
+    // 蓝方朝自己大本营(向上)铺开,红方向下;贴边时反向铺,绝不越过分界线
+    let useUp = team === 'blue';
+    if (useUp && row < 1) useUp = false;
+    if (!useUp && row > BOARD_ROWS - 2) useUp = true;
+    const offsets = useUp
+        ? [[0, 0], [0, 1], [-1, 0], [-1, 1]]
+        : [[0, 0], [0, 1], [1, 0], [1, 1]];
+    let ar;
+    if (team === 'blue') {
+        // 蓝方半场 0..13
+        ar = useUp ? Math.max(1, Math.min(row, 13)) : Math.max(0, Math.min(row, 12));
+    } else {
+        // 红方半场 14..27
+        ar = useUp ? Math.max(15, Math.min(row, 27)) : Math.max(14, Math.min(row, 26));
+    }
+    const ac = Math.max(0, Math.min(col, BOARD_COLS - 2));
+    const used = new Set();
+    offsets.forEach((off, idx) => {
+        const spot = goblinFindSpot(ar + off[0], ac + off[1], used);
+        if (!spot) return;
+        used.add(spot.row + "," + spot.col);
+        const g = {
+            id: "gob_" + id + "_" + idx + "_" + Math.random().toString(36).slice(2, 5),
+            cardId: "elite_goblin",
+            name: "精英哥布林",
+            artwork: "elite_goblin",
+            team: team,
+            row: spot.row, col: spot.col,
+            attack: 2, maxHp: 2, currentHp: 2,
+            moveRange: 7, attackRange: 2,
+            armor: 0, armorPen: 0,
+            goblinSquadMember: true,
+            squadId: id
+        };
+        gameState.units.push(g);
+        renderUnit(g);
+    });
+    if (typeof syncOnlineNow === "function") syncOnlineNow();
+}
+// 最后一只哥布林死亡:原地插旗
+function createGoblinFlag(row, col, team, squadId) {
+    if (!gameState.flags) gameState.flags = [];
+    if (gameState.flags.some(f => f.row === row && f.col === col)) return;
+    gameState.flags.push({ row: row, col: col, team: team, squadId: squadId, turnsLeft: 1 });
+    renderGoblinFlags();
+    if (typeof showCritText === "function") showCritText(row, col, "旗帜");
+}
+function renderGoblinFlags() {
+    document.querySelectorAll(".goblin-flag").forEach(el => el.remove());
+    (gameState.flags || []).forEach(f => {
+        const cell = gameState.board[f.row] && gameState.board[f.row][f.col];
+        if (!cell) return;
+        const el = document.createElement("div");
+        el.className = "goblin-flag art-elite_goblin_flag";
+        cell.appendChild(el);
+    });
+}
+// 回合结束:旗帜到期 → 以旗帜为左上角复活四只
+function processGoblinFlags(prevTurn) {
+    if (!gameState.flags || !gameState.flags.length) return;
+    const expire = gameState.flags.filter(f => f.team === prevTurn);
+    if (!expire.length) return;
+    expire.forEach(f => {
+        const squad = gameState.goblinSquads ? gameState.goblinSquads[f.squadId] : null;
+        const alive = gameState.units.some(u => u.squadId === f.squadId && !u._removing && u.currentHp > 0);
+        // 先移除旗帜,腾出左上角格子
+        gameState.flags = gameState.flags.filter(x => x !== f);
+        renderGoblinFlags();
+        if (squad && !squad.revived && !alive) {
+            squad.revived = true;
+            spawnGoblinSquad(f.row, f.col, f.team, f.squadId);
+        }
+    });
+    renderGoblinFlags();
+}
+
 // ===== 觉醒女巫 =====
 const SKELETON_TOKEN_CARD = { id: 'skeleton_token', name: '骷髅', attack: 1, hp: 1, moveRange: 9, attackRange: 1, artwork: 'skeleton' };
 
@@ -16652,6 +16863,8 @@ function endTurn() {
     autoAttackBeforeEndTurn(prevTurn);
     // 皮尔斯:回合结束时未拾取的弹壳自动拾取并攻击敌人
     autoPickupShellsOnTurnEnd(prevTurn);
+    // 精英哥布林旗帜:经过该方一个回合后整队复活
+    processGoblinFlags(prevTurn);
     // 骷髅巨人炸弹:当前回合结束时爆炸
     explodeSkeletonBombs(prevTurn);
 
@@ -17895,6 +18108,14 @@ function startGame() {
     gameState.windZones = [];
     gameState.craters = [];
     gameState.shells = [];
+    gameState.flags = [];
+    gameState.goblinSquads = {};
+    // 新局:手牌攻击/生命恢复卡牌基础值(避免军阀加成跨局残留)
+    (gameState.battleDeck || []).forEach(c => {
+        const base = cardLibrary.find(x => x.id === c.id);
+        if (base) { c.attack = base.attack; c.hp = base.hp; }
+    });
+    document.querySelectorAll('.goblin-flag').forEach(el => el.remove());
     gameState.knightZones = [];
     gameState.rageZones = [];
     gameState.fireZones = [];
