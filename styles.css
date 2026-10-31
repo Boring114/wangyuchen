@@ -5672,3 +5672,3365 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     opacity: 0.75 !important;
     filter: grayscale(0.55) brightness(1.45) drop-shadow(0 0 5px rgba(179,157,219,0.9)) !important;
 }
+
+/* ===== 全部图片图标(24px / 卡面等比) ===== */
+.art-asala::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/asala.png'), url('tubiao/asala.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-asala::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/asala.png'), url('tubiao/asala.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-asala-flamer::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/asala-flamer.png'), url('tubiao/asala-flamer.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-asala-flamer::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/asala-flamer.png'), url('tubiao/asala-flamer.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-balloon::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/balloon.png'), url('tubiao/balloon.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-balloon::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/balloon.png'), url('tubiao/balloon.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-beauty_vine::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/beauty_vine.png'), url('tubiao/beauty_vine.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-beauty_vine::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/beauty_vine.png'), url('tubiao/beauty_vine.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-bee_medic::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/bee_medic.png'), url('tubiao/bee_medic.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-bee_medic::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/bee_medic.png'), url('tubiao/bee_medic.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-big_lightning::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/big_lightning.png'), url('tubiao/big_lightning.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-big_lightning::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/big_lightning.png'), url('tubiao/big_lightning.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-black_zetsu::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/black_zetsu.png'), url('tubiao/black_zetsu.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-black_zetsu::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/black_zetsu.png'), url('tubiao/black_zetsu.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-blowdart::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/blowdart.png'), url('tubiao/blowdart.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-blowdart::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/blowdart.png'), url('tubiao/blowdart.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-cannon::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/cannon.png'), url('tubiao/cannon.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-cannon::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/cannon.png'), url('tubiao/cannon.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-cattail::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/cattail.png'), url('tubiao/cattail.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-cattail::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/cattail.png'), url('tubiao/cattail.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-char2c::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/char2c.png'), url('tubiao/char2c.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-char2c::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/char2c.png'), url('tubiao/char2c.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-charcoal::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/charcoal.png'), url('tubiao/charcoal.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-charcoal::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/charcoal.png'), url('tubiao/charcoal.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-clover::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/clover.png'), url('tubiao/clover.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-clover::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/clover.png'), url('tubiao/clover.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-cordelius::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/cordelius.png'), url('tubiao/cordelius.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-cordelius::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/cordelius.png'), url('tubiao/cordelius.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-crazy_cannon::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/crazy_cannon.png'), url('tubiao/crazy_cannon.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-crazy_cannon::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/crazy_cannon.png'), url('tubiao/crazy_cannon.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-crog::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/crog.png'), url('tubiao/crog.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-crog::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/crog.png'), url('tubiao/crog.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-deep_blue::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/deep_blue.png'), url('tubiao/deep_blue.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-deep_blue::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/deep_blue.png'), url('tubiao/deep_blue.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-demulan::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/demulan.png'), url('tubiao/demulan.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-demulan::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/demulan.png'), url('tubiao/demulan.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-dirty_rat::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/dirty_rat.png'), url('tubiao/dirty_rat.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-dirty_rat::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/dirty_rat.png'), url('tubiao/dirty_rat.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-doom_shroom::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/doom_shroom.png'), url('tubiao/doom_shroom.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-doom_shroom::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/doom_shroom.png'), url('tubiao/doom_shroom.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-dragon-baby::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/dragon-baby.png'), url('tubiao/dragon-baby.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-dragon-baby::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/dragon-baby.png'), url('tubiao/dragon-baby.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-eagle_artillery::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/eagle_artillery.png'), url('tubiao/eagle_artillery.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-eagle_artillery::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/eagle_artillery.png'), url('tubiao/eagle_artillery.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-edo_tensei::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/edo_tensei.png'), url('tubiao/edo_tensei.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-edo_tensei::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/edo_tensei.png'), url('tubiao/edo_tensei.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-electric-pea::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/electric-pea.png'), url('tubiao/electric-pea.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-electric-pea::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/electric-pea.png'), url('tubiao/electric-pea.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-elite_ice::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/elite_ice.png'), url('tubiao/elite_ice.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-elite_ice::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/elite_ice.png'), url('tubiao/elite_ice.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-elite_knight::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/elite_knight.png'), url('tubiao/elite_knight.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-elite_knight::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/elite_knight.png'), url('tubiao/elite_knight.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-erin::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/erin.png'), url('tubiao/erin.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-erin::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/erin.png'), url('tubiao/erin.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-evil_moon::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/evil_moon.png'), url('tubiao/evil_moon.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-evil_moon::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/evil_moon.png'), url('tubiao/evil_moon.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-factory-manager::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/factory-manager.png'), url('tubiao/factory-manager.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-factory-manager::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/factory-manager.png'), url('tubiao/factory-manager.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-fireball::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/fireball.png'), url('tubiao/fireball.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-fireball::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/fireball.png'), url('tubiao/fireball.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-fisherman::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/fisherman.png'), url('tubiao/fisherman.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-fisherman::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/fisherman.png'), url('tubiao/fisherman.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-gabriel::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/gabriel.png'), url('tubiao/gabriel.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-gabriel::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/gabriel.png'), url('tubiao/gabriel.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-gale::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/gale.png'), url('tubiao/gale.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-gale::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/gale.png'), url('tubiao/gale.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-glacier::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/glacier.png'), url('tubiao/glacier.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-glacier::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/glacier.png'), url('tubiao/glacier.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-golem::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/golem.png'), url('tubiao/golem.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-golem::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/golem.png'), url('tubiao/golem.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-golem-mini::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/golem-mini.png'), url('tubiao/golem-mini.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-golem-mini::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/golem-mini.png'), url('tubiao/golem-mini.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-guard::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/guard.png'), url('tubiao/guard.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-guard::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/guard.png'), url('tubiao/guard.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-guff::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/guff.png'), url('tubiao/guff.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-guff::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/guff.png'), url('tubiao/guff.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-guy_death_gate::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/guy_death_gate.png'), url('tubiao/guy_death_gate.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-guy_death_gate::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/guy_death_gate.png'), url('tubiao/guy_death_gate.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-haiyue::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/haiyue.png'), url('tubiao/haiyue.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-haiyue::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/haiyue.png'), url('tubiao/haiyue.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-hashirama::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/hashirama.png'), url('tubiao/hashirama.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-hashirama::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/hashirama.png'), url('tubiao/hashirama.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-heal::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/heal.png'), url('tubiao/heal.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-heal::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/heal.png'), url('tubiao/heal.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-heal_fairy::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/heal_fairy.png'), url('tubiao/heal_fairy.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-heal_fairy::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/heal_fairy.png'), url('tubiao/heal_fairy.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-hog::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/hog.png'), url('tubiao/hog.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-hog::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/hog.png'), url('tubiao/hog.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-hurricane::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/hurricane.png'), url('tubiao/hurricane.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-hurricane::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/hurricane.png'), url('tubiao/hurricane.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-ice_shooter::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/ice_shooter.png'), url('tubiao/ice_shooter.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-ice_shooter::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/ice_shooter.png'), url('tubiao/ice_shooter.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-inferno_tower::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/inferno_tower.png'), url('tubiao/inferno_tower.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-inferno_tower::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/inferno_tower.png'), url('tubiao/inferno_tower.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-jade_break::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/jade_break.png'), url('tubiao/jade_break.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-jade_break::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/jade_break.png'), url('tubiao/jade_break.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-joseph::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/joseph.png'), url('tubiao/joseph.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-joseph::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/joseph.png'), url('tubiao/joseph.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-kai::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/kai.png'), url('tubiao/kai.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-kai::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/kai.png'), url('tubiao/kai.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-leftover::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/leftover.png'), url('tubiao/leftover.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-leftover::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/leftover.png'), url('tubiao/leftover.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-leisi::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/leisi.png'), url('tubiao/leisi.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-leisi::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/leisi.png'), url('tubiao/leisi.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-leisi-inf::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/leisi-inf.png'), url('tubiao/leisi-inf.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-leisi-inf::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/leisi-inf.png'), url('tubiao/leisi-inf.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-leisi-shield::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/leisi-shield.png'), url('tubiao/leisi-shield.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-leisi-shield::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/leisi-shield.png'), url('tubiao/leisi-shield.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-light-tank::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/light-tank.png'), url('tubiao/light-tank.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-light-tank::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/light-tank.png'), url('tubiao/light-tank.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-lightning-dragon::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/lightning-dragon.png'), url('tubiao/lightning-dragon.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-lightning-dragon::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/lightning-dragon.png'), url('tubiao/lightning-dragon.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-log::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/log.png'), url('tubiao/log.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-log::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/log.png'), url('tubiao/log.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-lvbu::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/lvbu.png'), url('tubiao/lvbu.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-lvbu::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/lvbu.png'), url('tubiao/lvbu.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-madara::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/madara.png'), url('tubiao/madara.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-madara::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/madara.png'), url('tubiao/madara.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-madara_solve::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/madara_solve.png'), url('tubiao/madara_solve.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-madara_solve::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/madara_solve.png'), url('tubiao/madara_solve.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-milk::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/milk.png'), url('tubiao/milk.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-milk::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/milk.png'), url('tubiao/milk.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-miner::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/miner.png'), url('tubiao/miner.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-miner::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/miner.png'), url('tubiao/miner.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-mirror::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/mirror.png'), url('tubiao/mirror.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-mirror::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/mirror.png'), url('tubiao/mirror.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-missile::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/missile.png'), url('tubiao/missile.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-missile::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/missile.png'), url('tubiao/missile.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-musketeer::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/musketeer.png'), url('tubiao/musketeer.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-musketeer::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/musketeer.png'), url('tubiao/musketeer.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-nurse_giant::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/nurse_giant.png'), url('tubiao/nurse_giant.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-nurse_giant::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/nurse_giant.png'), url('tubiao/nurse_giant.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-pain::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/pain.png'), url('tubiao/pain.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-pain::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/pain.png'), url('tubiao/pain.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-patroller::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/patroller.png'), url('tubiao/patroller.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-patroller::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/patroller.png'), url('tubiao/patroller.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-pekka::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/pekka.png'), url('tubiao/pekka.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-pekka::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/pekka.png'), url('tubiao/pekka.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-pierce::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/pierce.png'), url('tubiao/pierce.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-pierce::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/pierce.png'), url('tubiao/pierce.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-prince::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/prince.png'), url('tubiao/prince.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-prince::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/prince.png'), url('tubiao/prince.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-prince_guard::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/prince_guard.png'), url('tubiao/prince_guard.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-prince_guard::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/prince_guard.png'), url('tubiao/prince_guard.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-princess::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/princess.png'), url('tubiao/princess.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-princess::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/princess.png'), url('tubiao/princess.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-rage::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/rage.png'), url('tubiao/rage.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-rage::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/rage.png'), url('tubiao/rage.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-raven::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/raven.png'), url('tubiao/raven.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-raven::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/raven.png'), url('tubiao/raven.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-raven-guard::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/raven-guard.png'), url('tubiao/raven-guard.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-raven-guard::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/raven-guard.png'), url('tubiao/raven-guard.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-revive_carrot::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/revive_carrot.png'), url('tubiao/revive_carrot.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-revive_carrot::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/revive_carrot.png'), url('tubiao/revive_carrot.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-reynolds::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/reynolds.png'), url('tubiao/reynolds.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-reynolds::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/reynolds.png'), url('tubiao/reynolds.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-reynolds_jackson::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/reynolds_jackson.png'), url('tubiao/reynolds_jackson.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-reynolds_jackson::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/reynolds_jackson.png'), url('tubiao/reynolds_jackson.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-rolling_stone::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/rolling_stone.png'), url('tubiao/rolling_stone.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-rolling_stone::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/rolling_stone.png'), url('tubiao/rolling_stone.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-royal_giant::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/royal_giant.png'), url('tubiao/royal_giant.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-royal_giant::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/royal_giant.png'), url('tubiao/royal_giant.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-royal_guard::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/royal_guard.png'), url('tubiao/royal_guard.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-royal_guard::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/royal_guard.png'), url('tubiao/royal_guard.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-saeed::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/saeed.png'), url('tubiao/saeed.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-saeed::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/saeed.png'), url('tubiao/saeed.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-sasuke::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/sasuke.png'), url('tubiao/sasuke.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-sasuke::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/sasuke.png'), url('tubiao/sasuke.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-seed::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/seed.png'), url('tubiao/seed.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-seed::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/seed.png'), url('tubiao/seed.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-shangbole::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/shangbole.png'), url('tubiao/shangbole.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-shangbole::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/shangbole.png'), url('tubiao/shangbole.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-skeleton::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/skeleton.png'), url('tubiao/skeleton.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-skeleton::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/skeleton.png'), url('tubiao/skeleton.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-skeleton_giant::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/skeleton_giant.png'), url('tubiao/skeleton_giant.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-skeleton_giant::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/skeleton_giant.png'), url('tubiao/skeleton_giant.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-skull::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/skull.png'), url('tubiao/skull.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-skull::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/skull.png'), url('tubiao/skull.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-skull-army::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/skull-army.png'), url('tubiao/skull-army.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-skull-army::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/skull-army.png'), url('tubiao/skull-army.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-skull-soldier::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/skull-soldier.png'), url('tubiao/skull-soldier.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-skull-soldier::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/skull-soldier.png'), url('tubiao/skull-soldier.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-small_shroom::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/small_shroom.png'), url('tubiao/small_shroom.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-small_shroom::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/small_shroom.png'), url('tubiao/small_shroom.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-snow-monster::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/snow-monster.png'), url('tubiao/snow-monster.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-snow-monster::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/snow-monster.png'), url('tubiao/snow-monster.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-snowflake::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/snowflake.png'), url('tubiao/snowflake.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-snowflake::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/snowflake.png'), url('tubiao/snowflake.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-stone_wall::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/stone_wall.png'), url('tubiao/stone_wall.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-stone_wall::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/stone_wall.png'), url('tubiao/stone_wall.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-storm_dragon::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/storm_dragon.png'), url('tubiao/storm_dragon.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-storm_dragon::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/storm_dragon.png'), url('tubiao/storm_dragon.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-super_knight::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/super_knight.png'), url('tubiao/super_knight.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-super_knight::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/super_knight.png'), url('tubiao/super_knight.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-supernova_giant::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/supernova_giant.png'), url('tubiao/supernova_giant.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-supernova_giant::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/supernova_giant.png'), url('tubiao/supernova_giant.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-taiyi::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/taiyi.png'), url('tubiao/taiyi.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-taiyi::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/taiyi.png'), url('tubiao/taiyi.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-tank::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/tank.png'), url('tubiao/tank.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-tank::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/tank.png'), url('tubiao/tank.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-tentacle::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/tentacle.png'), url('tubiao/tentacle.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-tentacle::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/tentacle.png'), url('tubiao/tentacle.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-tesla::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/tesla.png'), url('tubiao/tesla.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-tesla::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/tesla.png'), url('tubiao/tesla.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-viral_spread::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/viral_spread.png'), url('tubiao/viral_spread.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-viral_spread::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/viral_spread.png'), url('tubiao/viral_spread.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-warden::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/warden.png'), url('tubiao/warden.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-warden::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/warden.png'), url('tubiao/warden.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-winter_squash::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/winter_squash.png'), url('tubiao/winter_squash.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-winter_squash::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/winter_squash.png'), url('tubiao/winter_squash.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-witch::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/witch.png'), url('tubiao/witch.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-witch::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/witch.png'), url('tubiao/witch.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-wither::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/wither.png'), url('tubiao/wither.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-wither::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/wither.png'), url('tubiao/wither.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-yangjian::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/yangjian.png'), url('tubiao/yangjian.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-yangjian::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/yangjian.png'), url('tubiao/yangjian.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-yogg::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/yogg.png'), url('tubiao/yogg.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-yogg::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/yogg.png'), url('tubiao/yogg.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-yogg_fate::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/yogg_fate.png'), url('tubiao/yogg_fate.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-yogg_fate::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/yogg_fate.png'), url('tubiao/yogg_fate.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-yogg_saron::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/yogg_saron.png'), url('tubiao/yogg_saron.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-yogg_saron::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/yogg_saron.png'), url('tubiao/yogg_saron.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.art-zeppelin::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 24px;
+    height: 24px;
+    background-image: url('images/zeppelin.png'), url('tubiao/zeppelin.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    pointer-events: none;
+}
+.card-artwork.art-zeppelin::after {
+    content: '' !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/zeppelin.png'), url('tubiao/zeppelin.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    pointer-events: none;
+}
