@@ -353,6 +353,20 @@ const cardLibrary = [
         description: '被动:每当有敌方单位被冰冻,立即射出蓝色子弹将其直接消灭。'
     },
     {
+        id: 'chain_bond',
+        rarity: 'green',
+        name: '铁索连环',
+        attack: 0,
+        hp: 0,
+        moveRange: 0,
+        attackRange: 0,
+        cost: 3,
+        artwork: 'chain_bond',
+        spell: true,
+        chainBond: true,
+        description: '法术·铁索连环:先后选择两个单位(敌我均可)。一方受伤时另一方承受相同伤害并附带同样的攻击效果;已被连环的单位可再次被选,从而连成多个目标。铁索持续一个己方回合与一个敌方回合。'
+    },
+    {
         id: 'jade_break',
         rarity: 'green',
         name: '玉碎',
@@ -834,7 +848,7 @@ const cardLibrary = [
         cost: 9,
         artwork: 'doom_shroom',
         doomShroom: true,
-        description: '一次性·不可移动。己方回合双击引爆:以自身为中心7×7爆炸(7伤)后死亡,留下持续4回合的弹坑(仅掘地矿工可部署)。敌方回合被攻击致死也会爆炸。'
+        description: '一次性·不可移动。己方回合双击引爆:以自身为中心9×9爆炸(7伤)后死亡,留下持续4回合的弹坑(仅掘地矿工可部署)。敌方回合被攻击致死也会爆炸。'
     },
     {
         id: 'small_shroom',
@@ -1413,7 +1427,7 @@ const cardLibrary = [
         heroDeployDuration: 2000,
         guyDeathGate: true,
         guyMaxEnergy: 4,
-        description: '普攻2伤/攻距2。双击技能栏:天驱(5格选点冲刺,路径敌人3伤并击退到落点外,每回合3次,命中+1能量,之后可打出一次冲刺普攻)/夕象(前方3×5真空波4伤,命中+1能量,可对空)/夕象伍足(耗4能量,3格内选敌)。血量≤5爆衣:攻击+2、技能每段+2,可选用夜凯。每回合自动扣1血(到5停止)。'
+        description: '被动·毅力:首次受到致命伤害时免疫该伤害,回复3点生命并清除所有负面(一局一次)。普攻2伤/攻距2。双击技能栏:天驱(5格选点冲刺,路径敌人3伤并击退到落点外,每回合3次,命中+1能量,之后可打出一次冲刺普攻)/夕象(前方3×5真空波4伤,命中+1能量,可对空)/夕象伍足(耗4能量,3格内选敌)。血量≤5爆衣:攻击+2、技能每段+2,可选用夜凯。每回合自动扣1血(到5停止)。'
     },
     {
         id: 'milk',
@@ -1586,7 +1600,37 @@ const cardLibrary = [
         cyberAgent: true,
         agentTier: 1000,
         hero: true,
-        description: '金卡。登场同时部署 H47(左隔1格)与 H800(右隔1格):均攻3/血7/攻距5/移6,可对空。三名特工的普攻:目标在2格内且非空中时改为近战4伤并将其击倒(倒地至其回合结束)。双击 H1000:麻醉毒针(绿色毒针,睡眠至其回合结束,无法行动/攻击/反击,每回合1次,可对空)。'
+        description: '金卡。登场同时部署 H47(左隔1格)与 H800(右隔1格):均攻3/血7/攻距5/移6,可对空。三名特工的普攻:目标在2格内且非空中时改为近战4伤并将其击倒(倒地至其回合结束)。双击 H1000:麻醉毒针(绿色毒针,睡眠至其回合结束,无法行动/攻击/反击,每回合1次,可对空)。H1000 被动·闪避:每回合首次受到的伤害免疫(每回合1次)。'
+    },
+    {
+        id: 'spec_squad',
+        rarity: 'gold',
+        name: '加速部队特勤组',
+        attack: 4,
+        hp: 6,
+        armor: 1,
+        armorPen: 2,
+        moveRange: 4,
+        attackRange: 7,
+        cost: 15,
+        artwork: 'spec_squad',
+        hero: true,
+        specSquad: true,
+        description: '金卡。部署4名特勤兵(3×3四角)与中央支援战车。特勤兵:攻4/血6/护甲1/穿甲2/攻距7/移4,暴击33%,每回合首次攻击必定暴击。支援战车:攻3/穿甲1/攻距5/移5,每回合可攻击3次,不可被击败;4名特勤兵全部阵亡时自毁。'
+    },
+    {
+        id: 'undead_giant',
+        rarity: 'blue',
+        name: '亡灵巨人',
+        attack: 1,
+        hp: 7,
+        moveRange: 4,
+        attackRange: 4,
+        cost: 1,
+        artwork: 'undead_giant',
+        flying: true,
+        buildingOnly: true,
+        description: '蓝卡。空中单位,攻1/血7/攻距4/移4。只能攻击建筑单位(含大本营),子弹为绿色圆球。'
     },
     {
         id: 'night_witch',
@@ -2061,6 +2105,8 @@ counterBurn: card.counterBurn || false,
         warlord: card.warlord || false,
         nightWitch: card.nightWitch || false,
         cyberAgent: card.cyberAgent || false,
+        buildingOnly: card.buildingOnly || false,
+        specSquad: card.specSquad || false,
         _agentTier: card.agentTier || 0,
         winterSquash: card.winterSquash || false,
         rainbow: card.rainbow || false,
@@ -2228,6 +2274,41 @@ function handleCellClick(e) {
         }
     }
 
+    // 铁索连环:连续选两个单位
+    if (gameState._chainCasting) {
+        const card = gameState._chainCasting;
+        const cc = e.target && e.target.closest ? e.target.closest(".cell") : null;
+        if (!cc) return;
+        let cRow = parseInt(cc.dataset.row);
+        let cCol = parseInt(cc.dataset.col);
+        const gsEl2 = document.getElementById("gameScreen");
+        if (gsEl2 && gsEl2.classList.contains("blue-view")) cRow = Math.min(BOARD_ROWS - 1, cRow + 1);
+        const u = gameState.units.find(x => x.row === cRow && x.col === cCol && !x.ghost && !x._removing);
+        if (!u) { return; }
+        if (!gameState._chainPick) gameState._chainPick = [];
+        if (gameState._chainPick.includes(u.id)) { gameState._chainPick = gameState._chainPick.filter(id => id !== u.id); }
+        else gameState._chainPick.push(u.id);
+        if (gameState._chainPick.length >= 2) {
+            const a = gameState.units.find(x => x.id === gameState._chainPick[0]);
+            const b = gameState.units.find(x => x.id === gameState._chainPick[1]);
+            const cost = card.cost || 0;
+            const curE = gameState.currentTurn === "red" ? gameState.redEnergy : gameState.blueEnergy;
+            gameState._chainCasting = null;
+            gameState._chainPick = [];
+            clearHighlights();
+            if (a && b && a.id !== b.id && curE >= cost) {
+                if (gameState.currentTurn === "red") gameState.redEnergy -= cost;
+                else gameState.blueEnergy -= cost;
+                gameState.energySpent[gameState.currentTurn] = (gameState.energySpent[gameState.currentTurn] || 0) + cost;
+                updateEnergyDisplay();
+                rotateHandAfterUse(card.id);
+                castChainBond(a, b);
+            }
+            gameState._spellCasting = null;
+            return;
+        }
+        return;
+    }
     // 法术施放模式:点击任意非大本营格施放
     if (gameState._spellCasting) {
         const cell = e.target.closest('.cell');
@@ -3108,7 +3189,7 @@ if (gameState._viralTargeting) {
             summonCharcoal(clickedUnit);
             return;
         }
-        // 毁灭菇:己方回合双击引爆(7×7爆炸+留弹坑)
+        // 毁灭菇:己方回合双击引爆(9×9爆炸+留弹坑)
         if (clickedUnit.doomShroom && clickedUnit === gameState.selectedUnit && !clickedUnit._doomExploded) {
             doomShroomExplode(clickedUnit);
             return;
@@ -3431,8 +3512,8 @@ function showActionMode(unit) {
         if (gameState.currentTurn !== gameState.shadow.team) return;
         if (!unit.cordelius) return;
     }
-    // 冰冻/定身/睡眠无法行动
-    if (unit.frozen || unit.stunned || unit._asleep) return;
+    // 冰冻/定身/睡眠/黑棒无法行动
+    if (unit.frozen || unit.stunned || unit._asleep || unit._blackRod) return;
     // 被击倒:本回合无法行动(敌方回合结束才站起)
     if (unit._knockedDown) {
         showHeroDeployText(unit, '被击倒', '#3498db', 800);
@@ -3478,7 +3559,7 @@ function showActionMode(unit) {
         // 技能未用完:不显示攻击
     } else if (unit.princess && (unit._princessCd || 0) > 0) {
         // 觉醒公主:蓄力回合不显示攻击范围
-    } else if (!gameState.attackedUnits.has(unit.id) || (unit.tankSpawn && (unit.demuAttacksUsed||0) < (unit.demuBonusAttacks||0)) || (unit.erin && (unit.erinSkillActive ? (unit.erinSkillAttacks||0) > 0 : (unit.erinAttacksUsed||0) < 2)) || (unit.blowdart && (unit.blowdartAttacksUsed||0) < 2) || (unit.char2c && (unit._char2cAttacks||0) < 4) || (unit.prince && (unit._princeAttacks||0) < princeMaxAttacks(unit)) || (unit.yangjian && unit._yjBonusAttack)) {
+    } else if (!gameState.attackedUnits.has(unit.id) || (unit.tankSpawn && (unit.demuAttacksUsed||0) < (unit.demuBonusAttacks||0)) || (unit.erin && (unit.erinSkillActive ? (unit.erinSkillAttacks||0) > 0 : (unit.erinAttacksUsed||0) < 2)) || (unit.blowdart && (unit.blowdartAttacksUsed||0) < 2) || (unit.char2c && (unit._char2cAttacks||0) < 4) || (unit.supportTank && (unit._tankAttacks||0) < 3) || (unit.prince && (unit._princeAttacks||0) < princeMaxAttacks(unit)) || (unit.yangjian && unit._yjBonusAttack)) {
         // 铠飞镖攻击时使用飞镖射程
         if (unit.kaiShurikenRange && unit.kaiAttacks >= 1) {
             const orig = unit.attackRange;
@@ -3605,6 +3686,8 @@ function showAttackableTargets(unit) {
                     if (unit.royalGiant && targetUnit && !targetUnit.building) continue;
                     // 气球兵:只能攻击建筑单位
                     if (unit.balloon && targetUnit && !targetUnit.building) continue;
+                    // 亡灵巨人:只能攻击建筑单位
+                    if (unit.buildingOnly && targetUnit && !targetUnit.building) continue;
                     if (targetUnit && targetUnit.team !== unit.team && !targetUnit.ghost && !targetUnit.teslaHidden && !targetUnit.camera) {
                         // 空军只能被特定兵种攻击
                         if (targetUnit.flying) {
@@ -3770,6 +3853,15 @@ function endErinSkill(unit) {
 }
 
 // 千手柱间:暴击掷骰(50%几率伤害翻倍)
+// 暴击判定:特勤兵每回合首次攻击必定暴击
+function unitCritBonus(attacker) {
+    if (attacker && attacker.specSoldier && attacker._specFirstCrit) {
+        attacker._specFirstCrit = false;
+        return 2;
+    }
+    if (attacker && attacker.critChance && Math.random() < attacker.critChance) return 2;
+    return 1;
+}
 function rollCrit(attacker, baseDamage) {
     // 克罗格削弱:攻击力被降为1的敌人,技能每段伤害只能造成1点
     if (attacker._crogDebuffed) return 1;
@@ -3779,7 +3871,7 @@ function rollCrit(attacker, baseDamage) {
     if (attacker._possessed && attacker.zetsu) baseDamage += 2;
     // 剩饭:技能每段伤害+1(永久)
     if (attacker._leftoverBuff) baseDamage += attacker._leftoverBuff;
-    if (attacker.critChance && Math.random() < attacker.critChance) {
+    if (unitCritBonus(attacker) === 2) {
         showCritText(attacker.row, attacker.col, '暴击');
         return baseDamage * 2;
     }
@@ -4255,6 +4347,15 @@ function showMissile(m) {
 function runDeployEffects(unit) {
     // 星际军阀:全场友军+1攻+1血,并永久强化己方手牌(非法术)
     if (unit.warlord) applyWarlordBuff(unit);
+    // 加速部队特勤组:4名特勤兵(3×3四角)+中央支援战车
+    if (unit.specSquad) {
+        // 先移除本体(数据+图标),腾出左上角格子再召唤
+        const _sc = gameState.board[unit.row] && gameState.board[unit.row][unit.col];
+        if (_sc) _sc.querySelectorAll('.unit').forEach(el => el.remove());
+        gameState.units = gameState.units.filter(u => u.id !== unit.id);
+        spawnSpecSquad(unit.row, unit.col, unit.team);
+        return;
+    }
     // 脑机特工:附带 H47 / H800
     if (unit.cyberAgent && unit._agentTier === 1000) {
         spawnCyberAgents(unit);
@@ -4958,6 +5059,7 @@ function bulletStyleFor(attacker) {
     if (id === 'cyber_agent') return 'blackcircle';
     if (id === 'wither') return 'blacksquare';
     if (['ice_shooter', 'pierce', 'haiyue'].includes(id)) return 'blue';
+    if (id === 'undead_giant') return 'greenorb';
     if (id === 'little_snowflake') return 'green';
     if (['blowdart_goblin', 'cattail'].includes(id)) return 'spike';
     if (['princess', 'prince'].includes(id)) return 'arrow';
@@ -6606,8 +6708,8 @@ function attackUnit(target, skipBulletDelay) {
             return;
         }
     }
-    // 睡眠/麻醉单位无法出手
-    if (gameState.selectedUnit._asleep) return;
+    // 睡眠/麻醉/黑棒单位无法出手
+    if (gameState.selectedUnit._asleep || gameState.selectedUnit._blackRod) return;
     // 缩进地底的特斯拉电磁塔不可被攻击
     if (target.teslaHidden) return;
     // 隐藏中的巡视者(已咬住、图标消失)不可被攻击
@@ -6917,8 +7019,8 @@ function attackUnit(target, skipBulletDelay) {
             attacker.rangedCritUsed = true;
             showCritText(target.row, target.col);
         }
-        // 概率暴击
-        if (attacker.critChance && Math.random() < attacker.critChance) {
+        // 暴击(特勤兵首次必暴)
+        if (unitCritBonus(attacker) === 2) {
             damage *= 2;
             showCritText(target.row, target.col);
         }
@@ -7103,7 +7205,10 @@ function attackUnit(target, skipBulletDelay) {
         notifyWinterSquash(target);
         if (!_wasFrozen) buffSnowflakes(attacker.team);
     }
+    if (actualDamage > 0 && h1000TryDodge(target)) actualDamage = 0;
+    if (target.supportTank && !target._tankScrapped) actualDamage = 0;
     target.currentHp -= actualDamage;
+    if (actualDamage > 0) chainEcho(target, actualDamage, attacker);
     // 护士巨尸:造成多少伤害,己方大本营回复多少
     if (attacker.nurseGiant && actualDamage > 0) {
         if (attacker.team === 'red') gameState.redBaseHp = Math.min(50, gameState.redBaseHp + actualDamage);
@@ -7161,7 +7266,7 @@ function attackUnit(target, skipBulletDelay) {
     }
 
     // 反击:首次受真实伤害触发
-    const _noCounter = target.frozen || target.treeBound || target._knockedDown || target.stunned || target._asleep;
+    const _noCounter = target.frozen || target.treeBound || target._knockedDown || target.stunned || target._asleep || target._blackRod;
     if (target.counterAttack && !target.counterUsed && actualDamage > 0 && !_noCounter) {
         target.counterUsed = true;
         attacker.currentHp -= target.counterAttack;
@@ -7278,6 +7383,9 @@ function attackUnit(target, skipBulletDelay) {
         // 觉醒公主:攻击后进入蓄力,下个己方回合不能攻击
         attacker._princessCd = 2;
         gameState.attackedUnits.add(attacker.id);
+    } else if (attacker.supportTank) {
+        attacker._tankAttacks = (attacker._tankAttacks || 0) + 1;
+        if (attacker._tankAttacks >= 3) gameState.attackedUnits.add(attacker.id);
     } else if (attacker.char2c) {
         // 夏尔2c:一回合可攻击4次
         attacker._char2cAttacks = (attacker._char2cAttacks || 0) + 1;
@@ -7599,7 +7707,7 @@ function attackBase(isBlueBase) {
             attacker.rangedCritUsed = true;
             showCritText(baseRow, baseCol);
         }
-        if (attacker.critChance && Math.random() < attacker.critChance) {
+        if (unitCritBonus(attacker) === 2) {
             damage *= 2;
             showCritText(isBlueBase ? 1 : 26, 15);
         }
@@ -7693,7 +7801,7 @@ function showGameOver() {
     gameOverModal.classList.remove('hidden');
 }
 
-// 毁灭菇:以自身为中心 7×7 爆炸(紫色蘑菇云),7伤,自身死亡并留下持续4回合的弹坑
+// 毁灭菇:以自身为中心 9×9 爆炸(紫色蘑菇云),7伤,自身死亡并留下持续4回合的弹坑
 function doomShroomExplode(unit) {
     // 联机:毁灭菇爆炸动画同步
     sendSkillFx('doom', unit);
@@ -7701,10 +7809,10 @@ function doomShroomExplode(unit) {
     if (unit._doomExploded) return;
     unit._doomExploded = true;
     showDoomMushroom(unit);
-    // 7×7 范围伤害(仅敌方,7伤减护甲)
+    // 9×9 范围伤害(仅敌方,7伤减护甲)
     gameState.units.slice().forEach(u => {
         if (u.team === unit.team || u.ghost || u._removing) return;
-        if (Math.max(Math.abs(u.row - unit.row), Math.abs(u.col - unit.col)) <= 3) {
+        if (Math.max(Math.abs(u.row - unit.row), Math.abs(u.col - unit.col)) <= 4) {
             const dmg = Math.max(0, 7 - Math.max(0, (u.armor || 0) - (unit.armorPen || 0)));
             u.currentHp -= dmg;
             updateUnitHp(u);
@@ -7721,17 +7829,20 @@ function doomShroomExplode(unit) {
     syncOnlineNow();
 }
 
-// 紫色蘑菇云特效(7×7)
+// 紫色蘑菇云特效(9×9)
+// 紫色蘑菇云特效(9×9,原始单团效果)
 function showDoomMushroom(unit) {
-    const board = document.getElementById('gameBoard');
-    const cloud = document.createElement('div');
-    cloud.className = 'doom-mushroom';
-    cloud.style.position = 'absolute';
-    const w = 7 * cellW, h = 7 * cellH;
-    cloud.style.left = ((unit.col - 3) * cellW) + 'px';
-    cloud.style.top = ((unit.row - 3) * cellH) + 'px';
-    cloud.style.width = w + 'px';
-    cloud.style.height = h + 'px';
+    const board = document.getElementById("gameBoard");
+    if (!board) return;
+    const cloud = document.createElement("div");
+    cloud.className = "doom-mushroom";
+    cloud.style.position = "absolute";
+    const span = 9;
+    const w = span * cellW, h = span * cellH;
+    cloud.style.left = ((unit.col - Math.floor(span / 2)) * cellW) + "px";
+    cloud.style.top = ((unit.row - Math.floor(span / 2)) * cellH) + "px";
+    cloud.style.width = w + "px";
+    cloud.style.height = h + "px";
     board.appendChild(cloud);
     setTimeout(() => { if (cloud.parentNode) cloud.parentNode.removeChild(cloud); }, 1600);
 }
@@ -8046,7 +8157,8 @@ if (card.rage) { castRageSpell(card, row, col); return; }
         gameState.units.slice().forEach(u => {
             if (u.team === team || u.ghost || u._removing || u._magicShield) return; // 魔法护盾免疫法术
             if (Math.max(Math.abs(u.row - row), Math.abs(u.col - col)) <= r) {
-                const dmg = Math.max(0, (card.spellDamage || 4) - Math.max(0, (u.armor || 0)));
+                let dmg = Math.max(0, (card.spellDamage || 4) - Math.max(0, (u.armor || 0)));
+                if (dmg > 0 && tryUnitDodge(u)) dmg = 0;
                 u.currentHp -= dmg;
                 updateUnitHp(u);
                 showCritText(u.row, u.col, '火球');
@@ -8307,8 +8419,8 @@ function hasBasicAttack(u) {
 // 规则:被攻击方为技能输出型/阴兵不反击;敌方一回合最多反击同一攻击者1次;即使致命伤害也先反击再死亡
 function triggerCounter(attacker, target) {
     if (!target) return;
-    // 冰冻/树缠/击倒/睡眠状态无法反击
-    if (target.frozen || target.treeBound || target._knockedDown || target.stunned || target._asleep) return;
+    // 冰冻/树缠/击倒/睡眠/黑棒状态无法反击
+    if (target.frozen || target.treeBound || target._knockedDown || target.stunned || target._asleep || target._blackRod) return;
     // 自动攻击只做普通攻击,不触发反击/技能型反应
     if (Date.now() < (gameState._autoAttackUntil || 0)) return;
     if (gameState.mirror && gameState.mirror.active) return;
@@ -8525,11 +8637,153 @@ function pierceShellAutoAttack(unit) {
 }
 
 // ===== 回合结束自动攻击(设置开关) =====
+function isAutoMoveEnabled() {
+    try { return localStorage.getItem("chessAutoMove") === "on"; } catch (e) { return false; }
+}
 function isAutoAttackEnabled() {
     try { return localStorage.getItem("chessAutoAttack") === "on"; } catch (e) { return false; }
 }
+// 回合结束:自动移动 / 自动攻击(可组合)
+function autoMoveTargetFor(unit) {
+    if (!unit || unit._removing || unit.ghost || unit.currentHp <= 0) return null;
+    if (unit.frozen || unit.stunned || unit.treeBound || unit._knockedDown || unit._asleep || unit._blackRod) return null;
+    if (unit.grabbed) return null;
+    if (!unit.moveRange) return null;
+    const remaining = (unit.moveRange || 0) - (gameState.moveUsed[unit.id] || 0) - (unit._hashiSlow || 0);
+    if (remaining <= 0) return null;
+    // 红方朝蓝方大本营(上方)推进,蓝方朝红方大本营(下方)推进
+    const targetBase = unit.team === "red" ? { row: 1, col: 11 } : { row: 26, col: 11 };
+    let best = null, bestD = Infinity;
+    for (let r = unit.row - remaining; r <= unit.row + remaining; r++) {
+        for (let c = unit.col - remaining; c <= unit.col + remaining; c++) {
+            if (!isValidPosition(r, c)) continue;
+            if (isBlueBase(r, c) || isRedBase(r, c)) continue;
+            const steps = Math.abs(r - unit.row) + Math.abs(c - unit.col);
+            if (steps <= 0 || steps > remaining) continue;
+            if (gameState.units.some(u => u.id !== unit.id && u.row === r && u.col === c)) continue;
+            const d = Math.abs(r - targetBase.row) + Math.abs(c - targetBase.col);
+            if (d < bestD) { bestD = d; best = { row: r, col: c }; }
+        }
+    }
+    if (!best) return null;
+    const curD = Math.abs(unit.row - targetBase.row) + Math.abs(unit.col - targetBase.col);
+    return bestD < curD ? best : null;
+}
+// 自动攻击:大本营是否在射程内
+function autoBaseInRange(unit) {
+    const range = unit.attackRange || 1;
+    // 红方打蓝方大本营(上方 0-2 行),蓝方打红方大本营(下方 25-27 行)
+    if (unit.team === "red") {
+        for (let r = 0; r <= 2; r++) for (let c = 10; c <= 13; c++) {
+            if (Math.max(Math.abs(r - unit.row), Math.abs(c - unit.col)) <= range) return true;
+        }
+    } else {
+        for (let r = 25; r <= 27; r++) for (let c = 10; c <= 13; c++) {
+            if (Math.max(Math.abs(r - unit.row), Math.abs(c - unit.col)) <= range) return true;
+        }
+    }
+    return false;
+}
+function autoAttackOnce(unit) {
+    if (!unit || unit._removing || unit.ghost || unit.currentHp <= 0) return false;
+    if (gameState.attackedUnits.has(unit.id)) return false;
+    if (unit.frozen || unit.stunned || unit.treeBound || unit._knockedDown || unit._asleep || unit._blackRod) return false;
+    if ((unit._blindedTurns || 0) > 0) return false;
+    if (!unit.attack && !unit.percentAttack && !unit.meleeAttack) return false;
+    const tk = getTaunter(unit);
+    const range = unit.attackRange || 1;
+    let target = null, best = Infinity;
+    gameState.units.forEach(e => {
+        if (e.team === unit.team || e.ghost || e._removing || e.currentHp <= 0) return;
+        if (tk && e.id !== tk.id) return;
+        if (unit.hogRider && !e.building) return;
+        if ((unit.golem || unit.golemMini) && !e.building) return;
+        if (unit.royalGiant && !e.building) return;
+        if (unit.balloon && !e.building) return;
+        if (e.flying && !canHitAirUnit(unit)) return;
+        if (e.teslaHidden) return;
+        if (isCellSmokedFor(e.row, e.col, unit.team)) return;
+        const d = Math.max(Math.abs(e.row - unit.row), Math.abs(e.col - unit.col));
+        if (d <= range && d < best) { best = d; target = e; }
+    });
+    if (!target) {
+        if (autoBaseInRange(unit)) {
+            gameState.selectedUnit = unit;
+            try { if (unit.team === "red") attackBase(true); else attackBase(false); } catch (err) {}
+            gameState.selectedUnit = null;
+            return true;
+        }
+        return false;
+    }
+    gameState.selectedUnit = unit;
+    gameState._autoAttackUntil = Date.now() + 1000;
+    try { attackUnit(target); } catch (err) {}
+    gameState.selectedUnit = null;
+    return true;
+}
+// 召唤物强制行动:骷髅/骷髅海小兵/蝙蝠(不受设置开关影响)
+function autoActForMinions(team) {
+    if (gameState.gameOver) return;
+    gameState.units.slice().forEach(u => {
+        if (!u || u.team !== team || u.ghost || u._removing || u.currentHp <= 0) return;
+        const isMinion = u.skeleton || (u.skullSoldier && !u.skullBoss) || u.nightBat;
+        if (!isMinion) return;
+        if (u.frozen || u.stunned || u.treeBound || u._knockedDown || u._asleep || u._blackRod) return;
+        if (u.grabbed) return;
+        const range = u.attackRange || 1;
+        const inRange = gameState.units.some(e => {
+            if (e.team === team || e.ghost || e._removing || e.currentHp <= 0) return false;
+            if (e.flying && !canHitAirUnit(u)) return false;
+            return Math.max(Math.abs(e.row - u.row), Math.abs(e.col - u.col)) <= range;
+        }) || autoBaseInRange(u);
+        const canAttack = !gameState.attackedUnits.has(u.id) && !!(u.attack || u.percentAttack || u.meleeAttack) && (u._blindedTurns || 0) <= 0;
+        if (canAttack && inRange) autoAttackOnce(u);
+        const spot = inRange ? null : autoMoveTargetFor(u);
+        if (spot) {
+            gameState.selectedUnit = u;
+            try { moveUnit(spot.row, spot.col); } catch (err) {}
+            gameState.selectedUnit = null;
+        }
+        if (canAttack && !inRange) autoAttackOnce(u);
+    });
+    clearHighlights();
+}
+
+function autoActBeforeEndTurn(team) {
+    if (gameState.gameOver) return;
+    const doAtk = isAutoAttackEnabled();
+    const doMove = isAutoMoveEnabled();
+    if (!doAtk && !doMove) return;
+    gameState.units.slice().forEach(u => {
+        if (!u || u.team !== team || u.ghost || u._removing || u.currentHp <= 0) return;
+        const acted = gameState.attackedUnits.has(u.id);
+        const disabled = u.frozen || u.stunned || u.treeBound || u._knockedDown || u._asleep || u._blackRod;
+        if (disabled) return;
+        const range = u.attackRange || 1;
+        const inRange = gameState.units.some(e => {
+            if (e.team === team || e.ghost || e._removing || e.currentHp <= 0) return false;
+            if (e.flying && !canHitAirUnit(u)) return false;
+            return Math.max(Math.abs(e.row - u.row), Math.abs(e.col - u.col)) <= range;
+        }) || autoBaseInRange(u);
+        const canAttack = !acted && !!(u.attack || u.percentAttack || u.meleeAttack) && (u._blindedTurns || 0) <= 0;
+        // 范围内有敌人:只攻击,不移动
+        if (doAtk && canAttack && inRange) autoAttackOnce(u);
+        // 射程内没有敌人才自动移动
+        if (doMove && !inRange) {
+            const spot = autoMoveTargetFor(u);
+            if (spot) {
+                gameState.selectedUnit = u;
+                try { moveUnit(spot.row, spot.col); } catch (err) {}
+                gameState.selectedUnit = null;
+            }
+        }
+        // 范围内没敌人:移动后再攻击
+        if (doAtk && canAttack && !inRange) autoAttackOnce(u);
+    });
+    clearHighlights();
+}
+
 function autoAttackBeforeEndTurn(team) {
-    if (gameState.trainingMode) return;
     if (!isAutoAttackEnabled()) return;
     if (gameState.gameOver) return;
     gameState.units.slice().forEach(u => {
@@ -8551,6 +8805,7 @@ function autoAttackBeforeEndTurn(team) {
             if ((u.golem || u.golemMini) && !e.building) return;
             if (u.royalGiant && !e.building) return;
             if (u.balloon && !e.building) return;
+        if (u.buildingOnly && !e.building) return;
             if (e.flying && !canHitAirUnit(u)) return;
             if (e.teslaHidden) return;
             if (isCellSmokedFor(e.row, e.col, team)) return;
@@ -9560,7 +9815,8 @@ function castBigLightning(card, row, col) {
         setTimeout(() => {
             if (t._removing) return;
             showLightningStrike(t);
-            const d = Math.max(0, dmg - Math.max(0, (t.armor || 0)));
+            let d = Math.max(0, dmg - Math.max(0, (t.armor || 0)));
+            if (d > 0 && tryUnitDodge(t)) d = 0;
             t.currentHp -= d;
             updateUnitHp(t);
             showCritText(t.row, t.col, '雷击');
@@ -10692,6 +10948,7 @@ function guySkyDrive(guy, row, col) {
         if (e) hits.push(e);
     });
     hits.forEach(e => {
+        if (tryUnitDodge(e)) return;
         const dmg = Math.max(0, 3 - Math.max(0, (e.armor || 0) - (guy.armorPen || 0)));
         e.currentHp -= dmg;
         updateUnitHp(e);
@@ -10799,6 +11056,7 @@ function guyElephantWave(guy) {
             if (!isValidPosition(r, c)) continue;
             const e = gameState.units.find(u => u.row === r && u.col === c && u.team !== guy.team && !u.ghost && !u._removing);
             if (!e) continue;
+            if (tryUnitDodge(e)) return;
             e.currentHp -= 4;
             updateUnitHp(e);
             showCritText(e.row, e.col, "夕象");
@@ -11123,8 +11381,74 @@ function closeGuySkillModalFunc() {
     gameState._guySelected = null;
 }
 
+// 通用闪避判定:赛伊德(每回合首次受击翻滚)与 H1000(每回合首次伤害)
+// 普攻/技能伤害/技能效果都可调用;返回 true 表示本次已闪避
+function tryUnitDodge(unit) {
+    if (!unit || unit._removing || unit.ghost) return false;
+    if (unit.dodge && !unit.dodgeUsed) {
+        unit.dodgeUsed = true;
+        showDodgeText(unit.row, unit.col);
+        if (typeof syncOnlineNow === "function") syncOnlineNow();
+        return true;
+    }
+    if (unit.cyberAgent && unit._agentTier === 1000 && unit._dodgeSeq !== gameState._turnSeq) {
+        unit._dodgeSeq = gameState._turnSeq;
+        unit._dodgeUsedTurn = true;
+        const el = gameState.board[unit.row] && gameState.board[unit.row][unit.col] ? gameState.board[unit.row][unit.col].querySelector(".unit") : null;
+        if (el) { el.classList.add("agent-dodge"); setTimeout(() => el.classList.remove("agent-dodge"), 420); }
+        showDodgeText(unit.row, unit.col);
+        if (typeof syncOnlineNow === "function") syncOnlineNow();
+        return true;
+    }
+    return false;
+}
+
+// [脑机特工]H1000 被动·闪避:每回合免疫第一次伤害(每回合1次)
+function h1000TryDodge(unit) {
+    if (!unit || !unit.cyberAgent || unit._agentTier !== 1000) return false;
+    if (unit._dodgeSeq === gameState._turnSeq) return false;
+    unit._dodgeSeq = gameState._turnSeq;
+    unit._dodgeUsedTurn = true;
+    showCritText(unit.row, unit.col, "闪避");
+    const el = gameState.board[unit.row] && gameState.board[unit.row][unit.col] ? gameState.board[unit.row][unit.col].querySelector(".unit") : null;
+    if (el) {
+        el.classList.add("agent-dodge");
+        setTimeout(() => el.classList.remove("agent-dodge"), 420);
+    }
+    if (typeof syncOnlineNow === "function") syncOnlineNow();
+    return true;
+}
+
+// 死门凯被动·毅力:致命伤害时免疫,回复3血并清除负面(一局一次)
+function tryGuyGrit(unit) {
+    if (!unit || !unit.guyDeathGate || unit._gritUsed) return false;
+    unit._gritUsed = true;
+    unit.currentHp = Math.min(unit.maxHp || 10, 3);
+    unit.frozen = false;
+    unit.stunned = false;
+    unit.treeBound = false;
+    unit._knockedDown = false;
+    unit._asleep = false;
+    unit.burnTurns = 0;
+    unit.poisonTurns = 0;
+    unit.poisonLevel = 0;
+    unit._blindedTurns = 0;
+    unit.grabbed = null;
+    renderUnit(unit);
+    updateUnitHp(unit);
+    showHeroDeployText(unit, "毅力", "#c0392b", 1500);
+    if (typeof syncOnlineNow === "function") syncOnlineNow();
+    return true;
+}
+
 // 移除单位
 function removeUnit(unit) {
+    // 支援战车:不可被击败(除非 4 兵全灭后的自毁)
+    if (unit.supportTank && !unit._tankScrapped) return;
+    // 特勤兵:检查战车是否报废
+    if (unit.specSoldier) { const sid = unit.squadId; setTimeout(() => specCheckTank(sid), 0); }
+    // 死门凯毅力:致命伤害前拦下
+    if (unit && unit.currentHp <= 0 && tryGuyGrit(unit)) return;
     // 暗夜女巫阵亡:上下左右各召唤1只蝙蝠
     if (unit.nightWitch && !unit._batsSpawned) {
         unit._batsSpawned = true;
@@ -11449,6 +11773,7 @@ function renderUnit(unit) {
     if ((unit._blindedTurns || 0) > 0) unitElement.classList.add('gb-blinded');
     if (unit._edoMark) unitElement.classList.add('edo-marked');
     if (unit._asleep) unitElement.classList.add('asleep');
+    if (unit._blackRod) setTimeout(() => renderBlackRod(unit), 0);
     if (unit._asleep) setTimeout(() => renderSleepZzz(unit), 0);
     if (unit._knockedDown) unitElement.classList.add('knocked-down');
     // 太乙蓄力光晕:重渲染时恢复,避免回合切换后消失
@@ -13481,6 +13806,7 @@ function shinraTickOnce(team, row, col, radius) {
         if (u.team === team || u.ghost || u._removing) return;
         if (Math.max(Math.abs(u.row - row), Math.abs(u.col - col)) > radius) return;
         // 穿甲1点:每跳1伤,无视1点护甲
+        // 神罗天征为持续多段伤害,不再单独判定闪避(避免同一轮被连续闪避)
         const dmg = Math.max(0, 1 - Math.max(0, (u.armor || 0) - 1));
         if (dmg <= 0) return;
         u.currentHp -= dmg;
@@ -13506,6 +13832,8 @@ function shinraTickOnce(team, row, col, radius) {
     return hits;
 }
 function shinraTensei(pain) {
+    // 已被黑棒插住的敌人:延长到神罗天征结束
+    gameState.units.forEach(u => { if (u._blackRod) u._rodWithShinra = true; });
     sendSkillFx('shinra', pain);
     const radius = pain.shinraRange;
     showShinraVisual(pain.row, pain.col, radius, pain.team);
@@ -13557,6 +13885,35 @@ function showBanshoVisual(pain) {
     setTimeout(() => { gameState.units.forEach(u => { const c = gameState.board[u.row] && gameState.board[u.row][u.col]; if (c) renderUnit(u); }); }, 900);
 }
 
+// 佩恩:黑棒插住(无法行动/攻击/反击)
+function applyBlackRod(unit) {
+    if (!unit || unit._removing || unit.ghost) return;
+    if (tryUnitDodge(unit)) return;
+    unit._blackRod = true;
+    renderBlackRod(unit);
+    showCritText(unit.row, unit.col, "黑棒");
+}
+function renderBlackRod(unit) {
+    const cell = gameState.board[unit.row] && gameState.board[unit.row][unit.col];
+    if (!cell) return;
+    cell.querySelectorAll(".black-rod").forEach(el => el.remove());
+    if (!unit._blackRod) return;
+    const host = cell.querySelector(".unit") || cell;
+    const wrap = document.createElement("div");
+    wrap.className = "black-rod";
+    const bar = document.createElement("i");
+    bar.style.transform = "translate(-50%, -50%) rotate(-45deg)";
+    wrap.appendChild(bar);
+    host.appendChild(wrap);
+}
+function clearBlackRod(unit) {
+    if (!unit) return;
+    unit._blackRod = false;
+    const cell = gameState.board[unit.row] && gameState.board[unit.row][unit.col];
+    if (!cell) return;
+    cell.querySelectorAll(".black-rod").forEach(el => el.remove());
+}
+
 function banshoTenin(pain) {
     // 联机:万象天引动画同步
     sendSkillFx('bansho', pain);
@@ -13582,10 +13939,13 @@ function banshoTenin(pain) {
             const u = gameState.units.find(uu => uu.row === tr && uu.col === tc && uu.team !== team && !uu.ghost);
             if (!u) continue;
             // 伤害+能量(无论拉没拉到)
+            // 闪避:免伤、不插黑棒、也不被拉
+            if (tryUnitDodge(u)) continue;
             u.currentHp -= pain._crogDebuffed ? 1 : (pain.banshoDamage + painSkillBonus(pain));
             updateUnitHp(u);
             showCritText(u.row, u.col, '万象');
-            if (u.currentHp <= 0) removeUnit(u);
+            if (u.currentHp <= 0) { removeUnit(u); }
+            else { u._banshoMarked = true; }
             pain._banshoHits++;
             // 尝试拉到最近空位
             let placed = false;
@@ -13606,6 +13966,13 @@ function banshoTenin(pain) {
             }
         }
     }
+    // 被拉到位后再插黑棒,确保插在图标当前位置
+    gameState.units.forEach(u => {
+        if (u.team === team || u.ghost || u._removing || u.currentHp <= 0) return;
+        if (!u._banshoMarked) return;
+        applyBlackRod(u);
+        u._banshoMarked = false;
+    });
     pain.abilityPhase = 0;
     if (pain._banshoHits > 0) { pain.painEnergy = Math.min(pain.painMaxEnergy, (pain.painEnergy || 0) + 1); renderEnergyBar(pain, gameState.board[pain.row][pain.col].querySelector(".unit")); }
     pain._banshoHits = 0;
@@ -15843,6 +16210,7 @@ function showAgentDeployLine(unit) {
 // 近战击倒:2格内非空中敌人
 function cyberAgentMelee(agent, target) {
     if (!agent || !target) return;
+    if (tryUnitDodge(target)) { gameState.attackedUnits.add(agent.id); return; }
     clearHighlights();
     gameState.selectedUnit = null;
     const dmg = Math.max(0, 4 - Math.max(0, (target.armor || 0) - (agent.armorPen || 0)));
@@ -16037,6 +16405,190 @@ function showWarlordBuffText(u) {
     el.style.top = (u.row * cellH + cellH / 2 - 6) + "px";
     board.appendChild(el);
     setTimeout(() => el.remove(), 750);
+}
+
+// ===== 加速部队特勤组 =====
+function specFree(r, c, used) {
+    if (!isValidPosition(r, c)) return false;
+    if (isBlueBase(r, c) || isRedBase(r, c)) return false;
+    if (gameState.units.some(u => u.row === r && u.col === c && !u._removing)) return false;
+    if (used.has(r + "," + c)) return false;
+    return true;
+}
+function specFindSpot(r0, c0, used) {
+    if (specFree(r0, c0, used)) return { row: r0, col: c0 };
+    for (let rad = 1; rad <= 4; rad++) {
+        let best = null, bd = Infinity;
+        for (let dr = -rad; dr <= rad; dr++) {
+            for (let dc = -rad; dc <= rad; dc++) {
+                if (Math.max(Math.abs(dr), Math.abs(dc)) !== rad) continue;
+                const r = r0 + dr, c = c0 + dc;
+                if (!specFree(r, c, used)) continue;
+                const d = Math.abs(r - r0) + Math.abs(c - c0);
+                if (d < bd) { bd = d; best = { row: r, col: c }; }
+            }
+        }
+        if (best) return best;
+    }
+    return null;
+}
+function spawnSpecSquad(row, col, team) {
+    const sid = "spec_" + Date.now() + "_" + Math.random().toString(36).slice(2, 5);
+    if (!gameState.specSquads) gameState.specSquads = {};
+    gameState.specSquads[sid] = { soldiers: [], tankId: null, team: team };
+    const used = new Set();
+    const corners = [[0, 0], [0, 2], [2, 0], [2, 2]];
+    corners.forEach((off, idx) => {
+        const spot = specFindSpot(row + off[0], col + off[1], used);
+        if (!spot) return;
+        used.add(spot.row + "," + spot.col);
+        const soldier = {
+            id: "spec_soldier_" + sid + "_" + idx,
+            cardId: "spec_squad",
+            name: "加速部队兵",
+            artwork: "spec_squad",
+            team: team, row: spot.row, col: spot.col,
+            attack: 4, maxHp: 6, currentHp: 6, armor: 1, armorPen: 2,
+            moveRange: 4, attackRange: 7, critChance: 0.33,
+            specSoldier: true, squadId: sid, _specFirstCrit: true
+        };
+        gameState.units.push(soldier);
+        renderUnit(soldier);
+        gameState.specSquads[sid].soldiers.push(soldier.id);
+    });
+    const tankSpot = specFindSpot(row + 1, col + 1, used);
+    if (tankSpot) {
+        const tank = {
+            id: "spec_tank_" + sid,
+            cardId: "support_tank",
+            name: "支援战车",
+            artwork: "support_tank",
+            team: team, row: tankSpot.row, col: tankSpot.col,
+            attack: 3, maxHp: 999, currentHp: 999, armor: 0, armorPen: 1,
+            moveRange: 5, attackRange: 5,
+            supportTank: true, squadId: sid, _tankAttacks: 0, invulnerable: true
+        };
+        gameState.units.push(tank);
+        renderUnit(tank);
+        gameState.specSquads[sid].tankId = tank.id;
+    }
+    if (typeof syncOnlineNow === "function") syncOnlineNow();
+}
+function specCheckTank(squadId) {
+    const sq = gameState.specSquads && gameState.specSquads[squadId];
+    if (!sq) return;
+    const alive = gameState.units.some(u => u.squadId === squadId && u.specSoldier && !u._removing && u.currentHp > 0);
+    if (alive) return;
+    const tank = gameState.units.find(u => u.id === sq.tankId);
+    if (tank) {
+        tank._tankScrapped = true;
+        tank.supportTank = false;
+        showCritText(tank.row, tank.col, "报废");
+        removeUnit(tank);
+    }
+    delete gameState.specSquads[squadId];
+}
+
+// ===== 铁索连环 =====
+function chainGroupOf(unit) {
+    if (!unit || !unit._chainGid) return [unit];
+    const ids = (gameState.chainGroups && gameState.chainGroups[unit._chainGid]) || [];
+    return ids.map(id => gameState.units.find(u => u.id === id)).filter(Boolean);
+}
+function castChainBond(a, b) {
+    if (!a || !b) return;
+    if (!gameState.chainGroups) gameState.chainGroups = {};
+    let gid = a._chainGid || b._chainGid;
+    if (!gid) {
+        gid = "chain_" + Date.now() + "_" + Math.random().toString(36).slice(2, 5);
+        gameState.chainGroups[gid] = [];
+    } else {
+        const other = (a._chainGid && b._chainGid && a._chainGid !== b._chainGid) ? b._chainGid : null;
+        if (other && gameState.chainGroups[other]) {
+            gameState.chainGroups[other].forEach(id => {
+                if (!gameState.chainGroups[gid].includes(id)) gameState.chainGroups[gid].push(id);
+                const u = gameState.units.find(x => x.id === id);
+                if (u) u._chainGid = gid;
+            });
+            delete gameState.chainGroups[other];
+        }
+    }
+    [a, b].forEach(u => {
+        if (!u) return;
+        if (!gameState.chainGroups[gid].includes(u.id)) gameState.chainGroups[gid].push(u.id);
+        u._chainGid = gid;
+        u._chainTurns = 2;
+        renderChainVisual(u);
+    });
+    chainGroupOf(a).forEach(u => { u._chainTurns = 2; renderChainVisual(u); });
+    showCritText(a.row, a.col, "铁索");
+    if (typeof syncOnlineNow === "function") syncOnlineNow();
+}
+function renderChainVisual(unit) {
+    if (!unit) return;
+    const cell = gameState.board[unit.row] && gameState.board[unit.row][unit.col];
+    if (!cell) return;
+    cell.querySelectorAll(".chain-bond").forEach(el => el.remove());
+    if (!unit._chainGid) return;
+    const host = cell.querySelector(".unit") || cell;
+    const wrap = document.createElement("div");
+    wrap.className = "chain-bond";
+    for (let i = 0; i < 2; i++) {
+        const bar = document.createElement("i");
+        bar.style.transform = "translate(-50%, -50%) rotate(" + (i === 0 ? 34 : -34) + "deg)";
+        wrap.appendChild(bar);
+    }
+    host.appendChild(wrap);
+}
+function clearChainBond(unit) {
+    if (!unit) return;
+    const gid = unit._chainGid;
+    const cell = gameState.board[unit.row] && gameState.board[unit.row][unit.col];
+    if (cell) cell.querySelectorAll(".chain-bond").forEach(el => el.remove());
+    unit._chainGid = null;
+    unit._chainTurns = 0;
+    if (gid && gameState.chainGroups && gameState.chainGroups[gid]) {
+        gameState.chainGroups[gid] = gameState.chainGroups[gid].filter(id => {
+            const u = gameState.units.find(x => x.id === id);
+            return u && u._chainGid === gid;
+        });
+        if (gameState.chainGroups[gid].length <= 1) {
+            gameState.chainGroups[gid].forEach(id => {
+                const u = gameState.units.find(x => x.id === id);
+                if (u) { u._chainGid = null; u._chainTurns = 0; const c = gameState.board[u.row] && gameState.board[u.row][u.col]; if (c) c.querySelectorAll(".chain-bond").forEach(el => el.remove()); }
+            });
+            delete gameState.chainGroups[gid];
+        }
+    }
+}
+function chainEcho(target, dmg, attacker) {
+    if (!target || !target._chainGid || !dmg || dmg <= 0) return;
+    const group = chainGroupOf(target).filter(u => u.id !== target.id && !u._removing && u.currentHp > 0);
+    group.forEach(u => {
+        if (tryUnitDodge(u)) return;
+        u.currentHp -= dmg;
+        updateUnitHp(u);
+        showCritText(u.row, u.col, "连环");
+        if (attacker) {
+            if (attacker.wither) applyWitherEffect(u, attacker);
+            if (attacker.blowdart) {
+                u.poisonTurns = 3;
+                u.poisonHits = (u.poisonHits || 0) + 1;
+                u.poisonLevel = Math.max(u.poisonLevel || 0, u.poisonHits >= 5 ? 3 : (u.poisonHits >= 3 ? 2 : 1));
+                updatePoisonVisual(u);
+            }
+            if (attacker.fireAttack) { u.burnTurns = 3; u.burnDamage = attacker.burnDamage || 2; updateBurnVisual(u); }
+            if (attacker.freeze && !isImmuneToFreeze(u)) { u.frozen = true; updateFrozenVisual(u); notifyWinterSquash(u); }
+        }
+        if (u.currentHp <= 0) removeUnit(u);
+    });
+}
+function tickChainBonds() {
+    gameState.units.slice().forEach(u => {
+        if (!u._chainGid) return;
+        u._chainTurns = (u._chainTurns || 0) - 1;
+        if (u._chainTurns <= 0) clearChainBond(u);
+    });
 }
 
 // ===== 精英哥布林:2×2 小队 + 旗帜复活 =====
@@ -17429,6 +17981,8 @@ function endTurn() {
     clearHighlights();
     gameState.selectedUnit = null;
     gameState.deployMode = false;
+    gameState._chainCasting = null;
+    gameState._chainPick = [];
     // 回合结束:关闭所有技能弹窗/清空选中(防对方回合残留误操作)
     ['deepBlueSkillModal','lvbuSkillModal','yoggSkillModal','guySkillModal','shangboleSkillModal','sasukeSkillModal','painSkillModal','madaraSkillModal','beeMedicModal','zeppelinModal','hashiramaModal','haiyueModal','yangjianModal','taiyiModal','gabrielModal','agentSkillModal','reviveModal','stormDragonModal','josephModal','char2cModal'].forEach(id => { const m = document.getElementById(id); if (m) m.classList.add('hidden'); });
     gameState._deepBlueSelected = null; gameState._lvbuSelected = null; gameState._guySelected = null; gameState._yoggSelected = null; gameState._shangboleSelected = null; gameState._sasukeSelected = null; gameState._painSelected = null; gameState._madaraSelected = null; gameState._beeMedicSelected = null; gameState._zepSelected = null; gameState._hashiSelected = null; gameState._stormSelected = null;
@@ -17436,8 +17990,10 @@ function endTurn() {
     gameState.units.forEach(u => { u._targeting = false; u._witherTargeting = false; u._witherCharged = false; u._zetsuSkillUsed = false; u._zetsuTargeting = false; u._sasukeUltTargeting = false; u._sasukeFlameStage = 0; });
 
     const prevTurn = gameState.currentTurn;
-    // 设置开启时:未攻击且射程内有敌人的单位自动出手
-    autoAttackBeforeEndTurn(prevTurn);
+    // 设置开启时:自动攻击 / 自动移动(可组合)
+    autoActBeforeEndTurn(prevTurn);
+    // 召唤物(骷髅/骷髅海小兵/蝙蝠)无论设置如何都会自动行动
+    autoActForMinions(prevTurn);
     // 皮尔斯:回合结束时未拾取的弹壳自动拾取并攻击敌人
     autoPickupShellsOnTurnEnd(prevTurn);
     // 暗夜女巫:己方回合结束左右各召唤1只蝙蝠
@@ -17470,6 +18026,10 @@ function endTurn() {
             clearSleepZzz(u);
             const ael = gameState.board[u.row] && gameState.board[u.row][u.col] ? gameState.board[u.row][u.col].querySelector(".unit") : null;
             if (ael) ael.classList.remove("asleep");
+        }
+        if (u._blackRod && u.team === prevTurn) {
+            const delay = (gameState._shinraField || u._rodWithShinra) ? 400 : 0;
+            setTimeout(() => { clearBlackRod(u); u._rodWithShinra = false; }, delay);
         }
         if (u._knockedDown && u.team === prevTurn) {
             u._knockedDown = false;
@@ -17789,9 +18349,13 @@ function endTurn() {
     gameState.units.forEach(u => { if (u.eagleArtillery) u._eagleAttacks = 0; });
     // 疯狂大炮:每回合基地攻击次数重置
     gameState.units.forEach(u => { if (u.crazyCannon) u._ccBaseAttacked = false; });
+    // 铁索连环:回合结束递减
+    tickChainBonds();
     // 脑机特工:回合结束重置毒针次数
     gameState.units.forEach(u => {
         if (u.cyberAgent && u.team === prevTurn) u._agentSleepUsed = false;
+        if (u.specSoldier && u.team === prevTurn) u._specFirstCrit = true;
+        if (u.supportTank && u.team === prevTurn) u._tankAttacks = 0;
     });
 // 迈特凯·死门:回合结束冲撞次数重置 + 自动扣1血(到5停止)+ 爆衣检查
     gameState.units.forEach(u => {
@@ -18049,6 +18613,8 @@ function endTurn() {
         }
     });
 
+    // 回合序号(用于每回合一次的判定)
+    gameState._turnSeq = (gameState._turnSeq || 0) + 1;
     // 更新UI
     updateEnergyDisplay();
     updateTurnIndicator();
@@ -18484,7 +19050,7 @@ function showCardInfo(card) {
     if (card.hero) features.push('金卡');
     if (card.tankSpawn) features.push('召唤战车×2(攻3/护甲2/血6,限老太周围4格)');
     if (card.erin) features.push('双发连击/黄圈/计数技能/保命装');
-    if (card.doomShroom) features.push('双击引爆:7×7爆炸7伤+留弹坑4回合');
+    if (card.doomShroom) features.push('双击引爆:9×9爆炸7伤+留弹坑4回合');
     if (card.smallShroom) features.push('每回合限1个/不可移动');
     if (card.patroller) features.push('咬住敌人3回合不能移动');
     if (card.royalGuard) features.push('部署6卫兵/3伤护盾/移动≥3冲锋翻倍');
@@ -18705,6 +19271,10 @@ function startGame() {
     gameState.shells = [];
     gameState.flags = [];
     gameState.goblinSquads = {};
+    gameState._turnSeq = 0;
+    gameState.specSquads = {};
+    gameState.chainGroups = {};
+    document.querySelectorAll('.chain-bond').forEach(el => el.remove());
     // 新局:手牌攻击/生命恢复卡牌基础值(避免军阀加成跨局残留)
     (gameState.battleDeck || []).forEach(c => {
         const base = cardLibrary.find(x => x.id === c.id);
@@ -18980,6 +19550,24 @@ function openSpellModal() {
 function startSpellCasting(card) {
     if (inSpecialWorldView()) return;
     if (card && card.reviveCarrot) { openReviveCarrotModal(card); return; }
+    // 铁索连环:进入两次选目标模式
+    if (card && card.chainBond) {
+        const alive = gameState.units.filter(u => !u.ghost && !u._removing).length;
+        if (alive < 2) {
+            showHeroDeployText({ row: gameState.currentTurn === "red" ? 20 : 6, col: 12 }, "至少需要2个单位", "#888888", 1200);
+            gameState._spellCasting = null;
+            return;
+        }
+        gameState._chainCasting = card;
+        gameState._chainPick = [];
+        clearHighlights();
+        gameState.units.forEach(u => {
+            if (u.ghost || u._removing) return;
+            gameState.board[u.row][u.col].classList.add("tank-target");
+        });
+        gameState.selectedUnit = null;
+        return;
+    }
     gameState._spellCasting = card;
     clearHighlights();
     gameState.selectedUnit = null;
@@ -19768,11 +20356,13 @@ window.gameState = gameState;
     const btn = document.getElementById("settingsBtn");
     const m = document.getElementById("settingsModal");
     const auto = document.getElementById("settingAutoAttack");
+    const autoMove = document.getElementById("settingAutoMove");
     const vol = document.getElementById("settingVolume");
     const volVal = document.getElementById("settingVolumeValue");
     const close = document.getElementById("closeSettingsBtn");
     if (!btn || !m) return;
     try { auto.checked = localStorage.getItem("chessAutoAttack") === "on"; } catch (e) {}
+    try { if (autoMove) autoMove.checked = localStorage.getItem("chessAutoMove") === "on"; } catch (e) {}
     let v = 1;
     try { const sv = parseFloat(localStorage.getItem("chessVolume")); if (!isNaN(sv)) v = Math.max(0, Math.min(1, sv)); } catch (e) {}
     if (vol) { vol.value = Math.round(v * 100); if (volVal) volVal.textContent = Math.round(v * 100) + "%"; }
@@ -19780,6 +20370,9 @@ window.gameState = gameState;
     btn.addEventListener("click", () => m.classList.remove("hidden"));
     if (close) close.addEventListener("click", () => m.classList.add("hidden"));
     m.addEventListener("click", (e) => { if (e.target === m) m.classList.add("hidden"); });
+    if (autoMove) autoMove.addEventListener("change", () => {
+        try { localStorage.setItem("chessAutoMove", autoMove.checked ? "on" : "off"); } catch (e) {}
+    });
     if (auto) auto.addEventListener("change", () => {
         try { localStorage.setItem("chessAutoAttack", auto.checked ? "on" : "off"); } catch (e) {}
     });

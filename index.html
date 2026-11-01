@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>棋盘游戏</title>
-    <link rel="stylesheet" href="styles.css?v=157">
+    <link rel="stylesheet" href="styles.css?v=172">
 </head>
 <body>
     <!-- 初始界面 -->
@@ -44,6 +44,11 @@
                 <input type="checkbox" id="settingAutoAttack">
             </div>
             <p class="setting-hint">开启后:回合结束时,攻击范围内还有敌人的未攻击单位会自动出手。</p>
+            <div class="setting-row">
+                <label for="settingAutoMove">回合结束自动移动</label>
+                <input type="checkbox" id="settingAutoMove">
+            </div>
+            <p class="setting-hint">开启后:回合结束时,还有剩余移动距离的单位会自动朝对方大本营方向前进。两项都开则:范围内有敌人先攻击再移动,没敌人先移动再攻击。</p>
             <div class="setting-row">
                 <label for="settingVolume">音量</label>
                 <input type="range" id="settingVolume" min="0" max="100" step="1" value="100">
@@ -471,8 +476,8 @@
             <button id="shadowToggleBtn" class="mirror-toggle-btn shadow-toggle-btn hidden">切换到现实世界</button>
             <button id="haiyueToggleBtn" class="mirror-toggle-btn haiyue-toggle-btn hidden">隐藏幻境</button>
         </div>
-<script src="game.js?v=307"></script>
-    <script src="online.js?v=25"></script>
+<script src="game.js?v=338"></script>
+    <script src="online.js?v=26"></script>
     <script src="music.js?v=2"></script>
     <script src="sfx.js?v=4"></script>
 </body>

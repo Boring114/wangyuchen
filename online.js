@@ -167,6 +167,14 @@ function tryConnect(cb) {
                 gameState.nitroZones = gs.nitroZones || [];
                 gameState.flags = gs.flags || [];
                 gameState.goblinSquads = gs.goblinSquads || {};
+                gameState.chainGroups = gs.chainGroups || {};
+                if (typeof renderChainVisual === 'function') gameState.units.forEach(u => renderChainVisual(u));
+                gameState.chainGroups = gs.chainGroups || {};
+                if (typeof renderChainVisual === 'function') gameState.units.forEach(u => renderChainVisual(u));
+                gameState.chainGroups = gs.chainGroups || {};
+                if (typeof renderChainVisual === 'function') gameState.units.forEach(u => renderChainVisual(u));
+                gameState.chainGroups = gs.chainGroups || {};
+                if (typeof renderChainVisual === 'function') gameState.units.forEach(u => renderChainVisual(u));
                 if (typeof renderGoblinFlags === 'function') renderGoblinFlags();
                 if (typeof renderNitroZones === 'function') renderNitroZones();
                 if (typeof renderSasukeFlames === 'function') renderSasukeFlames();
@@ -572,6 +580,7 @@ function syncGameState() {
             nitroZones: gameState.nitroZones || [],
             flags: gameState.flags || [],
             goblinSquads: gameState.goblinSquads || {},
+            chainGroups: gameState.chainGroups || {},
             haiyueIllusionWorld: haiyuePayload
         })
     }));
