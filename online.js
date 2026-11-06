@@ -354,6 +354,7 @@ function playSkillFx(fx) {
             case 'firePillar': if (typeof showFirePillar === 'function') showFirePillar(fx.toR, fx.toC); else showSkillFlashFx(fx.toR, fx.toC, '#e74c3c', 45); break;
             case 'stormClaw': if (typeof showStormCracks === 'function') showStormCracks(fx.row, fx.col); else showSkillFlashFx(fx.row, fx.col, '#5aa9ff', 55); break;
             case 'stormBreath': if (typeof showStormDomain === 'function') showStormDomain({ id: 'rx_' + Date.now(), row: fx.row, col: fx.col, team: fx.team }); else showSkillFlashFx(fx.row, fx.col, '#5aa9ff', 60); break;
+            case 'bullet_blackcircle': if (typeof showBulletFx === 'function') showBulletFx(fx.row, fx.col, fx.toR, fx.toC, 'blackcircle'); else showSkillFlashFx(fx.toR, fx.toC, '#111111', 25); break;
             case 'bullet_black': if (typeof showBulletFx === 'function') showBulletFx(fx.row, fx.col, fx.toR, fx.toC, 'black'); else showSkillFlashFx(fx.toR, fx.toC, '#ffffff', 25); break;
             case 'bullet_purple': if (typeof showBulletFx === 'function') showBulletFx(fx.row, fx.col, fx.toR, fx.toC, 'purple'); else showSkillFlashFx(fx.toR, fx.toC, '#ffffff', 25); break;
             case 'bullet_blue': if (typeof showBulletFx === 'function') showBulletFx(fx.row, fx.col, fx.toR, fx.toC, 'blue'); else showSkillFlashFx(fx.toR, fx.toC, '#ffffff', 25); break;
@@ -418,6 +419,12 @@ case 'bluePillar': if (typeof showBluePillar === 'function') showBluePillar(u); 
             case 'princeGuard': { const dir = fx.team === 'red' ? -1 : 1; if (typeof showGuardCharge === 'function') showGuardCharge(u, dir, fx.toR, fx.toC, 800); else showSkillFlashFx(fx.toR, fx.toC, '#f1c40f', 50); break; }
             case 'madaraPoJun': { const dr = Math.sign(fx.toR - fx.row), dc = Math.sign(fx.toC - fx.col); if (typeof showMadaraPoJunFX === 'function') showMadaraPoJunFX(u, dr, dc); else showSkillFlashFx(fx.toR, fx.toC, '#e74c3c', 50); break; }
             case 'madaraRanbu': if (typeof showMadaraRanbuFX === 'function') showMadaraRanbuFX(u); else showSkillFlashFx(fx.row, fx.col, '#e74c3c', 60); break;
+            case 'kamikazeBomb': if (typeof showKamikazeBombDrop === 'function') showKamikazeBombDrop(fx.row, fx.col); break;
+            case 'kamikazeDive':
+                if (typeof showKamikazeShout === 'function') showKamikazeShout(fx.row, fx.col);
+                setTimeout(() => { if (typeof showKamikazeBoom === 'function') showKamikazeBoom(fx.toR, fx.toC); }, 650);
+                break;
+            case 'madaraQiBlast': if (typeof showMadaraQiBlast === 'function') showMadaraQiBlast(fx.row, fx.col); else showSkillFlashFx(fx.row, fx.col, '#e74c3c', 70); break;
             case 'madaraJump': if (typeof showMadaraJumpFX === 'function') showMadaraJumpFX(u); else showSkillFlashFx(fx.row, fx.col, '#e74c3c', 45); break;
             case 'madaraStomp': if (typeof showMadaraStompFX === 'function') showMadaraStompFX(fx.toR, fx.toC); else showSkillFlashFx(fx.toR, fx.toC, '#e74c3c', 50); break;
             case 'madaraMeteor': if (typeof showMeteorButton === 'function') showMeteorButton(u, false, true); else showSkillFlashFx(fx.row, fx.col, '#8e44ad', 60); break;
