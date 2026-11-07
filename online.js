@@ -26,6 +26,7 @@ document.getElementById('onlineBtn').addEventListener('click', () => {
         alert('出战卡组包含训练木偶，仅可在训练营模式使用，请先在卡组中移除！');
         return;
     }
+    if (typeof requireHeroSelected === "function" && !requireHeroSelected()) return;
     connectOnline();
 });
 document.getElementById('lobbyBackBtn').addEventListener('click', () => {
@@ -65,6 +66,7 @@ document.getElementById('matchBtn').addEventListener('click', () => {
         alert('出战卡组包含训练木偶，仅可在训练营模式使用，请先在卡组中移除！');
         return;
     }
+    if (typeof requireHeroSelected === "function" && !requireHeroSelected()) return;
     matching = true;
     tryConnect(() => {
         document.getElementById('lobbyStatus').textContent = '匹配中... 等待其他玩家';
@@ -419,6 +421,12 @@ case 'bluePillar': if (typeof showBluePillar === 'function') showBluePillar(u); 
             case 'princeGuard': { const dir = fx.team === 'red' ? -1 : 1; if (typeof showGuardCharge === 'function') showGuardCharge(u, dir, fx.toR, fx.toC, 800); else showSkillFlashFx(fx.toR, fx.toC, '#f1c40f', 50); break; }
             case 'madaraPoJun': { const dr = Math.sign(fx.toR - fx.row), dc = Math.sign(fx.toC - fx.col); if (typeof showMadaraPoJunFX === 'function') showMadaraPoJunFX(u, dr, dc); else showSkillFlashFx(fx.toR, fx.toC, '#e74c3c', 50); break; }
             case 'madaraRanbu': if (typeof showMadaraRanbuFX === 'function') showMadaraRanbuFX(u); else showSkillFlashFx(fx.row, fx.col, '#e74c3c', 60); break;
+            case 'kiwiThrow': if (typeof renderKiwiStaffs === 'function') { if (!gameState.kiwiStaffs) gameState.kiwiStaffs = []; gameState.kiwiStaffs = [{ row: fx.toR, col: fx.toC, team: fx.team, ownerId: 'remote' }]; renderKiwiStaffs(); } break;
+            case 'doriaSong': if (typeof showDoriaWave === 'function') { for (let i = 0; i < 4; i++) setTimeout(() => { showDoriaWave(u, [1,1.6,2,2][i] / 2.4, i); }, i * 260); } break;
+            case 'doriaLeap': if (typeof renderDoriaPools === 'function') setTimeout(() => renderDoriaPools(), 100); break;
+            case 'doriaHeaven': if (typeof showSkillFlashFx === 'function') showSkillFlashFx(fx.toR, fx.toC, '#5ac8ff', 45); break;
+            case 'lightningChain': if (typeof showLightningChainBolt === 'function') { const src = gameState.units.find(x => x.row === fx.row && x.col === fx.col) || { row: fx.row, col: fx.col }; const dst = gameState.units.find(x => x.row === fx.toR && x.col === fx.toC) || { row: fx.toR, col: fx.toC }; showLightningChainBolt(src, dst); } break;
+            case 'eagleStrike': if (typeof showEagleStrikeSequence === 'function') showEagleStrikeSequence({ row: fx.row, col: fx.col }, { row: fx.toR, col: fx.toC }, () => { if (typeof showEagleBarrageFX === 'function') showEagleBarrageFX(fx.toR, fx.toC); }); break;
             case 'kamikazeBomb': if (typeof showKamikazeBombDrop === 'function') showKamikazeBombDrop(fx.row, fx.col); break;
             case 'kamikazeDive':
                 if (typeof showKamikazeShout === 'function') showKamikazeShout(fx.row, fx.col);

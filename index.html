@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>棋盘游戏</title>
-    <link rel="stylesheet" href="styles.css?v=185">
+    <link rel="stylesheet" href="styles.css?v=200">
 </head>
 <body>
     <!-- 初始界面 -->
@@ -109,6 +109,7 @@
         <!-- 卡包标签页 -->
         <div class="tab-bar">
             <button id="cardCollectionTab" class="tab active">卡牌收藏</button>
+            <button id="heroTab" class="tab">英雄卡</button>
             <button id="battleDeckTab" class="tab">出战卡组</button>
         </div>
 
@@ -124,11 +125,21 @@
             </div>
         </div>
 
+        <!-- 英雄卡 -->
+        <div id="heroCards" class="tab-content hidden">
+            <div class="deck-info">
+                <h3>英雄卡</h3>
+                <p class="hero-hint">每局最多选择 1 名英雄。开局时英雄会自动部署在己方大本营中，双击英雄使用技能；敌人必须点中英雄所在格才能攻击英雄，此时大本营不掉血。</p>
+                <p id="heroPickInfo" class="hero-hint">尚未选择英雄</p>
+            </div>
+            <div class="hero-grid" id="heroGrid"></div>
+        </div>
         <!-- 出战卡组 -->
         <div id="battleDeck" class="tab-content hidden">
             <div class="deck-info">
                 <h3>出战卡组</h3>
                 <p>当前卡组: <span id="deckCount">0</span> 张卡</p>
+                <p>平均能量花费: <span id="deckAvgCost">0.0</span></p>
             </div>
             <div class="deck-list" id="deckList">
                 <p>点击左侧卡牌添加到出战卡组</p>
@@ -362,6 +373,24 @@
         </div>
     </div>
 
+    <!-- 朵莉亚技能框 -->
+    <div id="doriaSkillModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>朵莉亚 · 技能</h3>
+            <button id="doriaSkill1Btn" class="skill-btn">欢歌</button>
+            <button id="doriaSkill2Btn" class="skill-btn">逐浪</button>
+            <button id="doriaSkill3Btn" class="skill-btn">天籁</button>
+            <button id="closeDoriaSkillModal" class="close-btn">关闭</button>
+        </div>
+    </div>
+    <!-- 英雄技能框 -->
+    <div id="heroSkillModal" class="modal hidden">
+        <div class="modal-content">
+            <h3 id="heroSkillTitle">英雄 · 技能</h3>
+            <div id="heroSkillList"></div>
+            <button id="closeHeroSkillModal" class="close-btn">关闭</button>
+        </div>
+    </div>
     <!-- 神风特攻机技能框 -->
     <div id="kamikazeModal" class="modal hidden">
         <div class="modal-content">
@@ -486,8 +515,8 @@
             <button id="shadowToggleBtn" class="mirror-toggle-btn shadow-toggle-btn hidden">切换到现实世界</button>
             <button id="haiyueToggleBtn" class="mirror-toggle-btn haiyue-toggle-btn hidden">隐藏幻境</button>
         </div>
-<script src="game.js?v=352"></script>
-    <script src="online.js?v=29"></script>
+<script src="game.js?v=399"></script>
+    <script src="online.js?v=34"></script>
     <script src="music.js?v=2"></script>
     <script src="sfx.js?v=4"></script>
 </body>
