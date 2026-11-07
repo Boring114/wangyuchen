@@ -742,7 +742,33 @@ h1 {
 /* 皇家护卫冲锋特效(从王子身后1格冲到落点) */
 .guard-charge { z-index: 42; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; color: #f1c40f; background: rgba(241,196,15,0.18); border: 1px solid rgba(241,196,15,0.75); border-radius: 4px; box-shadow: 0 0 8px rgba(241,196,15,0.85); pointer-events: none; }
 /* 马斑技能特效 */
-.madara-halberd { background: linear-gradient(90deg, rgba(231,76,60,0.95), rgba(192,57,43,0.9)); border-radius: 6px; box-shadow: 0 0 12px rgba(231,76,60,0.9); pointer-events: none; animation: madaraHalberdFade 0.5s ease-out; }
+/* 破军:红色圆锥钻头 */
+.madara-halberd {
+    pointer-events: none;
+    overflow: hidden;
+    background: radial-gradient(120% 60% at 50% 50%, #ff8a70 0%, #e8452c 38%, #a81f10 72%, #6d1108 100%);
+    box-shadow: 0 0 16px rgba(255,72,40,0.95), 0 0 34px rgba(220,40,20,0.65);
+    animation: drillPop 0.42s ease-out;
+}
+.madara-halberd.dir-up { clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.madara-halberd.dir-down { clip-path: polygon(0 0, 100% 0, 50% 100%); }
+.madara-halberd.dir-left { clip-path: polygon(0 50%, 100% 0, 100% 100%); }
+.madara-halberd.dir-right { clip-path: polygon(100% 50%, 0 0, 0 100%); }
+.madara-drill-core {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(45deg, rgba(255,235,220,0.42) 0 5px, rgba(255,235,220,0) 5px 13px);
+    animation: drillSpin 0.22s linear 3;
+}
+@keyframes drillPop {
+    0% { opacity: 0; transform: scale(0.85); }
+    30% { opacity: 1; }
+    100% { opacity: 1; transform: scale(1); }
+}
+@keyframes drillSpin {
+    from { background-position: 0 0; }
+    to { background-position: 26px 0; }
+}
 @keyframes madaraHalberdFade { 0% { opacity: 0.3; } 100% { opacity: 1; } }
 .madara-ranbu { width: 0; height: 0; pointer-events: none; }
 .madara-ranbu-blade { position: absolute; left: -3px; top: -62px; width: 6px; height: 124px; background: linear-gradient(180deg, rgba(231,76,60,1), rgba(150,20,20,0.9)); border-radius: 4px; box-shadow: 0 0 12px rgba(231,76,60,0.95); transform-origin: 50% 50%; animation: madaraSpin 0.7s linear 3; }
@@ -18222,3 +18248,40 @@ body.haiyue-illusion-view .cell.attackable { background: rgba(255, 150, 150, 0.5
     line-height: 1;
 }
 #deckList .deck-slot .remove-btn:hover { background: #c0392b; }
+/* 乱舞二段火柱:更粗更旺 */
+.fire-pillar-big { transform: scale(1.45); transform-origin: 50% 100%; }
+.fire-pillar-big .fire-pillar-column {
+    left: 6% !important;
+    width: 88% !important;
+    background: linear-gradient(to top,
+        rgba(255,252,235,1) 0%, rgba(255,226,120,0.98) 12%, rgba(255,170,45,0.92) 32%,
+        rgba(255,105,20,0.72) 55%, rgba(220,45,10,0.4) 76%, rgba(150,15,0,0) 100%) !important;
+    filter: blur(4px) !important;
+}
+.fire-pillar-big .fire-pillar-core2 {
+    left: 32% !important;
+    width: 36% !important;
+}
+.fire-pillar-big .fire-pillar-flare {
+    height: 78% !important;
+    filter: blur(7px) !important;
+}
+/* 跳跃的火舌:沿柱身左右摆动 */
+.fire-pillar-big .fire-pillar-column::before,
+.fire-pillar-big .fire-pillar-column::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 42%;
+    height: 100%;
+    border-radius: 50% 50% 30% 30% / 12% 12% 10% 10%;
+    background: linear-gradient(to top, rgba(255,210,90,0.95), rgba(255,120,30,0.55) 55%, rgba(255,60,10,0) 100%);
+    filter: blur(4px);
+    animation: flameWobble 0.42s ease-in-out infinite alternate;
+}
+.fire-pillar-big .fire-pillar-column::before { left: -12%; }
+.fire-pillar-big .fire-pillar-column::after { right: -12%; animation-delay: -0.21s; }
+@keyframes flameWobble {
+    0% { transform: translateX(-6px) scaleY(0.96) skewX(-4deg); opacity: 0.85; }
+    100% { transform: translateX(6px) scaleY(1.04) skewX(4deg); opacity: 1; }
+}

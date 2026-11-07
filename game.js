@@ -896,7 +896,7 @@ const cardLibrary = [
         rarity: 'gold',
         name: '小王子',
         attack: 2,
-        hp: 4,
+        hp: 5,
         armor: 0,
         moveRange: 5,
         attackRange: 6,
@@ -3729,6 +3729,10 @@ function showActionMode(unit) {
     if (used < unit.moveRange && !unit.grabbed) {
         showMovableRange(unit);
     }
+    // 黑绝防守:图标丢失自动补渲染
+    if (unit.blackZetsu && !document.querySelector('.unit[data-unit-id="' + unit.id + '"]')) {
+        try { renderUnit(unit); } catch (e) {}
+    }
     // 黑绝:2格内队友标记为可附身目标
     if (unit.blackZetsu && !unit._possessed) {
         gameState.units.forEach(u => {
@@ -4965,6 +4969,11 @@ function deployUnit(row, col) {
 
     // 创建单位
     const unit = createUnitFromCard(card, gameState.currentTurn, row, col);
+    grantStartEnergy(unit);
+    if (unit.cardId === 'madara') window.playSfx && window.playSfx('madara_deploy', 1.6);
+    if (['yogg','yogg_saron','yogg_fate'].includes(unit.cardId)) window.playSfx && window.playSfx('yogg_deploy');
+    if (unit.cardId === 'reynolds') window.playSfx && window.playSfx('reynolds_deploy');
+    if (unit.cardId === 'reynolds_jackson') window.playSfx && window.playSfx('reynolds_jackson_deploy');
 
     // 小喷菇部署计数
     if (unit.smallShroom) {
@@ -12154,9 +12163,13 @@ if (unit.eliteKnight) {
     // 黑绝:队友死亡,黑绝回归本体(保留附身时血量)
     if (unit._possessed && unit.zetsu) {
         const z = unit.zetsu;
-        const zUnit = { id: 'black_zetsu_' + Date.now() + '_' + Math.random(), cardId: 'black_zetsu', name: '黑绝', attack: 2, maxHp: 7, currentHp: Math.max(1, z.currentHp), armor: 0, moveRange: 10, attackRange: 2, artwork: 'black_zetsu', team: unit.team, row: unit.row, col: unit.col, blackZetsu: true };
-        gameState.units.push(zUnit);
-        renderUnit(zUnit);
+        const _zRow = unit.row, _zCol = unit.col, _zHp = Math.max(1, z.currentHp), _zTeam = unit.team;
+        // 延后到宿主移除之后再生成黑绝,避免新单位被当成宿主一起删掉
+        setTimeout(() => {
+            const zUnit = { id: 'black_zetsu_' + Date.now() + '_' + Math.random(), cardId: 'black_zetsu', name: '黑绝', attack: 2, maxHp: 7, currentHp: _zHp, armor: 0, moveRange: 10, attackRange: 2, artwork: 'black_zetsu', team: _zTeam, row: _zRow, col: _zCol, blackZetsu: true, _possessed: false, zetsu: null };
+            gameState.units.push(zUnit);
+            renderUnit(zUnit);
+        }, 0);
 
         releaseZetsu(unit);
     }
@@ -14679,7 +14692,8 @@ function madaraLeapPillar(madara, target) {
         slideUnitElement(unitEl, mr, mc, nr, nc);
         break;
     }
-    showFirePillar(target.row, target.col, { big: true });
+    // 等马斑滑行到位后再放火柱
+    setTimeout(() => { showFirePillar(target.row, target.col, { big: true }); }, 360);
     setTimeout(() => {
         let hit = false;
         gameState.units.slice().forEach(e => {
@@ -14968,18 +14982,23 @@ function showMadaraPoJunFX(madara, dirR, dirC) {
     el.style.position = 'absolute';
     el.style.zIndex = '44';
     if (dirR !== 0) {
-        el.style.width = (cellW*0.9) + 'px';
+        el.classList.add('dir-' + (dirR < 0 ? 'up' : 'down'));
+        el.style.width = (cellW*0.96) + 'px';
         el.style.height = (3*cellH) + 'px';
-        el.style.left = (madara.col*cellW + cellW/2 - cellW*0.45) + 'px';
+        el.style.left = (madara.col*cellW + cellW/2 - cellW*0.48) + 'px';
         el.style.top = ((dirR < 0 ? madara.row-3 : madara.row+1)*cellH) + 'px';
     } else if (dirC !== 0) {
-        el.style.height = (cellH*0.9) + 'px';
+        el.classList.add('dir-' + (dirC < 0 ? 'left' : 'right'));
+        el.style.height = (cellH*0.96) + 'px';
         el.style.width = (3*cellW) + 'px';
-        el.style.top = (madara.row*cellH + cellH/2 - cellH*0.45) + 'px';
+        el.style.top = (madara.row*cellH + cellH/2 - cellH*0.48) + 'px';
         el.style.left = ((dirC < 0 ? madara.col-3 : madara.col+1)*cellW) + 'px';
     }
+    const core = document.createElement('div');
+    core.className = 'madara-drill-core';
+    el.appendChild(core);
     board.appendChild(el);
-    setTimeout(() => el.remove(), 500);
+    setTimeout(() => el.remove(), 520);
 }
 // 视觉:乱舞红戟环绕三圈(带红色渐变拖尾)
 function showMadaraRanbuFX(madara) {
@@ -15138,6 +15157,7 @@ function showMadaraStompFX(row, col) {
 // 马斑天下无双
 function activateMusou(madara) {
     gameState.attackedUnits.delete(madara.id);
+    if (window.playSfx) window.playSfx('madara_musou', 1.6);
     madara.inMusou = true;
     madara.musouAttacks = 0;
     madara._musouMeteorDone = false;
@@ -15747,12 +15767,13 @@ function showCounterFX(madara) {
 // 陨石
 function showMeteorButton(u, fromEndTurn, visualOnly) {
     const board = document.getElementById('gameBoard');
+    if (window.playSfx) window.playSfx('madara_meteor', 1.6);
     if (fromEndTurn && !visualOnly) gameState._meteorAnimating = true;
     if (!board) return;
     if (!visualOnly) sendSkillFx('madaraMeteor', u);
     const centerRow = u.row, centerCol = u.col, radius = 2;
     const RISE = 110;
-    const RISE_MS = 2000;
+    const RISE_MS = 2800;
     const wrapSet = gameState.units.filter(e => e.team !== u.team && !e.ghost && !e._removing &&
         Math.max(Math.abs(e.row - centerRow), Math.abs(e.col - centerCol)) <= radius);
     const elOf = it => {
@@ -15821,7 +15842,7 @@ function showMeteorButton(u, fromEndTurn, visualOnly) {
         aura.style.height = '100%';
         wrapAura.appendChild(aura);
         uel.appendChild(wrapAura);
-        setTimeout(() => wrapAura.remove(), 2400);
+        setTimeout(() => wrapAura.remove(), 3000);
     }, 1800);
     // ④ 蓝色大戟(头朝下)插入陨石:插进去的部分被裁掉,2伤
     setTimeout(() => {
@@ -15843,11 +15864,11 @@ function showMeteorButton(u, fromEndTurn, visualOnly) {
         hal.style.width = '10px';
         hal.style.height = '260px';
         hal.style.top = (meteorTopY - 40 - 260) + 'px'; // 戟尖在陨石上方 40px
-        hal.style.transition = 'top 0.6s ease-in';
+        hal.style.transition = 'top 1s ease-in';
         clipWin.appendChild(hal);
         void hal.offsetWidth;
         hal.style.top = (meteorTopY + 70 - 260) + 'px'; // 戟尖没入陨石 70px(被裁掉)
-        setTimeout(() => clipWin.remove(), 1300);
+        setTimeout(() => clipWin.remove(), 1800);
         // 戟插入时给陨石添加裂痕:从插入点向下呈锯齿状分叉
         const crackEl = document.createElement('div');
         crackEl.className = 'meteor-crack';
@@ -15904,11 +15925,11 @@ function showMeteorButton(u, fromEndTurn, visualOnly) {
         crackEl.appendChild(crackSvg);
         wrapEl.appendChild(crackEl);
         if (!visualOnly) wrapSet.forEach(e => { if (e._removing) return; e.currentHp -= 2; updateUnitHp(e); if (e.currentHp <= 0) removeUnit(e); });
-    }, 2900);
+    }, 5000);
     // ⑤ 一起坠落
     setTimeout(() => {
-        lift(false, 900);
-        wrapEl.style.transition = 'top 0.9s ease-in';
+        lift(false, 1400);
+        wrapEl.style.transition = 'top 1.4s ease-in';
         wrapEl.style.top = ((centerRow - radius) * cellH) + 'px';
         // 白色空气流拖尾:随陨石一起下落
         const trail = document.createElement('div');
@@ -15923,7 +15944,7 @@ function showMeteorButton(u, fromEndTurn, visualOnly) {
             trail.appendChild(s);
         }
         wrapEl.appendChild(trail);
-    }, 3900);
+    }, 6100);
     // ⑥ 坠地:3次×2伤 + 恢复可见
     setTimeout(() => {
         wrapEl.classList.add('meteor-boom');
@@ -15957,9 +15978,9 @@ function showMeteorButton(u, fromEndTurn, visualOnly) {
         });
         const uel = elOf(u);
         if (uel) { uel.style.transition = ''; uel.style.transform = ''; }
-    }, 4800);
+    }, 7600);
     // 回合结束触发时:陨石结束后才开放敌方回合操作/倒计时
-    if (fromEndTurn && !visualOnly) setTimeout(() => { gameState._meteorAnimating = false; }, 5600);
+    if (fromEndTurn && !visualOnly) setTimeout(() => { gameState._meteorAnimating = false; }, 8200);
 }
 
 // 铠大招:不灭魔躯
@@ -18581,7 +18602,7 @@ function renderEnergyBar(unit, container) {
 // 清除高亮
 function clearHighlights() {
     document.querySelectorAll('.cell').forEach(cell => {
-        cell.classList.remove('movable', 'attackable', 'selected', 'tank-target', 'chakra-target', 'pierce-target', 'sasuke-ult-target', 'stomp-target');
+        cell.classList.remove('movable', 'attackable', 'selected', 'tank-target', 'chakra-target', 'pierce-target', 'sasuke-ult-target', 'stomp-target', 'ally-target');
     });
 }
 
@@ -20346,6 +20367,17 @@ function doriaHeavenCast(u, target) {
     syncOnlineNow();
 }
 
+// 部署时自带能量:头顶有能量条的单位开局+2格
+function grantStartEnergy(u) {
+    if (!u) return;
+    const pairs = [["madaraEnergy","madaraMaxEnergy"],["hashiEnergy","hashiMaxEnergy"],["painEnergy","painMaxEnergy"],["sasukeEnergy","sasukeMaxEnergy"],["solveEnergy","solveMaxEnergy"],["guyEnergy","guyMaxEnergy"]];
+    pairs.forEach(([cur, max]) => {
+        if (typeof u[max] === "number" && u[max] > 0) {
+            u[cur] = Math.min(u[max], Math.max(u[cur] || 0, 2));
+        }
+    });
+}
+
 // 英雄技能:大守护者 · 永恒书卷
 function guardianShieldMode(unit) {
     if (!unit || unit._removing) return;
@@ -21665,6 +21697,8 @@ window.gameState = gameState;
     const autoMove = document.getElementById("settingAutoMove");
     const vol = document.getElementById("settingVolume");
     const volVal = document.getElementById("settingVolumeValue");
+    const sfxSlider = document.getElementById("settingSfxVolume");
+    const sfxVal = document.getElementById("settingSfxVolumeValue");
     const close = document.getElementById("closeSettingsBtn");
     if (!btn || !m) return;
     try { auto.checked = localStorage.getItem("chessAutoAttack") === "on"; } catch (e) {}
@@ -21672,6 +21706,11 @@ window.gameState = gameState;
     let v = 1;
     try { const sv = parseFloat(localStorage.getItem("chessVolume")); if (!isNaN(sv)) v = Math.max(0, Math.min(1, sv)); } catch (e) {}
     if (vol) { vol.value = Math.round(v * 100); if (volVal) volVal.textContent = Math.round(v * 100) + "%"; }
+    let sv = 0.8;
+    try { const raw = parseFloat(localStorage.getItem('chessSfxVolume')); if (!isNaN(raw)) sv = Math.max(0, Math.min(1, raw)); } catch (e) {}
+    window.chessSfxVolume = sv;
+    if (sfxSlider) { sfxSlider.value = Math.round(sv * 100); }
+    if (sfxVal) sfxVal.textContent = Math.round(sv * 100) + "%";
     if (window.chessMusic && window.chessMusic.setVolume) window.chessMusic.setVolume(v);
     btn.addEventListener("click", () => m.classList.remove("hidden"));
     if (close) close.addEventListener("click", () => m.classList.add("hidden"));
@@ -21681,6 +21720,12 @@ window.gameState = gameState;
     });
     if (auto) auto.addEventListener("change", () => {
         try { localStorage.setItem("chessAutoAttack", auto.checked ? "on" : "off"); } catch (e) {}
+    });
+    if (sfxSlider) sfxSlider.addEventListener('input', () => {
+        const p = Math.max(0, Math.min(100, parseInt(sfxSlider.value, 10) || 0));
+        window.chessSfxVolume = p / 100;
+        if (sfxVal) sfxVal.textContent = p + '%';
+        try { localStorage.setItem('chessSfxVolume', String(p / 100)); } catch (e) {}
     });
     if (vol) vol.addEventListener("input", () => {
         const p = Math.max(0, Math.min(100, parseInt(vol.value, 10) || 0));
