@@ -50,7 +50,17 @@
         const a = tracks[name];
         if (!a) return;
         const p = a.play();
-        if (p && p.catch) p.catch(() => {});
+        if (p && p.catch) {
+            p.catch(() => {
+                const retry = () => {
+                    document.removeEventListener("pointerdown", retry, true);
+                    document.removeEventListener("touchstart", retry, true);
+                    try { const p2 = a.play(); if (p2 && p2.catch) p2.catch(() => {}); } catch (e) {}
+                };
+                document.addEventListener("pointerdown", retry, true);
+                document.addEventListener("touchstart", retry, true);
+            });
+        }
     }
 
     function hardPauseOthers(keep) {
@@ -175,13 +185,18 @@
         isEnabled: () => enabled
     };
 
-    document.addEventListener('pointerdown', (e) => {
+    function onUserGesture(e) {
         if (Date.now() - lastToggleAt < 250) return;
         const t = e && e.target;
         if (t && t.closest && t.closest('#musicBtn, #menuMusicBtn')) return;
+        // 移动端:先静音试播解锁所有音频
+        if (window.unlockAudio) { try { window.unlockAudio(); } catch (err) {} }
         if (!started) start();
         else if (enabled) resume();
-    }, { passive: true });
+    }
+    document.addEventListener('pointerdown', onUserGesture, { passive: true });
+    document.addEventListener('touchstart', onUserGesture, { passive: true, capture: true });
+    document.addEventListener('click', onUserGesture, { passive: true });
 
     document.addEventListener('visibilitychange', () => {
         if (document.hidden) pauseAll();

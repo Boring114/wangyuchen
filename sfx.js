@@ -69,7 +69,36 @@
             a.volume = Math.min(1, vol);
             try { a.currentTime = 0; } catch (e) {}
             const p = a.play();
-            if (p && p.catch) p.catch(() => {});
+            if (p && p.catch) {
+                p.catch(() => {
+                    // 移动端自动播放被拦:等下一次用户手势再补播
+                    const retry = () => {
+                        document.removeEventListener("pointerdown", retry, true);
+                        document.removeEventListener("touchstart", retry, true);
+                        try { const p2 = a.play(); if (p2 && p2.catch) p2.catch(() => {}); } catch (e) {}
+                    };
+                    document.addEventListener("pointerdown", retry, true);
+                    document.addEventListener("touchstart", retry, true);
+                });
+            }
+        } catch (e) {}
+    };
+    // 移动端:首次触摸时静音试播一次,解锁所有音频元素
+    window.unlockAudio = function () {
+        try {
+            Object.keys(cache).forEach(k => {
+                const entry = cache[k];
+                if (!entry || !entry.pool) return;
+                entry.pool.forEach(a => {
+                    try {
+                        const prevVol = a.volume;
+                        a.volume = 0;
+                        const p = a.play();
+                        if (p && p.then) p.then(() => { a.pause(); a.currentTime = 0; a.volume = prevVol; }).catch(() => { a.volume = prevVol; });
+                        else { a.pause(); a.currentTime = 0; a.volume = prevVol; }
+                    } catch (e) {}
+                });
+            });
         } catch (e) {}
     };
     window.stopSfx = function (name) {
