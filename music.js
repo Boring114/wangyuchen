@@ -1,8 +1,21 @@
 // 背景音乐:主界面/卡包 与 对局内 双轨切换(平滑交叉淡入淡出,旧曲必定停止)
 (function () {
+    const MENU_LIST = ["audio/bgm_menu6.wav", "audio/bgm_menu5.wav", "audio/bgm_menu4.wav", "audio/bgm_menu3.wav", "audio/bgm_menu2.wav", "audio/bgm_menu.wav"];
+    const BATTLE_LIST = ["audio/bgm_battle2.wav", "audio/bgm_battle.wav"];
+    function makeTrack(list) {
+        let idx = 0;
+        const a = new Audio(list[0]);
+        a.addEventListener("error", () => {
+            idx++;
+            if (idx >= list.length) return;
+            a.src = list[idx];
+            a.load();
+        });
+        return a;
+    }
     const tracks = {
-        menu: new Audio('audio/bgm_menu6.wav'),
-        battle: new Audio('audio/bgm_battle2.wav')
+        menu: makeTrack(MENU_LIST),
+        battle: makeTrack(BATTLE_LIST)
     };
     const volumes = { menu: 0.30, battle: 0.35 };
     // 主音量(设置里拖动调节,0-1)

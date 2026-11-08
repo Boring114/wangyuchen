@@ -30,7 +30,7 @@
     const cache = {};
     function makePool(url) {
         const pool = [];
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 2; i++) {
             const a = new Audio(url);
             a.preload = 'auto';
             a.setAttribute('playsinline', '');
@@ -65,7 +65,14 @@
         dragon_baby_deploy: 'audio/sfx/dragon_baby_deploy.mp3',
         blowdart_goblin_deploy: 'audio/sfx/blowdart_goblin_deploy.mp3',
         blowdart_goblin_attack: 'audio/sfx/blowdart_goblin_attack.mp3',
-        hog_rider_deploy: 'audio/sfx/hog_rider_deploy.mp3'
+        hog_rider_deploy: 'audio/sfx/hog_rider_deploy.mp3',
+        golem_deploy: 'audio/sfx/golem_deploy.mp3',
+        heal_fairy_deploy: 'audio/sfx/heal_fairy_deploy.mp3',
+        fisherman_deploy: 'audio/sfx/fisherman_deploy.mp3',
+        pain_shinra: 'audio/sfx/pain_shinra.mp3',
+        pain_bansho: 'audio/sfx/pain_bansho.mp3',
+        pain_chibaku: 'audio/sfx/pain_chibaku.mp3',
+        shangbole_deploy: 'audio/sfx/shangbole_deploy.mp3'
     };
     // ===== 等响度归一化:按文件峰值自动配平,所有音效听起来一样响 =====
     const sfxPeakCache = {};   // name -> 峰值(0~1)
@@ -175,9 +182,7 @@
         }
     }
     window.sfxGetBlobs = function () { return sfxBlobUrl; };
-    window.sfxNormalizeAll = function () {
-        Object.keys(window.SFX_FILES || {}).forEach(n => { measurePeak(n).then(() => buildLoudVersion(n)); });
-    };
+    window.sfxNormalizeAll = function () { /* 已停用:改用原始文件播放,避免 blob 兼容问题 */ };
     // 个别音效的额外增益(在统一响度基础上微调)
     const SFX_GAIN_BOOST = {
         madara_deploy: 1.35,
@@ -203,10 +208,9 @@
     const SFX_HEADROOM = 0.48; // 留出提升余量
     function gainFor(name) {
         const boost = (SFX_GAIN_BOOST[name] || 1) * userGain(name);
-        if (sfxBlobUrl[name]) return Math.max(0, Math.min(2.5, boost * 0.5)); // 已归一到 0.9 峰值
         const peak = sfxPeakCache[name];
-        if (peak >= 0.85) return Math.max(0, Math.min(2.5, boost * 0.5)); // 本身就是满响度文件
         if (!peak) return Math.max(0, Math.min(2, boost * SFX_HEADROOM));
+        if (peak >= 0.85) return Math.max(0, Math.min(2.5, boost * 0.5)); // 满响度文件不再补偿
         return Math.max(0, Math.min(4, (SFX_TARGET_PEAK / peak) * boost * SFX_HEADROOM));
     }
     window.sfxGetPeaks = function () { return sfxPeakCache; };
@@ -229,13 +233,7 @@
             const base = (typeof volume === 'number') ? volume : 1;
             const vol = force ? base : (base * sfxVolume() * gainFor(name));
             if (vol <= 0) return;
-            // 懒加载归一化:没准备好就顺手准备一次(下次播放生效)
-            if (!sfxBlobUrl[name] && !sfxLoudBusy[name]) {
-                const pk = sfxPeakCache[name];
-                if (pk === undefined || pk === null) { measurePeak(name).then(() => buildLoudVersion(name)); }
-                else { buildLoudVersion(name); }
-            }
-            const url = sfxBlobUrl[name] || sfxUrlOf(name);
+            const url = sfxUrlOf(name); // 统一用原始文件,避免 blob 在部分设备无法播放
             let entry = cache[name];
             if (!entry || entry.url !== url) {
                 entry = cache[name] = makePool(url);
@@ -244,56 +242,39 @@
             const a = entry.pool[entry.idx++ % entry.pool.length];
             a.volume = Math.max(0, Math.min(1, vol));
             try { a.currentTime = 0; } catch (e) {}
-            const p = a.play();
-            if (p && p.catch) {
-                p.catch(() => {
-                    // 移动端自动播放被拦:等下一次用户手势再补播
-                    const retry = () => {
-                        document.removeEventListener("pointerdown", retry, true);
-                        document.removeEventListener("touchstart", retry, true);
-                        try { const p2 = a.play(); if (p2 && p2.catch) p2.catch(() => {}); } catch (e) {}
-                    };
-                    document.addEventListener("pointerdown", retry, true);
-                    document.addEventListener("touchstart", retry, true);
-                });
+            // 首次播放时音频可能还没解码完,等 canplay 再播(否则第一遍会没声)
+            function doPlay() {
+                try {
+                    const p = a.play();
+                    if (p && p.catch) {
+                        p.catch(() => {
+                            const retry = () => {
+                                document.removeEventListener("pointerdown", retry, true);
+                                document.removeEventListener("touchstart", retry, true);
+                                try { const p2 = a.play(); if (p2 && p2.catch) p2.catch(() => {}); } catch (e) {}
+                            };
+                            document.addEventListener("pointerdown", retry, true);
+                            document.addEventListener("touchstart", retry, true);
+                        });
+                    }
+                } catch (e) {}
+            }
+            // 未就绪时:等 canplay,同时 260ms 后兜底再试一次(不重新 load,避免打断已解锁的元素)
+            let _played = false;
+            const oncePlay = () => { if (_played) return; _played = true; doPlay(); };
+            if (a.readyState < 2) {
+                a.addEventListener("canplay", oncePlay, { once: true });
+                setTimeout(oncePlay, 260);
+            } else {
+                oncePlay();
             }
         } catch (e) {}
     };
     // 移动端:首次触摸时静音试播一次,解锁所有音频元素
-    // 提前为所有音效建好元素池(安卓需要对真实元素做过一次 play 才允许后续播放)
-    window.unlockAllSfxPools = function () {
-        const names = Object.keys(window.SFX_FILES || {});
-        names.forEach(name => {
-            try {
-                const url = sfxBlobUrl[name] || sfxUrlOf(name);
-                let entry = cache[name];
-                if (!entry || entry.url !== url) {
-                    entry = cache[name] = makePool(url);
-                    entry.url = url;
-                }
-            } catch (e) {}
-        });
-    };
-    window.unlockAudio = function () {
-        if (window.unlockAllSfxPools) { try { window.unlockAllSfxPools(); } catch (e) {} }
-        if (window.sfxMeasureAll) { try { window.sfxMeasureAll(); } catch (e) {} }
-        try {
-            Object.keys(cache).forEach(k => {
-                const entry = cache[k];
-                if (!entry || !entry.pool) return;
-                entry.pool.forEach(a => {
-                    try {
-                        if (!a.paused) return; // 正在播放的不打扰
-                        const prevVol = a.volume;
-                        a.volume = 0;
-                        const p = a.play();
-                        if (p && p.then) p.then(() => { a.pause(); a.currentTime = 0; a.volume = prevVol; }).catch(() => { a.volume = prevVol; });
-                        else { a.pause(); a.currentTime = 0; a.volume = prevVol; }
-                    } catch (e) {}
-                });
-            });
-        } catch (e) {}
-    };
+    // 解锁:只做轻量标记(不再预建/预播所有元素,避免卡顿)
+    window.unlockAllSfxPools = function () {};
+    window.unlockAudio = function () {};
+
     // 停止所有正在播放的音效(退出对局/试听前)
     window.stopAllSfx = function () {
         try {

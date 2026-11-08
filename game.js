@@ -1905,6 +1905,22 @@ const cardLibrary = [
         heroUnit: true,
         guardian: true,
         description: '英雄卡(钻卡)。开局自动部署在己方大本营中,移动距离5,免疫所有负面状态并保持霸体。双击打开技能栏:永恒书卷(消耗3能量)——指定一名友军,使其免疫所有伤害直到敌方回合结束,期间被金色圣光笼罩。'
+    },
+    {
+        id: 'three_musketeers',
+        rarity: 'purple',
+        name: '三个火枪手',
+        attack: 3,
+        hp: 6,
+        moveRange: 4,
+        attackRange: 5,
+        meleeAttack: 4,
+        meleeRange: 1,
+        meleeDiagonal: true,
+        cost: 7,
+        artwork: 'three_musketeers',
+        threeMusketeers: true,
+        description: '紫卡。部署时拆成三名火枪手:②号落在部署格,①号在其左下、③号在其右下(位置被占则就近部署)。每人攻击3/攻距5/移4/血6,远程发射黑色圆形子弹;敌人贴身1格(含斜向)时改用近战攻击,伤害4。三人每回合各可攻击一次。'
     }];
 
 // 卡牌按费用从低到高排序(新增卡也自动排进去)
@@ -2321,6 +2337,7 @@ counterBurn: card.counterBurn || false,
         heroUnit: card.heroUnit || false,
         lightningSprite: card.lightningSprite || false,
         doria: card.doria || false,
+        threeMusketeers: card.threeMusketeers || false,
         shellDamage: card.shellDamage || 0,
         kiwi: card.kiwi || false,
         hitler: card.hitler || false,
@@ -3810,7 +3827,7 @@ function showMovableRange(unit) {
 // 对空判定:飞行单位恒可对空;白名单含植物人(骷髅军团不在白名单,不能对空)
 function canHitAirUnit(unit) {
     if (unit.flying) return true;
-    return ['musketeer','saeed','warden_gherros','cattail','electric_pea','reynolds','reynolds_jackson','pain_tendo','lightning_dragon','asala_flamer','gale','demulan','hashirama','doom_shroom','crazy_cannon','yogg','yogg_saron','yogg_fate','guy_death_gate','pierce','deep_blue','shangbole','inferno_tower','ice_sprite','leisi','erin','blowdart_goblin','tesla','heal_fairy','prince','little_snowflake','ice_shooter','bee_medic','eagle_artillery','cordelius','grand_wizard','haiyue','princess','witch','gabriel','warlord','cyber_agent','doria','kiwi','lightning_sprite'].includes(unit.cardId);
+    return ['musketeer','saeed','warden_gherros','cattail','electric_pea','reynolds','reynolds_jackson','pain_tendo','lightning_dragon','asala_flamer','gale','demulan','hashirama','doom_shroom','crazy_cannon','yogg','yogg_saron','yogg_fate','guy_death_gate','pierce','deep_blue','shangbole','inferno_tower','ice_sprite','leisi','erin','blowdart_goblin','tesla','heal_fairy','prince','little_snowflake','ice_shooter','bee_medic','eagle_artillery','cordelius','grand_wizard','haiyue','princess','witch','gabriel','warlord','cyber_agent','doria','kiwi','lightning_sprite','three_musketeers'].includes(unit.cardId);
 }
 
 // 显示可攻击目标
@@ -4545,6 +4562,14 @@ function runDeployEffects(unit) {
         spawnSpecSquad(unit.row, unit.col, unit.team);
         return;
     }
+    // 三个火枪手:拆成 ①②③ 三人(②在部署格)
+    if (unit.threeMusketeers) {
+        const _mc = gameState.board[unit.row] && gameState.board[unit.row][unit.col];
+        if (_mc) _mc.querySelectorAll(".unit").forEach(el => el.remove());
+        gameState.units = gameState.units.filter(u => u.id !== unit.id);
+        spawnThreeMusketeers(unit.row, unit.col, unit.team);
+        return;
+    }
     // 脑机特工:附带 H47 / H800
     if (unit.cyberAgent && unit._agentTier === 1000) {
         spawnCyberAgents(unit);
@@ -4970,20 +4995,24 @@ function deployUnit(row, col) {
     // 创建单位
     const unit = createUnitFromCard(card, gameState.currentTurn, row, col);
     grantStartEnergy(unit);
-    if (unit.cardId === 'madara') window.playSfx && window.playSfx('madara_deploy');
-    if (unit.cardId === 'yogg') window.playSfx && window.playSfx('yogg_deploy');
-    if (unit.cardId === 'yogg_saron') window.playSfx && window.playSfx('yogg_saron_deploy');
-    if (unit.cardId === 'yogg_fate') window.playSfx && window.playSfx('yogg_fate_deploy');
-    if (unit.cardId === 'reynolds') window.playSfx && window.playSfx('reynolds_deploy');
-    if (unit.cardId === 'reynolds_jackson') window.playSfx && window.playSfx('reynolds_jackson_deploy');
-    if (unit.cardId === 'spec_squad') window.playSfx && window.playSfx('spec_squad_deploy');
-    if (unit.cardId === 'guff') window.playSfx && window.playSfx('guff_deploy');
-    if (unit.cardId === 'dirty_rat') window.playSfx && window.playSfx('dirty_rat_deploy');
-    if (unit.cardId === 'undead_giant') window.playSfx && window.playSfx('undead_giant_deploy');
-    if (unit.cardId === 'asala_soldier') window.playSfx && window.playSfx('asala_deploy');
-    if (unit.cardId === 'dragon_baby') window.playSfx && window.playSfx('dragon_baby_deploy');
-    if (unit.cardId === 'blowdart_goblin') window.playSfx && window.playSfx('blowdart_goblin_deploy');
-    if (unit.cardId === 'hog_rider') window.playSfx && window.playSfx('hog_rider_deploy');
+    if (unit.cardId === 'madara') sfxBoth('madara_deploy');
+    if (unit.cardId === 'yogg') sfxBoth('yogg_deploy');
+    if (unit.cardId === 'yogg_saron') sfxBoth('yogg_saron_deploy');
+    if (unit.cardId === 'yogg_fate') sfxBoth('yogg_fate_deploy');
+    if (unit.cardId === 'reynolds') sfxBoth('reynolds_deploy');
+    if (unit.cardId === 'reynolds_jackson') sfxBoth('reynolds_jackson_deploy');
+    if (unit.cardId === 'spec_squad') sfxBoth('spec_squad_deploy');
+    if (unit.cardId === 'guff') sfxBoth('guff_deploy');
+    if (unit.cardId === 'dirty_rat') sfxBoth('dirty_rat_deploy');
+    if (unit.cardId === 'undead_giant') sfxBoth('undead_giant_deploy');
+    if (unit.cardId === 'asala_soldier') sfxBoth('asala_deploy');
+    if (unit.cardId === 'dragon_baby') sfxBoth('dragon_baby_deploy');
+    if (unit.cardId === 'blowdart_goblin') sfxBoth('blowdart_goblin_deploy');
+    if (unit.cardId === 'hog_rider') sfxBoth('hog_rider_deploy');
+    if (unit.cardId === 'golem') sfxBoth('golem_deploy');
+    if (unit.cardId === 'heal_fairy') sfxBoth('heal_fairy_deploy');
+    if (unit.cardId === 'fisherman') sfxBoth('fisherman_deploy');
+    if (unit.cardId === 'shangbole') sfxBoth('shangbole_deploy');
 
     // 小喷菇部署计数
     if (unit.smallShroom) {
@@ -5200,6 +5229,7 @@ function moveUnit(row, col) {
         // 须佐视觉跟随解斑
         renderSusanooVisual(unit);
     }
+    syncShinraFieldToOwner(unit);
     // 精英冰人冰场随自己移动
     if (unit.eliteIce && unit._iceSkillActive) {
         gameState.iceFields.forEach(f => {
@@ -5452,12 +5482,22 @@ setTimeout(() => { if (svg.parentNode) svg.remove(); }, 440);
 
 // 攻击单位
 // ===== 普攻子弹特效 =====
+// 按单位自身的攻击表现发射子弹(普攻与反击共用,保证特效一致)
+function fireOwnAttackFx(atk, target) {
+    if (!atk || !target) return false;
+    if (atk.erin && typeof showErinBullet === 'function') { showErinBullet(atk, target); return true; }
+    const st = bulletStyleFor(atk);
+    if (st) { fireBullet(atk, target, st); return true; }
+    return false;
+}
+
 function bulletStyleFor(attacker) {
     const id = attacker.cardId;
     const art = attacker.artwork;
     if (id === 'tesla') return 'tesla';
     if (['small_shroom', 'cordelius', 'witch'].includes(id)) return 'purple';
     if (['musketeer', 'asala_soldier', 'crazy_cannon', 'cannon', 'royal_giant', 'gale', 'saeed', 'warden_gherros', 'bee_medic', 'deep_blue', 'char2c'].includes(id) || art === 'cop-r') return 'black';
+    if (id === 'three_musketeers') return 'blackcircle';
     if (id === 'doria') return 'blue';
     if (id === 'kamikaze') return 'blackcircle';
     if (id === 'cyber_agent') return 'blackcircle';
@@ -7119,9 +7159,9 @@ function edoRevive(unit) {
 }
 
 function attackUnit(target, skipBulletDelay) {
-    try { if (!skipBulletDelay && gameState.selectedUnit && gameState.selectedUnit.cardId === 'undead_giant') window.playSfx('undead_giant_attack'); } catch (e) {}
-    try { if (!skipBulletDelay && gameState.selectedUnit && gameState.selectedUnit.cardId === 'asala_soldier') window.playSfx('asala_attack'); } catch (e) {}
-    try { if (!skipBulletDelay && gameState.selectedUnit && gameState.selectedUnit.cardId === 'blowdart_goblin') window.playSfx('blowdart_goblin_attack'); } catch (e) {}
+    try { if (!skipBulletDelay && gameState.selectedUnit && gameState.selectedUnit.cardId === 'undead_giant') sfxBoth('undead_giant_attack'); } catch (e) {}
+    try { if (!skipBulletDelay && gameState.selectedUnit && gameState.selectedUnit.cardId === 'asala_soldier') sfxBoth('asala_attack'); } catch (e) {}
+    try { if (!skipBulletDelay && gameState.selectedUnit && gameState.selectedUnit.cardId === 'blowdart_goblin') sfxBoth('blowdart_goblin_attack'); } catch (e) {}
     if (!gameState.selectedUnit) return;
     // 迈特凯·死门:冲刺普攻(需先放天驱获得一次冲刺机会)
     if (gameState.selectedUnit.guyDeathGate && gameState.selectedUnit._guyDashAtk) {
@@ -7185,7 +7225,9 @@ function attackUnit(target, skipBulletDelay) {
         const _style = bulletStyleFor(attacker);
         const _dist = Math.abs(attacker.row - target.row) + Math.abs(attacker.col - target.col);
         const _cheb = Math.max(Math.abs(attacker.row - target.row), Math.abs(attacker.col - target.col));
-        const _isMeleeHit = (attacker.meleeAttack && _dist <= attacker.meleeRange && !target.flying) || _cheb <= 1 || (attacker.attackRange || 0) <= 1;
+        // 近战判定:只有自带近战攻击的单位,在近战范围内才算近战(远程单位贴脸也走远程子弹)
+        const _meleeDist = attacker.meleeDiagonal ? _cheb : _dist;
+        const _isMeleeHit = !!attacker.meleeAttack && _meleeDist <= (attacker.meleeRange || 1) && !target.flying;
         if (_style && !_isMeleeHit && !(attacker.tesla && attacker.teslaHidden)) {
             fireBullet(attacker, target, _style);
             setTimeout(() => {
@@ -7710,6 +7752,7 @@ function attackUnit(target, skipBulletDelay) {
         attacker.currentHp -= target.counterAttack;
         updateUnitHp(attacker);
         showCritText(attacker.row, attacker.col, '反击');
+        applyOnHitEffects(target, attacker);
         // 赛伊德专属:3x3燃烧
         if (target.counterBurn) {
             showSaeedArrowFx(target, attacker);
@@ -8910,39 +8953,22 @@ function triggerCounter(attacker, target) {
     // 敌方反击:普通攻击一次(纯伤害结算,不递归触发反击、不消耗攻击次数)
     // 厂长/木炭等百分比攻击单位:反击造成敌人最大血量50%伤害(真伤无视护甲)
     const dmg = target.percentAttack ? Math.ceil((attacker.maxHp || 1) * target.percentAttack) : rollCrit(target, target.attack || 1);
-    const doCounterDamage = () => {
+    const doCounterDamage = (skipBulletFx) => {
         if (attacker._removing || attacker.currentHp <= 0) return;
-        // 反击=完整普通攻击一次:附带攻击自带效果(燃烧/凋零毒/吹箭毒/溅射)
-        if (target.fireAttack) {
-            attacker.burnTurns = 3;
-            attacker.burnDamage = target.burnDamage || 2;
-            updateBurnVisual(attacker);
-            showCritText(attacker.row, attacker.col, '火焰');
+        // 远程反击:先发射子弹特效,再结算伤害
+        if (!skipBulletFx && !window._fxSyncing) {
+            const _cDist = Math.max(Math.abs(target.row - attacker.row), Math.abs(target.col - attacker.col));
+            const _cMelee = !!target.meleeAttack && _cDist <= (target.meleeRange || 1) && !attacker.flying;
+            if (!_cMelee && (bulletStyleFor(target) || target.erin)) {
+                fireOwnAttackFx(target, attacker);
+                setTimeout(() => doCounterDamage(true), 170);
+                return;
+            }
         }
-        if (target.wither) {
-            applyWitherEffect(attacker, target);
-        }
-        if (target.blowdart) {
-            attacker.poisonTurns = 3;
-            attacker.poisonHits = (attacker.poisonHits || 0) + 1;
-            attacker.poisonLevel = Math.max(attacker.poisonLevel || 0, attacker.poisonHits >= 5 ? 3 : (attacker.poisonHits >= 3 ? 2 : 1));
-            updatePoisonVisual(attacker);
-        }
-        if (target.splashRadius) {
-            // 溅射:以攻击者为中心溅射其周围敌人
-            gameState.units.forEach(u => {
-                if (u.id === attacker.id) return;
-                if (u.team === target.team || u.ghost) return;
-                const dist = Math.max(Math.abs(u.row - attacker.row), Math.abs(u.col - attacker.col));
-                if (dist <= target.splashRadius) {
-                    if (target.wither) applyWitherEffect(u, target);
-                    const penArmor = Math.max(0, (u.armor || 0) - (target.armorPen || 0));
-                    u.currentHp -= Math.max(0, target.attack - penArmor);
-                    updateUnitHp(u);
-                    if (u.currentHp <= 0) removeUnit(u);
-                }
-            });
-        }
+        // 反击继承普攻特性(燃烧/凋零毒/吹箭毒/溅射)
+        applyOnHitEffects(target, attacker);
+        // 一次性单位(冰雪精灵等):反击后自毁
+        if (target.oneShot && !target._removing) { setTimeout(() => { if (!target._removing) removeUnit(target); }, 120); }
         let real = target.percentAttack ? dmg : Math.max(0, (dmg + (target._wineBonus || 0)) - Math.max(0, (attacker.armor || 0) - (target.armorPen || 0)));
         if (target._wineBonus) consumeWineBuff(target);
         if (attacker._shieldHp > 0 && real > 0) {
@@ -13963,6 +13989,36 @@ function mirrorSkillEnd(mirror) {
     gameState.selectedUnit = null;
 }
 
+// 三个火枪手:②号在部署格,①号左下,③号右下(被占则就近)
+function spawnThreeMusketeers(row, col, team) {
+    const sid = "m3_" + Date.now() + "_" + Math.random().toString(36).slice(2, 5);
+    const used = new Set();
+    const spots = [
+        { label: "2", row: row, col: col },
+        { label: "1", row: row + 1, col: col - 1 },
+        { label: "3", row: row + 1, col: col + 1 }
+    ];
+    spots.forEach((sp, idx) => {
+        const spot = specFindSpot(sp.row, sp.col, used);
+        if (!spot) return;
+        used.add(spot.row + "," + spot.col);
+        const u = {
+            id: "musketeer3_" + sid + "_" + idx,
+            cardId: "three_musketeers",
+            name: "火枪手" + sp.label,
+            artwork: "musketeer" + sp.label,
+            team: team, row: spot.row, col: spot.col,
+            attack: 3, maxHp: 6, currentHp: 6, armor: 0, armorPen: 0,
+            moveRange: 4, attackRange: 5,
+            meleeAttack: 4, meleeRange: 1, meleeDiagonal: true,
+            threeMusketeerMember: true, squadId: sid
+        };
+        gameState.units.push(u);
+        renderUnit(u);
+    });
+    if (typeof syncOnlineNow === "function") syncOnlineNow();
+}
+
 // ===== 精英冰人机制 =====
 // 制造冰场(5×5,随自身移动,持续到敌方回合结束)
 function activateEliteIceSkill(unit) {
@@ -14231,6 +14287,15 @@ function painSkillBonus(pain) {
 }
 
 // 联机技能动画事件发送(对面播放同样技能动画)
+// 音效:本地播放,同时广播给对手(联机时对方也听得到)
+function sfxBoth(name, volume) {
+    if (!name) return;
+    if (window.playSfx) { try { window.playSfx(name, volume); } catch (e) {} }
+    if (gameState.onlineMode && !window._fxSyncing && typeof ws !== 'undefined' && ws && ws.readyState === 1) {
+        try { ws.send(JSON.stringify({ type: 'fx', fx: { kind: 'sfx', name: name } })); } catch (e) {}
+    }
+}
+
 function sendSkillFx(kind, unit, targetRow, targetCol) {
     if (gameState.onlineMode && !window._fxSyncing && typeof ws !== 'undefined' && ws && ws.readyState === 1) {
         ws.send(JSON.stringify({ type: 'fx', fx: { kind: 'skill', skill: kind, row: unit ? unit.row : (targetRow || 0), col: unit ? unit.col : (targetCol || 0), fromR: unit ? unit.row : 0, fromC: unit ? unit.col : 0, toR: targetRow !== undefined ? targetRow : (unit ? unit.row : 0), toC: targetCol !== undefined ? targetCol : (unit ? unit.col : 0), team: unit ? unit.team : 'red' } }));
@@ -14322,6 +14387,7 @@ function removeShinraField() {
     gameState._shinraField = null;
 }
 function showShinraVisual(row, col, radius, team) {
+    if (window.playSfx) window.playSfx('pain_shinra');
     // 神罗文字(接收方重放时也显示)
     const cell = gameState.board[row] && gameState.board[row][col];
     if (cell && !cell.querySelector('.hero-deploy-text')) {
@@ -14370,7 +14436,20 @@ function showShinraVisual(row, col, radius, team) {
     }
     board.appendChild(wrap);
     // 持续到敌方回合结束(不自动消失)
-    gameState._shinraField = { el: wrap, team: team || gameState.currentTurn, row: row, col: col, radius: radius };
+    const _owner = gameState.units.find(u => u.row === row && u.col === col && u.team === (team || gameState.currentTurn));
+    gameState._shinraField = { el: wrap, team: team || gameState.currentTurn, row: row, col: col, radius: radius, ownerId: _owner ? _owner.id : null };
+}
+
+// 神罗天征视觉跟随施法者移动
+function syncShinraFieldToOwner(unit) {
+    const f = gameState._shinraField;
+    if (!f || !unit || f.ownerId !== unit.id) return;
+    f.row = unit.row;
+    f.col = unit.col;
+    if (f.el) {
+        f.el.style.left = ((unit.col - f.radius) * cellW) + "px";
+        f.el.style.top = ((unit.row - f.radius) * cellH) + "px";
+    }
 }
 
 function shinraTickOnce(team, row, col, radius) {
@@ -14432,6 +14511,7 @@ function shinraTensei(pain) {
 
 // 万象天引动画(纯视觉,联机重放用——原版:文字+敌人被拉向佩恩)
 function showBanshoVisual(pain) {
+    if (window.playSfx) window.playSfx('pain_bansho');
     const board = document.getElementById('gameBoard');
     if (!board) return;
     const team = pain.team;
@@ -14489,6 +14569,7 @@ function clearBlackRod(unit) {
 
 function banshoTenin(pain) {
     // 联机:万象天引动画同步
+    if (window.playSfx) window.playSfx('pain_bansho');
     sendSkillFx('bansho', pain);
     const team = pain.team;
     const forward = team === 'red' ? -1 : 1;
@@ -15544,6 +15625,7 @@ function showElectricBullet(unit, lineTargets, allChainTargets) {
 
 // 地爆天星动画(纯视觉,联机重放用——对面看到原版:黑球上升+敌人被吸走环绕)
 function showChibakuVisual(pain) {
+    if (window.playSfx) window.playSfx('pain_chibaku');
     const board = document.getElementById('gameBoard');
     if (!board) return;
     const ball = document.createElement('div');
@@ -15615,6 +15697,7 @@ function chibakuTensei(pain) {
     // 持续技能动画标记:回合结束前优先放完(防动画中途跳回合导致单位异常)
     gameState._chibakuAnimating = true;
     // 联机:地爆天星动画同步
+    if (window.playSfx) window.playSfx('pain_chibaku');
     sendSkillFx('chibaku', pain);
     pain.painEnergy = 0;
     renderEnergyBar(pain, gameState.board[pain.row][pain.col].querySelector('.unit'));
@@ -18403,6 +18486,53 @@ function updateSmokeVisibility() {
 }
 
 // 溅射伤害
+// 普通攻击命中后的附加效果(反击也调用,继承燃烧/凋零毒/吹箭毒/溅射等特性)
+function applyOnHitEffects(atk, hit) {
+    if (!atk || !hit || hit._removing) return;
+    // 喷火兵燃烧
+    if (atk.fireAttack) {
+        hit.burnTurns = 3;
+        hit.burnDamage = atk.burnDamage || 2;
+        updateBurnVisual(hit);
+        showCritText(hit.row, hit.col, '火焰');
+    }
+    // 凋零毒
+    if (atk.wither) applyWitherEffect(hit, atk);
+    // 吹箭毒
+    if (atk.blowdart) {
+        hit.poisonTurns = 3;
+        hit.poisonHits = (hit.poisonHits || 0) + 1;
+        hit.poisonLevel = Math.max(hit.poisonLevel || 0, hit.poisonHits >= 5 ? 3 : (hit.poisonHits >= 3 ? 2 : 1));
+        updatePoisonVisual(hit);
+    }
+    // 溅射(轻型坦克等)
+    if (atk.splashRadius) applySplashDamage(hit, atk);
+    // 冰系:冰冻目标
+    if (atk.freeze && hit.currentHp > 0 && !isImmuneToFreeze(hit)) {
+        const wasFrozen = !!hit.frozen;
+        hit.frozen = true;
+        updateFrozenVisual(hit);
+        showCritText(hit.row, hit.col, '冰冻');
+        notifyWinterSquash(hit);
+        if (!wasFrozen) buffSnowflakes(atk.team);
+        if (hit.percentAttack && (hit.charcoalCount || 0) < (hit.charcoalMax || 2)) summonCharcoal(hit);
+    }
+    // 觉醒公主:命中点 3×3 内敌人冰冻
+    if (atk.princess) {
+        gameState.units.forEach(u => {
+            if (u.team === atk.team || u.ghost || u._removing || u.frozen) return;
+            if (Math.max(Math.abs(u.row - hit.row), Math.abs(u.col - hit.col)) > 1) return;
+            if (isImmuneToFreeze(u)) return;
+            u.frozen = true;
+            updateFrozenVisual(u);
+            showCritText(u.row, u.col, '冰冻');
+            notifyWinterSquash(u);
+        });
+    }
+    // 雷电飞龙:连锁闪电
+    if (atk.chainAttack) applyChainAttack(atk, hit);
+}
+
 function applySplashDamage(target, attacker) {
     const radius = attacker.splashRadius;
     gameState.units.forEach(u => {
@@ -20879,7 +21009,14 @@ const SFX_NAME_LABELS = {
     dragon_baby_deploy: '觉醒飞龙宝宝 · 登场',
     blowdart_goblin_deploy: '觉醒吹箭哥布林 · 登场',
     blowdart_goblin_attack: '觉醒吹箭哥布林 · 攻击',
-    hog_rider_deploy: '野猪骑士 · 登场'
+    hog_rider_deploy: '野猪骑士 · 登场',
+    golem_deploy: '戈仑石人 · 登场',
+    heal_fairy_deploy: '治疗精灵 · 登场',
+    fisherman_deploy: '渔夫 · 登场',
+    pain_shinra: '佩恩天道 · 神罗天征',
+    pain_bansho: '佩恩天道 · 万象天引',
+    pain_chibaku: '佩恩天道 · 地爆天星',
+    shangbole_deploy: '尚博勒 · 登场'
 };
 function getSfxGainMap() {
     try {
@@ -21573,6 +21710,13 @@ function aiMoveUnit(u, tk) {
         // AI 移动同样播放平移动画
         slideUnitElement(el, oldR, oldC, br, bc);
         gameState.moveUsed[u.id] = (gameState.moveUsed[u.id]||0) + (Math.abs(br-oldR)+Math.abs(bc-oldC));
+        syncShinraFieldToOwner(u);
+        // AI 移动:冰场跟随本体
+        if (u.eliteIce && u._iceSkillActive) {
+            gameState.iceFields.forEach(f => { if (f.owner === u.id) { f.row = br; f.col = bc; } });
+            renderIceFields();
+            freezeEnemiesInIce(gameState.iceFields.find(f => f.owner === u.id));
+        }
         // 皮尔斯:移动路线拾取弹壳
         if (u.pierce) {
             const path = [];

@@ -311,6 +311,7 @@ function flushFxQueue() {
             else if (fx.kind === 'critText') showCritText(fx.row, fx.col, fx.msg);
             else if (fx.kind === 'attack') showOnlineAttackFx(fx.fromR, fx.fromC, fx.toR, fx.toC);
             else if (fx.kind === 'skill') playSkillFx(fx);
+            else if (fx.kind === 'sfx') { if (window.playSfx && fx.name) window.playSfx(fx.name); }
             else if (fx.kind === 'move') playMoveFx(fx);
         } catch (e) {}
     });
