@@ -20790,6 +20790,35 @@ function deployHeroUnits() {
     }, 1500);
 })();
 
+// 部署音效映射:开局预下载,避免首次部署卡顿
+const DEPLOY_SFX_BY_CARD = {
+    madara: 'madara_deploy',
+    yogg: 'yogg_deploy',
+    yogg_saron: 'yogg_saron_deploy',
+    yogg_fate: 'yogg_fate_deploy',
+    reynolds: 'reynolds_deploy',
+    reynolds_jackson: 'reynolds_jackson_deploy',
+    spec_squad: 'spec_squad_deploy',
+    guff: 'guff_deploy',
+    dirty_rat: 'dirty_rat_deploy',
+    undead_giant: 'undead_giant_deploy',
+    asala_soldier: 'asala_deploy',
+    dragon_baby: 'dragon_baby_deploy',
+    blowdart_goblin: 'blowdart_goblin_deploy',
+    hog_rider: 'hog_rider_deploy',
+    golem: 'golem_deploy',
+    heal_fairy: 'heal_fairy_deploy',
+    fisherman: 'fisherman_deploy',
+    shangbole: 'shangbole_deploy'
+};
+function preloadDeckSfx() {
+    if (!window.preloadSfx) return;
+    const list = [];
+    (gameState.battleDeck || []).forEach(c => { const n = DEPLOY_SFX_BY_CARD[c.id]; if (n) list.push(n); });
+    if (gameState.heroCard) { const hn = DEPLOY_SFX_BY_CARD[gameState.heroCard.id]; if (hn) list.push(hn); }
+    window.preloadSfx(list);
+}
+
 // 开始游戏
 function startGame() {
     // 重置游戏状态
@@ -20884,6 +20913,8 @@ function startGame() {
     updateTurnIndicator();
     updateTimerDisplay();
 
+    // 预加载本局可能用到的音效
+    preloadDeckSfx();
     // 初始化棋盘
     initBoard();
     // 英雄:开局自动部署在己方大本营

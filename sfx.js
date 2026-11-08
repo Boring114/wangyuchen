@@ -30,9 +30,10 @@
     const cache = {};
     function makePool(url) {
         const pool = [];
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; i < 4; i++) {
             const a = new Audio(url);
             a.preload = 'auto';
+            try { a.load(); } catch (e) {}
             a.setAttribute('playsinline', '');
             a.className = 'sfx-audio-node';
             a.style.display = 'none';
@@ -276,6 +277,26 @@
     window.unlockAudio = function () {};
 
     // 停止所有正在播放的音效(退出对局/试听前)
+    // 预加载指定音效(开局前先把可能用到的音效下载好,避免播到一半卡顿)
+    window.preloadSfx = function (names) {
+        (names || []).forEach(name => {
+            try {
+                const url = sfxUrlOf(name);
+                let entry = cache[name];
+                if (!entry || entry.url !== url) {
+                    entry = cache[name] = makePool(url);
+                    entry.url = url;
+                }
+            } catch (e) {}
+        });
+    };
+    // 闲时把音效文件预热到浏览器缓存(不创建音频元素,只走 HTTP 缓存)
+    window.prefetchAllSfx = async function () {
+        const names = Object.keys(window.SFX_FILES || {});
+        for (const n of names) {
+            try { await fetch(sfxUrlOf(n), { cache: "force-cache" }); } catch (e) {}
+        }
+    };
     window.stopAllSfx = function () {
         try {
             Object.keys(cache).forEach(k => {
@@ -302,5 +323,5 @@
     };
 
     // 启动后提前归一化,避免第一次播放还是原始小声版本
-    setTimeout(function () { try { if (window.sfxNormalizeAll) window.sfxNormalizeAll(); } catch (e) {} }, 800);
+    setTimeout(function () { try { if (window.prefetchAllSfx) window.prefetchAllSfx(); } catch (e) {} }, 2500);
 })();
