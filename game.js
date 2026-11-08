@@ -20771,6 +20771,25 @@ function deployHeroUnits() {
     setTimeout(hide, 12000);
 })();
 
+// 音效目录自检:部署到线上时若漏传 audio/sfx,给一条 3 秒自动消失的小提示
+(function () {
+    setTimeout(async () => {
+        try {
+            const r = await fetch("audio/sfx/madara_deploy.mp3", { cache: "no-store" });
+            if (r.ok) return;
+        } catch (e) {
+            return;
+        }
+        const t = document.createElement("div");
+        t.id = "sfxProbeToast";
+        t.textContent = "音效文件未找到:请把 audio/sfx 目录一起上传";
+        t.style.cssText = "position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:99999;background:rgba(0,0,0,0.8);color:#fff;padding:8px 14px;border-radius:16px;font-size:13px;pointer-events:none;transition:opacity .5s;";
+        document.body.appendChild(t);
+        setTimeout(() => { t.style.opacity = "0"; }, 2500);
+        setTimeout(() => t.remove(), 3100);
+    }, 1500);
+})();
+
 // 开始游戏
 function startGame() {
     // 重置游戏状态
@@ -20985,6 +21004,53 @@ function requireHeroSelected() {
     return false;
 }
 
+// 音频自检:检查音量设置、文件是否可访问、能否实际播放
+async function runAudioDiagnostics() {
+    const body = document.getElementById("audioDiagBody");
+    if (!body) return;
+    body.innerHTML = "检测中...";
+    const lines = [];
+    const vol = (typeof window.chessSfxVolume === "number") ? window.chessSfxVolume : 0.8;
+    const gains = (function () { try { return JSON.parse(localStorage.getItem("chessSfxGains") || "{}"); } catch (e) { return {}; } })();
+    const zeroList = Object.keys(gains).filter(k => gains[k] === 0);
+    lines.push("卡牌音效总音量: " + Math.round(vol * 100) + "%" + (vol <= 0 ? " (静音!)" : ""));
+    lines.push("单独调过音量的条目: " + Object.keys(gains).length + " 个" + (zeroList.length ? "，其中静音 " + zeroList.length + " 个" : ""));
+    const names = Object.keys(window.SFX_FILES || {});
+    const bad = [];
+    for (const n of names) {
+        const url = window.SFX_FILES[n];
+        try {
+            const r = await fetch(url, { cache: "no-store" });
+            if (!r.ok) bad.push(n + " (" + r.status + ")");
+        } catch (e) { bad.push(n + " (网络错误)"); }
+    }
+    lines.push("音效文件: 共 " + names.length + " 个，" + (bad.length ? ("缺失 " + bad.length + " 个") : "全部可访问"));
+    if (bad.length) lines.push("缺失清单: " + bad.slice(0, 8).join("、") + (bad.length > 8 ? " 等" : ""));
+    // 实测播放一次
+    let playResult = "未测试";
+    await new Promise(resolve => {
+        try {
+            const a = new Audio(window.SFX_FILES.madara_deploy || "audio/sfx/madara_deploy.mp3");
+            a.volume = 0.9;
+            a.addEventListener("playing", () => { playResult = "播放成功"; resolve(); }, { once: true });
+            a.addEventListener("error", () => { playResult = "播放失败(文件错误)"; resolve(); }, { once: true });
+            a.play().catch(err => { playResult = "播放被浏览器拦截: " + (err && err.name ? err.name : err); resolve(); });
+            setTimeout(resolve, 2500);
+        } catch (e) { playResult = "异常: " + String(e); resolve(); }
+    });
+    lines.push("实际播放测试: " + playResult);
+    body.innerHTML = lines.map(t => "<div>" + t + "</div>").join("");
+}
+function openAudioDiag() {
+    const m = document.getElementById("audioDiagModal");
+    if (m) m.classList.remove("hidden");
+    runAudioDiagnostics();
+}
+function closeAudioDiag() {
+    const m = document.getElementById("audioDiagModal");
+    if (m) m.classList.add("hidden");
+}
+
 // ===== 单卡音效设置 =====
 const SFX_NAME_LABELS = {
     madara_deploy: '马斑 · 登场',
@@ -21044,14 +21110,14 @@ function renderSfxSettingsList() {
         row.innerHTML = `
             <span class="sfx-name">${SFX_NAME_LABELS[name] || name}</span>
             <input type="range" min="0" max="200" step="5" value="${pct}">
-            <span class="sfx-val">${pct}%</span>
+            <span class="sfx-val">${pct === 0 ? "静音" : pct + "%"}</span>
             <button class="sfx-play">试听</button>
         `;
         const slider = row.querySelector("input");
         const valEl = row.querySelector(".sfx-val");
         slider.addEventListener("input", () => {
             const p = Math.max(0, Math.min(200, parseInt(slider.value, 10) || 0));
-            valEl.textContent = p + "%";
+            valEl.textContent = p === 0 ? "静音" : p + "%";
             setSfxGain(name, p / 100);
         });
         row.querySelector(".sfx-play").addEventListener("click", () => {
@@ -22010,6 +22076,14 @@ window.gameState = gameState;
     btn.addEventListener("click", () => m.classList.remove("hidden"));
     if (close) close.addEventListener("click", () => m.classList.add("hidden"));
     const openSfxBtn = document.getElementById("openSfxSettingsBtn");
+    const diagBtn = document.getElementById("openAudioDiagBtn");
+    if (diagBtn) diagBtn.addEventListener("click", () => {
+        const sm = document.getElementById("settingsModal");
+        if (sm) sm.classList.add("hidden");
+        openAudioDiag();
+    });
+    const closeDiag = document.getElementById("closeAudioDiagBtn");
+    if (closeDiag) closeDiag.addEventListener("click", () => closeAudioDiag());
     if (openSfxBtn) openSfxBtn.addEventListener("click", () => {
         const sm = document.getElementById("settingsModal");
         if (sm) sm.classList.add("hidden");

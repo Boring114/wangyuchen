@@ -47,6 +47,14 @@
             <button id="closeSfxSettingsBtn">关闭</button>
         </div>
     </div>
+    <!-- 音频自检 -->
+    <div id="audioDiagModal" class="modal hidden">
+        <div class="modal-content" style="max-width:560px;width:92vw;max-height:80vh;overflow:auto;">
+            <h2>音频自检</h2>
+            <div id="audioDiagBody" style="font-size:13px;line-height:1.6;color:#2c3e50;text-align:left;"></div>
+            <button id="closeAudioDiagBtn" style="margin-top:10px;">关闭</button>
+        </div>
+    </div>
     <div id="settingsModal" class="modal hidden">
         <div class="modal-content settings-content">
             <h2>设置</h2>
@@ -72,6 +80,7 @@
             </div>
             <div class="setting-row">
                 <label>单卡音效调整</label>
+                <button id="openAudioDiagBtn" style="padding:6px 14px;border:none;border-radius:6px;background:#16a085;color:#fff;cursor:pointer;margin-right:6px;">音频自检</button>
                 <button id="openSfxSettingsBtn" style="padding:6px 14px;border:none;border-radius:6px;background:#2c3e50;color:#fff;cursor:pointer;">音效设置 ›</button>
             </div>
             <p class="setting-hint">调节卡牌登场、技能与攻击音效的音量(与背景音乐分开)。</p>
@@ -537,7 +546,7 @@
             <button id="shadowToggleBtn" class="mirror-toggle-btn shadow-toggle-btn hidden">切换到现实世界</button>
             <button id="haiyueToggleBtn" class="mirror-toggle-btn haiyue-toggle-btn hidden">隐藏幻境</button>
         </div>
-<script src="game.js?v=457"></script>
+<script src="game.js?v=461"></script>
     <script src="online.js?v=35"></script>
     <script src="music.js?v=8"></script>
     <script src="sfx.js?v=50"></script>
