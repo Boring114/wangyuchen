@@ -4970,10 +4970,20 @@ function deployUnit(row, col) {
     // 创建单位
     const unit = createUnitFromCard(card, gameState.currentTurn, row, col);
     grantStartEnergy(unit);
-    if (unit.cardId === 'madara') window.playSfx && window.playSfx('madara_deploy', 1.6);
-    if (['yogg','yogg_saron','yogg_fate'].includes(unit.cardId)) window.playSfx && window.playSfx('yogg_deploy');
+    if (unit.cardId === 'madara') window.playSfx && window.playSfx('madara_deploy');
+    if (unit.cardId === 'yogg') window.playSfx && window.playSfx('yogg_deploy');
+    if (unit.cardId === 'yogg_saron') window.playSfx && window.playSfx('yogg_saron_deploy');
+    if (unit.cardId === 'yogg_fate') window.playSfx && window.playSfx('yogg_fate_deploy');
     if (unit.cardId === 'reynolds') window.playSfx && window.playSfx('reynolds_deploy');
     if (unit.cardId === 'reynolds_jackson') window.playSfx && window.playSfx('reynolds_jackson_deploy');
+    if (unit.cardId === 'spec_squad') window.playSfx && window.playSfx('spec_squad_deploy');
+    if (unit.cardId === 'guff') window.playSfx && window.playSfx('guff_deploy');
+    if (unit.cardId === 'dirty_rat') window.playSfx && window.playSfx('dirty_rat_deploy');
+    if (unit.cardId === 'undead_giant') window.playSfx && window.playSfx('undead_giant_deploy');
+    if (unit.cardId === 'asala_soldier') window.playSfx && window.playSfx('asala_deploy');
+    if (unit.cardId === 'dragon_baby') window.playSfx && window.playSfx('dragon_baby_deploy');
+    if (unit.cardId === 'blowdart_goblin') window.playSfx && window.playSfx('blowdart_goblin_deploy');
+    if (unit.cardId === 'hog_rider') window.playSfx && window.playSfx('hog_rider_deploy');
 
     // 小喷菇部署计数
     if (unit.smallShroom) {
@@ -7109,6 +7119,9 @@ function edoRevive(unit) {
 }
 
 function attackUnit(target, skipBulletDelay) {
+    try { if (!skipBulletDelay && gameState.selectedUnit && gameState.selectedUnit.cardId === 'undead_giant') window.playSfx('undead_giant_attack'); } catch (e) {}
+    try { if (!skipBulletDelay && gameState.selectedUnit && gameState.selectedUnit.cardId === 'asala_soldier') window.playSfx('asala_attack'); } catch (e) {}
+    try { if (!skipBulletDelay && gameState.selectedUnit && gameState.selectedUnit.cardId === 'blowdart_goblin') window.playSfx('blowdart_goblin_attack'); } catch (e) {}
     if (!gameState.selectedUnit) return;
     // 迈特凯·死门:冲刺普攻(需先放天驱获得一次冲刺机会)
     if (gameState.selectedUnit.guyDeathGate && gameState.selectedUnit._guyDashAtk) {
@@ -8098,6 +8111,7 @@ function attackUnit(target, skipBulletDelay) {
 // 攻击大本营
 function attackBase(isBlueBase) {
     if (!gameState.selectedUnit) return;
+    try { if (gameState.selectedUnit.cardId === 'undead_giant') window.playSfx('undead_giant_attack'); } catch (e) {}
     // 马斑无双状态攻击大本营每回合限1次(攻击完后只能另找目标攻击)
     if (gameState.selectedUnit.inMusou && gameState.selectedUnit._musouBaseAttacked) return;
     // 巡视者无法咬大本营
@@ -10889,6 +10903,7 @@ function checkEagleArtillery() {
         if (enemySpent >= 25) {
             u._eagleActive = true;
             u._eagleAttacks = 0;
+            if (window.playSfx) window.playSfx('eagle_activate');
             showHeroDeployText(u, '天鹰火炮已开启', '#000', 2000);
         }
     });
@@ -10938,6 +10953,7 @@ function showEagleStrikeSequence(from, to, onHit) {
     const fx = from.col * cellW + cellW / 2;
     const fy = from.row * cellH + cellH / 2;
     // ① 红色圆形炮弹垂直向上飞,飞出棋盘后消失
+    if (window.playSfx) window.playSfx('eagle_fire');
     const up = document.createElement('div');
     up.className = 'eagle-shell';
     up.style.left = (fx - 6) + 'px';
@@ -10964,7 +10980,7 @@ function showEagleStrikeSequence(from, to, onHit) {
             requestAnimationFrame(() => { fall.style.top = (ty - 6) + 'px'; });
         });
         setTimeout(() => { if (fall.parentNode) fall.remove(); }, 480);
-        setTimeout(() => { if (onHit) onHit(); }, 430);
+        setTimeout(() => { if (window.playSfx) window.playSfx('eagle_impact'); if (onHit) onHit(); }, 430);
     }, 2000);
 }
 
@@ -12097,6 +12113,7 @@ if (unit.balloon && !unit._balloonExploded) {
         }
     });
 }
+if (unit.stormDragon && window.playSfx) window.playSfx('storm_dragon_death');
 // 风暴龙王:亡语为全体友军提供护盾与雷电之力
 if (unit.stormDragon) {
     stormDragonDeath(unit);
@@ -12250,6 +12267,7 @@ function updateUnitHp(unit) {
         hpFill.style.background = (uel && uel.classList.contains('blue')) ? '#3498db' : '#e74c3c';
     }
     if (unit.heroUnit) clearHeroDebuffs(unit);
+    if (unit.stormPower && (unit._shieldHp || 0) <= 0) clearStormPower(unit);
     // 凋零半血变身:降为正常单位(不再是飞行单位)
     if (unit.wither && unit.currentHp <= (unit.maxHp || 8) / 2 && unit.flying) {
         unit.flying = false;
@@ -12280,6 +12298,7 @@ function renderUnit(unit) {
     const artworkClass = unit.artwork ? `art-${unit.artwork}` : '';
     unitElement.className = `unit ${unit.team} ${artworkClass}`;
     if (unit.rainbow) unitElement.classList.add('rainbow-glow');
+    if (unit.stormPower && (unit._shieldHp || 0) > 0) applyStormAura(unitElement);
     if (unit.heroUnit && ((unit.team === 'red' && isRedBase(unit.row, unit.col)) || (unit.team === 'blue' && isBlueBase(unit.row, unit.col)))) unitElement.classList.add('hero-in-base');
     // 被击倒:保持击倒特效(旋转倾斜)直到恢复
     if (unit._knockedDown) unitElement.classList.add('knocked-down');
@@ -15157,7 +15176,7 @@ function showMadaraStompFX(row, col) {
 // 马斑天下无双
 function activateMusou(madara) {
     gameState.attackedUnits.delete(madara.id);
-    if (window.playSfx) window.playSfx('madara_musou', 1.6);
+    if (window.playSfx) window.playSfx('madara_musou');
     madara.inMusou = true;
     madara.musouAttacks = 0;
     madara._musouMeteorDone = false;
@@ -15767,7 +15786,7 @@ function showCounterFX(madara) {
 // 陨石
 function showMeteorButton(u, fromEndTurn, visualOnly) {
     const board = document.getElementById('gameBoard');
-    if (window.playSfx) window.playSfx('madara_meteor', 1.6);
+    if (window.playSfx) window.playSfx('madara_meteor');
     if (fromEndTurn && !visualOnly) gameState._meteorAnimating = true;
     if (!board) return;
     if (!visualOnly) sendSkillFx('madaraMeteor', u);
@@ -17780,6 +17799,7 @@ function stormBreath(u) {
 
 function stormDragonDeath(unit) {
     const shield = Math.round((unit.maxHp || 30) * 0.25);
+    const allies = [];
     gameState.units.forEach(u => {
         if (u.team !== unit.team || u._removing) return;
         u._shieldHp = (u._shieldHp || 0) + shield;
@@ -17787,8 +17807,46 @@ function stormDragonDeath(unit) {
         const el = gameState.board[u.row] && gameState.board[u.row][u.col] ? gameState.board[u.row][u.col].querySelector('.unit') : null;
         if (el) el.classList.add('guard-shield');
         showCritText(u.row, u.col, '+' + shield + '盾');
+        allies.push(u);
     });
+    // 雷电包裹 + 落雷特效(依次落下,更有冲击力)
+    allies.forEach((u, i) => setTimeout(() => showStormPowerFx(u), i * 90));
 }
+
+// 风暴龙王亡语:给友军套上雷电外壳(持续到护盾消失)
+function showStormPowerFx(u) {
+    if (!u || u._removing) return;
+    const cell = gameState.board[u.row] && gameState.board[u.row][u.col];
+    if (!cell) return;
+    const el = cell.querySelector(".unit");
+    if (el) applyStormAura(el);
+}
+// 给单位图标挂上雷电外壳(可重复调用,不会叠加)
+function applyStormAura(el) {
+    if (!el) return;
+    el.classList.add("storm-powered");
+    if (el.querySelector(".storm-buff-aura")) return;
+    const aura = document.createElement("div");
+    aura.className = "storm-buff-aura";
+    for (let i = 0; i < 3; i++) {
+        const arc = document.createElement("div");
+        arc.className = "storm-arc arc-" + i;
+        aura.appendChild(arc);
+    }
+    el.appendChild(aura);
+}
+// 护盾消失后移除特效
+function clearStormPower(u) {
+    if (!u) return;
+    u.stormPower = false;
+    const el = document.querySelector('.unit[data-unit-id="' + u.id + '"]');
+    if (el) {
+        el.classList.remove("storm-powered");
+        const aura = el.querySelector(".storm-buff-aura");
+        if (aura) aura.remove();
+    }
+}
+
 
 (function wireStormDragonModal() {
     const m = document.getElementById('stormDragonModal');
@@ -20570,6 +20628,19 @@ function deployHeroUnits() {
     });
 }
 
+// 移动端:首次进入提示轻触屏幕开启声音
+(function () {
+    const isMobile = /Android|iPhone|iPad|iPod|HarmonyOS|Mobile/i.test(navigator.userAgent);
+    if (!isMobile) return;
+    const el = document.getElementById("audioHint");
+    if (!el) return;
+    let unlocked = false;
+    function hide() { if (unlocked) return; unlocked = true; el.style.display = "none"; }
+    setTimeout(() => { if (!unlocked) el.style.display = "block"; }, 1200);
+    ['pointerdown','touchstart','click'].forEach(ev => document.addEventListener(ev, hide, { once: true, capture: true }));
+    setTimeout(hide, 12000);
+})();
+
 // 开始游戏
 function startGame() {
     // 重置游戏状态
@@ -20759,6 +20830,7 @@ window.addEventListener('resize', fitGameScreen);
 
 // 返回初始界面
 function goToStartScreen() {
+    if (window.stopAllSfx) { try { window.stopAllSfx(); } catch (e) {} }
     resetGameScreenFit();
     stopTimer();
     cardInfoPanel.classList.add('hidden');
@@ -20781,6 +20853,85 @@ function requireHeroSelected() {
     if (gameState.heroCard) return true;
     alert('请先在卡包 → 英雄卡中选择 1 名英雄出战，才能进入对局(训练营除外)!');
     return false;
+}
+
+// ===== 单卡音效设置 =====
+const SFX_NAME_LABELS = {
+    madara_deploy: '马斑 · 登场',
+    madara_musou: '马斑 · 天下无双',
+    madara_meteor: '马斑 · 奥义陨石',
+    yogg_deploy: '脱困古神·尤格-萨隆 · 登场',
+    yogg_saron_deploy: '尤格-萨隆 · 登场',
+    yogg_fate_deploy: '尤格-萨隆·命运主宰 · 登场',
+    reynolds_deploy: '孤胆游侠雷诺 · 登场',
+    reynolds_jackson_deploy: '雷诺·杰克逊 · 登场',
+    spec_squad_deploy: '加速部队特勤组 · 登场',
+    guff_deploy: '野性之心古夫 · 登场',
+    storm_dragon_death: '风暴龙王 · 死亡',
+    eagle_fire: '天鹰火炮 · 发射',
+    eagle_impact: '天鹰火炮 · 落地爆炸',
+    eagle_activate: '天鹰火炮 · 激活',
+    dirty_rat_deploy: '卑劣的脏鼠 · 登场',
+    undead_giant_deploy: '亡灵巨人 · 登场',
+    undead_giant_attack: '亡灵巨人 · 攻击',
+    asala_deploy: '阿萨拉士兵 · 登场',
+    asala_attack: '阿萨拉士兵 · 攻击',
+    dragon_baby_deploy: '觉醒飞龙宝宝 · 登场',
+    blowdart_goblin_deploy: '觉醒吹箭哥布林 · 登场',
+    blowdart_goblin_attack: '觉醒吹箭哥布林 · 攻击',
+    hog_rider_deploy: '野猪骑士 · 登场'
+};
+function getSfxGainMap() {
+    try {
+        const raw = localStorage.getItem("chessSfxGains");
+        return raw ? JSON.parse(raw) : {};
+    } catch (e) { return {}; }
+}
+function setSfxGain(name, val) {
+    const map = getSfxGainMap();
+    map[name] = Math.max(0, Math.min(2, val));
+    try { localStorage.setItem("chessSfxGains", JSON.stringify(map)); } catch (e) {}
+}
+function renderSfxSettingsList() {
+    const list = document.getElementById("sfxSettingsList");
+    if (!list) return;
+    list.innerHTML = "";
+    const names = Object.keys(window.SFX_FILES || {});
+    const gains = getSfxGainMap();
+    if (!names.length) { list.innerHTML = "<p style=\"color:#7f8c8d;\">暂无可调整的音效</p>"; return; }
+    names.forEach(name => {
+        const row = document.createElement("div");
+        row.className = "sfx-row";
+        const cur = (typeof gains[name] === "number") ? gains[name] : 1;
+        const pct = Math.round(cur * 100);
+        row.innerHTML = `
+            <span class="sfx-name">${SFX_NAME_LABELS[name] || name}</span>
+            <input type="range" min="0" max="200" step="5" value="${pct}">
+            <span class="sfx-val">${pct}%</span>
+            <button class="sfx-play">试听</button>
+        `;
+        const slider = row.querySelector("input");
+        const valEl = row.querySelector(".sfx-val");
+        slider.addEventListener("input", () => {
+            const p = Math.max(0, Math.min(200, parseInt(slider.value, 10) || 0));
+            valEl.textContent = p + "%";
+            setSfxGain(name, p / 100);
+        });
+        row.querySelector(".sfx-play").addEventListener("click", () => {
+            if (window.previewSfx) window.previewSfx(name);
+        });
+        list.appendChild(row);
+    });
+}
+function openSfxSettings() {
+    renderSfxSettingsList();
+    const m = document.getElementById("sfxSettingsModal");
+    if (m) m.classList.remove("hidden");
+}
+function closeSfxSettings() {
+    if (window.stopAllSfx) { try { window.stopAllSfx(); } catch (e) {} }
+    const m = document.getElementById("sfxSettingsModal");
+    if (m) m.classList.add("hidden");
 }
 
 // 重新开始
@@ -21710,10 +21861,30 @@ window.gameState = gameState;
     try { const raw = parseFloat(localStorage.getItem('chessSfxVolume')); if (!isNaN(raw)) sv = Math.max(0, Math.min(1, raw)); } catch (e) {}
     window.chessSfxVolume = sv;
     if (sfxSlider) { sfxSlider.value = Math.round(sv * 100); }
-    if (sfxVal) sfxVal.textContent = Math.round(sv * 100) + "%";
+    if (sfxVal) sfxVal.textContent = (Math.round(sv * 100) === 0 ? "0%(静音)" : Math.round(sv * 100) + "%");
     if (window.chessMusic && window.chessMusic.setVolume) window.chessMusic.setVolume(v);
     btn.addEventListener("click", () => m.classList.remove("hidden"));
     if (close) close.addEventListener("click", () => m.classList.add("hidden"));
+    const openSfxBtn = document.getElementById("openSfxSettingsBtn");
+    if (openSfxBtn) openSfxBtn.addEventListener("click", () => {
+        const sm = document.getElementById("settingsModal");
+        if (sm) sm.classList.add("hidden");
+        openSfxSettings();
+    });
+    const closeSfxBtn = document.getElementById("closeSfxSettingsBtn");
+    if (closeSfxBtn) closeSfxBtn.addEventListener("click", () => closeSfxSettings());
+    const resetSfxBtn = document.getElementById("resetSfxSettingsBtn");
+    if (resetSfxBtn) resetSfxBtn.addEventListener("click", () => { try { localStorage.removeItem("chessSfxGains"); } catch (e) {} renderSfxSettingsList(); });
+    const sfxModalEl = document.getElementById("sfxSettingsModal");
+    if (sfxModalEl) sfxModalEl.addEventListener("click", (e) => { if (e.target === sfxModalEl) closeSfxSettings(); });
+    const audioTestBtn = document.getElementById("settingAudioTest");
+    if (audioTestBtn) audioTestBtn.addEventListener("click", () => {
+        try { if (window.chessMusic && window.chessMusic.play) window.chessMusic.play(); } catch (e) {}
+        try { if (window.chessMusic && !window.chessMusic.isEnabled()) window.chessMusic.toggle(); } catch (e) {}
+        if (window.playSfx) window.playSfx("madara_musou", 1, true); // 测试时不受静音影响
+        const tip = document.getElementById("settingSfxVolumeValue");
+        if (tip) { const old = tip.textContent; tip.textContent = "已播放"; setTimeout(() => { tip.textContent = old; }, 900); }
+    });
     m.addEventListener("click", (e) => { if (e.target === m) m.classList.add("hidden"); });
     if (autoMove) autoMove.addEventListener("change", () => {
         try { localStorage.setItem("chessAutoMove", autoMove.checked ? "on" : "off"); } catch (e) {}
@@ -21724,7 +21895,7 @@ window.gameState = gameState;
     if (sfxSlider) sfxSlider.addEventListener('input', () => {
         const p = Math.max(0, Math.min(100, parseInt(sfxSlider.value, 10) || 0));
         window.chessSfxVolume = p / 100;
-        if (sfxVal) sfxVal.textContent = p + '%';
+        if (sfxVal) sfxVal.textContent = (p === 0 ? '0%(静音)' : p + '%');
         try { localStorage.setItem('chessSfxVolume', String(p / 100)); } catch (e) {}
     });
     if (vol) vol.addEventListener("input", () => {

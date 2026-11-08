@@ -1,4 +1,4 @@
-﻿// 背景音乐:主界面/卡包 与 对局内 双轨切换(平滑交叉淡入淡出,旧曲必定停止)
+// 背景音乐:主界面/卡包 与 对局内 双轨切换(平滑交叉淡入淡出,旧曲必定停止)
 (function () {
     const tracks = {
         menu: new Audio('audio/bgm_menu6.wav'),
@@ -14,6 +14,7 @@
         tracks[k].loop = true;
         tracks[k].volume = 0;
         tracks[k].preload = 'auto';
+        tracks[k].playsInline = true;
     });
 
     let enabled = localStorage.getItem('chessMusic') !== 'off';
@@ -49,18 +50,7 @@
     function playSafe(name) {
         const a = tracks[name];
         if (!a) return;
-        const p = a.play();
-        if (p && p.catch) {
-            p.catch(() => {
-                const retry = () => {
-                    document.removeEventListener("pointerdown", retry, true);
-                    document.removeEventListener("touchstart", retry, true);
-                    try { const p2 = a.play(); if (p2 && p2.catch) p2.catch(() => {}); } catch (e) {}
-                };
-                document.addEventListener("pointerdown", retry, true);
-                document.addEventListener("touchstart", retry, true);
-            });
-        }
+        try { a.play().catch(() => {}); } catch (e) {}
     }
 
     function hardPauseOthers(keep) {
@@ -162,9 +152,6 @@
             if (!a) return;
             current = 'battle';
             try { a.currentTime = 0; } catch (e) {}
-            if (a.readyState === 0) {
-                a.addEventListener('loadedmetadata', () => { try { a.currentTime = 0; } catch (e) {} }, { once: true });
-            }
             if (!enabled) return;
             started = true;
             hardPauseOthers('battle');
@@ -189,7 +176,7 @@
         if (Date.now() - lastToggleAt < 250) return;
         const t = e && e.target;
         if (t && t.closest && t.closest('#musicBtn, #menuMusicBtn')) return;
-        // 移动端:先静音试播解锁所有音频
+        // 每次手势都尝试解锁音效池(安卓上更稳)
         if (window.unlockAudio) { try { window.unlockAudio(); } catch (err) {} }
         if (!started) start();
         else if (enabled) resume();
